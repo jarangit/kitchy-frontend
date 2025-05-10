@@ -16,11 +16,11 @@ const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที�
 function KitchenMonitor() {
   const [orders, setOrders] = useState<Order[]>([]);
   // ✅ ขอสิทธิ์แจ้งเตือนระบบ (browser notification)
-  useEffect(() => {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (Notification.permission !== "granted") {
+  //     Notification.requestPermission();
+  //   }
+  // }, []);
   useEffect(() => {
     socket.on("connect", () => {
       console.log("✅ Connected to WebSocket");
@@ -51,8 +51,8 @@ function KitchenMonitor() {
       socket.off("new-order");
     };
   }, []);
-  // Removed duplicate state declaration
 
+  // Removed duplicate state declaration
   useEffect(() => {
     fetchOrders().then(setOrders);
   }, []);
