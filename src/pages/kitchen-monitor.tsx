@@ -67,14 +67,15 @@ function KitchenMonitor() {
       <HeaderSection title="Kitchen monitor" />
       <div className="flex flex-1 bg-gray-200 rounded-lg flex-col">
         <div className="grid grid-cols-2 md:grid-cols-4  lg:grid-cols-6 xl:grid-cols-8 gap-3 p-3 ">
-          {orders.map((order, key) => (
-            <div key={key}>
-              <OrderCard
-                order={order}
-                onDelete={() => handleDelete(order.id)}
-              />
-            </div>
-          ))}
+          {orders?.length &&
+            orders.map((order, key) => (
+              <div key={key}>
+                <OrderCard
+                  order={order}
+                  onDelete={() => handleDelete(order.id)}
+                />
+              </div>
+            ))}
         </div>
       </div>
     </div>
