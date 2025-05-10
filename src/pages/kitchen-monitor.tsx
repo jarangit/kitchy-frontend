@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { socket } from "./socket";
-import { deleteOrder, fetchOrders } from "./service/order-service";
-import OrderCard from "./components/ui-system/components/order-card";
-import Home from "./pages/home";
+import { useState, useEffect } from "react";
+import OrderCard from "../components/ui-system/components/order-card";
+import { fetchOrders, deleteOrder } from "../service/order-service";
+import { socket } from "../socket";
 
 interface Order {
   id: number;
@@ -13,7 +12,7 @@ interface Order {
 }
 const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที่ public/notify.mp3
 
-function App() {
+function KitchenMonitor() {
   const [orders, setOrders] = useState<Order[]>([]);
   // ✅ ขอสิทธิ์แจ้งเตือนระบบ (browser notification)
   useEffect(() => {
@@ -64,9 +63,7 @@ function App() {
 
   return (
     <div>
-      <Home />
-
-      {/* list */}
+      <h1>Kitchen monitor</h1>
       <div className="flex gap-4">
         {orders.map((order, key) => (
           <div key={key}>
@@ -78,4 +75,4 @@ function App() {
   );
 }
 
-export default App;
+export default KitchenMonitor;

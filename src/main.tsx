@@ -5,6 +5,7 @@ import App from "./App.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CreateOrder from "./pages/create-order.tsx";
 import Layout from "./components/ui-system/components/layout/layout.tsx";
+import KitchenMonitor from "./pages/kitchen-monitor.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,6 +24,14 @@ createRoot(document.getElementById("root")!).render(
           element={
             <Layout>
               <CreateOrder />
+            </Layout>
+          }
+        />
+        <Route
+          path="/kitchen-monitor"
+          element={
+            <Layout>
+              <KitchenMonitor />
             </Layout>
           }
         />

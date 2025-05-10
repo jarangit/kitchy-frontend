@@ -10,7 +10,7 @@ const Layout = ({ children }: Props) => {
   return (
     <div>
       <div className="flex flex-col min-h-screen">
-        <header className="bg-gray-800 text-white p-4">
+        <header className="bg-gray-200 p-6 border-b border-gray-400">
           <div className="flex justify-between w-full">
             <Link to={"/"}>
               <h1 className="text-2xl">Home</h1>
@@ -22,7 +22,7 @@ const Layout = ({ children }: Props) => {
           </div>
         </header>
         <main className="flex-grow p-4">{children}</main>
-        <footer className="bg-gray-800 text-white p-4">
+        <footer className="bg-gray-300 p-4">
           <p>Footer</p>
         </footer>
       </div>
