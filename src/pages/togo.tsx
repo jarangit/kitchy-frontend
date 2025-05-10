@@ -1,28 +1,28 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { createOrder, fetchOrders } from "../service/order-service";
+import { createOrder } from "../service/order-service";
 import { OrderForm } from "../components/ui-system/components/order-form";
+import HeaderSection from "../components/ui-system/components/header-section";
 
-function CreateOrder() {
-  const [orderNumber, setOrderNumber] = useState("");
-  const [type, setType] = useState<"TOGO" | "DINEIN">("TOGO");
+function TogoPage() {
+  const [orderType, setOrderType] = useState<"TOGO" | "DINEIN">("TOGO");
   const [orders, setOrders] = useState<any[]>([]);
 
-  const handleSubmit = async (number: string) => {
-    if (!number) return alert("กรุณากรอกหมายเลขออเดอร์");
+  const handleSubmit = async ({ orderType, orderNumber }: any) => {
+    if (!orderNumber) return alert("กรุณากรอกหมายเลขออเดอร์");
 
-    const newOrder = await createOrder({ orderNumber: number, orderType:type });
+    const newOrder = await createOrder({ orderNumber: orderNumber, orderType });
     setOrders([newOrder, ...orders]);
-    setOrderNumber("");
   };
 
   useEffect(() => {
-    fetchOrders().then(setOrders);
+    // fetchOrders().then(setOrders);
+    setOrderType("TOGO");
   }, []);
 
   return (
     <div>
+      <HeaderSection title="Front-desk(To-Go)" />
       <h3>Orders</h3>
       <ul>
         {orders.map((order) => (
@@ -33,7 +33,7 @@ function CreateOrder() {
       </ul>
 
       <OrderForm
-        orderType={type}
+        orderType={orderType}
         label="Order Number"
         buttonColor="bg-blue-500"
         _onSubmit={(e: any) => handleSubmit(e)}
@@ -42,4 +42,4 @@ function CreateOrder() {
   );
 }
 
-export default CreateOrder;
+export default TogoPage;

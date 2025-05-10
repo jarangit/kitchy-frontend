@@ -2,7 +2,6 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // ✅ ดึงจาก .env
-  // baseURL: 'http://localhost:3000', // เปลี่ยนเป็น URL backend จริงใน production
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,9 +10,13 @@ const api = axios.create({
 // ✅ สร้างออเดอร์ใหม่
 export const createOrder = async (data: {
   orderNumber: string;
-  type: "TOGO" | "DINEIN";
+  orderType: "TOGO" | "DINEIN";
 }) => {
-  const response = await api.post("/orders", data);
+  const payload = {
+    ...data,
+    type: data.orderType,
+  };
+  const response = await api.post("/orders", payload);
   return response.data;
 };
 

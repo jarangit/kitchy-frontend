@@ -2,24 +2,30 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NumericKeypad } from "./numbericKeypad";
 
 interface OrderFormProps {
-  type: unknown;
+  orderType: "TOGO" | "DINEIN";
   label: string;
   buttonColor: string;
-  _onSubmit: (number: string) => void;
+  _onSubmit: ({
+    orderType,
+    orderNumber,
+  }: {
+    orderType: string;
+    orderNumber: string;
+  }) => void;
 }
 
-export function OrderForm({
-  label,
-  _onSubmit,
-}: OrderFormProps) {
+export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
   const [number, setNumber] = useState("");
 
   const handleSubmit = () => {
-    _onSubmit(number);
+    _onSubmit({
+      orderType: orderType,
+      orderNumber: number,
+    });
     setNumber("");
   };
 
@@ -27,6 +33,12 @@ export function OrderForm({
     e.preventDefault();
     handleSubmit();
   };
+
+  useEffect(() => {
+    if (orderType) {
+      console.log(orderType);
+    }
+  }, []);
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-4">

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import RoleCard from "../components/ui-system/components/section-card";
-import { FaBox } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket";
 import { fetchOrders } from "../service/order-service";
+import { LuMonitor, LuShoppingBag } from "react-icons/lu";
+import { RiRestaurant2Fill } from "react-icons/ri";
 interface Order {
   id: number;
   orderNumber: string;
@@ -18,25 +19,25 @@ const Home = () => {
 
   const cardData = [
     {
-      icon: <FaBox />,
-      title: "Front-desk(To-Go)",
-      orderCount: orders?.length,
-      colorClass: "text-orange-500 bg-orange-500",
-      onClick: () => changePage("/"),
-    },
-    {
-      icon: <FaBox />,
-      title: "Server (Dine-in)",
-      orderCount: orders?.length,
-      colorClass: "text-red-500 bg-red-500",
-      onClick: () => changePage("/"),
-    },
-    {
-      icon: <FaBox />,
+      icon: <LuMonitor />,
       title: "Kitchen monitor",
       orderCount: orders?.length,
-      colorClass: "text-blue-500 bg-blue-500",
+      colorClass: "text-blue-500 bg-black",
       onClick: () => changePage("/kitchen-monitor"),
+    },
+    {
+      icon: <LuShoppingBag color="#34C759" />,
+      title: "Front-desk(To-Go)",
+      orderCount: orders?.filter((i) => i.type == "TOGO").length,
+      colorClass: "text-[#34C759] bg-[#34C759]",
+      onClick: () => changePage("/front-desk"),
+    },
+    {
+      icon: <RiRestaurant2Fill color="#FF6B6B" />,
+      title: "Server (Dine-in)",
+      orderCount: orders?.filter((i) => i.type == "DINEIN").length,
+      colorClass: "text-[#FF6B6B] bg-[#FF6B6B]",
+      onClick: () => changePage("/server"),
     },
   ];
 
