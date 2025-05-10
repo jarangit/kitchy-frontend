@@ -6,7 +6,7 @@ import { useState } from "react";
 import { NumericKeypad } from "./numbericKeypad";
 
 interface OrderFormProps {
-  type: any;
+  type: unknown;
   label: string;
   buttonColor: string;
   _onSubmit: (number: string) => void;

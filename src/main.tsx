@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import CreateOrder from "./pages/create-order.tsx";
-import Layout from "./ui-system/components/layout/layout.tsx";
+import Layout from "./components/ui-system/components/layout/layout.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

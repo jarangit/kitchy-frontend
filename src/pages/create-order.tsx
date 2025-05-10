@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { createOrder, fetchOrders } from "../service/order-service";
-import { OrderForm } from "../ui-system/components/order-form";
+import { OrderForm } from "../components/ui-system/components/order-form";
 
 function CreateOrder() {
   const [orderNumber, setOrderNumber] = useState("");

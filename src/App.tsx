@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { socket } from "./socket";
 import { deleteOrder, fetchOrders } from "./service/order-service";
-import OrderCard from "./ui-system/components/order-card";
+import OrderCard from "./components/ui-system/components/order-card";
 
 interface Order {
   id: number;
