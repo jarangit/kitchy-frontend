@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { FaClock, FaTrash } from "react-icons/fa";
 
 interface OrderCardProps {
@@ -14,14 +15,14 @@ interface Props {
 const OrderCard = ({ order, onDelete }: Props) => {
   const { id, orderNumber, type, createdAt } = order;
   const isToGo = type === "TOGO";
-
+  const createdAtFormated = format(createdAt, "HH:mm");
   return (
     <div
-      className={`rounded-2xl p-4 mb-3 shadow-sm relative ${
+      className={`rounded-2xl p-4 mb-3 relative ${
         isToGo ? "bg-red-100" : "bg-green-100"
       }`}
     >
-      <div className="text-xl font-bold">#{orderNumber}</div>
+      <div className="text-3xl font-bold">#{orderNumber}</div>
 
       <div
         className={`mt-2 inline-block px-4 py-1 text-white text-sm font-medium rounded-full ${
@@ -33,7 +34,7 @@ const OrderCard = ({ order, onDelete }: Props) => {
 
       <div className="flex items-center text-sm mt-2 text-gray-700">
         <FaClock className="mr-1" />
-        <span>: {createdAt}</span>
+        <span>: {createdAtFormated}</span>
         {/* <span className="ml-2 text-red-500">({timeAgo})</span> */}
       </div>
 

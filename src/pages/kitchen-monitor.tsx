@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import OrderCard from "../components/ui-system/components/order-card";
 import { fetchOrders, deleteOrder } from "../service/order-service";
 import { socket } from "../socket";
+import HeaderSection from "../components/ui-system/components/header-section";
 
 interface Order {
   id: number;
@@ -62,14 +63,19 @@ function KitchenMonitor() {
   };
 
   return (
-    <div>
-      <h1>Kitchen monitor</h1>
-      <div className="flex gap-4">
-        {orders.map((order, key) => (
-          <div key={key}>
-            <OrderCard order={order} onDelete={() => handleDelete(order.id)} />
-          </div>
-        ))}
+    <div id="content-page" className="flex-1 flex flex-col gap-6">
+      <HeaderSection title="Kitchen monitor" />
+      <div className="flex flex-1 bg-gray-200 rounded-lg flex-col">
+        <div className="grid grid-cols-4  lg:grid-cols-6 gap-3 p-3 ">
+          {orders.map((order, key) => (
+            <div key={key}>
+              <OrderCard
+                order={order}
+                onDelete={() => handleDelete(order.id)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

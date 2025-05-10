@@ -21,7 +21,7 @@ const Layout = ({ children }: Props) => {
             </Link>
           </div>
         </header>
-        <main className="flex-grow p-4">{children}</main>
+        <main className="flex-1 flex flex-col p-4">{children}</main>
         <footer className="bg-gray-300 p-4">
           <p>Footer</p>
         </footer>

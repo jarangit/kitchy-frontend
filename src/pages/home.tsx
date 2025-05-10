@@ -42,7 +42,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="my-container">
+    <div className="flex-1 flex flex-col justify-center items-center w-full gap-6">
+        <h1 className="text-2xl text-gray-600">Select your role to continue</h1>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {cardData.map((item, key) => (
           <div key={key} className="w-full flex justify-center">
