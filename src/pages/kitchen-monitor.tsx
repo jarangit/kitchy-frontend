@@ -66,7 +66,7 @@ function KitchenMonitor() {
     <div id="content-page" className="flex-1 flex flex-col gap-6">
       <HeaderSection title="Kitchen monitor" />
       <div className="flex flex-1 bg-gray-200 rounded-lg flex-col">
-        <div className="grid grid-cols-4  lg:grid-cols-6 gap-3 p-3 ">
+        <div className="grid grid-cols-2 md:grid-cols-4  lg:grid-cols-6 xl:grid-cols-8 gap-3 p-3 ">
           {orders.map((order, key) => (
             <div key={key}>
               <OrderCard
