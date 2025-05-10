@@ -26,6 +26,15 @@ createRoot(document.getElementById("root")!).render(
             </Layout>
           }
         />
+        <Route
+          path="*"
+          element={
+            <Layout>
+              <App />
+            </Layout>
+          }
+        />{" "}
+        {/* fallback */}
       </Routes>
     </BrowserRouter>
   </StrictMode>
