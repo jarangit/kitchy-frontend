@@ -26,17 +26,17 @@ const Home = () => {
       onClick: () => changePage("/kitchen-monitor"),
     },
     {
-      icon: <LuShoppingBag color="#34C759" />,
+      icon: <LuShoppingBag color="#FF6B6B" />,
       title: "Front-desk(To-Go)",
       orderCount: orders?.filter((i) => i.type == "TOGO").length,
-      colorClass: "text-[#34C759] bg-[#34C759]",
+      colorClass: "text-[#FF6B6B] bg-[#FF6B6B]",
       onClick: () => changePage("/front-desk"),
     },
     {
-      icon: <RiRestaurant2Fill color="#FF6B6B" />,
+      icon: <RiRestaurant2Fill color="#34C759" />,
       title: "Server (Dine-in)",
       orderCount: orders?.filter((i) => i.type == "DINEIN").length,
-      colorClass: "text-[#FF6B6B] bg-[#FF6B6B]",
+      colorClass: "text-[#34C759] bg-[#34C759]",
       onClick: () => changePage("/server"),
     },
   ];
@@ -84,9 +84,9 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col justify-center items-center w-full gap-6">
-      <h1 className="text-2xl text-gray-600">Select your role to continue</h1>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div className="flex-1 flex flex-col justify-center items-center w-full gap-6 py-6">
+      <h1 className="text-2xl">Select your role to continue</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
         {cardData.map((item, key) => (
           <div key={key} className="w-full flex justify-center">
             <RoleCard

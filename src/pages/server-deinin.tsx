@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { createOrder, fetchOrders } from "../service/order-service";
 import { OrderForm } from "../components/ui-system/components/order-form";
 import HeaderSection from "../components/ui-system/components/header-section";
+import { ListOrders } from "../components/ui-system/components/list-orders";
+import { socket } from "../socket";
 
 function ServerDineInPage() {
   const [orderType] = useState<"TOGO" | "DINEIN">("DINEIN");
@@ -15,28 +17,45 @@ function ServerDineInPage() {
     setOrders([newOrder, ...orders]);
   };
 
+  const onGetOrders = async () => {
+    try {
+      const res: any = await fetchOrders();
+      if (res) {
+        const filterData = res.filter((i: any) => i.type == orderType);
+        setOrders(filterData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    fetchOrders().then(setOrders);
+    socket.on("connect", () => {
+      console.log("✅ Connected to WebSocket");
+    });
+    socket.on("order-deleted", ({ id }) => {
+      setOrders((prev) => prev.filter((order) => order.id !== id));
+    });
+  }, []);
+
+  useEffect(() => {
+    onGetOrders();
   }, []);
 
   return (
     <div>
       <HeaderSection title="Server (Dine-in)" />
-      <h3>Orders</h3>
-      <ul>
-        {orders.map((order) => (
-          <li key={order.id}>
-            #{order.orderNumber} - {order.type} - {order.status}
-          </li>
-        ))}
-      </ul>
-
-      <OrderForm
-        orderType={orderType}
-        label="Order Number"
-        buttonColor="bg-blue-500"
-        _onSubmit={(e: any) => handleSubmit(e)}
-      />
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="w-full">
+          <ListOrders orders={orders} />
+        </div>
+        <OrderForm
+          orderType={orderType}
+          label="Order Number"
+          buttonColor="bg-blue-500"
+          _onSubmit={(e: any) => handleSubmit(e)}
+        />
+      </div>
     </div>
   );
 }

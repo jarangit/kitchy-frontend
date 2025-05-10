@@ -41,9 +41,9 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
   }, []);
 
   return (
-    <form onSubmit={handleFormSubmit} className="space-y-4">
-      <div className="flex flex-col space-y-3">
-        <label htmlFor="orderNumber" className="text-2xl font-medium">
+    <form onSubmit={handleFormSubmit} className=" bg-white p-6 rounded-lg">
+      <div className="flex flex-col space-y-2">
+        <label htmlFor="orderNumber" className="text-xl font-medium">
           {label}
         </label>
         <div className="flex flex-col space-y-4">

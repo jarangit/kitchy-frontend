@@ -16,12 +16,12 @@ export default function RoleCard({
   onClick,
 }: RoleCardProps) {
   return (
-    <div className="rounded-xl  bg-white p-6 flex flex-col gap-10 items-center text-center w-full max-w-xs  min-w-[400px]">
+    <div className="rounded-xl  bg-white p-6 flex flex-col gap-10 items-center text-center w-full max-w-xs  xl:min-w-[350px]">
       <div className="flex gap-2 w-full items-center justify-start">
         <div className={`text-3xl `}>{icon}</div>
         <h2 className="text-2xl font-semibold">{title}</h2>
       </div>
-      <p className="text-md mt-1 mb-4">
+      <p className="text-lg font-semibold mt-1 mb-4">
         {orderCount} Order{orderCount !== 1 ? "s" : ""}
       </p>
       <button

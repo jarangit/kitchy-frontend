@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import OrderCard from "../components/ui-system/components/order-card";
-import { fetchOrders, deleteOrder } from "../service/order-service";
+import { fetchOrders } from "../service/order-service";
 import { socket } from "../socket";
 import HeaderSection from "../components/ui-system/components/header-section";
+import { ListOrders } from "../components/ui-system/components/list-orders";
 
 interface Order {
   id: number;
@@ -57,27 +57,10 @@ function KitchenMonitor() {
     fetchOrders().then(setOrders);
   }, []);
 
-  const handleDelete = async (id: number) => {
-    await deleteOrder(id);
-    setOrders((prev) => prev.filter((o) => o.id !== id));
-  };
-
   return (
     <div id="content-page" className="flex-1 flex flex-col gap-6">
       <HeaderSection title="Kitchen monitor" />
-      <div className="flex flex-1 bg-gray-200 rounded-lg flex-col">
-        <div className="grid grid-cols-2 md:grid-cols-4  lg:grid-cols-6 xl:grid-cols-8 gap-3 p-3 ">
-          {orders?.length &&
-            orders.map((order, key) => (
-              <div key={key}>
-                <OrderCard
-                  order={order}
-                  onDelete={() => handleDelete(order.id)}
-                />
-              </div>
-            ))}
-        </div>
-      </div>
+      <ListOrders orders={orders} />
     </div>
   );
 }

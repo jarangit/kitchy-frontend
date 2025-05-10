@@ -43,7 +43,7 @@ export function NumericKeypad({ value, onChange, onSubmit, maxLength = 10 }: Num
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`w-full text-3xl p-6 h-auto border-2 rounded-md bg-white ${
+          className={`w-full text-lg px-4 py-2 h-auto border rounded-md bg-white ${
             !showKeyboard ? "pointer-events-none" : ""
           }`}
           readOnly={!showKeyboard}
@@ -62,19 +62,19 @@ export function NumericKeypad({ value, onChange, onSubmit, maxLength = 10 }: Num
       </div>
 
       {!showKeyboard && (
-        <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="grid grid-cols-3 gap-2 mb-4">
           {keys.map((row, rowIndex) =>
             row.map((key, colIndex) => (
               <Button
                 key={`${rowIndex}-${colIndex}`}
                 type="button"
                 variant={key === "clear" || key === "backspace" ? "outline" : "default"}
-                className={`p-6 text-3xl font-bold ${
+                className={`p-6 text-xl font-bold ${
                   key === "clear"
-                    ? "bg-yellow-100 hover:bg-yellow-200 text-yellow-800 border-2 border-yellow-300"
+                    ? "bg-yellow-100 hover:bg-yellow-200 text-yellow-800 border border-yellow-300"
                     : key === "backspace"
-                      ? "bg-red-100 hover:bg-red-200 text-red-800 border-2 border-red-300"
-                      : "bg-gray-100 hover:bg-gray-200 text-gray-800 border-2 border-gray-300"
+                      ? "bg-red-100 hover:bg-red-200 text-red-800 border border-red-300"
+                      : "bg-white hover:bg-gray-200 text-black border border-black"
                 }`}
                 onClick={() => handleKeyPress(key)}
               >
@@ -88,7 +88,7 @@ export function NumericKeypad({ value, onChange, onSubmit, maxLength = 10 }: Num
       <Button
         type="button"
         onClick={onSubmit}
-        className="w-full bg-green-600 hover:bg-green-700 text-xl font-bold py-6 px-8 h-auto"
+        className="w-full bg-black text-white hover:bg-gray-700 text-xl font-bold py-4 px-8 h-auto"
       >
         Add Order
       </Button>
