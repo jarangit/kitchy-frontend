@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { CgHome } from "react-icons/cg";
-import { Link } from "react-router-dom";
 
 type Props = {
   children?: React.ReactNode;

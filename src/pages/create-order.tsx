@@ -6,15 +6,19 @@ import { OrderForm } from "../components/ui-system/components/order-form";
 
 function CreateOrder() {
   const [orderNumber, setOrderNumber] = useState("");
-  const [type, setType] = useState<"TOGO" | "DINEIN">("TOGO");
+  const [type] = useState<"TOGO" | "DINEIN">("TOGO");
   const [orders, setOrders] = useState<any[]>([]);
 
   const handleSubmit = async (number: string) => {
     if (!number) return alert("กรุณากรอกหมายเลขออเดอร์");
 
-    const newOrder = await createOrder({ orderNumber: number, orderType:type });
+    const newOrder = await createOrder({
+      orderNumber: number,
+      orderType: type,
+    });
     setOrders([newOrder, ...orders]);
     setOrderNumber("");
+    console.log(orderNumber);
   };
 
   useEffect(() => {
