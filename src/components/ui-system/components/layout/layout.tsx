@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import GlobalModal from "../common-modal";
-import LoadingOverlay from "../loading-screen";
 
 type Props = {
   children?: React.ReactNode;

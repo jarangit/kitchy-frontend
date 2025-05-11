@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const ListOrders = ({ orders }: Props) => {
-  const { startLoading, stopLoading, isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
+  const { isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
   const dispatch = useAppDispatch();
   const handleDelete = async (id: number) => {
     dispatch(
