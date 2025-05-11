@@ -11,7 +11,11 @@ import ServerDineInPage from "./pages/server-deinin.tsx";
 import { Toaster } from "sonner";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
+import Clarity from "@microsoft/clarity";
 
+const projectId = "rhunceryu0";
+
+Clarity.init(projectId);
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
