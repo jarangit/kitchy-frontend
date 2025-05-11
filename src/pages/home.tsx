@@ -7,6 +7,7 @@ import { LuMonitor, LuShoppingBag } from "react-icons/lu";
 import { RiRestaurant2Fill } from "react-icons/ri";
 import { toast } from "sonner";
 import { useLoading } from "../hooks/useLoading";
+import { useAppSelector } from "../hooks/hooks";
 interface Order {
   id: number;
   orderNumber: string;
@@ -17,6 +18,7 @@ interface Order {
 const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที่ public/notify.mp3
 
 const Home = () => {
+  const isSoundOn = useAppSelector((state) => state.sound.isSoundOn);
   const { startLoading, stopLoading } = useLoading(); // ✅ เรียก Hook มาใช้
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -51,16 +53,27 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const handleOrderDeleted = ({ id }: { id: number }) => {
+      const found = orders.find((i) => i.id === id);
+      toast.warning("Order deleted", {
+        description: `Order #${found?.orderNumber} has been removed from the list.`,
+      });
+      setOrders((prev) => prev.filter((order) => order.id !== id));
+    };
+
     socket.on("connect", () => {
       console.log("✅ Connected to WebSocket");
     });
+
     socket.on("new-order", (order: Order) => {
       setOrders((prev) => [order, ...prev]);
       toast.info(`New orders ${order?.type} #${order?.orderNumber}`);
-      notifySound.currentTime = 0;
-      notifySound.play().catch((err) => {
-        console.warn("Unable to play sound:", err);
-      });
+      if (isSoundOn) {
+        notifySound.currentTime = 0;
+        notifySound.play().catch((err) => {
+          console.warn("Unable to play sound:", err);
+        });
+      }
     });
 
     socket.on("order-updated", (updatedOrder: Order) => {
@@ -71,8 +84,11 @@ const Home = () => {
       );
     });
 
+    socket.on("order-deleted", handleOrderDeleted);
+
     return () => {
       socket.off("new-order");
+      socket.off("order-deleted", handleOrderDeleted);
     };
   }, [orders]);
 

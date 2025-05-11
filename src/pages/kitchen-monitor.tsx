@@ -5,6 +5,7 @@ import HeaderSection from "../components/ui-system/components/header-section";
 import { ListOrders } from "../components/ui-system/components/list-orders";
 import { toast } from "sonner";
 import { useLoading } from "../hooks/useLoading";
+import { useAppSelector } from "../hooks/hooks";
 
 interface Order {
   id: number;
@@ -16,6 +17,7 @@ interface Order {
 const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที่ public/notify.mp3
 
 function KitchenMonitor() {
+  const isSoundOn = useAppSelector((state) => state.sound.isSoundOn);
   const { startLoading, stopLoading } = useLoading(); // ✅ เรียก Hook มาใช้
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -35,13 +37,13 @@ function KitchenMonitor() {
 
     socket.on("new-order", (order: Order) => {
       setOrders((prev) => [order, ...prev]);
-      // 🔔 System Notification
       toast.info(`New orders ${order?.type} #${order?.orderNumber}`);
-      // ✅ เล่นเสียง
-      notifySound.currentTime = 0;
-      notifySound.play().catch((err) => {
-        console.warn("Unable to play sound:", err);
-      });
+      if (isSoundOn) {
+        notifySound.currentTime = 0;
+        notifySound.play().catch((err) => {
+          console.warn("Unable to play sound:", err);
+        });
+      }
     });
 
     socket.on("order-updated", (updatedOrder: Order) => {
