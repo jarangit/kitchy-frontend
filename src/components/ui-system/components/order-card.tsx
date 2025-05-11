@@ -18,7 +18,7 @@ const OrderCard = ({ order, onDelete }: Props) => {
   const createdAtFormated = format(createdAt, "HH:mm");
   return (
     <div
-      className={`lg:rounded-lg rounded-sm px-2 py-1 xl:p-2  relative ${
+      className={` rounded-xl p-4  relative ${
         isToGo ? "bg-red-100" : "bg-green-100"
       }`}
     >
@@ -29,23 +29,23 @@ const OrderCard = ({ order, onDelete }: Props) => {
           <span className="font-medium">{createdAtFormated}</span>
         </div>
       </div>
-      <div className="hidden md:flex justify-between flex-wrap">
+      <div className="hidden md:flex justify-between flex-wrap mt-4">
         <div
-          className={`mt-2 inline-block px-2 py-1 text-white text-xs font-medium rounded-full ${
+          className={` inline-block px-2 py-1 text-white text-xs font-medium rounded-full ${
             isToGo ? "bg-[#FF6B6B]" : "bg-[#34C759]"
           }`}
         >
           {isToGo ? "ToGo" : "Dine-in"}
         </div>
 
-        <div className="flex items-center text-sm mt-2 text-gray-700">
+        <div className="flex items-center text-sm  text-gray-700">
           <FaClock className="mr-1" />
           <span className="font-medium">{createdAtFormated}</span>
         </div>
       </div>
 
       <FaTrash
-        className="absolute top-2 right-2 xl:right-4 xl:top-4 text-gray-600 cursor-pointer hover:text-red-600"
+        className="absolute top-4 right-4 xl:right-4 xl:top-4 text-gray-600 cursor-pointer hover:text-red-600"
         onClick={() => onDelete(id)}
       />
     </div>

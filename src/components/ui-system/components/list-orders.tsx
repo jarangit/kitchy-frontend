@@ -2,14 +2,33 @@
 import OrderCard from "./order-card";
 import { deleteOrder } from "../../../service/order-service";
 import { GoDotFill } from "react-icons/go";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { openModal } from "../../../store/slices/modal-slice";
+import { useLoading } from "../../../hooks/useLoading";
 
 type Props = {
   orders: any[];
 };
 
 export const ListOrders = ({ orders }: Props) => {
+  const { startLoading, stopLoading, isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
+  const dispatch = useAppDispatch();
   const handleDelete = async (id: number) => {
-    await deleteOrder(id);
+    dispatch(
+      openModal({
+        title: "Confirm Delete",
+        content: "Are you sure you want to delete this?",
+        onConfirm: async () => await onDeleteOrder(id),
+      })
+    );
+  };
+
+  const onDeleteOrder = async (id: number) => {
+    try {
+      await deleteOrder(id);
+    } catch (error) {
+      console.log(error);
+    } 
   };
   return (
     <div>
@@ -29,21 +48,27 @@ export const ListOrders = ({ orders }: Props) => {
         </div>
       </div>
       <div className="flex flex-1 bg-[#E4E4E4] rounded-lg flex-col p-3">
-        {orders?.length ? (
-          <div className="grid grid-cols-1 md:grid-cols-4  xl:grid-cols-6 gap-3">
-            {orders.map((order, key) => (
-              <div key={key}>
-                <OrderCard
-                  order={order}
-                  onDelete={() => handleDelete(order.id)}
-                />
-              </div>
-            ))}
-          </div>
+        {isLoading ? (
+          <div className="text-center text-gray-500">Loading...</div>
         ) : (
-          <div className="text-center text-gray-500">
-            There are currently no orders
-          </div>
+          <>
+            {orders?.length && !isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-4  2xl:grid-cols-6 gap-3">
+                {orders.map((order, key) => (
+                  <div key={key}>
+                    <OrderCard
+                      order={order}
+                      onDelete={() => handleDelete(order.id)}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-gray-500">
+                There are currently no orders
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

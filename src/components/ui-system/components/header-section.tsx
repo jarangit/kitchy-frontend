@@ -11,7 +11,7 @@ export default function HeaderSection({ title }: Props) {
     navigate(path);
   };
   return (
-    <div className="flex justify-between items-center py-6">
+    <div className="flex justify-between items-center py-6 border-b border-gray-300">
       <h1 className="text-lg md:text-3xl font-bold">{title}</h1>
       <div className="space-x-2">
         <button

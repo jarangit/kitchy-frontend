@@ -8,6 +8,7 @@ import { socket } from "../socket";
 import { toast } from "sonner";
 
 function ServerDineInPage() {
+
   const [orderType] = useState<"TOGO" | "DINEIN">("DINEIN");
   const [orders, setOrders] = useState<any[]>([]);
 
@@ -28,20 +29,26 @@ function ServerDineInPage() {
       }
     } catch (error) {
       console.log(error);
-    }
+    } 
   };
 
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("✅ Connected to WebSocket");
-    });
-    socket.on("order-deleted", ({ id }) => {
-      const found = orders.find((i) => i.id == id);
-      setOrders((prev) => prev.filter((order) => order.id !== id));
+    const handleOrderDeleted = ({ id }: { id: number }) => {
+      const found = orders.find((i) => i.id === id);
       toast.warning("Order deleted", {
         description: `Order #${found?.orderNumber} has been removed from the list.`,
       });
+      setOrders((prev) => prev.filter((order) => order.id !== id));
+    };
+
+    socket.on("connect", () => {
+      console.log("✅ Connected to WebSocket");
     });
+    socket.on("order-deleted", handleOrderDeleted);
+
+    return () => {
+      socket.off("order-deleted", handleOrderDeleted);
+    };
   }, [orders]);
 
   useEffect(() => {
@@ -49,7 +56,7 @@ function ServerDineInPage() {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col gap-6">
       <HeaderSection title="Server (Dine-in)" />
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full">

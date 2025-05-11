@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
+import GlobalModal from "../common-modal";
+import LoadingOverlay from "../loading-screen";
 
 type Props = {
   children?: React.ReactNode;
@@ -7,9 +9,10 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div>
-      <div className="flex flex-col min-h-screen">
-        {/* <header className="bg-[#F1F1F1] p-6 border-b border-gray-300">
+    <>
+      <div>
+        <div className="flex flex-col min-h-screen">
+          {/* <header className="bg-[#F1F1F1] p-6 border-b border-gray-300">
           <div className="flex justify-between w-full">
             <Link to={"/"}>
               <div className="flex items-center gap-2">
@@ -20,11 +23,17 @@ const Layout = ({ children }: Props) => {
        
           </div>
         </header> */}
-        <main className="flex-1 flex flex-col p-4 my-container">{children}</main>
-        <footer className="bg-[#F1F1F1] p-4">
-        </footer>
+          <main className="flex-1 flex flex-col p-4 my-container">
+            {children}
+          </main>
+          <footer className="bg-[#F1F1F1] p-4"></footer>
+        </div>
       </div>
-    </div>
+
+      {/* global ui */}
+      <GlobalModal />
+      {/* <LoadingOverlay /> */}
+    </>
   );
 };
 

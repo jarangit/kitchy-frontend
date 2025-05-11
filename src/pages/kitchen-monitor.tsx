@@ -4,6 +4,7 @@ import { socket } from "../socket";
 import HeaderSection from "../components/ui-system/components/header-section";
 import { ListOrders } from "../components/ui-system/components/list-orders";
 import { toast } from "sonner";
+import { useLoading } from "../hooks/useLoading";
 
 interface Order {
   id: number;
@@ -15,24 +16,23 @@ interface Order {
 const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที่ public/notify.mp3
 
 function KitchenMonitor() {
+  const { startLoading, stopLoading } = useLoading(); // ✅ เรียก Hook มาใช้
   const [orders, setOrders] = useState<Order[]>([]);
-  // ✅ ขอสิทธิ์แจ้งเตือนระบบ (browser notification)
-  // useEffect(() => {
-  //   if (Notification.permission !== "granted") {
-  //     Notification.requestPermission();
-  //   }
-  // }, []);
+
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("✅ Connected to WebSocket");
-    });
-    socket.on("order-deleted", ({ id }) => {
-      const found = orders.find((i) => i.id == id);
-      setOrders((prev) => prev.filter((order) => order.id !== id));
+    const handleOrderDeleted = ({ id }: { id: number }) => {
+      const found = orders.find((i) => i.id === id);
       toast.warning("Order deleted", {
         description: `Order #${found?.orderNumber} has been removed from the list.`,
       });
+      setOrders((prev) => prev.filter((order) => order.id !== id));
+    };
+
+    socket.on("connect", () => {
+      console.log("✅ Connected to WebSocket");
     });
+    socket.on("order-deleted", handleOrderDeleted);
+
     socket.on("new-order", (order: Order) => {
       setOrders((prev) => [order, ...prev]);
       // 🔔 System Notification
@@ -54,12 +54,24 @@ function KitchenMonitor() {
 
     return () => {
       socket.off("new-order");
+      socket.off("order-deleted", handleOrderDeleted);
     };
   }, [orders]);
 
-  // Removed duplicate state declaration
   useEffect(() => {
-    fetchOrders().then(setOrders);
+    const loadOrders = async () => {
+      startLoading();
+      try {
+        const data = await fetchOrders();
+        setOrders(data);
+      } catch (err) {
+        console.error("Failed to load orders", err);
+      } finally {
+        stopLoading();
+      }
+    };
+
+    loadOrders();
   }, []);
 
   return (

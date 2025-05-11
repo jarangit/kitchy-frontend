@@ -6,6 +6,7 @@ import { fetchOrders } from "../service/order-service";
 import { LuMonitor, LuShoppingBag } from "react-icons/lu";
 import { RiRestaurant2Fill } from "react-icons/ri";
 import { toast } from "sonner";
+import { useLoading } from "../hooks/useLoading";
 interface Order {
   id: number;
   orderNumber: string;
@@ -16,6 +17,7 @@ interface Order {
 const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที่ public/notify.mp3
 
 const Home = () => {
+  const { startLoading, stopLoading } = useLoading(); // ✅ เรียก Hook มาใช้
   const [orders, setOrders] = useState<Order[]>([]);
 
   const cardData = [
@@ -52,21 +54,9 @@ const Home = () => {
     socket.on("connect", () => {
       console.log("✅ Connected to WebSocket");
     });
-    socket.on("order-deleted", ({ id }) => {
-     const found = orders.find((i) => i.id == id);
-      setOrders((prev) => prev.filter((order) => order.id !== id));
-      toast.warning("Order deleted", {
-        description: `Order #${found?.orderNumber} has been removed from the list.`,
-      });
-    });
     socket.on("new-order", (order: Order) => {
-
       setOrders((prev) => [order, ...prev]);
-      // 🔔 System Notification
-      console.log("alert");
       toast.info(`New orders ${order?.type} #${order?.orderNumber}`);
-      
-      // ✅ เล่นเสียง
       notifySound.currentTime = 0;
       notifySound.play().catch((err) => {
         console.warn("Unable to play sound:", err);
@@ -88,7 +78,19 @@ const Home = () => {
 
   // Removed duplicate state declaration
   useEffect(() => {
-    fetchOrders().then(setOrders);
+    const loadOrders = async () => {
+      try {
+        startLoading();
+        const data = await fetchOrders();
+        setOrders(data);
+      } catch (err) {
+        console.error("Failed to load orders", err);
+      } finally {
+        stopLoading();
+      }
+    };
+
+    loadOrders();
   }, []);
 
   return (
