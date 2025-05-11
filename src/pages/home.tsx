@@ -5,6 +5,7 @@ import { socket } from "../socket";
 import { fetchOrders } from "../service/order-service";
 import { LuMonitor, LuShoppingBag } from "react-icons/lu";
 import { RiRestaurant2Fill } from "react-icons/ri";
+import { toast } from "sonner";
 interface Order {
   id: number;
   orderNumber: string;
@@ -52,12 +53,19 @@ const Home = () => {
       console.log("✅ Connected to WebSocket");
     });
     socket.on("order-deleted", ({ id }) => {
+     const found = orders.find((i) => i.id == id);
       setOrders((prev) => prev.filter((order) => order.id !== id));
+      toast.warning("Order deleted", {
+        description: `Order #${found?.orderNumber} has been removed from the list.`,
+      });
     });
     socket.on("new-order", (order: Order) => {
+
       setOrders((prev) => [order, ...prev]);
       // 🔔 System Notification
       console.log("alert");
+      toast.info(`New orders ${order?.type} #${order?.orderNumber}`);
+      
       // ✅ เล่นเสียง
       notifySound.currentTime = 0;
       notifySound.play().catch((err) => {
@@ -76,7 +84,7 @@ const Home = () => {
     return () => {
       socket.off("new-order");
     };
-  }, []);
+  }, [orders]);
 
   // Removed duplicate state declaration
   useEffect(() => {

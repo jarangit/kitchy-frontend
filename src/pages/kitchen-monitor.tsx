@@ -3,6 +3,7 @@ import { fetchOrders } from "../service/order-service";
 import { socket } from "../socket";
 import HeaderSection from "../components/ui-system/components/header-section";
 import { ListOrders } from "../components/ui-system/components/list-orders";
+import { toast } from "sonner";
 
 interface Order {
   id: number;
@@ -26,12 +27,16 @@ function KitchenMonitor() {
       console.log("✅ Connected to WebSocket");
     });
     socket.on("order-deleted", ({ id }) => {
+      const found = orders.find((i) => i.id == id);
       setOrders((prev) => prev.filter((order) => order.id !== id));
+      toast.warning("Order deleted", {
+        description: `Order #${found?.orderNumber} has been removed from the list.`,
+      });
     });
     socket.on("new-order", (order: Order) => {
       setOrders((prev) => [order, ...prev]);
       // 🔔 System Notification
-      console.log("alert");
+      toast.info(`New orders ${order?.type} #${order?.orderNumber}`);
       // ✅ เล่นเสียง
       notifySound.currentTime = 0;
       notifySound.play().catch((err) => {
@@ -50,7 +55,7 @@ function KitchenMonitor() {
     return () => {
       socket.off("new-order");
     };
-  }, []);
+  }, [orders]);
 
   // Removed duplicate state declaration
   useEffect(() => {

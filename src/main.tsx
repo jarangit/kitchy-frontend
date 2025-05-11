@@ -8,9 +8,11 @@ import Layout from "./components/ui-system/components/layout/layout.tsx";
 import KitchenMonitor from "./pages/kitchen-monitor.tsx";
 import TogoPage from "./pages/togo.tsx";
 import ServerDineInPage from "./pages/server-deinin.tsx";
+import { Toaster } from "sonner";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <Toaster position="top-right" richColors /> 
     <BrowserRouter>
       <Routes>
         <Route

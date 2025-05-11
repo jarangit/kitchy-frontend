@@ -30,7 +30,7 @@ export const ListOrders = ({ orders }: Props) => {
       </div>
       <div className="flex flex-1 bg-[#E4E4E4] rounded-lg flex-col p-3">
         {orders?.length ? (
-          <div className="grid grid-cols-1 md:grid-cols-4  lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-4  xl:grid-cols-6 gap-3">
             {orders.map((order, key) => (
               <div key={key}>
                 <OrderCard

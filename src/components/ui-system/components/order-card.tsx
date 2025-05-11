@@ -23,7 +23,7 @@ const OrderCard = ({ order, onDelete }: Props) => {
       }`}
     >
       <div className="flex gap-2 items-center">
-        <div className="md:text-2xl font-bold">#{orderNumber}</div>
+        <div className="md:text-4xl font-bold">#{orderNumber}</div>
         <div className="flex md:hidden items-center text-sm text-gray-700">
           <FaClock className="mr-1" />
           <span className="font-medium">{createdAtFormated}</span>

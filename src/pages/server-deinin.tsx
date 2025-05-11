@@ -5,6 +5,7 @@ import { OrderForm } from "../components/ui-system/components/order-form";
 import HeaderSection from "../components/ui-system/components/header-section";
 import { ListOrders } from "../components/ui-system/components/list-orders";
 import { socket } from "../socket";
+import { toast } from "sonner";
 
 function ServerDineInPage() {
   const [orderType] = useState<"TOGO" | "DINEIN">("DINEIN");
@@ -15,6 +16,7 @@ function ServerDineInPage() {
 
     const newOrder = await createOrder({ orderNumber: orderNumber, orderType });
     setOrders([newOrder, ...orders]);
+    toast.success("Order sent to kitchen!");
   };
 
   const onGetOrders = async () => {
@@ -34,9 +36,13 @@ function ServerDineInPage() {
       console.log("✅ Connected to WebSocket");
     });
     socket.on("order-deleted", ({ id }) => {
+      const found = orders.find((i) => i.id == id);
       setOrders((prev) => prev.filter((order) => order.id !== id));
+      toast.warning("Order deleted", {
+        description: `Order #${found?.orderNumber} has been removed from the list.`,
+      });
     });
-  }, []);
+  }, [orders]);
 
   useEffect(() => {
     onGetOrders();
