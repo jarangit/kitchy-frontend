@@ -14,7 +14,6 @@ import { store } from "./store/store.ts";
 import Clarity from "@microsoft/clarity";
 
 const projectId = "rhunceryu0";
-
 Clarity.init(projectId);
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

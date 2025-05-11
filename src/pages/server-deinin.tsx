@@ -24,8 +24,7 @@ function ServerDineInPage() {
     try {
       const res: any = await fetchOrders();
       if (res) {
-        const filterData = res.filter((i: any) => i.type == orderType);
-        setOrders(filterData);
+        setOrders(res);
       }
     } catch (error) {
       console.log(error);

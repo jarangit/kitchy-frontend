@@ -5,6 +5,7 @@ import { GoDotFill } from "react-icons/go";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { openModal } from "../../../store/slices/modal-slice";
 import { useLoading } from "../../../hooks/useLoading";
+import { useEffect, useState } from "react";
 
 type Props = {
   orders: any[];
@@ -12,6 +13,11 @@ type Props = {
 
 export const ListOrders = ({ orders }: Props) => {
   const { isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
+  const [orderCount, setOrderCount] = useState({
+    total: 0,
+    togo: 0,
+    dineIn: 0,
+  });
   const dispatch = useAppDispatch();
   const handleDelete = async (id: number) => {
     dispatch(
@@ -28,8 +34,22 @@ export const ListOrders = ({ orders }: Props) => {
       await deleteOrder(id);
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
+
+  const onGetCountByType = () => {
+    setOrderCount({
+      total: orders.length,
+      togo: orders.filter((i) => i.type == "TOGO").length,
+      dineIn: orders.filter((i) => i.type == "DINEIN").length,
+    });
+  };
+
+  useEffect(() => {
+    onGetCountByType();
+    console.log(orderCount);
+  }, [orders]);
+
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
@@ -39,11 +59,11 @@ export const ListOrders = ({ orders }: Props) => {
         <div className="flex gap-2 font-semibold">
           <div className="flex  items-center">
             <GoDotFill size={25} color="#34C759" />
-            <div>Dine in</div>
+            <div>Dine in ({orderCount.dineIn})</div>
           </div>
           <div className="flex  items-center">
             <GoDotFill size={25} color="#FF6B6B" />
-            <div>To-go</div>
+            <div>To-go ({orderCount.togo})</div>
           </div>
         </div>
       </div>
