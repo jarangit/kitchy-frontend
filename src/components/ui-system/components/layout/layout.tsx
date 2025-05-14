@@ -31,6 +31,8 @@ const Layout = ({ children }: Props) => {
 
       {/* global ui */}
       <GlobalModal />
+      {/* <Toaster  /> */}
+
       {/* <LoadingOverlay /> */}
     </>
   );

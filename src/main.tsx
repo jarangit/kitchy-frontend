@@ -8,7 +8,6 @@ import Layout from "./components/ui-system/components/layout/layout.tsx";
 import KitchenMonitor from "./pages/kitchen-monitor.tsx";
 import TogoPage from "./pages/togo.tsx";
 import ServerDineInPage from "./pages/server-deinin.tsx";
-import { Toaster } from "sonner";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 import Clarity from "@microsoft/clarity";
@@ -18,7 +17,6 @@ Clarity.init(projectId);
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <Toaster position="bottom-right" richColors />
       <BrowserRouter>
         <Routes>
           <Route

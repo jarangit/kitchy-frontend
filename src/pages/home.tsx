@@ -1,27 +1,28 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect } from "react";
 import RoleCard from "../components/ui-system/components/section-card";
 import { useNavigate } from "react-router-dom";
-import { socket } from "../socket";
 import { fetchOrders } from "../service/order-service";
 import { LuMonitor, LuShoppingBag } from "react-icons/lu";
 import { RiRestaurant2Fill } from "react-icons/ri";
-import { toast } from "sonner";
 import { useLoading } from "../hooks/useLoading";
-import { useAppSelector } from "../hooks/hooks";
-interface Order {
-  id: number;
-  orderNumber: string;
-  type: "TOGO" | "DINEIN";
-  status: string;
-  createdAt: string;
-}
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useOrderSocket } from "../hooks/order-socket";
+import { setOrders } from "../store/slices/order-slice";
+// interface Order {
+//   id: number;
+//   orderNumber: string;
+//   type: "TOGO" | "DINEIN";
+//   status: string;
+//   createdAt: string;
+// }
 const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที่ public/notify.mp3
 
 const Home = () => {
   const isSoundOn = useAppSelector((state) => state.sound.isSoundOn);
   const { startLoading, stopLoading } = useLoading(); // ✅ เรียก Hook มาใช้
-  const [orders, setOrders] = useState<Order[]>([]);
-
+  const orders = useAppSelector((state) => state.orders.orders);
+  const dispatch = useAppDispatch();
   const cardData = [
     {
       icon: <LuMonitor />,
@@ -33,72 +34,33 @@ const Home = () => {
     {
       icon: <LuShoppingBag color="#FF6B6B" />,
       title: "Front-desk(To-Go)",
-      orderCount: orders?.filter((i) => i.type == "TOGO").length,
+      orderCount: orders?.filter((i:any) => i.type == "TOGO").length,
       colorClass: "text-[#FF6B6B] bg-[#FF6B6B]",
       onClick: () => changePage("/front-desk"),
     },
     {
       icon: <RiRestaurant2Fill color="#34C759" />,
       title: "Server (Dine-in)",
-      orderCount: orders?.filter((i) => i.type == "DINEIN").length,
+      orderCount: orders?.filter((i:any) => i.type == "DINEIN").length,
       colorClass: "text-[#34C759] bg-[#34C759]",
       onClick: () => changePage("/server"),
     },
   ];
 
   const navigate = useNavigate();
+  useOrderSocket(isSoundOn, notifySound);
 
   const changePage = (path: string) => {
     navigate(path);
   };
 
-  useEffect(() => {
-    const handleOrderDeleted = ({ id }: { id: number }) => {
-      const found = orders.find((i) => i.id === id);
-      toast.warning("Order deleted", {
-        description: `Order #${found?.orderNumber} has been removed from the list.`,
-      });
-      setOrders((prev) => prev.filter((order) => order.id !== id));
-    };
-
-    socket.on("connect", () => {
-      console.log("✅ Connected to WebSocket");
-    });
-
-    socket.on("new-order", (order: Order) => {
-      setOrders((prev) => [order, ...prev]);
-      toast.info(`New orders ${order?.type} #${order?.orderNumber}`);
-      if (isSoundOn) {
-        notifySound.currentTime = 0;
-        notifySound.play().catch((err) => {
-          console.warn("Unable to play sound:", err);
-        });
-      }
-    });
-
-    socket.on("order-updated", (updatedOrder: Order) => {
-      setOrders((prev) =>
-        prev.map((order) =>
-          order.id === updatedOrder.id ? updatedOrder : order
-        )
-      );
-    });
-
-    socket.on("order-deleted", handleOrderDeleted);
-
-    return () => {
-      socket.off("new-order");
-      socket.off("order-deleted", handleOrderDeleted);
-    };
-  }, [orders]);
-
   // Removed duplicate state declaration
   useEffect(() => {
     const loadOrders = async () => {
+      startLoading();
       try {
-        startLoading();
         const data = await fetchOrders();
-        setOrders(data);
+        dispatch(setOrders(data));
       } catch (err) {
         console.error("Failed to load orders", err);
       } finally {
