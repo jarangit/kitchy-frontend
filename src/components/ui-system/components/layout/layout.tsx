@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import GlobalModal from "../common-modal";
+import { Toaster } from "sonner";
 
 type Props = {
   children?: React.ReactNode;
@@ -31,7 +32,7 @@ const Layout = ({ children }: Props) => {
 
       {/* global ui */}
       <GlobalModal />
-      {/* <Toaster  /> */}
+      <Toaster position="top-right" richColors />
 
       {/* <LoadingOverlay /> */}
     </>

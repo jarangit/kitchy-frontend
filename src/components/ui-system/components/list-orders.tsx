@@ -1,24 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import OrderCard from "./order-card";
-import { deleteOrder } from "../../../service/order-service";
+import { deleteOrder, updateOrderStatus } from "../../../service/order-service";
 import { GoDotFill } from "react-icons/go";
-import { useAppDispatch } from "../../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { openModal } from "../../../store/slices/modal-slice";
 import { useLoading } from "../../../hooks/useLoading";
-import { useEffect, useState } from "react";
-
+import TabOrder from "./tab-order";
+import {
+  setSelectedType,
+  setSelectedStatus,
+} from "../../../store/slices/order-slice";
 type Props = {
-  orders: any[];
+  isCanDelete?: boolean;
+  isCanUpdate?: boolean;
 };
-
-export const ListOrders = ({ orders }: Props) => {
-  const { isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
-  const [orderCount, setOrderCount] = useState({
-    total: 0,
-    togo: 0,
-    dineIn: 0,
-  });
+export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
+  const { isLoading } = useLoading();
   const dispatch = useAppDispatch();
+
+  // ดึงข้อมูลจาก store
+  const orders = useAppSelector((state) => state.orders.orders);
+  const selectedType = useAppSelector((state) => state.orders.selectedType);
+  const selectedStatus = useAppSelector((state) => state.orders.selectedStatus);
+
+  // ฟังก์ชัน filter order ตาม type และ status
+  const filteredOrders = orders.filter((order) => {
+    const typeMatch =
+      selectedType === "ALL" ? true : order.type === selectedType;
+    const statusMatch =
+      selectedStatus === "ALL" ? true : order.status === selectedStatus;
+    return typeMatch && statusMatch;
+  });
+
   const handleDelete = async (id: number) => {
     dispatch(
       openModal({
@@ -37,33 +50,52 @@ export const ListOrders = ({ orders }: Props) => {
     }
   };
 
-  const onGetCountByType = () => {
-    setOrderCount({
-      total: orders.length,
-      togo: orders.filter((i) => i.type == "TOGO").length,
-      dineIn: orders.filter((i) => i.type == "DINEIN").length,
-    });
+  // เมื่อเลือก tab ให้ dispatch ไปที่ store
+  const handleTabClick = (
+    typeOrStatus: "PENDING" | "TOGO" | "DINEIN" | "COMPLETED" | "ALL"
+  ) => {
+    if (
+      typeOrStatus === "TOGO" ||
+      typeOrStatus === "DINEIN" ||
+      typeOrStatus === "ALL"
+    ) {
+      dispatch(setSelectedType(typeOrStatus));
+      dispatch(setSelectedStatus("PENDING"));
+    } else if (typeOrStatus === "PENDING" || typeOrStatus === "COMPLETED") {
+      dispatch(setSelectedType("ALL"));
+      dispatch(setSelectedStatus(typeOrStatus));
+    }
   };
 
-  useEffect(() => {
-    onGetCountByType();
-    console.log(orderCount);
-  }, [orders]);
+  // function for update order status
+  const handleUpdateOrderStatus = async (
+    id: number,
+    status: "COMPLETED" | "PENDING"
+  ) => {
+    try {
+      await updateOrderStatus(id, status);
+    } catch (error: any) {
+      dispatch(
+        openModal({
+          title: "Error",
+          content: `"Failed to update order status ${error.message}"`,
+        })
+      );
+    }
+  };
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="text-2xl font-medium">
-          Orders <span>({orders?.length})</span>
-        </h2>
+      <div className="flex justify-between items-center mb-3">
+        <TabOrder _onClickTabItem={handleTabClick} />
         <div className="flex gap-2 font-semibold">
-          <div className="flex  items-center">
+          <div className="flex items-center">
             <GoDotFill size={25} color="#34C759" />
-            <div>Dine in ({orderCount.dineIn})</div>
+            <div>Dine in</div>
           </div>
-          <div className="flex  items-center">
+          <div className="flex items-center">
             <GoDotFill size={25} color="#FF6B6B" />
-            <div>To-go ({orderCount.togo})</div>
+            <div>To-go</div>
           </div>
         </div>
       </div>
@@ -72,13 +104,18 @@ export const ListOrders = ({ orders }: Props) => {
           <div className="text-center text-gray-500">Loading...</div>
         ) : (
           <>
-            {orders?.length && !isLoading ? (
+            {filteredOrders.length ? (
               <div className="grid grid-cols-1 md:grid-cols-4  2xl:grid-cols-6 gap-3">
-                {orders.map((order, key) => (
+                {filteredOrders.map((order, key) => (
                   <div key={key}>
                     <OrderCard
                       order={order}
                       onDelete={() => handleDelete(order.id)}
+                      onUpdateStatus={(id, status) =>
+                        handleUpdateOrderStatus(id, status)
+                      }
+                      isCanDelete={isCanDelete}
+                      isCanAction={isCanUpdate}
                     />
                   </div>
                 ))}

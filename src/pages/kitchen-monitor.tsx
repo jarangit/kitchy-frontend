@@ -19,9 +19,8 @@ const notifySound = new Audio("/sound/ring.mp3"); // ✅ ชี้ไปที�
 function KitchenMonitor() {
   const isSoundOn = useAppSelector((state) => state.sound.isSoundOn);
   const { startLoading, stopLoading } = useLoading(); // ✅ เรียก Hook มาใช้
-  const orders = useAppSelector((state) => state.orders.orders);
+  // const orders = useAppSelector((state) => state.orders.orders);
   const dispatch = useAppDispatch();
-
   useOrderSocket(isSoundOn, notifySound);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ function KitchenMonitor() {
   return (
     <div id="content-page" className="flex-1 flex flex-col gap-6">
       <HeaderSection title="Kitchen monitor" />
-      <ListOrders orders={orders} />
+      <ListOrders isCanUpdate={true} />
     </div>
   );
 }

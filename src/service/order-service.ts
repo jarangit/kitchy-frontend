@@ -31,3 +31,11 @@ export const deleteOrder = async (id: number) => {
   const response = await api.delete(`/orders/${id}`);
   return response.data;
 };
+// ✅ อัปเดตสถานะออเดอร์
+export const updateOrderStatus = async (
+  id: number,
+  status: "PENDING" | "COMPLETED"
+) => {
+  const response = await api.patch(`/orders/${id}`, { status });
+  return response.data;
+};

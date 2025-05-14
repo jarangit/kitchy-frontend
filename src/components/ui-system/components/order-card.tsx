@@ -1,4 +1,6 @@
 import { format } from "date-fns";
+import { FaCheckCircle } from "react-icons/fa";
+import { IoIosRepeat } from "react-icons/io";
 import { FaClock, FaTrash } from "react-icons/fa";
 
 interface OrderCardProps {
@@ -6,14 +8,24 @@ interface OrderCardProps {
   orderNumber: string;
   type: "TOGO" | "DINEIN";
   createdAt: string;
+  status: "PENDING" | "COMPLETED";
 }
 interface Props {
   order: OrderCardProps;
   onDelete: (id: number) => void;
+  onUpdateStatus: (id: number, status: "COMPLETED" | "PENDING") => void;
+  isCanDelete?: boolean;
+  isCanAction?: boolean;
 }
 
-const OrderCard = ({ order, onDelete }: Props) => {
-  const { id, orderNumber, type, createdAt } = order;
+const OrderCard = ({
+  order,
+  onDelete,
+  onUpdateStatus,
+  isCanDelete,
+  isCanAction,
+}: Props) => {
+  const { id, orderNumber, type, createdAt, status } = order;
   const isToGo = type === "TOGO";
   const formattedCreatedAt = format(new Date(createdAt), "dd/MM/yy HH:mm");
   return (
@@ -39,15 +51,45 @@ const OrderCard = ({ order, onDelete }: Props) => {
         </div>
 
         <div className="flex items-center text-sm  text-gray-700 gap-1">
-          <FaClock  />
+          <FaClock />
           <span className="font-medium">{formattedCreatedAt}</span>
         </div>
+
+        {/* button update status */}
+        {isCanAction ? (
+          <button
+            className={`px-4 py-2 text-sm font-medium text-white rounded-lg   w-full cursor-pointer ${
+              status === "PENDING" ? "bg-[#0C60DC]" : "bg-[#770000]"
+            }`}
+            onClick={() =>
+              onUpdateStatus(id, status == "PENDING" ? "COMPLETED" : "PENDING")
+            }
+          >
+            {status === "PENDING" ? (
+              <div className="flex items-center gap-2 justify-center">
+                <FaCheckCircle />
+                <div>Done</div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 justify-center">
+                <IoIosRepeat size={25} />
+                <div>Pending</div>
+              </div>
+            )}
+          </button>
+        ) : (
+          ""
+        )}
       </div>
 
-      <FaTrash
-        className="absolute top-4 right-4 xl:right-4 xl:top-4 text-gray-600 cursor-pointer hover:text-red-600"
-        onClick={() => onDelete(id)}
-      />
+      {isCanDelete ? (
+        <FaTrash
+          className="absolute top-4 right-4 xl:right-4 xl:top-4 text-gray-600 cursor-pointer hover:text-red-600"
+          onClick={() => onDelete(id)}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };
