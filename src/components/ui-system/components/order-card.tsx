@@ -31,7 +31,7 @@ const OrderCard = ({ order, onDelete }: Props) => {
       </div>
       <div className="hidden md:flex justify-between flex-wrap mt-4 gap-4">
         <div
-          className={` inline-block px-2 py-1 text-white text-xs font-medium rounded-full ${
+          className={` inline-block px-2 py-1 text-white text-xs font-medium rounded-full min-w-[60px] text-center ${
             isToGo ? "bg-[#FF6B6B]" : "bg-[#34C759]"
           }`}
         >
