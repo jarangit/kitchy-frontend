@@ -8,7 +8,6 @@ import { socket } from "../socket";
 import { toast } from "sonner";
 
 function ServerDineInPage() {
-
   const [orderType] = useState<"TOGO" | "DINEIN">("DINEIN");
   const [orders, setOrders] = useState<any[]>([]);
 
@@ -16,7 +15,7 @@ function ServerDineInPage() {
     if (!orderNumber) return alert("กรุณากรอกหมายเลขออเดอร์");
 
     const newOrder = await createOrder({ orderNumber: orderNumber, orderType });
-    setOrders([newOrder, ...orders]);
+    setOrders([...orders, newOrder]);
     toast.success("Order sent to kitchen!");
   };
 
@@ -28,7 +27,7 @@ function ServerDineInPage() {
       }
     } catch (error) {
       console.log(error);
-    } 
+    }
   };
 
   useEffect(() => {

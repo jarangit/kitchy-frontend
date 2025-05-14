@@ -36,7 +36,7 @@ function KitchenMonitor() {
     socket.on("order-deleted", handleOrderDeleted);
 
     socket.on("new-order", (order: Order) => {
-      setOrders((prev) => [order, ...prev]);
+      setOrders((prev) => [...prev, order]);
       toast.info(`New orders ${order?.type} #${order?.orderNumber}`);
       if (isSoundOn) {
         notifySound.currentTime = 0;
