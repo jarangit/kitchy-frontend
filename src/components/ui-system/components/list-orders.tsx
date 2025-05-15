@@ -85,7 +85,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
   };
 
   return (
-    <div>
+    <div className=" flex-grow flex flex-col">
       <div className="flex justify-between items-center mb-3">
         <TabOrder _onClickTabItem={handleTabClick} />
         <div className="flex gap-2 font-semibold">
@@ -99,13 +99,13 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-1 bg-[#E4E4E4] rounded-lg flex-col p-3">
+      <div className=" bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto">
         {isLoading ? (
           <div className="text-center text-gray-500">Loading...</div>
         ) : (
           <>
             {filteredOrders.length ? (
-              <div className="grid grid-cols-1 md:grid-cols-4  2xl:grid-cols-6 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-4  2xl:grid-cols-6 gap-3 ">
                 {filteredOrders.map((order, key) => (
                   <div key={key}>
                     <OrderCard

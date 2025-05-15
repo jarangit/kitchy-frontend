@@ -12,7 +12,7 @@ type Props = {
 const TabOrder = ({ _onClickTabItem }: Props) => {
   const orders = useAppSelector((state) => state.orders.orders);
   const [tabActive, setTabActive] = useState("PENDING");
-  const [orderCount, setorderCount] = useState({
+  const [orderCount, setOrderCount] = useState({
     total: 0,
     togo: 0,
     dineIn: 0,
@@ -25,6 +25,10 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
     setTabActive(type);
     _onClickTabItem(type);
   };
+  useEffect(() => {
+    setTabActive("PENDING");
+    onClickTabItem("PENDING");
+  }, []);
 
   useEffect(() => {
     const total = orders.filter((i) => i.status === "PENDING").length;
@@ -36,35 +40,42 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
     ).length;
     const completed = orders.filter((i) => i.status === "COMPLETED").length;
 
-    setorderCount({
+    setOrderCount({
       total,
       togo,
       dineIn,
       completed,
     });
   }, [orders]);
+
   return (
     <div className="flex gap-2 flex-wrap">
       <TabItem
-        title={`Pending (${orderCount.total})`}
+        title={`Pending`}
+        count={orderCount.total}
         icon={<HiOutlineViewGrid size={20} />}
         isActive={tabActive === "PENDING"}
+        isCanAnimation={true}
         onClick={() => onClickTabItem("PENDING")}
       />
       <TabItem
-        title={`Completed (${orderCount.completed})`}
-        icon={<FaCheckCircle size={20} color="#34C759"/>}
+        title={`Completed `}
+        count={orderCount.completed}
+        icon={<FaCheckCircle size={20} color="#34C759" />}
         isActive={tabActive === "COMPLETED"}
+        isCanAnimation={true}
         onClick={() => onClickTabItem("COMPLETED")}
       />
       <TabItem
-        title={`ToGo (${orderCount.togo})`}
+        title={`ToGo`}
+        count={orderCount.togo}
         icon={<LuShoppingBag size={20} />}
         isActive={tabActive === "TOGO"}
         onClick={() => onClickTabItem("TOGO")}
       />
       <TabItem
-        title={`DineIn (${orderCount.dineIn})`}
+        title={`DineI`}
+        count={orderCount.dineIn}
         icon={<RiRestaurant2Fill size={20} />}
         isActive={tabActive === "DINEIN"}
         onClick={() => onClickTabItem("DINEIN")}
