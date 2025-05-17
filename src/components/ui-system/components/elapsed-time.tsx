@@ -13,15 +13,19 @@ const ElapsedTime = ({ createdAt }: ElapsedTimeProps) => {
       const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const now = toZonedTime(new Date(), userTimeZone);
       const created = toZonedTime(new Date(createdAt), userTimeZone);
-      const diffMs = now.getTime() - created.getTime();
-
+      let diffMs = now.getTime() - created.getTime();
+      if (diffMs < 0) diffMs = 0;
       const minutes = Math.floor(diffMs / (1000 * 60));
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = minutes % 60;
 
       let result = "";
       if (hours > 0) result += `${hours} hr `;
-      result += `${remainingMinutes} min ago`;
+      if (hours === 0 && remainingMinutes === 0) {
+        result = "just now";
+      } else {
+        result += `${remainingMinutes} min ago`;
+      }
 
       setElapsed(result);
     };
@@ -31,7 +35,7 @@ const ElapsedTime = ({ createdAt }: ElapsedTimeProps) => {
     return () => clearInterval(interval);
   }, [createdAt]);
 
-  return <span className="font-medium">{elapsed}</span>;
+  return <span className="font-semibold">{elapsed}</span>;
 };
 
 export default ElapsedTime;

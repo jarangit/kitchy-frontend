@@ -30,9 +30,9 @@ const Sidebar = () => {
 
   const itemClass =
     "p-3 flex flex-col justify-center items-center text-xs gap-1";
-  const activeClass = "bg-black text-white";
+  const activeClass = "bg-gray-300 ";
   return (
-    <div className="bg-[#EBEBEB] h-screen w-[60px] fixed border-r border-gray-200">
+    <div className="bg-[#EBEBEB] h-screen w-[60px] fixed border-r border-gray-200 pb-12">
       <div className="h-full flex justify-between flex-col">
         <div className="flex flex-col">
           {listMenu.map((i, key) => (

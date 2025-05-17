@@ -3,16 +3,21 @@ import React from "react";
 import GlobalModal from "../common-modal";
 import { Toaster } from "sonner";
 import Sidebar from "./sidebar";
+import { useLocation } from "react-router-dom";
 
 type Props = {
   children?: React.ReactNode;
 };
 
 const Layout = ({ children }: Props) => {
+  const location = useLocation();
+
+  const isHideSidebar = location.pathname === "/kitchen-monitor";
+
   return (
     <>
       <div className="flex">
-        <Sidebar />
+        {!isHideSidebar && <Sidebar />}
         <div className="flex flex-col min-h-screen ml-[60px] flex-grow">
           <main className="flex-1 flex flex-col p-4 my-container">
             {children}

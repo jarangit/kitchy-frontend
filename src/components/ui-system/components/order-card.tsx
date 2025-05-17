@@ -1,10 +1,8 @@
-import { format } from "date-fns";
 import { FaCheckCircle } from "react-icons/fa";
 import { IoIosRepeat } from "react-icons/io";
 import { FaClock, FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import ElapsedTime from "./elapsed-time";
-import { toZonedTime } from "date-fns-tz";
 
 interface OrderCardProps {
   id: number;
@@ -33,9 +31,9 @@ const OrderCard = ({
   const isToGo = type === "TOGO";
 
   // แปลงวันที่เป็น timezone ของ user
-  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const createdAtZoned = toZonedTime(new Date(createdAt), userTimeZone);
-  const formattedCreatedAt = format(createdAtZoned, "dd/MM/yy HH:mm");
+  // const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  // const createdAtZoned = toZonedTime(new Date(createdAt), userTimeZone);
+  // const formattedCreatedAt = format(createdAtZoned, "dd/MM/yy HH:mm");
   const handleUpdate = () => {
     setIsFading(true);
     setTimeout(() => {
@@ -55,7 +53,7 @@ const OrderCard = ({
         <div className="md:text-4xl font-bold">#{orderNumber}</div>
         <div className="flex md:hidden items-center text-sm text-gray-700">
           <FaClock className="mr-1" />
-          <span className="font-medium">{formattedCreatedAt}</span>
+          {/* <ElapsedTime createdAt={new Date(new Date(createdAt).getTime() - 7 * 60 * 60 * 1000).toISOString()} /> */}
         </div>
       </div>
       <div className="hidden md:flex justify-between flex-wrap mt-4 gap-4">
@@ -70,6 +68,12 @@ const OrderCard = ({
         <div className="flex items-center text-sm  text-gray-700 gap-1">
           {/* <FaClock /> */}
           <ElapsedTime createdAt={createdAt} />
+          {/* <ElapsedTime
+            createdAt={new Date(
+              new Date(createdAt).getTime() + 7 * 60 * 60 * 1000
+            ).toISOString()}
+          /> */}
+
           {/* <span className="font-medium">{formattedCreatedAt}</span> */}
         </div>
 
