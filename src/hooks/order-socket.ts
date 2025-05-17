@@ -9,7 +9,7 @@ import { socket } from "../socket";
 import { toast } from "sonner";
 
 export function useOrderSocket(
-  isSoundOn: boolean,
+  isSoundOn: boolean = true,
   notifySound: HTMLAudioElement
 ) {
   const dispatch = useDispatch();

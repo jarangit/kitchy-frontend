@@ -38,7 +38,14 @@ function KitchenMonitor() {
 
     loadOrders();
   }, []);
-
+  useEffect(() => {
+    const unlockAudio = () => {
+      notifySound.load();
+      window.removeEventListener("click", unlockAudio);
+    };
+    window.addEventListener("click", unlockAudio);
+    return () => window.removeEventListener("click", unlockAudio);
+  }, []);
   return (
     <div id="content-page" className="flex-1 flex flex-col gap-6">
       <HeaderSection title="Kitchen monitor" />
