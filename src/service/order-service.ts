@@ -31,6 +31,10 @@ export const deleteOrder = async (id: number) => {
   const response = await api.delete(`/orders/${id}`);
   return response.data;
 };
+export const deleteOrderAll = async () => {
+  const response = await api.delete(`/orders/clear`);
+  return response.data;
+};
 // ✅ อัปเดตสถานะออเดอร์
 export const updateOrderStatus = async (
   id: number,

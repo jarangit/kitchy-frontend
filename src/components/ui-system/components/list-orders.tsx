@@ -86,7 +86,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
 
   return (
     <div className=" flex-grow flex flex-col">
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center mb-3 flex-wrap gap-6">
         <TabOrder _onClickTabItem={handleTabClick} />
         <div className="flex gap-2 font-semibold">
           <div className="flex items-center">

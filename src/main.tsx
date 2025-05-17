@@ -11,6 +11,7 @@ import ServerDineInPage from "./pages/server-deinin.tsx";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
 import Clarity from "@microsoft/clarity";
+import SettingPage from "./pages/setting.tsx";
 
 const projectId = "rhunceryu0";
 Clarity.init(projectId);
@@ -56,6 +57,14 @@ createRoot(document.getElementById("root")!).render(
             element={
               <Layout>
                 <ServerDineInPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/setting"
+            element={
+              <Layout>
+                <SettingPage />
               </Layout>
             }
           />

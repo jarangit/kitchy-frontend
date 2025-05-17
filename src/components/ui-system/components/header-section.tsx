@@ -31,7 +31,7 @@ export default function HeaderSection({ title }: Props) {
           )}
         </button>
         <button
-          className="border px-6 py-2 rounded-md cursor-pointer"
+          className="border px-6 py-2 rounded-md cursor-pointer border-black"
           onClick={() => onChangePage("/")}
         >
           Back to home
