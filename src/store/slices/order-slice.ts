@@ -2,6 +2,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface Order {
+  updatedAt: string | number | Date;
   id: any;
   orderNumber: string;
   type: "TOGO" | "DINEIN";

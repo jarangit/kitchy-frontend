@@ -24,13 +24,21 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
   const selectedStatus = useAppSelector((state) => state.orders.selectedStatus);
 
   // ฟังก์ชัน filter order ตาม type และ status
-  const filteredOrders = orders.filter((order) => {
+  let filteredOrders = orders.filter((order) => {
     const typeMatch =
       selectedType === "ALL" ? true : order.type === selectedType;
     const statusMatch =
       selectedStatus === "ALL" ? true : order.status === selectedStatus;
     return typeMatch && statusMatch;
   });
+
+  // ถ้าเลือก tab COMPLETED ให้เรียง createdAt จากน้อยไปมาก
+  if (selectedStatus === "COMPLETED") {
+    filteredOrders = [...filteredOrders].sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
+  }
 
   const handleDelete = async (id: number) => {
     dispatch(
