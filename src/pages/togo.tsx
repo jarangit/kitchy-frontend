@@ -7,6 +7,8 @@ import { ListOrders } from "../components/ui-system/components/list-orders";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { setOrders } from "../store/slices/order-slice";
 import { useOrderSocket } from "../hooks/order-socket";
+import type { ICreateOrder } from "@/service/type";
+
 
 function TogoPage() {
   const orderType = "TOGO";
@@ -16,10 +18,11 @@ function TogoPage() {
 
   useOrderSocket(isSoundOn, notifySound);
 
-  const handleSubmit = async ({ orderNumber }: any) => {
+  const handleSubmit = async (data: ICreateOrder) => {
+    const { orderNumber } = data;
     if (!orderNumber) return alert("กรุณากรอกหมายเลขออเดอร์");
     try {
-      await createOrder({ orderNumber, orderType });
+      await createOrder(data);
     } catch (error) {
       console.log(error);
     }
