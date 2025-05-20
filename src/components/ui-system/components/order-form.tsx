@@ -42,6 +42,7 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
     setNumber("");
     setIsWaitingInStore(false);
     setTableNumber("");
+    setFocusInput("number");
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -70,7 +71,7 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
       className=" bg-white p-6 rounded-lg lg:min-w-[300px]"
     >
       <div className="flex flex-col space-y-4">
-        <label htmlFor="orderNumber" className="text-xl font-medium">
+        <label htmlFor="orderNumber" className="text-xl font-semibold">
           {label}
         </label>
         <Input

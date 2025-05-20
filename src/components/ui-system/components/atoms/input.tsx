@@ -29,7 +29,7 @@ const Input: React.FC<InputProps> = ({ title, ...props }) => {
           ref={inputRef}
           type="text"
           readOnly={!showKeyboard}
-          className="w-full text-lg px-4 py-2 h-auto border rounded-md bg-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full border-gray-500 text-lg px-4 py-2 h-auto border rounded-md bg-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
         <Button
           type="button"
