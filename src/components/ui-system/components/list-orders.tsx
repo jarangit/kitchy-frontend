@@ -91,7 +91,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
       );
     }
   };
-
+  console.log(filteredOrders);
   return (
     <div className=" flex-grow flex flex-col">
       <div className="flex justify-between items-center mb-3 flex-wrap gap-6">
@@ -113,7 +113,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
         ) : (
           <>
             {filteredOrders.length ? (
-              <div className="grid grid-cols-1 md:grid-cols-4  2xl:grid-cols-6 gap-3 ">
+              <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-4 2xl:grid-cols-6 gap-3 ">
                 {filteredOrders.map((order, key) => (
                   <div key={key}>
                     <OrderCard

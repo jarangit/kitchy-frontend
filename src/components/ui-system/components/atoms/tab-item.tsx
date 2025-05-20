@@ -24,7 +24,7 @@ const TabItem = ({
         ${className}`}
     >
       {icon && <span>{icon}</span>}
-      <span className="text-xs font-medium">{title}</span>
+      <span className="font-medium">{title}</span>
     </button>
   );
 };

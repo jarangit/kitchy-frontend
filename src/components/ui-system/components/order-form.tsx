@@ -5,6 +5,7 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { NumericKeypad } from "./numbericKeypad";
 import Input from "./atoms/input";
+import TabItem from "./atoms/tab-item";
 
 interface OrderFormProps {
   orderType: "TOGO" | "DINEIN";
@@ -48,9 +49,13 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
     handleSubmit();
   };
 
-  const onTapToggleIsWaiting = () => {
-    setIsWaitingInStore(!isWaitingInStore);
-    setFocusInput("tableNumber");
+  const onTapToggleIsWaiting = (value: boolean) => {
+    setIsWaitingInStore(value);
+    if (value) {
+      setFocusInput("tableNumber");
+    } else {
+      setFocusInput("number");
+    }
   };
 
   useEffect(() => {
@@ -64,7 +69,7 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
       onSubmit={handleFormSubmit}
       className=" bg-white p-6 rounded-lg lg:min-w-[300px]"
     >
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-4">
         <label htmlFor="orderNumber" className="text-xl font-medium">
           {label}
         </label>
@@ -74,31 +79,44 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
           onChange={(e) => setNumber(e.target.value)}
           onFocus={() => setFocusInput("number")}
         />
-        {orderType == "TOGO" ? (
-          <>
-            <label htmlFor="waiting">
-              <input
-                type="checkbox"
-                placeholder="is waiting"
-                id="waiting"
-                onChange={() => onTapToggleIsWaiting()}
-              />
-              Waiting
-            </label>
-            {isWaitingInStore ? (
-              <Input
-                value={tableNumber}
-                placeholder="Enter Table number"
-                onChange={(e) => setTableNumber(e.target.value)}
-                onFocus={() => setFocusInput("tableNumber")}
-              />
-            ) : (
-              ""
-            )}
-          </>
-        ) : (
-          ""
-        )}
+        {/* waiting */}
+        <div
+          className={`p-0 transition-all ${
+            isWaitingInStore && "p-3 bg-gray-200 space-y-2 rounded-lg"
+          }`}
+        >
+          {orderType == "TOGO" ? (
+            <>
+              <div className="border flex items-center border-black rounded-lg overflow-hidden cursor-pointer">
+                <TabItem
+                  title={"Just ToGo"}
+                  className="w-full rounded-none !p-3"
+                  active={!isWaitingInStore}
+                  onClick={() => onTapToggleIsWaiting(false)}
+                />
+                <TabItem
+                  title={"@Table"}
+                  className="w-full rounded-none !p-3"
+                  active={isWaitingInStore}
+                  onClick={() => onTapToggleIsWaiting(true)}
+                />
+              </div>
+              {isWaitingInStore ? (
+                <Input
+                  title="Table Number"
+                  value={tableNumber}
+                  placeholder="Enter number"
+                  onChange={(e) => setTableNumber(e.target.value)}
+                  onFocus={() => setFocusInput("tableNumber")}
+                />
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            ""
+          )}
+        </div>
         <div className="flex flex-col space-y-4">
           <NumericKeypad
             value={focusInput === "number" ? number : tableNumber}

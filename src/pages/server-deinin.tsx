@@ -44,7 +44,7 @@ function ServerDineInPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <HeaderSection title="Server (Dine-in)" />
+      <HeaderSection title="Server (Dine-in)" className="bg-green-200 p-4 rounded-lg border-none" />
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full">
           <ListOrders isCanDelete />
