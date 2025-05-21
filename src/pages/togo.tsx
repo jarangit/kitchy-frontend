@@ -47,7 +47,7 @@ function TogoPage() {
       <HeaderSection title="Front-desk(To-Go)" className="bg-red-200 p-4 rounded-lg border-none"/>
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full">
-          <ListOrders isCanDelete />
+          <ListOrders isCanDelete sort="DESC" />
         </div>
         <OrderForm
           orderType={orderType}

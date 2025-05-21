@@ -15,8 +15,13 @@ import type { IOrderItem } from "@/service/type";
 type Props = {
   isCanDelete?: boolean;
   isCanUpdate?: boolean;
+  sort?: "DESC" | "ASC";
 };
-export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
+export const ListOrders = ({
+  isCanDelete,
+  isCanUpdate,
+  sort = "ASC",
+}: Props) => {
   const { isLoading } = useLoading();
   const dispatch = useAppDispatch();
   const [isHaveDineInWithToGoOrder, setIsHaveDineInWithToGoOrder] =
@@ -37,7 +42,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
   });
 
   // ถ้าเลือก tab COMPLETED ให้เรียง createdAt จากน้อยไปมาก
-  if (selectedStatus === "COMPLETED") {
+  if (selectedStatus === "COMPLETED" || sort == "DESC") {
     filteredOrders = [...filteredOrders].sort(
       (a, b) =>
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -98,8 +103,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
 
   useEffect(() => {
     const found = orders.some(
-      (order) =>
-        (order as unknown as IOrderItem).isWaitingInStore
+      (order) => (order as unknown as IOrderItem).isWaitingInStore
     );
     setIsHaveDineInWithToGoOrder(found);
   }, [orders]);

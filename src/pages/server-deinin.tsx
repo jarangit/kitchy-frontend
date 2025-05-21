@@ -50,7 +50,7 @@ function ServerDineInPage() {
       />
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full">
-          <ListOrders isCanDelete />
+          <ListOrders isCanDelete sort="DESC" />
         </div>
         <OrderForm
           orderType={orderType}
