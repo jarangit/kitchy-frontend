@@ -43,6 +43,6 @@ export const updateOrderStatus = async (
 };
 
 export const report = async () => {
-  const res = await api.get("/report-monitor");
+  const res = await api.get("/orders/report-monitor");
   return res.data;
 };
