@@ -8,6 +8,7 @@ import { ListOrders } from "../components/ui-system/components/list-orders";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { setOrders } from "../store/slices/order-slice";
 import { useOrderSocket } from "../hooks/order-socket";
+import type { ICreateOrder } from "@/service/type";
 
 function ServerDineInPage() {
   const orderType = "DINEIN";
@@ -17,15 +18,14 @@ function ServerDineInPage() {
 
   useOrderSocket(isSoundOn, notifySound);
 
-  const handleSubmit = async ({ orderNumber, orderType }: any) => {
+  const handleSubmit = async (data: ICreateOrder) => {
+    const { orderNumber } = data;
     if (!orderNumber) return alert("กรุณากรอกหมายเลขออเดอร์");
     try {
-      await createOrder({ orderNumber, orderType });
+      await createOrder(data);
     } catch (error) {
       console.log(error);
     }
-
-    // dispatch(addOrder(newOrder));
   };
 
   useEffect(() => {
@@ -44,14 +44,17 @@ function ServerDineInPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <HeaderSection title="Server (Dine-in)" className="bg-green-200 p-4 rounded-lg border-none" />
+      <HeaderSection
+        title="Server (Dine-in)"
+        className="bg-green-200 p-4 rounded-lg border-none"
+      />
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full">
           <ListOrders isCanDelete />
         </div>
         <OrderForm
           orderType={orderType}
-          label="Order Number"
+          label="Dine in Order"
           buttonColor="bg-blue-500"
           _onSubmit={handleSubmit}
         />

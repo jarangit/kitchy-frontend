@@ -10,6 +10,8 @@ import {
   setSelectedType,
   setSelectedStatus,
 } from "../../../store/slices/order-slice";
+import { useEffect, useState } from "react";
+import type { IOrderItem } from "@/service/type";
 type Props = {
   isCanDelete?: boolean;
   isCanUpdate?: boolean;
@@ -17,6 +19,8 @@ type Props = {
 export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
   const { isLoading } = useLoading();
   const dispatch = useAppDispatch();
+  const [isHaveDineInWithToGoOrder, setIsHaveDineInWithToGoOrder] =
+    useState(false);
 
   // ดึงข้อมูลจาก store
   const orders = useAppSelector((state) => state.orders.orders);
@@ -91,12 +95,29 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
       );
     }
   };
-  console.log(filteredOrders);
+
+  useEffect(() => {
+    const found = orders.some(
+      (order) =>
+        (order as unknown as IOrderItem).isWaitingInStore &&
+        !!(order as unknown as IOrderItem).waitingOrderNumber
+    );
+    setIsHaveDineInWithToGoOrder(found);
+  }, [orders]);
+
   return (
     <div className=" flex-grow flex flex-col">
       <div className="flex justify-between items-center mb-3 flex-wrap gap-6">
         <TabOrder _onClickTabItem={handleTabClick} />
         <div className="flex gap-2 font-semibold">
+          {isHaveDineInWithToGoOrder ? (
+            <div className="flex items-center">
+              <GoDotFill size={25} color="#9747FF" />
+              <div>Dine in @ToGo</div>
+            </div>
+          ) : (
+            ""
+          )}
           <div className="flex items-center">
             <GoDotFill size={25} color="#34C759" />
             <div>Dine in</div>

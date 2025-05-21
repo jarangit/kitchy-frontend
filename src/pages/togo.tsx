@@ -51,7 +51,7 @@ function TogoPage() {
         </div>
         <OrderForm
           orderType={orderType}
-          label="Order Number"
+          label="ToGo Order"
           buttonColor="bg-blue-500"
           _onSubmit={handleSubmit}
         />

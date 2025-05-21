@@ -14,21 +14,21 @@ interface OrderFormProps {
   _onSubmit: ({
     orderType,
     orderNumber,
-    tableNumber,
+    waitingOrderNumber,
     isWaitingInStore,
   }: {
     orderType: string;
     orderNumber: string;
-    tableNumber?: string;
+    waitingOrderNumber?: string;
     isWaitingInStore: boolean;
   }) => void;
 }
 
 export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
   const [number, setNumber] = useState("");
-  const [tableNumber, setTableNumber] = useState("");
+  const [waitingOrderNumber, setWaitingOrderNumber] = useState("");
   const [isWaitingInStore, setIsWaitingInStore] = useState(false);
-  const [focusInput, setFocusInput] = useState<"number" | "tableNumber">(
+  const [focusInput, setFocusInput] = useState<"number" | "waitingOrderNumber">(
     "number"
   );
 
@@ -36,12 +36,12 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
     _onSubmit({
       orderType: orderType,
       orderNumber: number,
-      tableNumber: tableNumber,
+      waitingOrderNumber: waitingOrderNumber,
       isWaitingInStore: isWaitingInStore,
     });
     setNumber("");
     setIsWaitingInStore(false);
-    setTableNumber("");
+    setWaitingOrderNumber("");
     setFocusInput("number");
   };
 
@@ -53,7 +53,7 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
   const onTapToggleIsWaiting = (value: boolean) => {
     setIsWaitingInStore(value);
     if (value) {
-      setFocusInput("tableNumber");
+      setFocusInput("waitingOrderNumber");
     } else {
       setFocusInput("number");
     }
@@ -86,17 +86,17 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
             isWaitingInStore && "p-3 bg-gray-200 space-y-2 rounded-lg"
           }`}
         >
-          {orderType == "TOGO" ? (
+          {orderType == "DINEIN" ? (
             <>
               <div className="border flex items-center border-black rounded-lg overflow-hidden cursor-pointer">
                 <TabItem
-                  title={"Just ToGo"}
+                  title={"Table"}
                   className="w-full rounded-none !p-3"
                   active={!isWaitingInStore}
                   onClick={() => onTapToggleIsWaiting(false)}
                 />
                 <TabItem
-                  title={"@Table"}
+                  title={"@ToGo"}
                   className="w-full rounded-none !p-3"
                   active={isWaitingInStore}
                   onClick={() => onTapToggleIsWaiting(true)}
@@ -105,10 +105,10 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
               {isWaitingInStore ? (
                 <Input
                   title="Table Number"
-                  value={tableNumber}
+                  value={waitingOrderNumber}
                   placeholder="Enter number"
-                  onChange={(e) => setTableNumber(e.target.value)}
-                  onFocus={() => setFocusInput("tableNumber")}
+                  onChange={(e) => setWaitingOrderNumber(e.target.value)}
+                  onFocus={() => setFocusInput("waitingOrderNumber")}
                 />
               ) : (
                 ""
@@ -120,8 +120,10 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
         </div>
         <div className="flex flex-col space-y-4">
           <NumericKeypad
-            value={focusInput === "number" ? number : tableNumber}
-            onChange={focusInput === "number" ? setNumber : setTableNumber}
+            value={focusInput === "number" ? number : waitingOrderNumber}
+            onChange={
+              focusInput === "number" ? setNumber : setWaitingOrderNumber
+            }
             onSubmit={handleSubmit}
             maxLength={4}
           />
