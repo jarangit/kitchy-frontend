@@ -11,7 +11,6 @@ interface OrderCardProps {
   createdAt: string;
   status: "PENDING" | "COMPLETED";
   isWaitingInStore?: boolean;
-  waitingOrderNumber?: string;
 }
 interface Props {
   order: OrderCardProps;
@@ -35,7 +34,6 @@ const OrderCard = ({
     createdAt,
     status,
     isWaitingInStore,
-    waitingOrderNumber,
   } = order;
   const [isFading, setIsFading] = useState(false);
   const isToGo = type === "TOGO";
@@ -56,7 +54,7 @@ const OrderCard = ({
       className={`w-full h-full rounded-xl p-4  relative  transition-opacity duration-300 flex flex-col justify-between gap-3 ${
         isToGo ? "bg-red-100" : "bg-green-100"
       }
-      ${!isToGo && isWaitingInStore && waitingOrderNumber && '!bg-[#D3CBFF]'}
+      ${!isToGo && isWaitingInStore && '!bg-[#D3CBFF]'}
       ${isFading ? "opacity-0" : "opacity-100"}
       `}
     >
@@ -77,15 +75,7 @@ const OrderCard = ({
             >
               {isToGo ? "ToGo" : "Dine-in"}
             </div>
-            {isWaitingInStore && waitingOrderNumber ? (
-              <div
-                className={` inline-block px-3 py-1 text-black font-bold text-lg rounded-full min-w-[60px] text-center bg-[#FF6B6B]`}
-              >
-                {"@" + waitingOrderNumber}
-              </div>
-            ) : (
-              ""
-            )}
+          
           </div>
 
           <div className="flex items-center text-sm  text-gray-700 gap-1">

@@ -99,8 +99,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
   useEffect(() => {
     const found = orders.some(
       (order) =>
-        (order as unknown as IOrderItem).isWaitingInStore &&
-        !!(order as unknown as IOrderItem).waitingOrderNumber
+        (order as unknown as IOrderItem).isWaitingInStore
     );
     setIsHaveDineInWithToGoOrder(found);
   }, [orders]);

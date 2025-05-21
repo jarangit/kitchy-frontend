@@ -14,35 +14,26 @@ interface OrderFormProps {
   _onSubmit: ({
     orderType,
     orderNumber,
-    waitingOrderNumber,
     isWaitingInStore,
   }: {
     orderType: string;
     orderNumber: string;
-    waitingOrderNumber?: string;
     isWaitingInStore: boolean;
   }) => void;
 }
 
 export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
   const [number, setNumber] = useState("");
-  const [waitingOrderNumber, setWaitingOrderNumber] = useState("");
   const [isWaitingInStore, setIsWaitingInStore] = useState(false);
-  const [focusInput, setFocusInput] = useState<"number" | "waitingOrderNumber">(
-    "number"
-  );
 
   const handleSubmit = () => {
     _onSubmit({
       orderType: orderType,
       orderNumber: number,
-      waitingOrderNumber: waitingOrderNumber,
       isWaitingInStore: isWaitingInStore,
     });
     setNumber("");
     setIsWaitingInStore(false);
-    setWaitingOrderNumber("");
-    setFocusInput("number");
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -52,11 +43,6 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
 
   const onTapToggleIsWaiting = (value: boolean) => {
     setIsWaitingInStore(value);
-    if (value) {
-      setFocusInput("waitingOrderNumber");
-    } else {
-      setFocusInput("number");
-    }
   };
 
   useEffect(() => {
@@ -78,14 +64,8 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
           value={number}
           placeholder="Enter number"
           onChange={(e) => setNumber(e.target.value)}
-          onFocus={() => setFocusInput("number")}
         />
         {/* waiting */}
-        <div
-          className={`p-0 transition-all ${
-            isWaitingInStore && "p-3 bg-gray-200 space-y-2 rounded-lg"
-          }`}
-        >
           {orderType == "DINEIN" ? (
             <>
               <div className="border flex items-center border-black rounded-lg overflow-hidden cursor-pointer">
@@ -102,28 +82,14 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
                   onClick={() => onTapToggleIsWaiting(true)}
                 />
               </div>
-              {isWaitingInStore ? (
-                <Input
-                  title="Order Number"
-                  value={waitingOrderNumber}
-                  placeholder="Enter number"
-                  onChange={(e) => setWaitingOrderNumber(e.target.value)}
-                  onFocus={() => setFocusInput("waitingOrderNumber")}
-                />
-              ) : (
-                ""
-              )}
             </>
           ) : (
             ""
           )}
-        </div>
         <div className="flex flex-col space-y-4">
           <NumericKeypad
-            value={focusInput === "number" ? number : waitingOrderNumber}
-            onChange={
-              focusInput === "number" ? setNumber : setWaitingOrderNumber
-            }
+            value={number}
+            onChange={setNumber}
             onSubmit={handleSubmit}
             maxLength={4}
           />
