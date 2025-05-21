@@ -41,3 +41,8 @@ export const updateOrderStatus = async (
   const response = await api.patch(`/orders/${id}`, { status });
   return response.data;
 };
+
+export const report = async () => {
+  const res = await api.get("/report-monitor");
+  return res.data;
+};
