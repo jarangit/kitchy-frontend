@@ -86,21 +86,21 @@ export default function ReportMonitor({ data }: props) {
           <div className="bg-yellow-50 p-5 rounded-2xl  ">
             <div className="text-yellow-700 text-lg mb-2">Pending Orders</div>
             <div className="text-4xl font-bold text-yellow-600">
-              {reportData.totalByStatus.PENDING}
+              {reportData.totalByStatus.PENDING ?? 0}
             </div>
           </div>
 
           <div className="bg-green-50 p-5 rounded-2xl  ">
             <div className="text-green-700 text-lg mb-2">Completed Orders</div>
             <div className="text-4xl font-bold text-green-600">
-              {reportData.totalByStatus.COMPLETED}
+              {reportData.totalByStatus.COMPLETED ?? 0}
             </div>
           </div>
 
           <div className="bg-blue-50 p-5 rounded-2xl  ">
             <div className="text-blue-700 text-lg mb-2">Dine in @ToGo</div>
             <div className="text-4xl font-bold text-blue-600">
-              {reportData.waitingInStore}
+              {reportData.waitingInStore ?? 0}
             </div>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function ReportMonitor({ data }: props) {
                     <span className="text-lg text-gray-800">To-Go Orders</span>
                   </div>
                   <span className="text-lg font-bold text-gray-800">
-                    {reportData.totalByType.TOGO}
+                    {reportData.totalByType.TOGO ?? 0}
                   </span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-6">
@@ -144,7 +144,7 @@ export default function ReportMonitor({ data }: props) {
                     </span>
                   </div>
                   <span className="text-lg font-bold text-gray-800">
-                    {reportData.totalByType.DINEIN}
+                    {reportData.totalByType.DINEIN ?? 0}
                   </span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-6">
@@ -204,7 +204,7 @@ export default function ReportMonitor({ data }: props) {
                     <span className="text-lg text-gray-800">Pending</span>
                   </div>
                   <span className="text-lg font-bold text-gray-800">
-                    {reportData.totalByStatus.PENDING}
+                    {reportData.totalByStatus.PENDING ?? 0}
                   </span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-6">
@@ -227,7 +227,7 @@ export default function ReportMonitor({ data }: props) {
                     <span className="text-lg text-gray-800">Completed</span>
                   </div>
                   <span className="text-lg font-bold text-gray-800">
-                    {reportData.totalByStatus.COMPLETED}
+                    {reportData.totalByStatus.COMPLETED ?? 0}
                   </span>
                 </div>
                 <div className="w-full bg-gray-100 rounded-full h-6">
