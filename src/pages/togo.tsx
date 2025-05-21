@@ -9,7 +9,6 @@ import { setOrders } from "../store/slices/order-slice";
 import { useOrderSocket } from "../hooks/order-socket";
 import type { ICreateOrder } from "@/service/type";
 
-
 function TogoPage() {
   const orderType = "TOGO";
   const dispatch = useAppDispatch();
@@ -44,10 +43,13 @@ function TogoPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <HeaderSection title="Front-desk(To-Go)" className="bg-red-200 p-4 rounded-lg border-none"/>
+      <HeaderSection
+        title="Front-desk(To-Go)"
+        className="bg-red-200 p-4 rounded-lg border-none"
+      />
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full">
-          <ListOrders isCanDelete sort="DESC" />
+          <ListOrders isCanDelete />
         </div>
         <OrderForm
           orderType={orderType}
