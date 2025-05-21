@@ -104,7 +104,7 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
               </div>
               {isWaitingInStore ? (
                 <Input
-                  title="Table Number"
+                  title="Order Number"
                   value={waitingOrderNumber}
                   placeholder="Enter number"
                   onChange={(e) => setWaitingOrderNumber(e.target.value)}
