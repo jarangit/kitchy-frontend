@@ -19,7 +19,8 @@ export default function RoleCard({
   const { isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
 
   return (
-    <div className="rounded-xl  bg-white p-6 flex flex-col gap-10 items-center text-center w-full max-w-xs  xl:min-w-[350px]">
+    <div className="rounded-xl  bg-white p-6 flex flex-col gap-10 items-center text-center w-full max-w-xs  xl:min-w-[350px]"         onClick={onClick}
+>
       <div className="flex gap-2 w-full items-center justify-start">
         <div className={`text-3xl `}>{icon}</div>
         <h2 className="text-2xl font-semibold">{title}</h2>

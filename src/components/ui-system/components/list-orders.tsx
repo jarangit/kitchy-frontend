@@ -10,13 +10,22 @@ import {
   setSelectedType,
   setSelectedStatus,
 } from "../../../store/slices/order-slice";
+import { useEffect, useState } from "react";
+import type { IOrderItem } from "@/service/type";
 type Props = {
   isCanDelete?: boolean;
   isCanUpdate?: boolean;
+  sort?: "DESC" | "ASC";
 };
-export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
+export const ListOrders = ({
+  isCanDelete,
+  isCanUpdate,
+  sort = "ASC",
+}: Props) => {
   const { isLoading } = useLoading();
   const dispatch = useAppDispatch();
+  const [isHaveDineInWithToGoOrder, setIsHaveDineInWithToGoOrder] =
+    useState(false);
 
   // ดึงข้อมูลจาก store
   const orders = useAppSelector((state) => state.orders.orders);
@@ -33,7 +42,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
   });
 
   // ถ้าเลือก tab COMPLETED ให้เรียง createdAt จากน้อยไปมาก
-  if (selectedStatus === "COMPLETED") {
+  if (selectedStatus === "COMPLETED" || sort == "DESC") {
     filteredOrders = [...filteredOrders].sort(
       (a, b) =>
         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -92,11 +101,26 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
     }
   };
 
+  useEffect(() => {
+    const found = orders.some(
+      (order) => (order as unknown as IOrderItem).isWaitingInStore
+    );
+    setIsHaveDineInWithToGoOrder(found);
+  }, [orders]);
+
   return (
     <div className=" flex-grow flex flex-col">
       <div className="flex justify-between items-center mb-3 flex-wrap gap-6">
         <TabOrder _onClickTabItem={handleTabClick} />
         <div className="flex gap-2 font-semibold">
+          {isHaveDineInWithToGoOrder ? (
+            <div className="flex items-center">
+              <GoDotFill size={25} color="#9747FF" />
+              <div>Dine in @ToGo</div>
+            </div>
+          ) : (
+            ""
+          )}
           <div className="flex items-center">
             <GoDotFill size={25} color="#34C759" />
             <div>Dine in</div>
@@ -113,7 +137,7 @@ export const ListOrders = ({ isCanDelete, isCanUpdate }: Props) => {
         ) : (
           <>
             {filteredOrders.length ? (
-              <div className="grid grid-cols-1 md:grid-cols-4  2xl:grid-cols-6 gap-3 ">
+              <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-4 2xl:grid-cols-6 gap-3 ">
                 {filteredOrders.map((order, key) => (
                   <div key={key}>
                     <OrderCard

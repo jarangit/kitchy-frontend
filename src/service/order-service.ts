@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { ICreateOrder } from "./type";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // ✅ ดึงจาก .env
@@ -8,10 +9,7 @@ const api = axios.create({
 });
 
 // ✅ สร้างออเดอร์ใหม่
-export const createOrder = async (data: {
-  orderNumber: string;
-  orderType: "TOGO" | "DINEIN";
-}) => {
+export const createOrder = async (data: ICreateOrder) => {
   const payload = {
     ...data,
     type: data.orderType,
@@ -42,4 +40,9 @@ export const updateOrderStatus = async (
 ) => {
   const response = await api.patch(`/orders/${id}`, { status });
   return response.data;
+};
+
+export const report = async () => {
+  const res = await api.get("/orders/report-monitor");
+  return res.data;
 };
