@@ -60,6 +60,8 @@ Are you sure you want to proceed?`,
     onGetReport();
   }, []);
 
+  useEffect(() => {}, [orders]);
+
   return (
     <div className="flex flex-col gap-6 w-full">
       <HeaderSection title="Setting" />

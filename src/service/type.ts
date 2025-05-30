@@ -6,6 +6,7 @@ export interface ICreateOrder {
 export interface IOrderItem {
   id: number;
   orderNumber: string;
+  previousOrderNumber?: string | null;
   type: string;
   status: string;
   isArchived: boolean;
@@ -13,6 +14,7 @@ export interface IOrderItem {
   isWaitingInStore: boolean;
   createdAt: Date | string;
   updatedAt: Date | string;
+
 }
 
 export interface IUpdateOrder {

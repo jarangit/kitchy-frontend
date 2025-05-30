@@ -10,7 +10,6 @@ import { useEffect, useRef, useState } from "react";
 import ElapsedTime from "./elapsed-time";
 import type { IOrderItem, IUpdateOrder } from "@/service/type";
 
-
 interface Props {
   order: IOrderItem;
   onDelete: (id: number) => void;
@@ -28,7 +27,15 @@ const OrderCard = ({
   isCanDelete,
   isCanAction,
 }: Props) => {
-  const { id, orderNumber, type, createdAt, status, isWaitingInStore } = order;
+  const {
+    id,
+    orderNumber,
+    type,
+    createdAt,
+    status,
+    isWaitingInStore,
+    previousOrderNumber,
+  } = order;
   const [isFading, setIsFading] = useState(false);
   const isToGo = type === "TOGO";
   const [isShowDeleteButton, setIsShowDeleteButton] = useState(false);
@@ -97,6 +104,11 @@ const OrderCard = ({
             />
           </div>
         </div>
+        {previousOrderNumber && (
+          <div className=" font-bold text-lg ">
+            Updated: #{previousOrderNumber} to <span className="underline">#{orderNumber}</span>
+          </div>
+        )}
         <div className="hidden md:flex justify-between flex-wrap gap-3 flex-col">
           <div className="flex flex-wrap gap-2">
             <div
