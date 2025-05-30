@@ -23,9 +23,9 @@ const Layout = ({ children }: Props) => {
             !isHideSidebar ? "ml-[60px] " : "ml-0"
           }"`}
         >
-          {/* <section className="w-full p-3 bg-blue-500 text-white text-center">
+          <section className="w-full p-3 bg-blue-500 text-white text-center">
             Develop version
-          </section> */}
+          </section>
           <main className="flex-1 flex flex-col p-4 my-container">
             {children}
           </main>

@@ -25,6 +25,7 @@ const SettingPage = () => {
         title: `Delete All Orders (${orders?.length})?`,
         content: `This action will permanently remove all pending and completed orders from the system.
 Are you sure you want to proceed?`,
+        template: "DELETE",
         onConfirm: async () => await onDeleteOrder(),
       })
     );
@@ -41,6 +42,7 @@ Are you sure you want to proceed?`,
       console.log(error);
     } finally {
       setIsLoading(false);
+      onGetReport();
     }
   };
   const onGetReport = async () => {

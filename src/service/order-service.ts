@@ -1,5 +1,6 @@
 import axios from "axios";
-import type { ICreateOrder } from "./type";
+import type { ICreateOrder, IUpdateOrder } from "./type";
+
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // ✅ ดึงจาก .env
@@ -34,11 +35,9 @@ export const deleteOrderAll = async () => {
   return response.data;
 };
 // ✅ อัปเดตสถานะออเดอร์
-export const updateOrderStatus = async (
-  id: number,
-  status: "PENDING" | "COMPLETED"
-) => {
-  const response = await api.patch(`/orders/${id}`, { status });
+export const updateOrderStatus = async (data: IUpdateOrder) => {
+  const { id, ...rest } = data;
+  const response = await api.patch(`/orders/${id}`, { ...rest });
   return response.data;
 };
 

@@ -8,6 +8,8 @@ import { IoIosRepeat, IoMdCloseCircle } from "react-icons/io";
 import { FaClock } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import ElapsedTime from "./elapsed-time";
+import { set } from "date-fns";
+import type { IOrderItem, IUpdateOrder } from "@/service/type";
 
 interface OrderCardProps {
   id: number;
@@ -18,9 +20,10 @@ interface OrderCardProps {
   isWaitingInStore?: boolean;
 }
 interface Props {
-  order: OrderCardProps;
+  order: IOrderItem;
   onDelete: (id: number) => void;
-  onUpdateStatus: (id: number, status: "COMPLETED" | "PENDING") => void;
+  onUpdateStatus: (data: IUpdateOrder) => void;
+  onEditOrder: (id: number) => void;
   isCanDelete?: boolean;
   isCanAction?: boolean;
 }
@@ -29,6 +32,7 @@ const OrderCard = ({
   order,
   onDelete,
   onUpdateStatus,
+  onEditOrder,
   isCanDelete,
   isCanAction,
 }: Props) => {
@@ -43,9 +47,13 @@ const OrderCard = ({
   // const createdAtZoned = toZonedTime(new Date(createdAt), userTimeZone);
   // const formattedCreatedAt = format(createdAtZoned, "dd/MM/yy HH:mm");
   const handleUpdate = () => {
+    const payload: IUpdateOrder = {
+      id,
+      status: status == "PENDING" ? "COMPLETED" : "PENDING",
+    };
     setIsFading(true);
     setTimeout(() => {
-      onUpdateStatus(id, status == "PENDING" ? "COMPLETED" : "PENDING");
+      onUpdateStatus(payload);
       setIsFading(false);
     }, 300);
   };
@@ -64,6 +72,16 @@ const OrderCard = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isShowDeleteButton]);
+
+  useEffect(() => {
+    // เมื่อ component ถูก mount ให้ reset isShowDeleteButton
+    setIsShowDeleteButton(false);
+    return () => {
+      // เมื่อ component ถูก unmount ให้ reset isShowDeleteButton
+      setIsShowDeleteButton(false);
+    };
+  }, [order]);
+
   return (
     <div
       className={`w-full h-full rounded-xl p-4  relative  transition-opacity duration-300 flex flex-col justify-between gap-3 ${
@@ -78,7 +96,13 @@ const OrderCard = ({
           <div className="md:text-4xl font-bold">#{orderNumber}</div>
           <div className="flex md:hidden items-center text-sm text-gray-700">
             <FaClock className="mr-1" />
-            <ElapsedTime createdAt={createdAt} />
+            <ElapsedTime
+              createdAt={
+                typeof createdAt === "string"
+                  ? createdAt
+                  : createdAt.toISOString()
+              }
+            />
           </div>
         </div>
         <div className="hidden md:flex justify-between flex-wrap gap-3 flex-col">
@@ -103,7 +127,13 @@ const OrderCard = ({
           </div>
 
           <div className="flex items-center text-sm  text-gray-700 gap-1">
-            <ElapsedTime createdAt={createdAt} />
+            <ElapsedTime
+              createdAt={
+                typeof createdAt === "string"
+                  ? createdAt
+                  : createdAt.toISOString()
+              }
+            />
           </div>
         </div>
       </div>
@@ -131,7 +161,7 @@ const OrderCard = ({
         ""
       )}
       {isCanDelete ? (
-        <div className="space-y-1 " >
+        <div className="space-y-1 ">
           <div className="w-full flex justify-end opacity-50">
             {!isShowDeleteButton ? (
               <FaEdit
@@ -148,9 +178,8 @@ const OrderCard = ({
           {isShowDeleteButton ? (
             <div className="flex items-center gap-2 ">
               <button
-                className={`px-4 py-2 text-sm font-bold text-white rounded-sm   w-full cursor-pointer w-full ${
-                  status === "PENDING" ? "bg-[#0C60DC]" : "bg-[#DC0C0F]"
-                }`}
+                className={`px-4 py-2 text-sm font-bold text-white rounded-sm   w-full cursor-pointer w-full bg-[#0C60DC]`}
+                onClick={() => onEditOrder(id)}
               >
                 <div className="flex items-center gap-2 justify-center">
                   {/* <FaCheckCircle /> */}
@@ -162,7 +191,9 @@ const OrderCard = ({
               >
                 <div
                   className="flex items-center gap-2 justify-center"
-                  onClick={() => onDelete(id)}
+                  onClick={() => {
+                    onDelete(id);
+                  }}
                 >
                   {/* <FaCheckCircle /> */}
                   <div>Delete</div>

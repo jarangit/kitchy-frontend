@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import { NumericKeypad } from "./numbericKeypad";
 import Input from "./atoms/input";
 import TabItem from "./atoms/tab-item";
+import type { IOrderItem } from "@/service/type";
 
 interface OrderFormProps {
-  orderType: "TOGO" | "DINEIN";
+  orderType: "TOGO" | "DINEIN" | "";
   label: string;
   buttonColor: string;
+  initValue?: IOrderItem;
   _onSubmit: ({
     orderType,
     orderNumber,
@@ -21,7 +23,12 @@ interface OrderFormProps {
   }) => void;
 }
 
-export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
+export function OrderForm({
+  label,
+  _onSubmit,
+  orderType,
+  initValue,
+}: OrderFormProps) {
   const [number, setNumber] = useState("");
   const [isWaitingInStore, setIsWaitingInStore] = useState(false);
 
@@ -44,11 +51,18 @@ export function OrderForm({ label, _onSubmit, orderType }: OrderFormProps) {
     setIsWaitingInStore(value);
   };
 
-  useEffect(() => {
-    if (orderType) {
-      console.log(orderType);
+  const onInitValue = () => {
+    if (initValue) {
+      setNumber(initValue.orderNumber || "");
+      setIsWaitingInStore(initValue.isWaitingInStore || false);
+    } else {
+      setNumber("");
+      setIsWaitingInStore(false);
     }
-  }, []);
+  };
+  useEffect(() => {
+    onInitValue();
+  }, [initValue]);
 
   return (
     <form
