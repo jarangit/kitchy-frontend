@@ -10,7 +10,7 @@ import {
   setSelectedType,
   setSelectedStatus,
 } from "../../../store/slices/order-slice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { IOrderItem } from "@/service/type";
 type Props = {
   isCanDelete?: boolean;
@@ -31,6 +31,7 @@ export const ListOrders = ({
   const orders = useAppSelector((state) => state.orders.orders);
   const selectedType = useAppSelector((state) => state.orders.selectedType);
   const selectedStatus = useAppSelector((state) => state.orders.selectedStatus);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // ฟังก์ชัน filter order ตาม type และ status
   let filteredOrders = orders.filter((order) => {
@@ -131,13 +132,22 @@ export const ListOrders = ({
           </div>
         </div>
       </div>
-      <div className=" bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto">
+      <div
+        ref={containerRef}
+        className={`bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto`}
+      >
         {isLoading ? (
           <div className="text-center text-gray-500">Loading...</div>
         ) : (
           <>
             {filteredOrders.length ? (
-              <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-4 2xl:grid-cols-6 gap-3 ">
+              <div
+                className={`grid grid-cols-1 md:grid-cols-3   2xl:grid-cols-6 gap-3  ${
+                  containerRef.current && containerRef.current.offsetWidth > 950
+                    ? "md:grid-cols-4"
+                    : "md:grid-cols-3"
+                }`}
+              >
                 {filteredOrders.map((order, key) => (
                   <div key={key}>
                     <OrderCard

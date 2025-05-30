@@ -6,7 +6,7 @@
 import { FaCheckCircle, FaEdit } from "react-icons/fa";
 import { IoIosRepeat, IoMdCloseCircle } from "react-icons/io";
 import { FaClock } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ElapsedTime from "./elapsed-time";
 
 interface OrderCardProps {
@@ -36,6 +36,7 @@ const OrderCard = ({
   const [isFading, setIsFading] = useState(false);
   const isToGo = type === "TOGO";
   const [isShowDeleteButton, setIsShowDeleteButton] = useState(false);
+  const actionRef = useRef<HTMLDivElement>(null);
 
   // แปลงวันที่เป็น timezone ของ user
   // const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -48,6 +49,21 @@ const OrderCard = ({
       setIsFading(false);
     }, 300);
   };
+
+  // ฟังก์ชันปิดเมื่อ click ด้านนอก
+  useEffect(() => {
+    if (!isShowDeleteButton) return;
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        actionRef.current &&
+        !actionRef.current.contains(event.target as Node)
+      ) {
+        setIsShowDeleteButton(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isShowDeleteButton]);
   return (
     <div
       className={`w-full h-full rounded-xl p-4  relative  transition-opacity duration-300 flex flex-col justify-between gap-3 ${
@@ -115,7 +131,7 @@ const OrderCard = ({
         ""
       )}
       {isCanDelete ? (
-        <div className="space-y-1 ">
+        <div className="space-y-1 " >
           <div className="w-full flex justify-end opacity-50">
             {!isShowDeleteButton ? (
               <FaEdit
