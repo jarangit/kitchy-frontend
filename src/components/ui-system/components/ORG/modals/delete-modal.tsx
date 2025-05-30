@@ -1,6 +1,5 @@
 import { useAppDispatch } from "@/hooks/hooks";
 import { closeModal } from "@/store/slices/modal-slice";
-import React from "react";
 
 type Props = {
   content?: string;

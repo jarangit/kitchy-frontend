@@ -8,17 +8,9 @@ import { IoIosRepeat, IoMdCloseCircle } from "react-icons/io";
 import { FaClock } from "react-icons/fa";
 import { useEffect, useRef, useState } from "react";
 import ElapsedTime from "./elapsed-time";
-import { set } from "date-fns";
 import type { IOrderItem, IUpdateOrder } from "@/service/type";
 
-interface OrderCardProps {
-  id: number;
-  orderNumber: string;
-  type: "TOGO" | "DINEIN";
-  createdAt: string;
-  status: "PENDING" | "COMPLETED";
-  isWaitingInStore?: boolean;
-}
+
 interface Props {
   order: IOrderItem;
   onDelete: (id: number) => void;
