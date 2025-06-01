@@ -3,15 +3,16 @@ import OrderCard from "./order-card";
 import { deleteOrder, updateOrderStatus } from "../../../service/order-service";
 import { GoDotFill } from "react-icons/go";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
-import { openModal } from "../../../store/slices/modal-slice";
+import { closeModal, openModal } from "../../../store/slices/modal-slice";
 import { useLoading } from "../../../hooks/useLoading";
 import TabOrder from "./tab-order";
 import {
   setSelectedType,
   setSelectedStatus,
 } from "../../../store/slices/order-slice";
-import { useEffect, useState } from "react";
-import type { IOrderItem } from "@/service/type";
+import { useEffect, useRef, useState } from "react";
+import type { IOrderItem, IUpdateOrder } from "@/service/type";
+import EditModal from "./ORG/modals/edit-modal";
 type Props = {
   isCanDelete?: boolean;
   isCanUpdate?: boolean;
@@ -31,6 +32,7 @@ export const ListOrders = ({
   const orders = useAppSelector((state) => state.orders.orders);
   const selectedType = useAppSelector((state) => state.orders.selectedType);
   const selectedStatus = useAppSelector((state) => state.orders.selectedStatus);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // ฟังก์ชัน filter order ตาม type และ status
   let filteredOrders = orders.filter((order) => {
@@ -53,6 +55,7 @@ export const ListOrders = ({
     dispatch(
       openModal({
         title: "Confirm Delete",
+        template: "DELETE",
         content: "Are you sure you want to delete this?",
         onConfirm: async () => await onDeleteOrder(id),
       })
@@ -85,12 +88,9 @@ export const ListOrders = ({
   };
 
   // function for update order status
-  const handleUpdateOrderStatus = async (
-    id: number,
-    status: "COMPLETED" | "PENDING"
-  ) => {
+  const handleUpdateOrderStatus = async (data: IUpdateOrder) => {
     try {
-      await updateOrderStatus(id, status);
+      await updateOrderStatus(data);
     } catch (error: any) {
       dispatch(
         openModal({
@@ -98,6 +98,34 @@ export const ListOrders = ({
           content: `"Failed to update order status ${error.message}"`,
         })
       );
+    }
+  };
+
+  const handleEditOrder = (order: IOrderItem) => {
+    dispatch(
+      openModal({
+        title: "Edit Order",
+        template: "EDIT",
+        content: "",
+        component: <EditModal data={order} _onSubmit={(e) => onUpdate(e)} />,
+        onConfirm: () => {},
+      })
+    );
+  };
+
+  const onUpdate = async (data: IUpdateOrder) => {
+    try {
+      await updateOrderStatus(data);
+    } catch (error: any) {
+      dispatch(
+        openModal({
+          title: "Error",
+          content: `"Failed to update order ${error.message}"`,
+        })
+      );
+    } finally {
+      // Close the modal after updating
+      dispatch(closeModal());
     }
   };
 
@@ -131,21 +159,31 @@ export const ListOrders = ({
           </div>
         </div>
       </div>
-      <div className=" bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto">
+      <div
+        ref={containerRef}
+        className={`bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto`}
+      >
         {isLoading ? (
           <div className="text-center text-gray-500">Loading...</div>
         ) : (
           <>
             {filteredOrders.length ? (
-              <div className="grid grid-cols-1 md:grid-cols-3  lg:grid-cols-4 2xl:grid-cols-6 gap-3 ">
-                {filteredOrders.map((order, key) => (
+              <div
+                className={`grid grid-cols-1 md:grid-cols-3   2xl:grid-cols-4 gap-3  ${
+                  containerRef.current && containerRef.current.offsetWidth > 950
+                    ? "md:grid-cols-4"
+                    : "md:grid-cols-3"
+                }`}
+              >
+                {filteredOrders.map((order: any, key: any) => (
                   <div key={key}>
                     <OrderCard
                       order={order}
                       onDelete={() => handleDelete(order.id)}
-                      onUpdateStatus={(id, status) =>
-                        handleUpdateOrderStatus(id, status)
+                      onUpdateStatus={(data: IUpdateOrder) =>
+                        handleUpdateOrderStatus(data)
                       }
+                      onEditOrder={() => handleEditOrder(order)}
                       isCanDelete={isCanDelete}
                       isCanAction={isCanUpdate}
                     />
