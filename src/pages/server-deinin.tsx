@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { setOrders } from "../store/slices/order-slice";
 import { useOrderSocket } from "../hooks/order-socket";
 import type { ICreateOrder } from "@/service/type";
+import { toast } from "sonner";
 
 function ServerDineInPage() {
   const orderType = "DINEIN";
@@ -36,7 +37,7 @@ function ServerDineInPage() {
           dispatch(setOrders(res));
         }
       } catch (error) {
-        console.log(error);
+        toast.error("Failed to load orders. Please try again later.");
       }
     };
     loadOrders();
@@ -50,7 +51,7 @@ function ServerDineInPage() {
       />
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full">
-          <ListOrders isCanDelete  />
+          <ListOrders isCanDelete />
         </div>
         <OrderForm
           orderType={orderType}

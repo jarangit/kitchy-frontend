@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { setOrders } from "../store/slices/order-slice";
 import { useOrderSocket } from "../hooks/order-socket";
 import type { ICreateOrder } from "@/service/type";
+import { toast } from "sonner";
 
 function TogoPage() {
   const orderType = "TOGO";
@@ -23,7 +24,9 @@ function TogoPage() {
     try {
       await createOrder(data);
     } catch (error) {
-      console.log(error);
+      toast.error(
+        error instanceof Error ? error.message : "something went wrong"
+      );
     }
   };
 
@@ -35,7 +38,7 @@ function TogoPage() {
           dispatch(setOrders(res));
         }
       } catch (error) {
-        console.log(error);
+        toast.error("Failed to load orders. Please try again later.");
       }
     };
     loadOrders();
