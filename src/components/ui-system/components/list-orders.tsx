@@ -94,8 +94,9 @@ export const ListOrders = ({
     } catch (error: any) {
       dispatch(
         openModal({
-          title: "Error",
-          content: `"Failed to update order status ${error.message}"`,
+          title: "",
+          content: ``,
+          template: "ERROR",
         })
       );
     }
@@ -119,8 +120,9 @@ export const ListOrders = ({
     } catch (error: any) {
       dispatch(
         openModal({
-          title: "Error",
-          content: `"Failed to update order ${error.message}"`,
+          title: "",
+          content: ``,
+          template: "ERROR",
         })
       );
     } finally {

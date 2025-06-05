@@ -1,8 +1,6 @@
-import React from "react";
 
-type Props = {};
 
-const ErrorModal = (props: Props) => {
+const ErrorModal = () => {
   return (
     <div>
       <div className="flex flex-col items-center justify-center h-full">

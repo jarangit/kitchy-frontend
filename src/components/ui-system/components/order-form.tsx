@@ -6,7 +6,6 @@ import { NumericKeypad } from "./numbericKeypad";
 import Input from "./atoms/input";
 import TabItem from "./atoms/tab-item";
 import type { IOrderItem } from "@/service/type";
-import { useLoading } from "@/hooks/useLoading";
 
 interface OrderFormProps {
   orderType: "TOGO" | "DINEIN" | "";
