@@ -2,11 +2,11 @@ import { Dialog } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
 import { closeModal } from "../../../store/slices/modal-slice";
 import DeleteModal from "./ORG/modals/delete-modal";
+import ErrorModal from "./ORG/modals/error-modal";
 
 export default function GlobalModal() {
-  const { isOpen, title, content, onConfirm, template, component } = useAppSelector(
-    (state) => state.modal
-  );
+  const { isOpen, title, content, onConfirm, template, component } =
+    useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
 
   const handleClose = () => dispatch(closeModal());
@@ -20,7 +20,8 @@ export default function GlobalModal() {
           {template === "DELETE" && (
             <DeleteModal content={content} onConfirm={onConfirm} />
           )}
-          {template === "EDIT" &&  component}
+          {template === "ERROR" && <ErrorModal />}
+          {template === "EDIT" && component}
         </Dialog.Panel>
       </div>
     </Dialog>

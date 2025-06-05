@@ -163,7 +163,7 @@ export const ListOrders = ({
         ref={containerRef}
         className={`bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto`}
       >
-        {isLoading ? (
+        {isLoading && !filteredOrders?.length ? (
           <div className="text-center text-gray-500">Loading...</div>
         ) : (
           <>

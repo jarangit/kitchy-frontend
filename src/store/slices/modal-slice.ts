@@ -5,7 +5,7 @@ interface ModalState {
   title: string;
   content: string;
   onConfirm?: () => void;
-  template?: "DELETE" | "EDIT"; // Optional template for modal content
+  template?: "DELETE" | "EDIT" | "ERROR"; // Optional template for modal content
   component?: React.ReactNode; // Optional custom component to render in the modal
 }
 const initialState: ModalState = {

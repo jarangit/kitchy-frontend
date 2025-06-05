@@ -10,12 +10,15 @@ import { setOrders } from "../store/slices/order-slice";
 import { useOrderSocket } from "../hooks/order-socket";
 import type { ICreateOrder } from "@/service/type";
 import { toast } from "sonner";
+import { useLoading } from "@/hooks/useLoading";
+import { openModal } from "@/store/slices/modal-slice";
 
 function ServerDineInPage() {
   const orderType = "DINEIN";
   const dispatch = useAppDispatch();
   const isSoundOn = useAppSelector((state) => state.sound.isSoundOn);
   const notifySound = new Audio("/sound/ring.mp3");
+  const { startLoading, stopLoading } = useLoading();
 
   useOrderSocket(isSoundOn, notifySound);
 
@@ -23,9 +26,19 @@ function ServerDineInPage() {
     const { orderNumber } = data;
     if (!orderNumber) return alert("กรุณากรอกหมายเลขออเดอร์");
     try {
+      startLoading();
+
       await createOrder(data);
     } catch (error) {
-      console.log(error);
+      dispatch(
+        openModal({
+          title: "",
+          template: "ERROR",
+          content: "",
+        })
+      );
+    } finally {
+      stopLoading();
     }
   };
 
