@@ -94,8 +94,9 @@ export const ListOrders = ({
     } catch (error: any) {
       dispatch(
         openModal({
-          title: "Error",
-          content: `"Failed to update order status ${error.message}"`,
+          title: "",
+          content: ``,
+          template: "ERROR",
         })
       );
     }
@@ -119,8 +120,9 @@ export const ListOrders = ({
     } catch (error: any) {
       dispatch(
         openModal({
-          title: "Error",
-          content: `"Failed to update order ${error.message}"`,
+          title: "",
+          content: ``,
+          template: "ERROR",
         })
       );
     } finally {
@@ -163,7 +165,7 @@ export const ListOrders = ({
         ref={containerRef}
         className={`bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto`}
       >
-        {isLoading ? (
+        {isLoading && !filteredOrders?.length ? (
           <div className="text-center text-gray-500">Loading...</div>
         ) : (
           <>

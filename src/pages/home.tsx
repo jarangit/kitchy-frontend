@@ -9,6 +9,7 @@ import { useLoading } from "../hooks/useLoading";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import { useOrderSocket } from "../hooks/order-socket";
 import { setOrders } from "../store/slices/order-slice";
+import { toast } from "sonner";
 // interface Order {
 //   id: number;
 //   orderNumber: string;
@@ -62,7 +63,7 @@ const Home = () => {
         const data = await fetchOrders();
         dispatch(setOrders(data));
       } catch (err) {
-        console.error("Failed to load orders", err);
+       toast.error("Failed to load orders. Please try again later.");
       } finally {
         stopLoading();
       }
