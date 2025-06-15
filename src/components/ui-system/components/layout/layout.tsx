@@ -15,11 +15,24 @@ const Layout = ({ children }: Props) => {
   const location = useLocation();
   const isOnline = useNetworkStatus();
 
+  // ฟังก์ชันสำหรับเช็คว่า token หมดอายุหรือยัง (JWT)
+  function isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      if (!payload.exp) return true;
+      // exp เป็นวินาที (Unix timestamp)
+      const now = Math.floor(Date.now() / 1000);
+      return payload.exp < now;
+    } catch (e) {
+      return true; // ถ้า decode ไม่ได้ ให้ถือว่าหมดอายุ
+    }
+  }
+
   const isHideSidebar = location.pathname === "/kitchen-monitor";
   useEffect(() => {
     setupAutoReload(10);
   }, []);
-  
+
   return (
     <>
       <div className="flex">
@@ -49,8 +62,8 @@ const Layout = ({ children }: Props) => {
       </div>
 
       {/* global ui */}
-      <GlobalModal />
-      <Toaster position="top-right" richColors />
+      {/* <GlobalModal /> */}
+      {/* <Toaster position="top-right" richColors /> */}
 
       {/* <LoadingOverlay /> */}
     </>

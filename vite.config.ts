@@ -11,7 +11,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       devOptions: {
-        enabled: true, // ใช้ใน dev mode ก็เห็นผล
+        enabled: false, // ใช้ใน dev mode ก็เห็นผล
       },
       manifest: {
         name: "KDS Frontend",
