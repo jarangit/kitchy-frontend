@@ -4,12 +4,13 @@ import UserDashboardPage from "./pages/user-dashborad";
 import RestaurantDashboardPage from "./pages/restaurant-dashboard";
 import { AuthProvider } from "./context/authContext";
 import { ProtectedRoute } from "./components/protected-route";
+import HomePage from "./pages/home";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={"ladding page"} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/user-dashboard"

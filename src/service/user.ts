@@ -13,4 +13,8 @@ export const userServiceApi = {
     const response = await axiosClient.get("/users/" + id);
     return response.data;
   },
+  getMe: async () => {
+    const response = await axiosClient.get("/users/me");
+    return response.data;
+  }
 };

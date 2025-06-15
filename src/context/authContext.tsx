@@ -7,7 +7,7 @@ import type { PropsWithChildren } from "react";
 interface AuthContextType {
   user: any; // Replace 'any' with your user type if available
   loading: boolean;
-  login: (credentials: { email: string; passowrd: string }) => Promise<void>;
+  login: (email: string, passowrd: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -15,13 +15,14 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: PropsWithChildren<{}>) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const fetchUser = async () => {
+    setLoading(true);
     try {
-      const res = await userServiceApi.getBydId(1);
-      setUser(res.data);
+      const res = await userServiceApi.getMe();
+      setUser(res);
     } catch (err) {
       setUser(null);
     } finally {
@@ -33,11 +34,8 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
     fetchUser();
   }, []);
 
-  const login = async (credentials: { email: string; passowrd: string }) => {
-    const res = await userServiceApi.login(
-      credentials.email,
-      credentials.passowrd
-    );
+  const login = async (email: string, passowrd: string) => {
+    const res = await userServiceApi.login(email, passowrd);
     localStorage.setItem("accessToken", res.data.accessToken);
     await fetchUser();
     navigate("/");

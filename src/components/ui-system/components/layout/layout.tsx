@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from "react";
-import GlobalModal from "../common-modal";
-import { Toaster } from "sonner";
+// import GlobalModal from "../common-modal";
+// import { Toaster } from "sonner";
 import Sidebar from "./sidebar";
 import { useLocation } from "react-router-dom";
 import { setupAutoReload } from "@/utils/idleReload";
@@ -15,18 +15,6 @@ const Layout = ({ children }: Props) => {
   const location = useLocation();
   const isOnline = useNetworkStatus();
 
-  // ฟังก์ชันสำหรับเช็คว่า token หมดอายุหรือยัง (JWT)
-  function isTokenExpired(token: string): boolean {
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      if (!payload.exp) return true;
-      // exp เป็นวินาที (Unix timestamp)
-      const now = Math.floor(Date.now() / 1000);
-      return payload.exp < now;
-    } catch (e) {
-      return true; // ถ้า decode ไม่ได้ ให้ถือว่าหมดอายุ
-    }
-  }
 
   const isHideSidebar = location.pathname === "/kitchen-monitor";
   useEffect(() => {

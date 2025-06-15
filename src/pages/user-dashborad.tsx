@@ -34,7 +34,6 @@ export default function UserDashboard() {
 
   useEffect(() => {
     onGetRestaurants();
-    console.log("🚀 ~ UserDashboard ~ restaurants:", restaurants);
   }, []);
 
   return (
