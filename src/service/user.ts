@@ -9,4 +9,8 @@ export const userServiceApi = {
     });
     return response.data;
   },
+  getBydId: async (id: number) => {
+    const response = await axiosClient.get("/users/" + id);
+    return response.data;
+  },
 };
