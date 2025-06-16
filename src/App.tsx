@@ -1,10 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/login";
 import UserDashboardPage from "./pages/user-dashborad";
-import RestaurantDashboardPage from "./pages/restaurant-dashboard";
+import RestaurantDashboardPage from "./pages/restaurant/restaurant-dashboard";
 import { AuthProvider } from "./context/authContext";
 import { ProtectedRoute } from "./components/protected-route";
 import HomePage from "./pages/home";
+import RestaurantManagementPage from "./pages/restaurant/management";
 
 function App() {
   return (
@@ -22,7 +23,19 @@ function App() {
         />
         <Route
           path="/restaurant-dashboard/:id"
-          element={<RestaurantDashboardPage />}
+          element={
+            <ProtectedRoute>
+              <RestaurantDashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/restaurant/management"
+          element={
+            <ProtectedRoute>
+              <RestaurantManagementPage />
+            </ProtectedRoute>
+          }
         />
       </Routes>
     </AuthProvider>

@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { orderApiService } from "@/service/order";
 import { stationServiceApi } from "@/service/station";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -6,14 +8,14 @@ type Props = {};
 
 const menuList = [
   { name: "Order view", path: "/restaurant-dashboard/orders" },
-  { name: "Stations", path: "/restaurant-dashboard/stations" },
-  { name: "Management", path: "/restaurant-dashboard/management" },
+  { name: "Management", path: "/restaurant/management" },
   { name: "Live Station Monitor", path: "/restaurant-dashboard/management" },
   { name: "setting", path: "/restaurant-dashboard/management" },
 ];
 
 const RestaurantDashboardPage = (props: Props) => {
   const [stations, setStations] = useState<any>();
+  const [orders, setOrders] = useState<any>();
   const onGetStations = async (restaurantId: number) => {
     try {
       // Call the API to get stations by restaurant ID
@@ -26,18 +28,32 @@ const RestaurantDashboardPage = (props: Props) => {
     }
   };
 
+  const onGetOrders = async (restaurantId: number) => {
+    try {
+      const res = await orderApiService.getOrdersByRestaurantId(restaurantId);
+      if (res && res.data) {
+        setOrders(res.data);
+      }
+    } catch (error) {}
+  };
+
   useEffect(() => {
     onGetStations(1);
+    onGetOrders(1);
   }, []);
   return (
     <div className="my-container">
-      
-      <Link to={"/login"}>Back to Home</Link>
+      <div className="mb-6">
+        <Link to={"/login"}>Back to Home</Link>
+      </div>
 
-      <h1 className="text-2xl font-bold mb-4">Restaurant Dashboard</h1>
-      <p>Welcome to the restaurant dashboard!</p>
-      {/* Add more content here as needed */}
-      {/* list ment */}
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-2xl font-bold mb-4">Restaurant Dashboard</h1>
+          <p>Welcome to the restaurant dashboard!</p>
+        </div>
+        <Button>New Order</Button>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
         <ul className="col-span-1 border">
@@ -51,6 +67,25 @@ const RestaurantDashboardPage = (props: Props) => {
         </ul>
 
         <div className="col-span-3">
+          {/* order list  */}
+          <div className="bg-gray-200 p-4 rounded-lg">
+            <div>Order {orders?.length}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
+              {orders?.length &&
+                orders.map((order: any) => (
+                  <div key={order.id} className="bg-green-300 rounded-lg p-4">
+                    <h2 className="text-xl font-semibold">
+                      Order ID: {order.orderNumber}
+                    </h2>
+                    <p>Order Status: {order.status}</p>
+                    <p>
+                      Created At:{" "}
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                ))}
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {stations?.length &&
               stations.map((station: any) => (
