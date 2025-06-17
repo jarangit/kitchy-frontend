@@ -9,7 +9,6 @@ type Props = {};
 
 const RestaurantManagementPage = (props: Props) => {
   const { data: foodList, isLoading } = useFoodService(1);
-  console.log("🚀 ~ RestaurantManagementPage ~ foodList:", foodList);
   const navigate = useNavigate();
   const [menuSelected, setMenuSelected] = useState("food");
 

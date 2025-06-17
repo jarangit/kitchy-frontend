@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { useRestaurantService } from "@/hooks/useRestaurantService";
 import { orderApiService } from "@/service/order";
 import { stationServiceApi } from "@/service/station";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams, useRoutes } from "react-router-dom";
 
 type Props = {};
 
@@ -14,8 +16,28 @@ const menuList = [
 ];
 
 const RestaurantDashboardPage = (props: Props) => {
+  const { id } = useParams<{ id: string }>();
+  const auth = useAuth();
+  const { user } = auth || {};
+  const userId = auth?.user?.id;
+  const {
+    restaurantFinOneQuery,
+    restaurantFinOneLoading,
+    restaurantFinOneQueryError,
+  } = useRestaurantService({
+    restaurantId: id ? +id : undefined,
+  });
+  console.log(
+    "🚀 ~ RestaurantDashboardPage ~ restaurantFinOneQueryError:",
+    restaurantFinOneQueryError
+  );
+  console.log(
+    "🚀 ~ RestaurantDashboardPage ~ restaurantFinOneQuery:",
+    restaurantFinOneQuery
+  );
   const [stations, setStations] = useState<any>();
   const [orders, setOrders] = useState<any>();
+
   const onGetStations = async (restaurantId: number) => {
     try {
       // Call the API to get stations by restaurant ID
@@ -38,9 +60,18 @@ const RestaurantDashboardPage = (props: Props) => {
   };
 
   useEffect(() => {
-    onGetStations(1);
-    onGetOrders(1);
-  }, []);
+    if (id) {
+      onGetStations(+id);
+      onGetOrders(+id);
+    }
+  }, [id]);
+
+  if (restaurantFinOneLoading) {
+    return <div>Loading...</div>;
+  }
+  if (restaurantFinOneQueryError) {
+    return <div>Error: {restaurantFinOneQueryError}</div>;
+  }
   return (
     <div className="my-container">
       <div className="mb-6">
@@ -49,7 +80,9 @@ const RestaurantDashboardPage = (props: Props) => {
 
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-2xl font-bold mb-4">Restaurant Dashboard</h1>
+          <h1 className="text-2xl font-bold mb-4">
+            {restaurantFinOneQuery.name}
+          </h1>
           <p>Welcome to the restaurant dashboard!</p>
         </div>
         <Button>New Order</Button>

@@ -6,5 +6,12 @@ export const restaurantServiceApi = {
     const response = await axiosClient.get(`/restaurants/user/${userId}`);
     return response.data;
   },
- 
+  addRestaurant: async (restaurantData: { userId: number; name: string }) => {
+    const response = await axiosClient.post("/restaurants", restaurantData);
+    return response.data;
+  },
+  getById: async (restaurantId: number) => {
+    const response = await axiosClient.get(`/restaurants/${restaurantId}`);
+    return response.data;
+  }
 };

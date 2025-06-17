@@ -15,9 +15,9 @@ const LoginPage = (props: Props) => {
     try {
       const res = await userServiceApi.login(email, password);
       if (res.access_token) {
-        console.log("🚀 ~ handleLogin ~ res:", res);
         localStorage.setItem("token", res.access_token);
-        navigate("/user-dashboard");
+        window.location.href = "/user-dashboard";
+        // navigate("/user-dashboard");
       }
     } catch (error: any) {
       setError(error.message || "Login failed");
