@@ -10,9 +10,9 @@ type Props = {};
 
 const menuList = [
   { name: "Order view", path: "/restaurant-dashboard/orders" },
-  { name: "Management", path: "/restaurant/management" },
+  { name: "Management", path: "management" },
   { name: "Live Station Monitor", path: "/restaurant-dashboard/management" },
-  { name: "setting", path: "/restaurant-dashboard/management" },
+  { name: "setting", path: "setting" },
 ];
 
 const RestaurantDashboardPage = (props: Props) => {
@@ -92,7 +92,10 @@ const RestaurantDashboardPage = (props: Props) => {
         <ul className="col-span-1 border">
           {menuList.map((item) => (
             <li key={item.name} className="mb-2">
-              <Link to={item.path} className="text-blue-500 hover:underline">
+              <Link
+                to={`/restaurant/${restaurantFinOneQuery.id}/${item.path}`}
+                className="text-blue-500 hover:underline"
+              >
                 {item.name}
               </Link>
             </li>

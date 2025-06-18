@@ -1,14 +1,20 @@
 import FoodListTemplate from "@/components/ui-system/components/templates/food-list";
 import StattionListTemplate from "@/components/ui-system/components/templates/stattion-list";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 import { useFoodService } from "@/hooks/useFoodService";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {};
 
 const RestaurantManagementPage = (props: Props) => {
-  const { data: foodList, isLoading } = useFoodService(1);
+  const { id } = useParams<{ id: string }>();
+  const auth = useAuth();
+  const { user } = auth || {};
+  const userId = auth?.user?.id;
+  const restaurantId = id ? +id : undefined;
+  const { data: foodList, isLoading } = useFoodService(restaurantId as number);
   const navigate = useNavigate();
   const [menuSelected, setMenuSelected] = useState("food");
 
@@ -22,7 +28,9 @@ const RestaurantManagementPage = (props: Props) => {
 
   return (
     <div className="my-container">
-      <Button onClick={() => navigate("/restaurant-dashboard/1")}>Back</Button>
+      <Button onClick={() => navigate(`/restaurant-dashboard/${restaurantId}`)}>
+        Back
+      </Button>
       <div>Restaurant Management</div>
       <div>
         <div

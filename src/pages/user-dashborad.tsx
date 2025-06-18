@@ -19,7 +19,7 @@ export default function UserDashboard() {
   const userId = auth?.user?.id;
 
   const { restaurants, restaurantsLoading, createRestaurant } =
-    useRestaurantService({userId});
+    useRestaurantService({ userId });
   const navigate = useNavigate();
 
   const [isCreate, setIsCreate] = useState(false);
@@ -29,9 +29,7 @@ export default function UserDashboard() {
     navigate("/login");
   };
 
-  useEffect(() => {
-    console.log("User ID:", user?.id);
-  }, [user?.id]);
+  useEffect(() => {}, [restaurants]);
 
   if (restaurantsLoading) {
     return <div>Loading...</div>;
@@ -68,9 +66,10 @@ export default function UserDashboard() {
         </div>
       ) : (
         <AddUpRestaurantForm
-          _onSubmit={(data) =>
-            createRestaurant({ userId: userId, name: data?.name })
-          }
+          _onSubmit={(data) => {
+            createRestaurant({ userId: userId, name: data?.name });
+            setIsCreate(false);
+          }}
         />
       )}
     </div>

@@ -28,26 +28,39 @@ export function useRestaurantService({
     mutationFn: restaurantServiceApi.addRestaurant,
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["restaurants", restaurantId],
+        queryKey: ["restaurants", userId],
       }),
   });
 
-  // // UPDATE
-  // const updateMutation = useMutation({
-  //   mutationFn: updateFood,
-  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["foods", restaurantId] }),
-  // });
+  // UPDATE
+  const updateMutation = useMutation({
+    mutationFn: ({
+      restaurantId,
+      restaurantData,
+    }: {
+      restaurantId: number;
+      restaurantData: { name: string };
+    }) => restaurantServiceApi.updateRestaurant(restaurantId, restaurantData),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["restaurant", restaurantId],
+      }),
+  });
 
-  // // DELETE
-  // const deleteMutation = useMutation({
-  //   mutationFn: deleteFood,
-  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["foods", restaurantId] }),
-  // });
+  // DELETE
+  const deleteMutation = useMutation({
+    mutationFn: (restaurantId: number) =>
+      restaurantServiceApi.deleteRestaurant(restaurantId),
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["restaurants", userId],
+      }),
+  });
 
   const onGetErrors = (error: any) => {
     if (error?.response) {
       return error.response.data.message || error.response.statusText;
-    } 
+    }
   };
   return {
     restaurants: restaurantsQuery.data,
@@ -58,6 +71,13 @@ export function useRestaurantService({
     restaurantFinOneQueryError: onGetErrors(restaurantFinOneQuery.error),
 
     createRestaurant: createMutation.mutate,
+    createRestaurantLoading: createMutation.isPending,
+
+    updateRestaurant: updateMutation.mutate,
+    updateRestaurantLoading: updateMutation.isPending,
+
+    deleteRestaurant: deleteMutation.mutate,
+    deleteRestaurantLoading: deleteMutation.isPending,
     // updateFood: updateMutation.mutate,
     // updateLoading: updateMutation.isLoading,
     // deleteFood: deleteMutation.mutate,

@@ -13,5 +13,19 @@ export const restaurantServiceApi = {
   getById: async (restaurantId: number) => {
     const response = await axiosClient.get(`/restaurants/${restaurantId}`);
     return response.data;
-  }
+  },
+  updateRestaurant: async (
+    restaurantId: number,
+    restaurantData: { name: string }
+  ) => {
+    const response = await axiosClient.patch(
+      `/restaurants/${restaurantId}`,
+      restaurantData
+    );
+    return response.data;
+  },
+  deleteRestaurant: async (restaurantId: number) => {
+    const response = await axiosClient.delete(`/restaurants/${restaurantId}`);
+    return response.data;
+  },
 };

@@ -6,6 +6,7 @@ import { AuthProvider } from "./context/authContext";
 import { ProtectedRoute } from "./components/protected-route";
 import HomePage from "./pages/home";
 import RestaurantManagementPage from "./pages/restaurant/management";
+import SettingRestaurantPage from "./pages/restaurant/setting";
 
 function App() {
   return (
@@ -30,10 +31,18 @@ function App() {
           }
         />
         <Route
-          path="/restaurant/management"
+          path="/restaurant/:id/management"
           element={
             <ProtectedRoute>
               <RestaurantManagementPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/restaurant/:id/setting"
+          element={
+            <ProtectedRoute>
+              <SettingRestaurantPage />
             </ProtectedRoute>
           }
         />

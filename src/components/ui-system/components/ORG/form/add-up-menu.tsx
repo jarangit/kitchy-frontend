@@ -10,7 +10,7 @@ type Props = {
   defaultValues?: FormData;
 };
 
-const AddUpRestaurantForm = ({ _onSubmit, defaultValues }: Props) => {
+const AddUpMenuForm = ({ _onSubmit, defaultValues }: Props) => {
   const {
     register,
     handleSubmit,
@@ -60,4 +60,4 @@ const AddUpRestaurantForm = ({ _onSubmit, defaultValues }: Props) => {
   );
 };
 
-export default AddUpRestaurantForm;
+export default AddUpMenuForm;
