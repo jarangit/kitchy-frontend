@@ -19,8 +19,6 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    // Handle form submission
-    console.log(data);
     if (_onSubmit) {
       _onSubmit(data);
     }
@@ -37,13 +35,14 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label htmlFor="name" className="block font-medium mb-1">
-          Restaurant Name
+          Station Name
         </label>
         <input
           id="name"
           type="text"
           {...register("name", { required: "Name is required" })}
           className="border p-2 w-full rounded"
+          placeholder="Enter station name"
         />
         {errors.name && (
           <span className="text-red-500 text-sm">{errors.name.message}</span>

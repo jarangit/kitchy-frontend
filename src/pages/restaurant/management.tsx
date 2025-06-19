@@ -2,7 +2,7 @@ import FoodListTemplate from "@/components/ui-system/components/templates/food-l
 import StattionListTemplate from "@/components/ui-system/components/templates/stattion-list";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { useFoodService } from "@/hooks/useFoodService";
+import { useMenuService } from "@/hooks/useMenuService";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const RestaurantManagementPage = (props: Props) => {
   const { user } = auth || {};
   const userId = auth?.user?.id;
   const restaurantId = id ? +id : undefined;
-  const { data: foodList, isLoading } = useFoodService(restaurantId as number);
+  const { data: foodList, isLoading } = useMenuService(restaurantId as number);
   const navigate = useNavigate();
   const [menuSelected, setMenuSelected] = useState("food");
 

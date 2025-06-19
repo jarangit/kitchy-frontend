@@ -1,4 +1,7 @@
 import React from "react";
+import AddUpMenuForm from "../ORG/form/add-up-menu";
+import { useParams } from "react-router-dom";
+import { useMenuService } from "@/hooks/useMenuService";
 
 type Props = {
   data: {
@@ -9,29 +12,47 @@ type Props = {
 };
 
 const FoodListTemplate = ({ data }: Props) => {
+  const params = useParams<{ id: string }>();
+  const id = params.id ? Number(params.id) : undefined;
+  const {
+    menusQuery,
+    createMenuMutation,
+    updateMenuMutation,
+    deleteMenuMutation,
+  } = useMenuService(id as number);
+  console.log("🚀 ~ FoodListTemplate ~ menusQuery:", menusQuery);
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Food List</h2>
       <ul className="list-disc pl-5">
-        {data &&
-          data?.length &&
-          data.map((food) => (
-            <li key={food.id} className="mb-2">
-              {food.name}
-              {food.isActive ? (
-                <span className="text-green-500 ml-2">(Active)</span>
-              ) : (
-                <span className="text-red-500 ml-2">(Inactive)</span>
-              )}
-             
+        {menusQuery && menusQuery.data && menusQuery.data.length > 0 ? (
+          menusQuery.data.map((menu: any) => (
+            <li key={menu.id}>
+              {menu.name}
+              <div>
+                <button
+                  className="text-red-500 hover:underline"
+                  onClick={() => deleteMenuMutation.mutate(menu.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </li>
-          ))}
+          ))
+        ) : (
+          <li>No menus found.</li>
+        )}
       </ul>
-      <div className="mt-4">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          Add New Food
-        </button>
-      </div>
+
+      <AddUpMenuForm
+        _onSubmit={(data) => {
+          createMenuMutation.mutate({
+            name: data.name,
+            restaurantId: id,
+          });
+        }}
+      />
     </div>
   );
 };

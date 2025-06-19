@@ -37,13 +37,14 @@ const AddUpMenuForm = ({ _onSubmit, defaultValues }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label htmlFor="name" className="block font-medium mb-1">
-          Restaurant Name
+          Menu Name
         </label>
         <input
           id="name"
           type="text"
           {...register("name", { required: "Name is required" })}
           className="border p-2 w-full rounded"
+          placeholder="Enter menu name"
         />
         {errors.name && (
           <span className="text-red-500 text-sm">{errors.name.message}</span>

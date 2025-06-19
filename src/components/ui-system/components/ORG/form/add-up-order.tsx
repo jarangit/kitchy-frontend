@@ -37,7 +37,7 @@ const AddUpOrderForm = ({ _onSubmit, defaultValues }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label htmlFor="name" className="block font-medium mb-1">
-          Restaurant Name
+          Order number
         </label>
         <input
           id="name"

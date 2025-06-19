@@ -7,6 +7,7 @@ import { ProtectedRoute } from "./components/protected-route";
 import HomePage from "./pages/home";
 import RestaurantManagementPage from "./pages/restaurant/management";
 import SettingRestaurantPage from "./pages/restaurant/setting";
+import CreateOrderPage from "./pages/restaurant/create-order";
 
 function App() {
   return (
@@ -43,6 +44,14 @@ function App() {
           element={
             <ProtectedRoute>
               <SettingRestaurantPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/restaurant/:id/create-order"
+          element={
+            <ProtectedRoute>
+              <CreateOrderPage />
             </ProtectedRoute>
           }
         />

@@ -4,7 +4,7 @@ import { useRestaurantService } from "@/hooks/useRestaurantService";
 import { orderApiService } from "@/service/order";
 import { stationServiceApi } from "@/service/station";
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useRoutes } from "react-router-dom";
+import { Link, useNavigate, useParams, useRoutes } from "react-router-dom";
 
 type Props = {};
 
@@ -27,14 +27,7 @@ const RestaurantDashboardPage = (props: Props) => {
   } = useRestaurantService({
     restaurantId: id ? +id : undefined,
   });
-  console.log(
-    "🚀 ~ RestaurantDashboardPage ~ restaurantFinOneQueryError:",
-    restaurantFinOneQueryError
-  );
-  console.log(
-    "🚀 ~ RestaurantDashboardPage ~ restaurantFinOneQuery:",
-    restaurantFinOneQuery
-  );
+  const navigate = useNavigate();
   const [stations, setStations] = useState<any>();
   const [orders, setOrders] = useState<any>();
 
@@ -85,7 +78,13 @@ const RestaurantDashboardPage = (props: Props) => {
           </h1>
           <p>Welcome to the restaurant dashboard!</p>
         </div>
-        <Button>New Order</Button>
+        <Button
+          onClick={() => {
+            navigate(`/restaurant/${restaurantFinOneQuery.id}/create-order`);
+          }}
+        >
+          New Order
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
