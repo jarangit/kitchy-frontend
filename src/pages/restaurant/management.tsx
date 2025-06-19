@@ -14,17 +14,13 @@ const RestaurantManagementPage = (props: Props) => {
   const { user } = auth || {};
   const userId = auth?.user?.id;
   const restaurantId = id ? +id : undefined;
-  const { data: foodList, isLoading } = useMenuService(restaurantId as number);
+
   const navigate = useNavigate();
   const [menuSelected, setMenuSelected] = useState("food");
 
   const onSelectMenu = (menu: string) => {
     setMenuSelected(menu);
   };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="my-container">
@@ -50,7 +46,7 @@ const RestaurantManagementPage = (props: Props) => {
       {/* template */}
       {menuSelected === "food" ? (
         <div>
-          <FoodListTemplate data={foodList?.data} />
+          <FoodListTemplate data={[]} />
         </div>
       ) : (
         <div>
