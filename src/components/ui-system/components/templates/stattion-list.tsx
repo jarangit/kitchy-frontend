@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import AddUpStationForm from "../ORG/form/add-up-station";
 import { useParams } from "react-router";
-import { useAuth } from "@/hooks/useAuth";
 import { useStationService } from "@/hooks/useStation";
 
-type Props = {};
 
-const StattionListTemplate = (props: Props) => {
+const StattionListTemplate = () => {
   const { id } = useParams<{ id: string }>();
   const restaurantId = id ? +id : undefined;
   const [stationSelected, setStationSelected] = useState<{

@@ -1,12 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
 import { useRestaurantService } from "@/hooks/useRestaurantService";
 import { orderApiService } from "@/service/order";
 import { stationServiceApi } from "@/service/station";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams, useRoutes } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-type Props = {};
 
 const menuList = [
   { name: "Order view", path: "/restaurant-dashboard/orders" },
@@ -15,11 +13,8 @@ const menuList = [
   { name: "setting", path: "setting" },
 ];
 
-const RestaurantDashboardPage = (props: Props) => {
+const RestaurantDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
-  const auth = useAuth();
-  const { user } = auth || {};
-  const userId = auth?.user?.id;
   const {
     restaurantFinOneQuery,
     restaurantFinOneLoading,

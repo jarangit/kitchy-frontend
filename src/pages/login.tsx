@@ -1,11 +1,9 @@
-import { useAuth } from "@/hooks/useAuth";
 import { userServiceApi } from "@/service/user";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-type Props = {};
 
-const LoginPage = (props: Props) => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

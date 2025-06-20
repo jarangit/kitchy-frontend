@@ -6,12 +6,12 @@ import { useRestaurantService } from "@/hooks/useRestaurantService";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-interface Restaurant {
-  id: number;
-  name: string;
-  stationCount: number;
-  todayOrderCount: number;
-}
+// interface Restaurant {
+//   id: number;
+//   name: string;
+//   stationCount: number;
+//   todayOrderCount: number;
+// }
 
 export default function UserDashboard() {
   const auth = useAuth();

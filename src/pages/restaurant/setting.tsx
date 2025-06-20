@@ -2,17 +2,14 @@ import AddUpRestaurantForm from "@/components/ui-system/components/ORG/form/add-
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useRestaurantService } from "@/hooks/useRestaurantService";
-import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-type Props = {};
 
-const SettingRestaurantPage = (props: Props) => {
+const SettingRestaurantPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const auth = useAuth();
-  const { user } = auth || {};
   const userId = auth?.user?.id;
 
   const { restaurantFinOneQuery, updateRestaurant, deleteRestaurant } =

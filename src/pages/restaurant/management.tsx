@@ -1,18 +1,12 @@
 import FoodListTemplate from "@/components/ui-system/components/templates/food-list";
 import StattionListTemplate from "@/components/ui-system/components/templates/stattion-list";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/useAuth";
-import { useMenuService } from "@/hooks/useMenuService";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-type Props = {};
 
-const RestaurantManagementPage = (props: Props) => {
+const RestaurantManagementPage = () => {
   const { id } = useParams<{ id: string }>();
-  const auth = useAuth();
-  const { user } = auth || {};
-  const userId = auth?.user?.id;
   const restaurantId = id ? +id : undefined;
 
   const navigate = useNavigate();

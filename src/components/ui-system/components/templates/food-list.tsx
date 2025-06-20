@@ -1,4 +1,3 @@
-import React from "react";
 import AddUpMenuForm from "../ORG/form/add-up-menu";
 import { useParams } from "react-router-dom";
 import { useMenuService } from "@/hooks/useMenuService";
@@ -11,13 +10,12 @@ type Props = {
   }[];
 };
 
-const FoodListTemplate = ({ data }: Props) => {
+const FoodListTemplate = ({  }: Props) => {
   const params = useParams<{ id: string }>();
   const id = params.id ? Number(params.id) : undefined;
   const {
     menusQuery,
     createMenuMutation,
-    updateMenuMutation,
     deleteMenuMutation,
   } = useMenuService(id as number);
   console.log("🚀 ~ FoodListTemplate ~ menusQuery:", menusQuery);
