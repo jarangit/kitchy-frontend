@@ -8,6 +8,7 @@ import HomePage from "./pages/home";
 import RestaurantManagementPage from "./pages/restaurant/management";
 import SettingRestaurantPage from "./pages/restaurant/setting";
 import CreateOrderPage from "./pages/restaurant/create-order";
+import StationPage from "./pages/station/[station]";
 
 function App() {
   return (
@@ -52,6 +53,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateOrderPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/restaurant/station/:id"
+          element={
+            <ProtectedRoute>
+              <StationPage />
             </ProtectedRoute>
           }
         />

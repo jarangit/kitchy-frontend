@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { restaurantServiceApi } from "@/service/restaurant";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 

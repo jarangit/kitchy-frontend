@@ -5,26 +5,26 @@ interface ICreate {
   restaurantId: number;
   name: string;
 }
-export function useStationService({ restaurantId }: { restaurantId?: number }) {
+export function useStationService({ stationId }: { stationId?: number }) {
   const queryClient = useQueryClient();
 
   const stationsQuery = useQuery({
-    queryKey: ["stations", restaurantId],
-    queryFn: () => stationServiceApi.getByRestaurantId(restaurantId as number),
-    enabled: !!restaurantId,
+    queryKey: ["stations", stationId],
+    queryFn: () => stationServiceApi.getByRestaurantId(stationId as number),
+    enabled: !!stationId,
   });
 
   const stationFinOneQuery = useQuery({
-    queryKey: ["station", restaurantId],
-    queryFn: () => stationServiceApi.getById(restaurantId as number),
-    enabled: !!restaurantId,
+    queryKey: ["station", stationId],
+    queryFn: () => stationServiceApi.getById(stationId as number),
+    enabled: !!stationId,
   });
 
   const createMutation = useMutation({
     mutationFn: (data: ICreate) => stationServiceApi.add(data),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["stations", restaurantId],
+        queryKey: ["stations", stationId],
       }),
   });
 
@@ -38,7 +38,7 @@ export function useStationService({ restaurantId }: { restaurantId?: number }) {
     }) => stationServiceApi.update(stationId, stationData),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["stations", restaurantId],
+        queryKey: ["stations", stationId],
       }),
   });
 
@@ -46,13 +46,13 @@ export function useStationService({ restaurantId }: { restaurantId?: number }) {
     mutationFn: (stationId: number) => stationServiceApi.delete(stationId),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["stations", restaurantId],
+        queryKey: ["stations", stationId],
       }),
   });
 
   return {
     stationsQuery: stationsQuery.data,
-    stationsQueryIsLoading:stationsQuery.isLoading,
+    stationsQueryIsLoading: stationsQuery.isLoading,
     stationFinOneQuery,
     createMutation,
     updateMutation,

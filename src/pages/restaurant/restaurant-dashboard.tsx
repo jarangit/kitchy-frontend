@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { useRestaurantService } from "@/hooks/useRestaurantService";
 import { orderApiService } from "@/service/order";
 import { stationServiceApi } from "@/service/station";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
 
 const menuList = [
   { name: "Order view", path: "/restaurant-dashboard/orders" },
@@ -44,7 +45,7 @@ const RestaurantDashboardPage = () => {
       if (res && res.data) {
         setOrders(res.data);
       }
-    } catch (error) {}
+    } catch (error) { /* empty */ }
   };
 
   useEffect(() => {
@@ -119,7 +120,8 @@ const RestaurantDashboardPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {stations?.length &&
               stations.map((station: any) => (
-                <div
+                <Link
+                  to={`/restaurant/station/${station.id}`}
                   key={station.id}
                   className="bg-blue-300 rounded-lg p-4 mb-4"
                 >
@@ -130,7 +132,7 @@ const RestaurantDashboardPage = () => {
                     {new Date(station.createdAt).toLocaleDateString()}
                   </p>
                   {/* Add more station details as needed */}
-                </div>
+                </Link>
               ))}
           </div>
         </div>
