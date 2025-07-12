@@ -1,21 +1,22 @@
-import { menuApiService } from "@/service/menu";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { productApiService } from "@/service/product";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useMenuService(restaurantId: number) {
+export function useProductService(restaurantId: number) {
   const queryClient = useQueryClient();
 
   const menusQuery = useQuery({
-    queryKey: ["menus", restaurantId],
-    queryFn: () => menuApiService.getMenusByRestaurantId(restaurantId),
+    queryKey: ["products", restaurantId],
+    queryFn: () => productApiService.geProductsByRestaurantId(restaurantId),
     enabled: !!restaurantId,
   });
 
   // CREATE
   const createMenuMutation = useMutation({
-    mutationFn: (newMenu: any) => menuApiService.createMenu(newMenu),
+    mutationFn: (newMenu: any) => productApiService.createMenu(newMenu),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["menus", restaurantId],
+        queryKey: ["products", restaurantId],
       });
     },
   });
@@ -23,25 +24,25 @@ export function useMenuService(restaurantId: number) {
   // UPDATE
   const updateMenuMutation = useMutation({
     mutationFn: ({ menuId, data }: { menuId: number; data: any }) =>
-      menuApiService.updateMenu(menuId, data),
+      productApiService.updateMenu(menuId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["menus", restaurantId],
+        queryKey: ["products", restaurantId],
       });
     },
   });
 
   // DELETE
   const deleteMenuMutation = useMutation({
-    mutationFn: (menuId: number) => menuApiService.deleteMenu(menuId),
+    mutationFn: (menuId: number) => productApiService.deleteMenu(menuId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["menus", restaurantId],
+        queryKey: ["products", restaurantId],
       });
     },
   });
   return {
-    menusQuery: menusQuery.data,
+    productsQuery: menusQuery.data,
     createMenuMutation,
     updateMenuMutation,
     deleteMenuMutation,

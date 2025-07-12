@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AddUpMenuForm from "../ORG/form/add-up-menu";
 import { useParams } from "react-router-dom";
-import { useMenuService } from "@/hooks/useMenuService";
+import { useProductService } from "@/hooks/services/useProductService";
 
 type Props = {
   data: {
@@ -10,28 +11,26 @@ type Props = {
   }[];
 };
 
-const FoodListTemplate = ({  }: Props) => {
+const FoodListTemplate = () => {
   const params = useParams<{ id: string }>();
   const id = params.id ? Number(params.id) : undefined;
-  const {
-    menusQuery,
-    createMenuMutation,
-    deleteMenuMutation,
-  } = useMenuService(id as number);
-  console.log("🚀 ~ FoodListTemplate ~ menusQuery:", menusQuery);
+  const { productsQuery, createMenuMutation: createProductMutation, deleteMenuMutation: deleteProductMutation } =
+    useProductService(id as number);
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Food List</h2>
       <ul className="list-disc pl-5">
-        {menusQuery && menusQuery.data && menusQuery.data.length > 0 ? (
-          menusQuery.data.map((menu: any) => (
+        {productsQuery &&
+        productsQuery.data &&
+        productsQuery.data.length > 0 ? (
+          productsQuery.data.map((menu: any) => (
             <li key={menu.id}>
               {menu.name}
               <div>
                 <button
                   className="text-red-500 hover:underline"
-                  onClick={() => deleteMenuMutation.mutate(menu.id)}
+                  onClick={() => deleteProductMutation.mutate(menu.id)}
                 >
                   Delete
                 </button>
@@ -45,7 +44,7 @@ const FoodListTemplate = ({  }: Props) => {
 
       <AddUpMenuForm
         _onSubmit={(data) => {
-          createMenuMutation.mutate({
+          createProductMutation.mutate({
             name: data.name,
             restaurantId: id,
           });
