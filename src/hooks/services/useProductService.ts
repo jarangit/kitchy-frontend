@@ -42,7 +42,8 @@ export function useProductService(restaurantId: number) {
     },
   });
   return {
-    productsQuery: menusQuery.data,
+    productsQuery: menusQuery?.data?.data,
+    productsQueryLoading: menusQuery.isLoading,
     createMenuMutation,
     updateMenuMutation,
     deleteMenuMutation,

@@ -8,11 +8,16 @@ export const orderApiService = {
   getById: async (orderId: number) => {
     return await axiosClient.get(`/orders/${orderId}`);
   },
-  add: async (restaurantId: number, orderData: any) => {
-    return await axiosClient.post(
-      `/orders/restaurant/${restaurantId}`,
-      orderData
-    );
+  add: async (
+    restaurantId: number,
+    orderNumber: any,
+    products: { productId: number; quantity: number }[]
+  ) => {
+    return await axiosClient.post(`/orders`, {
+      restaurantId,
+      orderNumber,
+      products,
+    });
   },
   update: async (orderId: number, orderData: any) => {
     return await axiosClient.put(`/orders/${orderId}`, orderData);

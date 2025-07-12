@@ -35,8 +35,12 @@ export function useOrderService({
 
   // CREATE
   const createMutation = useMutation({
-    mutationFn: (data: { restaurantId: number; orderData: any }) =>
-      orderApiService.add(data.restaurantId, data.orderData),
+    mutationFn: (data: {
+      restaurantId: number;
+      orderNumber: string;
+      products: { productId: number; quantity: number }[];
+    }) =>
+      orderApiService.add(data.restaurantId, data.orderNumber, data.products),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["orders", restaurantId],
