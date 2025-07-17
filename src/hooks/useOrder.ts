@@ -67,7 +67,7 @@ export function useOrderService({
   });
 
   return {
-    ordersQuery,
+    ordersQuery: ordersQuery.data?.data,
     orderFinOneQuery,
     createMutation,
     updateMutation,

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
+import { useOrderService } from "@/hooks/useOrder";
 import { useRestaurantService } from "@/hooks/useRestaurantService";
 import { orderApiService } from "@/service/order";
 import { stationServiceApi } from "@/service/station";
@@ -23,6 +24,10 @@ const RestaurantDashboardPage = () => {
   } = useRestaurantService({
     restaurantId: id ? +id : undefined,
   });
+  const { deleteMutation, ordersQuery } = useOrderService({
+    restaurantId: id ? +id : undefined,
+  });
+  console.log("🚀 ~ RestaurantDashboardPage ~ ordersQuery:", ordersQuery);
   const navigate = useNavigate();
   const [stations, setStations] = useState<any>();
   const [orders, setOrders] = useState<any>();
@@ -39,19 +44,21 @@ const RestaurantDashboardPage = () => {
     }
   };
 
-  const onGetOrders = async (restaurantId: number) => {
-    try {
-      const res = await orderApiService.getOrdersByRestaurantId(restaurantId);
-      if (res && res.data) {
-        setOrders(res.data);
-      }
-    } catch (error) { /* empty */ }
-  };
+  // const onGetOrders = async (restaurantId: number) => {
+  //   try {
+  //     const res = await orderApiService.getOrdersByRestaurantId(restaurantId);
+  //     if (res && res.data) {
+  //       setOrders(res.data);
+  //     }
+  //   } catch (error) {
+  //     /* empty */
+  //   }
+  // };
 
   useEffect(() => {
     if (id) {
       onGetStations(+id);
-      onGetOrders(+id);
+      // onGetOrders(+id);
     }
   }, [id]);
 
@@ -100,10 +107,10 @@ const RestaurantDashboardPage = () => {
         <div className="col-span-3">
           {/* order list  */}
           <div className="bg-gray-200 p-4 rounded-lg">
-            <div>Order {orders?.length}</div>
+            <div>Order {ordersQuery?.length}</div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
-              {orders?.length &&
-                orders.map((order: any) => (
+              {ordersQuery?.length &&
+                ordersQuery.map((order: any) => (
                   <div key={order.id} className="bg-green-300 rounded-lg p-4">
                     <h2 className="text-xl font-semibold">
                       Order ID: {order.orderNumber}
@@ -113,6 +120,17 @@ const RestaurantDashboardPage = () => {
                       Created At:{" "}
                       {new Date(order.createdAt).toLocaleDateString()}
                     </p>
+                    <div className="flex gap-2">
+                      <Button className="bg-blue-800">Edit</Button>
+                      <Button
+                        className="bg-red-800"
+                        onClick={() => {
+                          deleteMutation.mutate(order.id);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
                 ))}
             </div>
