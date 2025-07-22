@@ -1,3 +1,4 @@
+import { AlertDialogDemo } from "@/components/ui-system/components/ORG/modals/test-modal";
 import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +8,7 @@ const HomePage = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
+      <AlertDialogDemo />
       {/* Hero Section */}
       <header className="bg-white shadow-md">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">

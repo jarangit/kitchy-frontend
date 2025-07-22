@@ -1,9 +1,8 @@
-import FoodListTemplate from "@/components/ui-system/components/templates/food-list";
+import { AddUpProduct } from "@/components/ui-system/components/ORG/form/add-up-product";
 import StattionListTemplate from "@/components/ui-system/components/templates/stattion-list";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 
 const RestaurantManagementPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,12 +35,10 @@ const RestaurantManagementPage = () => {
           Station management
         </div>
       </div>
-
+      <AddUpProduct />
       {/* template */}
       {menuSelected === "food" ? (
-        <div>
-          <FoodListTemplate data={[]} />
-        </div>
+        <div>{/* <FoodListTemplate data={[]} /> */}</div>
       ) : (
         <div>
           <StattionListTemplate />
