@@ -21,8 +21,8 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
   const fetchUser = async () => {
     setLoading(true);
     try {
-      const res = await userServiceApi.getMe();
-      setUser(res);
+      const { data } = await userServiceApi.getMe();
+      setUser(data);
     } catch (err) {
       setUser(null);
     } finally {

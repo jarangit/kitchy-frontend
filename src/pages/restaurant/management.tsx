@@ -1,5 +1,5 @@
-import { AddUpProduct } from "@/components/ui-system/components/ORG/form/add-up-product";
-import StattionListTemplate from "@/components/ui-system/components/templates/stattion-list";
+import ProductListTemplate from "@/components/ui-system/components/templates/food-list";
+import StationListTemplate from "@/components/ui-system/components/templates/stattion-list";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -21,29 +21,38 @@ const RestaurantManagementPage = () => {
         Back
       </Button>
       <div>Restaurant Management</div>
-      <div>
-        <div
-          className="text-blue-500 cursor-pointer"
-          onClick={() => onSelectMenu("food")}
-        >
-          Menu management
+
+      <div className="grid grid-cols-4">
+        <div className="col-span-1">
+          <div>
+            <div
+              className="text-blue-500 cursor-pointer"
+              onClick={() => onSelectMenu("food")}
+            >
+              Menu management
+            </div>
+            <div
+              className="text-blue-500 cursor-pointer"
+              onClick={() => onSelectMenu("station")}
+            >
+              Station management
+            </div>
+          </div>
         </div>
-        <div
-          className="text-blue-500 cursor-pointer"
-          onClick={() => onSelectMenu("station")}
-        >
-          Station management
+        <div className="col-span-3">
+          {" "}
+          {/* template */}
+          {menuSelected === "food" ? (
+            <div>
+              <ProductListTemplate />
+            </div>
+          ) : (
+            <div>
+              <StationListTemplate />
+            </div>
+          )}
         </div>
       </div>
-      <AddUpProduct />
-      {/* template */}
-      {menuSelected === "food" ? (
-        <div>{/* <FoodListTemplate data={[]} /> */}</div>
-      ) : (
-        <div>
-          <StattionListTemplate />
-        </div>
-      )}
     </div>
   );
 };

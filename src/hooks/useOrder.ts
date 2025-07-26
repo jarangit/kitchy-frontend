@@ -19,12 +19,14 @@ export function useOrderService({
     queryFn: () =>
       orderApiService.getOrdersByRestaurantId(restaurantId as number),
     enabled: !!restaurantId,
+    select: (data) => data.data, // Assuming the API returns { data: [...] }
   });
 
   const orderFindByStationIdQuery = useQuery({
     queryKey: ["ordersByStation", stationId],
     queryFn: () => orderApiService.getOrdersByStationId(stationId as number),
     enabled: !!stationId,
+    select: (data) => data.data, // Assuming the API returns { data: [...] }
   });
 
   const orderFinOneQuery = useQuery({

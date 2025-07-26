@@ -1,10 +1,10 @@
-import  { useState } from "react";
+import { useEffect, useState } from "react";
 import AddUpStationForm from "../ORG/form/add-up-station";
 import { useParams } from "react-router";
 import { useStationService } from "@/hooks/useStation";
+import { StationCard } from "../ORG/card/station-card";
 
-
-const StattionListTemplate = () => {
+const StationListTemplate = () => {
   const { id } = useParams<{ id: string }>();
   const restaurantId = id ? +id : undefined;
   const [stationSelected, setStationSelected] = useState<{
@@ -20,13 +20,13 @@ const StattionListTemplate = () => {
   } = useStationService({
     restaurantId,
   });
-  const onSubmitStation = (data: any) => {
+  const onSubmitStation = (data: { name: string; color?: string }) => {
     // Handle the form submission logic here
     if (stationSelected) {
       // If a station is selected, update it
       updateMutation.mutate({
         stationId: stationSelected.id,
-        stationData: { name: data.name },
+        stationData: { ...data },
       });
       setStationSelected({
         name: "",
@@ -36,26 +36,56 @@ const StattionListTemplate = () => {
     }
     createMutation.mutate({
       restaurantId: restaurantId as number,
-      name: data.name,
+      ...data,
     });
   };
+
+ 
+
+  useEffect(() => {
+  
+  }, [stationsQuery]);
 
   if (stationsQueryIsLoading) {
     return <div>Loading...</div>;
   }
+
   return (
-    <div>
-      <h1>Your Station</h1>
+    <div className="relative ">
+      <div className="p-4">
+        <h1>Your Station</h1>
+        <AddUpStationForm
+          _onSubmit={onSubmitStation}
+          defaultValues={
+            stationSelected ? { name: stationSelected?.name } : undefined
+          }
+        />
+      </div>
       {stationsQuery && stationsQuery?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stationsQuery.map((item: any) => (
-            <div
-              className="bg-blue-300 rounded-lg p-4 cursor-pointer hover:bg-blue-400"
-              key={item.id}
-            >
-              <strong className="">{item.name}</strong>
+            <div key={item.id}>
+              <StationCard
+                id={item.id}
+                name={item.name}
+                color={item.color}
+                activeOrders={item.activeOrders}
+                completedToday={0}
+                displaySettings={{
+                  cardColor: "",
+                  textSize: "large",
+                  soundEnabled: false,
+                }}
+                onDelete={(stationId: string) => {
+                  deleteMutation.mutate(+stationId);
+                }}
+                // Add any other required props here, e.g.:
+                // status={item.status}
+                // description={item.description}
+              />
+              {/* <strong className="">{item.name}</strong> */}
               {/* button delete */}
-              <button
+              {/* <button
                 className="bg-red-500 text-white px-2 py-1 rounded mt-2"
                 onClick={() => {
                   // Handle delete logic here
@@ -64,34 +94,24 @@ const StattionListTemplate = () => {
                 }}
               >
                 Delete
-              </button>
+              </button> */}
               {/* button edit */}
-              <button
+              {/* <button
                 className="bg-yellow-500 text-white px-2 py-1 rounded mt-2 ml-2"
                 onClick={() => {
                   setStationSelected(item);
                 }}
               >
                 Edit
-              </button>
+              </button> */}
             </div>
           ))}
         </div>
       ) : (
         <div>No stations found.</div>
       )}
-
-      <div className="p-4 bg-amber-200">
-        <h2 className="mt-6">Add New Station</h2>
-        <AddUpStationForm
-          _onSubmit={onSubmitStation}
-          defaultValues={
-            stationSelected ? { name: stationSelected?.name } : undefined
-          }
-        />
-      </div>
     </div>
   );
 };
 
-export default StattionListTemplate;
+export default StationListTemplate;

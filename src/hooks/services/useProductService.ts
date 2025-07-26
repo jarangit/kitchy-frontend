@@ -9,6 +9,7 @@ export function useProductService(restaurantId: number) {
     queryKey: ["products", restaurantId],
     queryFn: () => productApiService.geProductsByRestaurantId(restaurantId),
     enabled: !!restaurantId,
+    select: (data) => data.data, // Assuming the API returns { data: [...] }
   });
 
   // CREATE

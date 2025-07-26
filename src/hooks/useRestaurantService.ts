@@ -16,12 +16,14 @@ export function useRestaurantService({
     queryKey: ["restaurants", userId],
     queryFn: () => restaurantServiceApi.getByUserId(userId as number),
     enabled: !!userId,
+    select: (data: any) => data.data, // Assuming the API returns { data: [...] }
   });
 
   const restaurantFinOneQuery = useQuery({
     queryKey: ["restaurant", restaurantId],
     queryFn: () => restaurantServiceApi.getById(restaurantId as number),
     enabled: !!restaurantId,
+    select: (data: any) => data.data, // Assuming the API returns { data: {...} }
   });
 
   // CREATE

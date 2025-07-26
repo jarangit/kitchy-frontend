@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AddUpMenuForm from "../ORG/form/add-up-menu";
 import { useParams } from "react-router-dom";
 import { useProductService } from "@/hooks/services/useProductService";
+import AddUpProductForm from "../ORG/form/add-up-product";
+import { ProductCard } from "../ORG/card/product-card";
 
 type Props = {
   data: {
@@ -11,41 +12,40 @@ type Props = {
   }[];
 };
 
-const FoodListTemplate = () => {
+const ProductListTemplate = () => {
   const params = useParams<{ id: string }>();
   const id = params.id ? Number(params.id) : undefined;
-  const { productsQuery, createMenuMutation: createProductMutation, deleteMenuMutation: deleteProductMutation } =
-    useProductService(id as number);
+  const {
+    productsQuery,
+    createMenuMutation: createProductMutation,
+    deleteMenuMutation: deleteProductMutation,
+  } = useProductService(id as number);
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Food List</h2>
-      <ul className="list-disc pl-5">
-        {productsQuery &&
-        productsQuery.data &&
-        productsQuery.data.length > 0 ? (
-          productsQuery.data.map((menu: any) => (
-            <li key={menu.id}>
-              {menu.name}
-              <div>
-                <button
-                  className="text-red-500 hover:underline"
-                  onClick={() => deleteProductMutation.mutate(menu.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
+    <div className="relative">
+      <h2 className="text-2xl font-bold mb-4">Product List</h2>
+      <div className="grid grid-cols-4">
+        {productsQuery && productsQuery && productsQuery.length > 0 ? (
+          productsQuery.map((menu: any) => (
+            <ProductCard
+              id={menu.id}
+              name={menu.name}
+              isActive={menu.isActive}
+              onDelete={(itemId: string) => {
+                deleteProductMutation.mutate(+itemId);
+              }}
+              showAddButton={menu.showAddButton}
+            />
           ))
         ) : (
           <li>No menus found.</li>
         )}
-      </ul>
+      </div>
 
-      <AddUpMenuForm
+      <AddUpProductForm
         _onSubmit={(data) => {
           createProductMutation.mutate({
-            name: data.name,
+            ...data,
             restaurantId: id,
           });
         }}
@@ -54,4 +54,4 @@ const FoodListTemplate = () => {
   );
 };
 
-export default FoodListTemplate;
+export default ProductListTemplate;

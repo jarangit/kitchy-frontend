@@ -27,7 +27,6 @@ const RestaurantDashboardPage = () => {
   const { deleteMutation, ordersQuery } = useOrderService({
     restaurantId: id ? +id : undefined,
   });
-  console.log("🚀 ~ RestaurantDashboardPage ~ ordersQuery:", ordersQuery);
   const navigate = useNavigate();
   const [stations, setStations] = useState<any>();
   const [orders, setOrders] = useState<any>();
@@ -36,8 +35,9 @@ const RestaurantDashboardPage = () => {
     try {
       // Call the API to get stations by restaurant ID
       const response = await stationServiceApi.getByRestaurantId(restaurantId);
-      if (response && response.length > 0) {
-        setStations(response);
+      console.log("🚀 ~ onGetStations ~ response:", response)
+      if (response && response.data.length > 0) {
+        setStations(response.data);
       }
     } catch (error) {
       console.error("Error fetching stations:", error);

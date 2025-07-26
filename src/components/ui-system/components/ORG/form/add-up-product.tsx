@@ -1,110 +1,180 @@
-'use client'
+import { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-
-import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { ColorDot } from "../../atoms/color-dot";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+import { useStationService } from "@/hooks/useStation";
+import { useParams } from "react-router-dom";
 
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  stationId: z.string().min(1, "Station is required"),
-  isActive: z.boolean(),
-})
+interface FormData {
+  name: string;
+  stationId?: string;
+}
 
-type FormValues = z.infer<typeof formSchema>
+type Props = {
+  _onSubmit?: (data: FormData) => void;
+  defaultValues?: FormData;
+};
 
-export function AddUpProduct() {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+
+
+const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
+  const { id } = useParams<{ id: string }>();
+  const [optionStation, setOptionStation] = useState<
+    { value: string; label: string }[]
+  >([]);
+  const restaurantId = id ? +id : undefined;
+  const {
+    stationsQuery,
+    
+  } = useStationService({
+    restaurantId,
+  });
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormData>({
     defaultValues: {
       name: "",
       stationId: "",
-      isActive: true,
+      ...defaultValues,
     },
-  })
+  });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data)
-  }
-  const stationOptions = [
-  { id: "1", name: "Grill" },
-  { id: "2", name: "Fryer" },
-  { id: "3", name: "Drink" },
-]
+  const onSubmit = (data: FormData) => {
+    console.log("🚀 ~ onSubmit ~ data:", data)
+    if (_onSubmit) {
+      _onSubmit(data);
+    }
+
+    // Reset form and close dialog after successful submission
+    reset();
+    setIsCreateDialogOpen(false);
+  };
+  const onCreateOptionStation = () => {
+    if (stationsQuery && stationsQuery.length > 0) {
+      const options = stationsQuery.map(
+        (station: { id: number; name: string }) => ({
+          value: station.id.toString(),
+          label: station.name,
+        })
+      );
+      setOptionStation(options);
+    }
+  };
+  useEffect(() => {
+    if (defaultValues) {
+      reset(defaultValues);
+    }
+    onCreateOptionStation();
+  }, [defaultValues, reset]);
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Enter name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-green-600 hover:bg-green-700 absolute top-4 right-4">
+          <Plus className="w-4 h-4 mr-2" />
+          Add Station
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
+            <DialogTitle>Create New Station</DialogTitle>
+            <DialogDescription>
+              Add a new kitchen station to organize your orders
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="station-name">Station Name</Label>
+              <Input
+                id="station-name"
+                {...register("name", {
+                  required: "Station name is required",
+                  minLength: {
+                    value: 2,
+                    message: "Station name must be at least 2 characters",
+                  },
+                })}
+                placeholder="e.g., Salad Station"
+              />
+              {errors.name && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.name.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <Label htmlFor="station-color">Station</Label>
+              <Controller
+                name="stationId"
+                control={control}
+                rules={{ required: "Please select a stationId" }}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a stationId" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {optionStation.map((color) => (
+                        <SelectItem key={color.value} value={color.value}>
+                          <div className="flex items-center gap-2">
+                            {color.label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.stationId && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.stationId.message}
+                </p>
+              )}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsCreateDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create Station"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
-        <FormField
-          control={form.control}
-          name="stationId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Station ID</FormLabel>
-              <FormControl>
-                <Select
-                  value={field.value}
-                  onValueChange={field.onChange}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select station" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {stationOptions.map((station) => (
-                      <SelectItem key={station.id} value={station.id}>
-                        {station.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="isActive"
-          render={({ field }) => (
-            <FormItem className="flex items-center gap-4">
-              <FormLabel>Active</FormLabel>
-              <FormControl>
-                <Switch checked={field.value} onCheckedChange={field.onChange} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
-  )
-}
+export default AddUpProductForm;
