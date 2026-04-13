@@ -28,15 +28,17 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
     fetchUser();
   }, []);
 
-  const login = async (email: string, passowrd: string) => {
-    const res = await userServiceApi.login(email, passowrd);
-    localStorage.setItem("accessToken", res.data.accessToken);
-    await fetchUser();
-    navigate("/");
+  const login = async (email: string, password: string) => {
+    const { data } = await userServiceApi.login(email, password);
+    if (data.access_token) {
+      localStorage.setItem("token", data.access_token);
+      await fetchUser();
+      navigate("/dashboard");
+    }
   };
 
   const logout = async () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("token");
     setUser(null);
     navigate("/login");
   };

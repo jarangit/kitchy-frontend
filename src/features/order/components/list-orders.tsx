@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import OrderCard from "./order-card";
-import { deleteOrder, updateOrderStatus } from "@/features/order/services/order-service";
+import { orderApiService } from "@/features/order/services/order";
 import { GoDotFill } from "react-icons/go";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
 import { closeModal, openModal } from "@/shared/store/slices/modal-slice";
@@ -65,7 +65,7 @@ export const ListOrders = ({
 
   const onDeleteOrder = async (id: number) => {
     try {
-      await deleteOrder(id);
+      await orderApiService.delete(id);
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +91,7 @@ export const ListOrders = ({
   // function for update order status
   const handleUpdateOrderStatus = async (data: IUpdateOrder) => {
     try {
-      await updateOrderStatus(data);
+      await orderApiService.update(data.id, data);
     } catch (error: any) {
       dispatch(
         openModal({
@@ -117,7 +117,7 @@ export const ListOrders = ({
 
   const onUpdate = async (data: IUpdateOrder) => {
     try {
-      await updateOrderStatus(data);
+      await orderApiService.update(data.id, data);
     } catch (error: any) {
       dispatch(
         openModal({

@@ -1,62 +1,72 @@
-import { MdHomeFilled } from "react-icons/md";
-import { Link, useLocation } from "react-router-dom";
-import { LuMonitor, LuShoppingBag } from "react-icons/lu";
-import { RiRestaurant2Fill } from "react-icons/ri";
-import { IoIosSettings } from "react-icons/io";
-const listMenu = [
-  {
-    name: "Home",
-    path: "/",
-    icon: <MdHomeFilled size={30} />,
-  },
-  {
-    name: "Kitchen",
-    path: "/kitchen-monitor",
-    icon: <LuMonitor size={30} />,
-  },
-  {
-    name: "Front",
-    path: "/front-desk",
-    icon: <LuShoppingBag size={30} />,
-  },
-  {
-    name: "Server",
-    path: "/server",
-    icon: <RiRestaurant2Fill size={30} />,
-  },
-];
+import { Link, useLocation, useParams } from "react-router-dom";
+import { LuLayoutDashboard, LuShoppingCart, LuHistory, LuSettings } from "react-icons/lu";
+
 const Sidebar = () => {
   const location = useLocation();
+  const { id } = useParams<{ id: string }>();
+
+  const storeMenuList = id
+    ? [
+        {
+          name: "Dashboard",
+          path: `/store/${id}`,
+          icon: <LuLayoutDashboard size={24} />,
+        },
+        {
+          name: "POS",
+          path: `/store/${id}/pos`,
+          icon: <LuShoppingCart size={24} />,
+        },
+        {
+          name: "History",
+          path: `/store/${id}/transactions`,
+          icon: <LuHistory size={24} />,
+        },
+      ]
+    : [];
+
+  const isActive = (path: string) => {
+    if (path.endsWith("/pos")) {
+      return location.pathname.startsWith(path);
+    }
+    return location.pathname === path;
+  };
 
   const itemClass =
-    "p-3 flex flex-col justify-center items-center text-xs gap-1";
-  const activeClass = "bg-gray-300 ";
+    "p-3 flex flex-col justify-center items-center text-xs gap-1 transition-colors";
+  const activeClass = "bg-gray-300 text-black";
+  const inactiveClass = "text-gray-600 hover:bg-gray-200";
+
   return (
-    <div className="bg-[#EBEBEB] h-screen w-[60px] fixed border-r border-gray-200 pb-12">
+    <div className="bg-[#EBEBEB] h-screen w-[60px] fixed border-r border-gray-200 pb-12 z-50">
       <div className="h-full flex justify-between flex-col">
         <div className="flex flex-col">
-          {listMenu.map((i, key) => (
+          {storeMenuList.map((item) => (
             <Link
-              to={i.path}
-              key={key}
+              to={item.path}
+              key={item.name}
               className={`${itemClass} ${
-                location.pathname === i.path ? activeClass : ""
+                isActive(item.path) ? activeClass : inactiveClass
               }`}
             >
-              <div>{i.icon}</div>
-              <div>{i.name}</div>
+              <div>{item.icon}</div>
+              <div>{item.name}</div>
             </Link>
           ))}
         </div>
-        <Link
-          to={"/setting"}
-          className={`${itemClass} ${
-            location.pathname === "/setting" ? activeClass : ""
-          }`}
-        >
-          <IoIosSettings size={30} />
-          <div>{"Setting"}</div>
-        </Link>
+        {id && (
+          <Link
+            to={`/store/${id}/settings`}
+            className={`${itemClass} ${
+              location.pathname.startsWith(`/store/${id}/settings`)
+                ? activeClass
+                : inactiveClass
+            }`}
+          >
+            <LuSettings size={24} />
+            <div>Settings</div>
+          </Link>
+        )}
       </div>
     </div>
   );
