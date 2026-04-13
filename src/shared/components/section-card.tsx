@@ -23,7 +23,7 @@ export default function RoleCard({
 >
       <div className="flex gap-2 w-full items-center justify-start">
         <div className={`text-3xl `}>{icon}</div>
-        <h2 className="text-2xl font-semibold">{title}</h2>
+        <h2 className="text-lg font-semibold">{title}</h2>
       </div>
       <p className="text-lg font-semibold mt-1 mb-4">
         {isLoading ? (

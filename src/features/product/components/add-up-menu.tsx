@@ -16,8 +16,6 @@ const AddUpMenuForm = ({ _onSubmit, defaultValues }: Props) => {
   } = useForm<MenuFormData>();
 
   const onSubmit = (data: MenuFormData) => {
-    // Handle form submission
-    console.log(data);
     if (_onSubmit) {
       _onSubmit(data);
     }

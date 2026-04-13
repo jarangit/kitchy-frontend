@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-"use client";
 
 import { useEffect, useState } from "react";
 import { Button } from "@/shared/components/ui/button";

@@ -10,7 +10,7 @@ export function Card({ className = "", children, ...props }: CardProps) {
         border border-[var(--card-border)]
         rounded-[var(--card-radius)]
         p-[var(--card-padding)]
-        transition-colors duration-[var(--motion-fast)]
+        transition-all duration-[var(--motion-fast)]
         ${className}
       `.trim()}
       {...props}
@@ -44,6 +44,21 @@ export function CardTitle({
     >
       {children}
     </h3>
+  );
+}
+
+export function CardDescription({
+  className = "",
+  children,
+  ...props
+}: HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p
+      className={`text-sm text-[var(--color-text-secondary)] mt-0.5 ${className}`.trim()}
+      {...props}
+    >
+      {children}
+    </p>
   );
 }
 

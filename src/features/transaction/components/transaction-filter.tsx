@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SearchInput } from "@/shared/components/ui/search-input";
 
 interface Props {
   onFilterChange: (filter: { search: string; status: string }) => void;
@@ -19,20 +20,18 @@ const TransactionFilter = ({ onFilterChange }: Props) => {
   };
 
   return (
-    <div className="flex gap-3 flex-wrap">
-      <input
-        type="text"
-        placeholder="Search order number..."
+    <div className="space-y-3">
+      <SearchInput
         value={search}
-        onChange={(e) => handleSearchChange(e.target.value)}
-        className="flex-1 min-w-[200px] border border-[var(--color-border)] rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[var(--input-border-focus)]"
+        onValueChange={handleSearchChange}
+        placeholder="Search order number..."
       />
       <div className="flex gap-2">
         {["ALL", "PENDING", "COMPLETED"].map((s) => (
           <button
             key={s}
             onClick={() => handleStatusChange(s)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
               status === s
                 ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]"
                 : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]"

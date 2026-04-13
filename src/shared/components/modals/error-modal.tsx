@@ -4,7 +4,7 @@ const ErrorModal = () => {
   return (
     <div>
       <div className="flex flex-col items-center justify-center h-full">
-        <h2 className="text-xl font-bold text-[var(--color-danger)]">Something went wrong</h2>
+        <h2 className="text-lg font-semibold text-[var(--color-danger)]">Something went wrong</h2>
         <p className="mt-4 text-[var(--color-text-secondary)]">
           Please try again or reload the page.
         </p>

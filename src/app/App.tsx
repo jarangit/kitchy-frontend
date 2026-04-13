@@ -9,8 +9,7 @@ import NotFoundPage from "@/shared/pages/not-found";
 
 // POS
 import PosHomePage from "@/features/pos/pages/pos-home";
-import PaymentPage from "@/features/pos/pages/payment";
-import PaymentSuccessPage from "@/features/pos/pages/payment-success";
+import { PosLayout } from "@/features/pos/components/pos-layout";
 
 // Transaction
 import TransactionListPage from "@/features/transaction/pages/transaction-list";
@@ -58,37 +57,17 @@ function App() {
           }
         />
 
-        {/* POS */}
+        {/* POS — nested routes share a single CartProvider */}
         <Route
           path="/store/:id/pos"
           element={
             <ProtectedRoute>
-              <Layout>
-                <PosHomePage />
-              </Layout>
+              <PosLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/store/:id/pos/payment"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <PaymentPage />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/store/:id/pos/payment/success"
-          element={
-            <ProtectedRoute>
-              <Layout>
-                <PaymentSuccessPage />
-              </Layout>
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route index element={<PosHomePage />} />
+        </Route>
 
         {/* Transactions */}
         <Route

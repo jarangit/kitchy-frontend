@@ -67,7 +67,7 @@ export const ListOrders = ({
     try {
       await orderApiService.delete(id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

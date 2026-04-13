@@ -16,8 +16,6 @@ const AddUpStoreForm = ({ _onSubmit, defaultValues }: Props) => {
   } = useForm<StoreFormData>();
 
   const onSubmit = (data: StoreFormData) => {
-    // Handle form submission
-    console.log(data);
     if (_onSubmit) {
       _onSubmit(data);
     }

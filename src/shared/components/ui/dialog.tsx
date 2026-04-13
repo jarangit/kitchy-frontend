@@ -4,9 +4,10 @@ interface DialogProps {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
+  className?: string;
 }
 
-export function Dialog({ open, onClose, children }: DialogProps) {
+export function Dialog({ open, onClose, children, className = "" }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export function Dialog({ open, onClose, children }: DialogProps) {
         w-full max-w-md
         shadow-xl
         open:animate-in open:fade-in open:zoom-in-95
+        ${className}
       `.trim()}
     >
       {open && children}

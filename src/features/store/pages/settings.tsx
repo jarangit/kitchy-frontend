@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
-import { LuPackage, LuTags, LuStore, LuSun, LuMoon } from "react-icons/lu";
+import { LuPackage, LuTags, LuStore, LuSun, LuMoon, LuChevronRight } from "react-icons/lu";
 import { useTheme } from "@/shared/hooks/useTheme";
+import { Toggle } from "@/shared/components/ui/toggle";
 
 const settingsMenu = [
   {
@@ -28,7 +29,7 @@ const SettingsPage = () => {
   const { toggleTheme, isDark } = useTheme();
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="space-y-6">
       <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Settings</h1>
 
       {/* Navigation menu */}
@@ -37,13 +38,14 @@ const SettingsPage = () => {
           <Link
             key={item.path}
             to={`/store/${id}/settings/${item.path}`}
-            className="flex items-center gap-4 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4 hover:border-[var(--color-border-hover)] transition-all active:scale-[0.98]"
+            className="flex items-center gap-4 bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
           >
             <div className="text-[var(--color-text-secondary)]">{item.icon}</div>
-            <div>
+            <div className="flex-1">
               <div className="font-semibold text-[var(--color-text-primary)]">{item.name}</div>
               <div className="text-sm text-[var(--color-text-secondary)]">{item.description}</div>
             </div>
+            <LuChevronRight size={20} className="text-[var(--color-text-tertiary)] shrink-0" />
           </Link>
         ))}
       </div>
@@ -52,7 +54,7 @@ const SettingsPage = () => {
       <div>
         <h2 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Display</h2>
 
-        <div className="flex items-center justify-between bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4">
+        <div className="flex items-center justify-between bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4">
           <div className="flex items-center gap-4">
             <div className="text-[var(--color-text-secondary)]">
               {isDark ? <LuMoon size={24} /> : <LuSun size={24} />}
@@ -65,27 +67,11 @@ const SettingsPage = () => {
             </div>
           </div>
 
-          {/* Toggle switch */}
-          <button
-            type="button"
-            role="switch"
-            aria-checked={isDark}
-            aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-            onClick={toggleTheme}
-            className="relative inline-flex h-8 w-14 shrink-0 cursor-pointer items-center rounded-full transition-all active:scale-[0.98]"
-            style={{
-              backgroundColor: isDark
-                ? "var(--color-primary)"
-                : "var(--color-border)",
-            }}
-          >
-            <span
-              className="pointer-events-none inline-block h-6 w-6 rounded-full bg-[var(--color-bg)] shadow-md transition-transform"
-              style={{
-                transform: isDark ? "translateX(28px)" : "translateX(4px)",
-              }}
-            />
-          </button>
+          <Toggle
+            checked={isDark}
+            onChange={toggleTheme}
+            label={`Switch to ${isDark ? "light" : "dark"} mode`}
+          />
         </div>
       </div>
     </div>

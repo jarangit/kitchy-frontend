@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { transactionServiceApi } from "@/features/transaction/services/transaction";
 import { Button } from "@/shared/components/ui/button";
+import { Badge } from "@/shared/components/ui/badge";
 import { LuArrowLeft } from "react-icons/lu";
 
 const TransactionDetailPage = () => {
@@ -33,31 +34,47 @@ const TransactionDetailPage = () => {
   }
 
   const date = new Date(order.createdAt);
-  const statusColor =
-    order.status === "COMPLETED"
-      ? "bg-[var(--color-success-bg)] text-[var(--color-success)]"
-      : "bg-[var(--color-warning-bg)] text-[var(--color-warning)]";
+
+  const getBadgeVariant = (status: string) => {
+    switch (status) {
+      case "COMPLETED":
+        return "success" as const;
+      case "PENDING":
+        return "warning" as const;
+      case "CANCELLED":
+        return "danger" as const;
+      default:
+        return "default" as const;
+    }
+  };
+
+  const grandTotal =
+    order.products?.reduce(
+      (sum: number, item: { price?: number; quantity?: number }) =>
+        sum + (item.price || 0) * (item.quantity || 1),
+      0
+    ) ?? 0;
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <button
+    <div className="max-w-3xl mx-auto space-y-6">
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={() => navigate(`/store/${storeId}/transactions`)}
-        className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
       >
         <LuArrowLeft size={16} />
         Back to History
-      </button>
+      </Button>
 
-      <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-bold text-[var(--color-text-primary)]">
-            Order {order.orderNumber}
+      <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6">
+        {/* Order Header */}
+        <div className="flex items-center justify-between mb-2">
+          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+            {order.orderNumber}
           </h1>
-          <span
-            className={`text-xs px-3 py-1 rounded-full font-medium ${statusColor}`}
-          >
+          <Badge variant={getBadgeVariant(order.status)}>
             {order.status}
-          </span>
+          </Badge>
         </div>
 
         <div className="text-sm text-[var(--color-text-secondary)] mb-6">
@@ -75,35 +92,46 @@ const TransactionDetailPage = () => {
 
         {/* Order Items */}
         {order.products && order.products.length > 0 && (
-          <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
-            <h3 className="font-semibold text-[var(--color-text-primary)]">Items</h3>
-            {order.products.map(
-              (
-                item: {
-                  id?: number;
-                  productId?: number;
-                  name?: string;
-                  quantity?: number;
-                  price?: number;
-                },
-                index: number
-              ) => (
-                <div
-                  key={item.id || item.productId || index}
-                  className="flex justify-between text-sm text-[var(--color-text-secondary)]"
-                >
-                  <span>
-                    {item.name || `Product #${item.productId}`} x
-                    {item.quantity || 1}
-                  </span>
-                  {item.price && (
+          <div className="border-t border-[var(--color-border)] pt-4">
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Items</h3>
+            <div className="space-y-3">
+              {order.products.map(
+                (
+                  item: {
+                    id?: number;
+                    productId?: number;
+                    name?: string;
+                    quantity?: number;
+                    price?: number;
+                  },
+                  index: number
+                ) => (
+                  <div
+                    key={item.id || item.productId || index}
+                    className="flex justify-between text-sm text-[var(--color-text-secondary)]"
+                  >
                     <span>
-                      ฿
-                      {((item.price || 0) * (item.quantity || 1)).toFixed(2)}
+                      {item.name || `Product #${item.productId}`} x
+                      {item.quantity || 1}
                     </span>
-                  )}
-                </div>
-              )
+                    {item.price != null && (
+                      <span className="font-medium text-[var(--color-text-primary)]">
+                        ฿{((item.price || 0) * (item.quantity || 1)).toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                )
+              )}
+            </div>
+
+            {/* Grand Total */}
+            {grandTotal > 0 && (
+              <div className="flex justify-between items-center mt-4 pt-4 border-t border-[var(--color-border)]">
+                <span className="font-semibold text-[var(--color-text-primary)]">Total</span>
+                <span className="text-xl font-bold text-[var(--color-text-primary)]">
+                  ฿{grandTotal.toFixed(2)}
+                </span>
+              </div>
             )}
           </div>
         )}

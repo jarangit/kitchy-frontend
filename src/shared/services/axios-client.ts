@@ -1,11 +1,4 @@
 import axios, { type AxiosInstance } from "axios";
-// Custom config interface
-// interface CustomConfig {
-//   silent?: boolean;
-// }
-// interface RequestConfig extends AxiosRequestConfig {
-//   customConfig?: CustomConfig;
-// }
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

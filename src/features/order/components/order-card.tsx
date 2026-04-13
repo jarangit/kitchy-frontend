@@ -43,9 +43,6 @@ const OrderCard = ({
   const actionRef = useRef<HTMLDivElement>(null);
 
   // แปลงวันที่เป็น timezone ของ user
-  // const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  // const createdAtZoned = toZonedTime(new Date(createdAt), userTimeZone);
-  // const formattedCreatedAt = format(createdAtZoned, "dd/MM/yy HH:mm");
   const handleUpdate = () => {
     const payload: IUpdateOrder = {
       id,

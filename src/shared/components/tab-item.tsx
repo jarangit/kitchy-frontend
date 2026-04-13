@@ -37,7 +37,7 @@ const TabItem = ({
   }, [count]);
   return (
     <div
-      className={`border border-[var(--color-border)] bg-re rounded-xl px-4 py-2 w-fit cursor-pointer transition-all active:scale-[0.98] duration-[var(--motion-fast)] ${
+      className={`border border-[var(--color-border)] rounded-xl px-4 py-2 w-fit cursor-pointer transition-all active:scale-[0.98] duration-[var(--motion-fast)] ${
         isActive ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]" : ""
       } 
             ${bouncing && isCanAnimation && "bg-[var(--color-info-bg)] text-[var(--color-text-primary)]"}

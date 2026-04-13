@@ -1,7 +1,9 @@
 import type { ICartItem } from "@/features/pos/types/pos.model";
+import { LuShoppingCart } from "react-icons/lu";
 import CartItem from "./cart-item";
 import CartSummary from "./cart-summary";
 import { Button } from "@/shared/components/ui/button";
+import { EmptyState } from "@/shared/components/ui/empty-state";
 
 interface Props {
   items: ICartItem[];
@@ -20,27 +22,43 @@ const CartArea = ({
   onClearCart,
   onPay,
 }: Props) => {
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
-    <div className="flex flex-col h-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)]">
+    <div className="flex flex-col h-full bg-[var(--color-bg)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
-        <h2 className="font-bold text-[var(--color-text-primary)]">Cart</h2>
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+            Cart
+          </h2>
+          {totalItems > 0 && (
+            <span className="min-w-[24px] h-6 flex items-center justify-center rounded-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-xs font-bold px-1.5">
+              {totalItems}
+            </span>
+          )}
+        </div>
         {items.length > 0 && (
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onClearCart}
-            className="text-xs text-[var(--color-danger)] hover:text-[var(--color-danger-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+            className="text-xs text-[var(--color-danger)] hover:text-[var(--color-danger-hover)]"
           >
             Clear All
-          </button>
+          </Button>
         )}
       </div>
 
       {/* Items */}
-      <div className="flex-1 overflow-y-auto px-4">
+      <div className="flex-1 overflow-y-auto px-5">
         {items.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-[var(--color-text-tertiary)] text-sm">
-            No items in cart
-          </div>
+          <EmptyState
+            icon={<LuShoppingCart size={32} />}
+            title="Cart is empty"
+            description="Tap a product to add it"
+            className="py-8"
+          />
         ) : (
           items.map((item) => (
             <CartItem
@@ -54,12 +72,13 @@ const CartArea = ({
       </div>
 
       {/* Summary + Pay Button */}
-      <div className="px-4 pb-4 space-y-3">
+      <div className="px-5 pb-5 space-y-3">
         {items.length > 0 && <CartSummary subtotal={subtotal} />}
         <Button
           onClick={onPay}
           disabled={items.length === 0}
-          className="w-full h-12 text-base font-bold bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-bg-hover)] disabled:bg-[var(--color-border)] disabled:cursor-not-allowed"
+          size="lg"
+          className="w-full h-14 text-base font-bold"
         >
           Pay ฿{subtotal.toFixed(2)}
         </Button>

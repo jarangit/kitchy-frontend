@@ -1,31 +1,33 @@
 import { useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { LuArrowLeft, LuQrCode } from "react-icons/lu";
 import { useOrderService } from "@/features/order/hooks/useOrder";
-import type { ICartItem, PaymentMethod } from "@/features/pos/types/pos.model";
+import { useCartContext } from "@/features/pos/context/cartContext";
+import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import OrderSummary from "@/features/pos/components/order-summary";
 import PaymentMethodSelector from "@/features/pos/components/payment-method";
 import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { EmptyState } from "@/shared/components/ui/empty-state";
 
 const PaymentPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const location = useLocation();
   const storeId = Number(id);
 
-  const { items, subtotal } = (location.state as {
-    items: ICartItem[];
-    subtotal: number;
-  }) || { items: [], subtotal: 0 };
+  const { items, subtotal, clearCart, setPaymentResult } = useCartContext();
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CASH");
   const [receivedAmount, setReceivedAmount] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const { createMutation } = useOrderService({ storeId });
 
-  const change = paymentMethod === "CASH" && receivedAmount
-    ? Math.max(0, Number(receivedAmount) - subtotal)
-    : 0;
+  const change =
+    paymentMethod === "CASH" && receivedAmount
+      ? Math.max(0, Number(receivedAmount) - subtotal)
+      : 0;
 
   const canConfirm =
     items.length > 0 &&
@@ -34,9 +36,9 @@ const PaymentPage = () => {
   const handleConfirmPayment = async () => {
     if (!canConfirm) return;
     setIsProcessing(true);
+    setErrorMessage(null);
 
     try {
-      // Create order via existing order service
       const orderNumber = `POS-${Date.now()}`;
       await createMutation.mutateAsync({
         storeId,
@@ -47,21 +49,23 @@ const PaymentPage = () => {
         })),
       });
 
-      // Navigate to success page
-      navigate(`/store/${id}/pos/payment/success`, {
-        state: {
-          receiptId: orderNumber,
-          items,
-          subtotal,
-          paymentMethod,
-          receivedAmount: Number(receivedAmount) || subtotal,
-          change,
-        },
-        replace: true,
+      // Store payment result in context before navigating
+      setPaymentResult({
+        receiptId: orderNumber,
+        items: [...items],
+        subtotal,
+        paymentMethod,
+        receivedAmount: Number(receivedAmount) || subtotal,
+        change,
       });
+
+      // Clear the cart after successful payment
+      clearCart();
+
+      navigate(`/store/${id}/pos/payment/success`, { replace: true });
     } catch (error) {
       console.error("Payment failed:", error);
-      alert("Payment failed. Please try again.");
+      setErrorMessage("Payment failed. Please try again.");
     } finally {
       setIsProcessing(false);
     }
@@ -73,88 +77,137 @@ const PaymentPage = () => {
 
   if (items.length === 0) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <p className="text-[var(--color-text-secondary)] mb-4">No items to pay for.</p>
-          <Button onClick={handleCancel}>Back to POS</Button>
-        </div>
+      <div className="flex items-center justify-center flex-1">
+        <EmptyState
+          title="No items to pay for"
+          description="Your cart is empty. Go back to POS to add items."
+          action={
+            <Button onClick={handleCancel}>Back to POS</Button>
+          }
+        />
       </div>
     );
   }
 
+  const quickAmounts = [
+    { label: `Exact ฿${subtotal.toLocaleString()}`, value: subtotal },
+    { label: "฿500", value: 500 },
+    { label: "฿1,000", value: 1000 },
+  ];
+
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Payment</h1>
-
-      <OrderSummary items={items} subtotal={subtotal} />
-
-      <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
-        <h3 className="font-bold text-[var(--color-text-primary)] mb-4">Payment Method</h3>
-        <PaymentMethodSelector
-          selected={paymentMethod}
-          onSelect={setPaymentMethod}
-        />
+    <div className="max-w-5xl mx-auto p-6">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-8">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleCancel}
+          className="gap-1.5"
+        >
+          <LuArrowLeft size={18} />
+          Back
+        </Button>
+        <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+          Payment
+        </h1>
       </div>
 
-      {paymentMethod === "CASH" && (
+      {/* Two-column layout */}
+      <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
+        {/* Left column — Order Summary */}
+        <OrderSummary items={items} subtotal={subtotal} />
+
+        {/* Right column — Payment Method */}
         <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
-          <h3 className="font-bold text-[var(--color-text-primary)] mb-4">Cash Payment</h3>
-          <div className="space-y-3">
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+            Payment Method
+          </h3>
+          <PaymentMethodSelector
+            selected={paymentMethod}
+            onSelect={setPaymentMethod}
+          />
+        </div>
+      </div>
+
+      {/* Conditional payment details */}
+      {paymentMethod === "CASH" && (
+        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6">
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+            Cash Payment
+          </h3>
+          <div className="space-y-4">
+            <Input
+              label="Received Amount"
+              type="number"
+              value={receivedAmount}
+              onChange={(e) => setReceivedAmount(e.target.value)}
+              placeholder="0.00"
+              className="text-lg font-semibold"
+            />
+
             <div>
-              <label className="block text-sm text-[var(--color-text-secondary)] mb-1">
-                Received Amount
-              </label>
-              <input
-                type="number"
-                value={receivedAmount}
-                onChange={(e) => setReceivedAmount(e.target.value)}
-                placeholder="0.00"
-                className="w-full border border-[var(--color-border-hover)] rounded-lg px-4 py-3 text-lg font-semibold focus:outline-none focus:border-[var(--input-border-focus)]"
-              />
-            </div>
-            {Number(receivedAmount) > 0 && (
-              <div className="flex justify-between text-lg font-bold">
-                <span>Change</span>
-                <span className="text-[var(--color-success)]">฿{change.toFixed(2)}</span>
+              <p className="text-sm text-[var(--color-text-secondary)] mb-2">
+                Quick amounts:
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {quickAmounts.map((amt) => (
+                  <Button
+                    key={amt.value}
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => setReceivedAmount(String(amt.value))}
+                  >
+                    {amt.label}
+                  </Button>
+                ))}
               </div>
+            </div>
+
+            {Number(receivedAmount) > 0 && (
+              <p className="text-xl font-bold text-[var(--color-success)]">
+                Change: ฿{change.toFixed(2)}
+              </p>
             )}
           </div>
         </div>
       )}
 
       {paymentMethod === "QR" && (
-        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 text-center">
-          <h3 className="font-bold text-[var(--color-text-primary)] mb-4">QR Code Payment</h3>
-          <div className="w-48 h-48 bg-[var(--color-surface)] rounded-xl mx-auto flex items-center justify-center text-[var(--color-text-tertiary)]">
-            QR Code Placeholder
+        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">
+            QR Code Payment
+          </h3>
+          <div className="w-52 h-52 mx-auto border-2 border-dashed border-[var(--color-border)] rounded-[var(--radius-lg)] flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
+            <LuQrCode size={48} />
+            <span className="text-sm">QR Code Placeholder</span>
           </div>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-3">
+          <p className="text-sm text-[var(--color-text-secondary)] mt-4">
             Scan to pay ฿{subtotal.toFixed(2)}
           </p>
         </div>
       )}
 
       {paymentMethod === "TRANSFER" && (
-        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
-          <h3 className="font-bold text-[var(--color-text-primary)] mb-4">Bank Transfer</h3>
-          <div className="bg-[var(--color-surface)] rounded-lg p-4 space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--color-text-secondary)]">Bank</span>
-              <span className="font-medium">-</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--color-text-secondary)]">Account</span>
-              <span className="font-medium">-</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--color-text-secondary)]">Amount</span>
-              <span className="font-bold">฿{subtotal.toFixed(2)}</span>
-            </div>
-          </div>
+        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+            Bank Transfer
+          </h3>
+          <p className="text-[var(--color-text-secondary)] text-sm">
+            Coming soon
+          </p>
         </div>
       )}
 
-      <div className="flex gap-3">
+      {/* Error message */}
+      {errorMessage && (
+        <p className="text-sm text-[var(--color-danger)] mt-4">
+          {errorMessage}
+        </p>
+      )}
+
+      {/* Bottom action bar */}
+      <div className="flex gap-3 mt-6">
         <Button
           variant="secondary"
           onClick={handleCancel}
@@ -166,7 +219,7 @@ const PaymentPage = () => {
         <Button
           onClick={handleConfirmPayment}
           disabled={!canConfirm || isProcessing}
-          className="flex-1 h-12 bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-bg-hover)] disabled:bg-[var(--color-border)] text-base font-bold"
+          className="flex-1 h-12 text-base font-bold"
         >
           {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
         </Button>

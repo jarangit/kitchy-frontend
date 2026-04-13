@@ -19,7 +19,7 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
         <button
           key={method.value}
           onClick={() => onSelect(method.value)}
-          className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+          className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
             selected === method.value
               ? "border-[var(--color-text-primary)] bg-[var(--color-surface)]"
               : "border-[var(--color-border)] hover:border-[var(--color-border-hover)]"

@@ -137,12 +137,24 @@
   --button-font-weight: var(--font-weight-medium);
 
   /* ── Card ── */
-  --card-bg: var(--color-surface);
-  --card-bg-hover: var(--color-surface-hover);
+  --card-bg: var(--color-bg);
+  --card-bg-hover: var(--color-surface);
   --card-border: var(--color-border);
   --card-border-hover: var(--color-border-hover);
   --card-radius: var(--radius-lg);
-  --card-padding: var(--space-4);
+  --card-padding: var(--space-5);
+
+  /* ── Toggle ── */
+  --toggle-bg: var(--color-border);
+  --toggle-bg-active: var(--color-primary);
+  --toggle-knob: var(--color-bg);
+  --toggle-width: 52px;
+  --toggle-height: 28px;
+  --toggle-knob-size: 22px;
+
+  /* ── Skeleton ── */
+  --skeleton-bg: var(--color-surface);
+  --skeleton-shimmer: var(--color-surface-hover);
 
   /* ── Input ── */
   --input-bg: var(--color-bg);
@@ -282,11 +294,55 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Utility container */
-.my-container {
-  width: 100%;
-  max-width: 1400px;
-  padding: var(--space-5);
-  margin: 0 auto;
-  height: 100%;
+/* ──────────────────────────────────────────
+   SKELETON ANIMATION
+   ────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-bg) 25%,
+    var(--skeleton-shimmer) 50%,
+    var(--skeleton-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ──────────────────────────────────────────
+   SUCCESS CHECK ANIMATION
+   ────────────────────────────────────────── */
+@keyframes check-bounce {
+  0% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-check {
+  animation: check-bounce 0.5s var(--ease-standard) forwards;
+}
+
+/* ──────────────────────────────────────────
+   SLIDE-IN ANIMATION (POS Cart Overlay)
+   ────────────────────────────────────────── */
+@keyframes slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right var(--motion-normal) var(--ease-standard) forwards;
+}
+
+/* ──────────────────────────────────────────
+   PRINT STYLES
+   ────────────────────────────────────────── */
+@media print {
+  body { background: white; color: black; }
+  .no-print { display: none !important; }
+  .print-only { display: block !important; }
 }

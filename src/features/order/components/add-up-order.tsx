@@ -16,8 +16,6 @@ const AddUpOrderForm = ({ _onSubmit, defaultValues }: Props) => {
   } = useForm<OrderFormData>();
 
   const onSubmit = (data: OrderFormData) => {
-    // Handle form submission
-    console.log(data);
     if (_onSubmit) {
       _onSubmit(data);
     }

@@ -7,10 +7,10 @@ const SettingsProductsPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="space-y-6">
       <button
         onClick={() => navigate(`/store/${id}/settings`)}
-        className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors active:scale-[0.98]"
+        className="min-h-11 px-2 inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
       >
         <LuArrowLeft size={16} />
         Back to Settings

@@ -1,39 +1,33 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import type { ICartItem, PaymentMethod } from "@/features/pos/types/pos.model";
+import { useNavigate, useParams } from "react-router-dom";
+import { LuCircleCheck, LuPrinter, LuArrowRight } from "react-icons/lu";
+import type { PaymentMethod } from "@/features/pos/types/pos.model";
+import { useCartContext } from "@/features/pos/context/cartContext";
 import { Button } from "@/shared/components/ui/button";
-import { LuCircleCheck } from "react-icons/lu";
-
-interface PaymentSuccessState {
-  receiptId: string;
-  items: ICartItem[];
-  subtotal: number;
-  paymentMethod: PaymentMethod;
-  receivedAmount: number;
-  change: number;
-}
+import { EmptyState } from "@/shared/components/ui/empty-state";
 
 const PaymentSuccessPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { paymentResult, clearPaymentResult } = useCartContext();
 
-  const state = location.state as PaymentSuccessState | null;
-
-  if (!state) {
+  if (!paymentResult) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-center">
-          <p className="text-[var(--color-text-secondary)] mb-4">No payment data found.</p>
-          <Button onClick={() => navigate(`/store/${id}/pos`)}>
-            Back to POS
-          </Button>
-        </div>
+      <div className="flex items-center justify-center flex-1">
+        <EmptyState
+          title="No payment data found"
+          description="It looks like you navigated here directly. Please start a new order."
+          action={
+            <Button onClick={() => navigate(`/store/${id}/pos`)}>
+              Back to POS
+            </Button>
+          }
+        />
       </div>
     );
   }
 
   const { receiptId, items, subtotal, paymentMethod, receivedAmount, change } =
-    state;
+    paymentResult;
 
   const methodLabel: Record<PaymentMethod, string> = {
     CASH: "Cash",
@@ -41,54 +35,85 @@ const PaymentSuccessPage = () => {
     TRANSFER: "Bank Transfer",
   };
 
+  const formattedDate = new Date().toLocaleDateString("th-TH", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const handleNewOrder = () => {
+    clearPaymentResult();
+    navigate(`/store/${id}/pos`, { replace: true });
+  };
+
   return (
     <div className="max-w-md mx-auto p-6 flex flex-col items-center justify-center min-h-[80vh]">
-      <div className="text-[var(--color-success)] mb-4">
-        <LuCircleCheck size={80} />
+      {/* Success icon */}
+      <div className="text-[var(--color-success)] mb-4 animate-check">
+        <LuCircleCheck size={72} />
       </div>
 
-      <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+      <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
         Payment Successful!
       </h1>
-      <p className="text-[var(--color-text-secondary)] mb-6">Your order has been placed</p>
+      <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-6">
+        ฿{subtotal.toFixed(2)}
+      </p>
 
-      <div className="w-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 space-y-4">
-        <div className="text-center border-b border-[var(--color-border)] pb-4">
-          <div className="text-xs text-[var(--color-text-secondary)] uppercase">Receipt ID</div>
-          <div className="text-lg font-bold text-[var(--color-text-primary)]">{receiptId}</div>
+      {/* Receipt card */}
+      <div className="w-full bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-6">
+        {/* Receipt header */}
+        <div className="text-center pb-4">
+          <p className="text-xs uppercase tracking-widest text-[var(--color-text-secondary)] mb-1">
+            Receipt
+          </p>
+          <p className="font-mono font-bold text-[var(--color-text-primary)]">
+            #{receiptId}
+          </p>
+          <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+            {formattedDate}
+          </p>
         </div>
 
-        {/* Order Items */}
-        <div className="space-y-2">
+        {/* Items list */}
+        <div className="border-t border-[var(--color-border)] pt-4 pb-4 space-y-2">
           {items.map((item) => (
             <div
               key={item.productId}
-              className="flex justify-between text-sm text-[var(--color-text-secondary)]"
+              className="grid grid-cols-[1fr_auto_auto] gap-2 text-sm text-[var(--color-text-secondary)]"
             >
-              <span>
-                {item.name} x{item.quantity}
+              <span>{item.name}</span>
+              <span className="text-right">x{item.quantity}</span>
+              <span className="text-right w-20">
+                ฿{(item.price * item.quantity).toFixed(2)}
               </span>
-              <span>฿{(item.price * item.quantity).toFixed(2)}</span>
             </div>
           ))}
         </div>
 
-        <div className="border-t border-[var(--color-border)] pt-3 space-y-2">
+        {/* Total */}
+        <div className="border-t border-[var(--color-border)] pt-3 pb-3">
           <div className="flex justify-between font-bold text-[var(--color-text-primary)]">
             <span>Total</span>
             <span>฿{subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm text-[var(--color-text-secondary)]">
+        </div>
+
+        {/* Payment details */}
+        <div className="border-t border-[var(--color-border)] pt-3 space-y-2 text-sm">
+          <div className="flex justify-between text-[var(--color-text-secondary)]">
             <span>Payment Method</span>
             <span>{methodLabel[paymentMethod]}</span>
           </div>
           {paymentMethod === "CASH" && (
             <>
-              <div className="flex justify-between text-sm text-[var(--color-text-secondary)]">
-                <span>Received</span>
+              <div className="flex justify-between text-[var(--color-text-secondary)]">
+                <span>Cash Received</span>
                 <span>฿{receivedAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm font-semibold text-[var(--color-success)]">
+              <div className="flex justify-between font-semibold text-[var(--color-success)]">
                 <span>Change</span>
                 <span>฿{change.toFixed(2)}</span>
               </div>
@@ -97,12 +122,24 @@ const PaymentSuccessPage = () => {
         </div>
       </div>
 
-      <Button
-        onClick={() => navigate(`/store/${id}/pos`, { replace: true })}
-        className="w-full h-12 mt-6 text-base font-bold bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:opacity-90"
-      >
-        New Order
-      </Button>
+      {/* Action buttons */}
+      <div className="flex gap-3 w-full mt-6 no-print">
+        <Button
+          variant="secondary"
+          className="flex-1 h-12"
+          onClick={() => window.print()}
+        >
+          <LuPrinter size={18} />
+          Print Receipt
+        </Button>
+        <Button
+          className="flex-1 h-12"
+          onClick={handleNewOrder}
+        >
+          New Order
+          <LuArrowRight size={18} />
+        </Button>
+      </div>
     </div>
   );
 };

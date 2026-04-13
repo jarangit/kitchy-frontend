@@ -3,6 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
 import TransactionCard from "@/features/transaction/components/transaction-card";
 import TransactionFilter from "@/features/transaction/components/transaction-filter";
+import { EmptyState } from "@/shared/components/ui/empty-state";
+import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { LuReceipt } from "react-icons/lu";
 
 const TransactionListPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,21 +32,30 @@ const TransactionListPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">Loading...</div>
+      <div className="space-y-6">
+        <div className="h-8 w-48 skeleton-shimmer rounded-[var(--radius-md)]" />
+        <div className="space-y-3">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="space-y-6">
       <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Transaction History</h1>
 
       <TransactionFilter onFilterChange={setFilter} />
 
       <div className="space-y-3">
         {filteredTransactions.length === 0 ? (
-          <div className="text-center text-[var(--color-text-tertiary)] py-12">
-            No transactions found
-          </div>
+          <EmptyState
+            icon={<LuReceipt size={32} />}
+            title="No transactions found"
+            description="Transactions will appear here when orders are placed"
+          />
         ) : (
           filteredTransactions.map(
             (tx: {
@@ -51,7 +63,8 @@ const TransactionListPage = () => {
               orderNumber: string;
               status: string;
               createdAt: string;
-              products?: { name?: string; quantity?: number }[];
+              totalAmount?: number;
+              products?: { name?: string; quantity?: number; price?: number }[];
             }) => (
               <TransactionCard
                 key={tx.id}

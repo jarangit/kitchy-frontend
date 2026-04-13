@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AddUpStationForm from "@/features/station/components/add-up-station";
 import { useParams } from "react-router";
 import { useStationService } from "@/features/station/hooks/useStation";
@@ -26,10 +26,7 @@ const StationListTemplate = () => {
         stationId: stationSelected.id,
         stationData: { ...data },
       });
-      setStationSelected({
-        name: "",
-        id: null as any,
-      });
+      setStationSelected(undefined);
       return;
     }
     createMutation.mutate({
@@ -38,17 +35,14 @@ const StationListTemplate = () => {
     });
   };
 
-  useEffect(() => {
-  }, [stationsQuery]);
-
   if (stationsQueryIsLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="relative ">
-      <div className="p-4">
-        <h1>Your Station</h1>
+    <div className="relative">
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Your Station</h2>
         <AddUpStationForm
           _onSubmit={onSubmitStation}
           defaultValues={
@@ -58,10 +52,10 @@ const StationListTemplate = () => {
       </div>
       {stationsQuery && stationsQuery?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stationsQuery.map((item: any) => (
+          {stationsQuery.map((item: { id: number; name: string; color: string; activeOrders: number }) => (
             <div key={item.id}>
               <StationCard
-                id={item.id}
+                id={String(item.id)}
                 name={item.name}
                 color={item.color}
                 activeOrders={item.activeOrders}

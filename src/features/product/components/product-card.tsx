@@ -1,5 +1,3 @@
-"use client"
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Button } from "@/shared/components/ui/button"
 import { Badge } from "@/shared/components/ui/badge"
@@ -9,11 +7,7 @@ interface MenuItemCardProps {
   id: string
   name: string
   isActive: boolean
-  // onAdd?: (itemId: string) => void
-  // onEdit?: (itemId: string) => void
   onDelete?: (itemId: string) => void
-  // onToggleBestSeller?: (itemId: string) => void
-  // onToggleActive?: (itemId: string) => void
   showAddButton?: boolean
   className?: string
 }
@@ -22,11 +16,7 @@ export function ProductCard({
   id,
   name,
   isActive,
-  // onAdd,
-  // onEdit,
   onDelete,
-  // onToggleBestSeller,
-  // onToggleActive,
   showAddButton = false,
   className = "",
 }: MenuItemCardProps) {
@@ -37,22 +27,11 @@ export function ProductCard({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <CardTitle className="text-lg">{name}</CardTitle>
-              {/* {isBestSeller && (
-                <Badge variant="default" className="bg-yellow-500">
-                  <Star className="w-3 h-3 mr-1" />
-                  Best Seller
-                </Badge>
-              )} */}
             </div>
-            {/* {description && <p className="text-sm text-[var(--color-text-secondary)] mb-2">{description}</p>} */}
             <div className="flex items-center gap-2">
-              {/* <Badge variant="default">{station}</Badge> */}
-              <Badge variant={isActive ? "default" : "default"}>{isActive ? "Active" : "Inactive"}</Badge>
+              <Badge variant={isActive ? "success" : "default"}>{isActive ? "Active" : "Inactive"}</Badge>
             </div>
           </div>
-          {/* <div className="text-right">
-            <PriceDisplay amount={price} className="text-xl font-bold text-[var(--color-success)]" />
-          </div> */}
         </div>
       </CardHeader>
       <CardContent className="pt-0">
@@ -62,21 +41,8 @@ export function ProductCard({
             Add to Order
           </Button>
         ) : (
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              {/* {onToggleBestSeller && (
-                <Button variant="secondary" size="sm" onClick={() => onToggleBestSeller(id)}>
-                  <Star className={`w-4 h-4 ${isBestSeller ? "fill-current text-yellow-500" : ""}`} />
-                </Button>
-              )} */}
-              {/* {onToggleActive && <Switch checked={isActive} onCheckedChange={() => onToggleActive(id)} />} */}
-            </div>
+          <div className="flex items-center justify-end">
             <div className="flex gap-2">
-              {/* {onEdit && (
-                <Button variant="secondary" size="sm" onClick={() => onEdit(id)}>
-                  <Edit className="w-4 h-4" />
-                </Button>
-              )} */}
               {onDelete && (
                 <Button variant="secondary" size="sm" onClick={() => onDelete(id)}>
                   <LuTrash2 className="w-4 h-4" />
