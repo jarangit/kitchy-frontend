@@ -3,13 +3,13 @@ import { useStationService } from "@/features/station/hooks/useStation";
 import { useParams } from "react-router-dom";
 
 interface OrderItem {
-  id: number;
+  id: string;
   name: string;
   quantity: number;
 }
 
 interface StationOrder {
-  id: number;
+  id: string;
   orderNumber: string;
   status: string;
   createdAt: string;
@@ -19,10 +19,10 @@ interface StationOrder {
 const StationPage = () => {
   const { id } = useParams<{ id: string; storeId: string }>();
   const { stationFinOneQuery } = useStationService({
-    stationId: id ? +id : undefined,
+    stationId: id,
   });
   const { orderByStation, orderFindByStationIdQuery } = useOrderService({
-    stationId: id ? +id : undefined,
+    stationId: id,
   });
 
   if (stationFinOneQuery.isLoading || orderFindByStationIdQuery.isLoading) {

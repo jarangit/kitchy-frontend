@@ -5,9 +5,9 @@ import type { ICartItem, PaymentMethod } from "@/features/pos/types/pos.model";
 // --- Cart State ---
 interface CartState {
   items: ICartItem[];
-  addItem: (product: { id: number; name: string; price: number }) => void;
-  removeItem: (productId: number) => void;
-  updateQuantity: (productId: number, quantity: number) => void;
+  addItem: (product: { id: string; name: string; price: number }) => void;
+  removeItem: (productId: string) => void;
+  updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   subtotal: number;
   totalItems: number;
@@ -36,7 +36,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [paymentResult, setPaymentResultState] = useState<PaymentResult | null>(null);
 
   const addItem = useCallback(
-    (product: { id: number; name: string; price: number }) => {
+    (product: { id: string; name: string; price: number }) => {
       setItems((prev) => {
         const existing = prev.find((item) => item.productId === product.id);
         if (existing) {
@@ -60,12 +60,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  const removeItem = useCallback((productId: number) => {
+  const removeItem = useCallback((productId: string) => {
     setItems((prev) => prev.filter((item) => item.productId !== productId));
   }, []);
 
   const updateQuantity = useCallback(
-    (productId: number, quantity: number) => {
+    (productId: string, quantity: number) => {
       if (quantity <= 0) {
         removeItem(productId);
         return;

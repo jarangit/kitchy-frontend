@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { transactionServiceApi } from "@/features/transaction/services/transaction";
 
-export function useTransactionService(storeId?: number) {
+export function useTransactionService(storeId?: string) {
   const transactionsQuery = useQuery({
     queryKey: ["transactions", storeId],
-    queryFn: () => transactionServiceApi.getByStoreId(storeId as number),
+    queryFn: () => transactionServiceApi.getByStoreId(storeId as string),
     enabled: !!storeId,
     select: (data) => data.data,
   });

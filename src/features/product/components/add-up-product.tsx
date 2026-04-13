@@ -25,7 +25,7 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   const [optionStation, setOptionStation] = useState<
     { value: string; label: string }[]
   >([]);
-  const storeId = id ? +id : undefined;
+  const storeId = id;
   const { stationsQuery } = useStationService({
     storeId,
   });
@@ -58,8 +58,8 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   const onCreateOptionStation = () => {
     if (stationsQuery && stationsQuery.length > 0) {
       const options = stationsQuery.map(
-        (station: { id: number; name: string }) => ({
-          value: station.id.toString(),
+        (station: { id: string; name: string }) => ({
+          value: station.id,
           label: station.name,
         })
       );

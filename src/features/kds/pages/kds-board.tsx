@@ -3,20 +3,19 @@ import { useParams } from "react-router-dom";
 import { useKds } from "@/features/kds/hooks/useKds";
 import KdsHeader from "@/features/kds/components/kds-header";
 import KdsColumn from "@/features/kds/components/kds-column";
-import type { KdsStatus } from "@/features/kds/types/kds.model";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 
 const KdsBoardPage = () => {
   const { id } = useParams<{ id: string }>();
-  const storeId = Number(id);
+  const storeId = id as string;
 
-  const [activeStationId, setActiveStationId] = useState<number | undefined>();
+  const [activeStationId, setActiveStationId] = useState<string | undefined>();
   const { stationsQuery } = useStationService({ storeId });
 
   const activeStation = useMemo(
-    () => stationsQuery?.find((s: { id: number }) => s.id === activeStationId),
+    () => stationsQuery?.find((s: { id: string }) => s.id === activeStationId),
     [stationsQuery, activeStationId]
   );
 
@@ -55,7 +54,7 @@ const KdsBoardPage = () => {
         >
           All Stations
         </Button>
-        {stationsQuery?.map((station: { id: number; name: string }) => (
+        {stationsQuery?.map((station: { id: string; name: string }) => (
           <Button
             key={station.id}
             variant={activeStationId === station.id ? "primary" : "secondary"}
@@ -80,21 +79,21 @@ const KdsBoardPage = () => {
             title="Pending"
             status="PENDING"
             orders={pendingOrders}
-            onMove={updateStatus as (orderId: number, status: KdsStatus) => void}
+            onMove={updateStatus}
             disabled={isUpdating}
           />
           <KdsColumn
             title="Cooking"
             status="COOKING"
             orders={cookingOrders}
-            onMove={updateStatus as (orderId: number, status: KdsStatus) => void}
+            onMove={updateStatus}
             disabled={isUpdating}
           />
           <KdsColumn
             title="Ready"
             status="READY"
             orders={readyOrders}
-            onMove={updateStatus as (orderId: number, status: KdsStatus) => void}
+            onMove={updateStatus}
             disabled={isUpdating}
           />
         </div>

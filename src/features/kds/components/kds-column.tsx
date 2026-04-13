@@ -7,7 +7,7 @@ interface Props {
   title: string;
   status: KdsStatus;
   orders: KdsOrder[];
-  onMove: (orderId: number, status: KdsStatus) => void;
+  onMove: (orderId: string, status: KdsStatus) => void;
   disabled?: boolean;
 }
 

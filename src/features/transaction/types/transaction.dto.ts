@@ -1,5 +1,5 @@
 export interface ITransactionFilter {
-  storeId: number;
+  storeId: string;
   startDate?: string;
   endDate?: string;
   method?: string;

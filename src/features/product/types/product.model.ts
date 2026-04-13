@@ -1,10 +1,10 @@
 export interface IMenu {
-  id: number;
+  id: string;
   name: string;
   price: number;
-  stationId?: number;
+  stationId?: string;
   stationName?: string;
-  storeId: number;
+  storeId: string;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

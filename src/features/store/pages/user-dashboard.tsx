@@ -18,7 +18,7 @@ import { LuPlus, LuStore } from "react-icons/lu";
 export default function UserDashboard() {
   const auth = useAuth();
   const { user } = auth || {};
-  const userId = auth?.user?.id;
+  const userId = auth?.user?.id ? String(auth.user.id) : undefined;
 
   const { stores, storesLoading, createStore } =
     useStoreService({ userId });
@@ -98,7 +98,7 @@ export default function UserDashboard() {
                 onClick={() => {
                   dispatch(
                     setCurrentStore({
-                      storeId: item.id,
+                      storeId: String(item.id),
                       storeName: item.name,
                     })
                   );

@@ -2,7 +2,7 @@ import { LuPackage } from "react-icons/lu";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
 }

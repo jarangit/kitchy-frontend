@@ -1,17 +1,17 @@
 import type { PaymentMethod } from "./pos.model";
 
 export interface ICreatePaymentRequest {
-  orderId: number;
-  storeId: number;
+  orderId: string;
+  storeId: string;
   method: PaymentMethod;
   amount: number;
   receivedAmount?: number;
 }
 
 export interface IPaymentResponse {
-  id: number;
-  orderId: number;
-  storeId: number;
+  id: string;
+  orderId: string;
+  storeId: string;
   method: PaymentMethod;
   amount: number;
   receivedAmount?: number;

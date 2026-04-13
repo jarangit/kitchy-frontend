@@ -14,7 +14,7 @@ import { LuX } from "react-icons/lu";
 const PosHomePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const storeId = Number(id);
+  const storeId = id as string;
 
   const { storeFinOneQuery } = useStoreService({ storeId });
   const { productsQuery, productsQueryLoading } = useProductService(storeId);
@@ -82,8 +82,8 @@ const PosHomePage = () => {
               <ProductGrid
                 products={
                   filteredProducts?.map(
-                    (p: { id: number; name: string; price?: number }) => ({
-                      id: p.id,
+                    (p: { id: string; name: string; price?: number }) => ({
+                      id: String(p.id),
                       name: p.name,
                       price: p.price ?? 0,
                     })

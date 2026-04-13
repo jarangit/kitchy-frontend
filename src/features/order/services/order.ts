@@ -2,16 +2,16 @@
 import axiosClient from "@/shared/services/axios-client";
 
 export const orderApiService = {
-  getOrdersByStoreId: async (storeId: number) => {
+  getOrdersByStoreId: async (storeId: string) => {
     return await axiosClient.get(`/orders/store/${storeId}`);
   },
-  getById: async (orderId: number) => {
+  getById: async (orderId: string) => {
     return await axiosClient.get(`/orders/${orderId}`);
   },
   add: async (
-    storeId: number,
+    storeId: string,
     orderNumber: any,
-    products: { productId: number; quantity: number }[]
+    products: { productId: string; quantity: number }[]
   ) => {
     return await axiosClient.post(`/orders`, {
       storeId,
@@ -19,13 +19,13 @@ export const orderApiService = {
       products,
     });
   },
-  update: async (orderId: number, orderData: any) => {
+  update: async (orderId: string, orderData: any) => {
     return await axiosClient.put(`/orders/${orderId}`, orderData);
   },
-  delete: async (orderId: number) => {
+  delete: async (orderId: string) => {
     return await axiosClient.delete(`/orders/${orderId}`);
   },
-  getOrdersByStationId: async (stationId: number) => {
+  getOrdersByStationId: async (stationId: string) => {
     return await axiosClient.get(`/orders/station/${stationId}`);
   },
 };

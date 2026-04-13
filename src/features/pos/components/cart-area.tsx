@@ -8,8 +8,8 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 interface Props {
   items: ICartItem[];
   subtotal: number;
-  onUpdateQuantity: (productId: number, quantity: number) => void;
-  onRemoveItem: (productId: number) => void;
+  onUpdateQuantity: (productId: string, quantity: number) => void;
+  onRemoveItem: (productId: string) => void;
   onClearCart: () => void;
   onPay: () => void;
 }

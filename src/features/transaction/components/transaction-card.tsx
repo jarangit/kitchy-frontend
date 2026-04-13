@@ -2,7 +2,7 @@ import { Badge } from "@/shared/components/ui/badge";
 
 interface Props {
   order: {
-    id: number;
+    id: string;
     orderNumber: string;
     status: string;
     createdAt: string;

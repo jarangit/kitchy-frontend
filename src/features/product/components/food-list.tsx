@@ -8,12 +8,12 @@ import { LuPackage } from "react-icons/lu";
 
 const ProductListTemplate = () => {
   const params = useParams<{ id: string }>();
-  const id = params.id ? Number(params.id) : undefined;
+  const id = params.id;
   const {
     productsQuery,
     createMenuMutation: createProductMutation,
     deleteMenuMutation: deleteProductMutation,
-  } = useProductService(id as number);
+  } = useProductService(id as string);
 
   return (
     <div className="relative">
@@ -27,7 +27,7 @@ const ProductListTemplate = () => {
               name={menu.name}
               isActive={menu.isActive}
               onDelete={(itemId: string) => {
-                deleteProductMutation.mutate(+itemId);
+                deleteProductMutation.mutate(itemId);
               }}
               showAddButton={menu.showAddButton}
             />

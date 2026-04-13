@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface CurrentStoreState {
-  storeId: number | null;
+  storeId: string | null;
   storeName: string | null;
 }
 
@@ -16,12 +16,12 @@ const currentStoreSlice = createSlice({
   reducers: {
     setCurrentStore: (
       state,
-      action: PayloadAction<{ storeId: number; storeName?: string | null }>
+      action: PayloadAction<{ storeId: string; storeName?: string | null }>
     ) => {
       state.storeId = action.payload.storeId;
       state.storeName = action.payload.storeName ?? null;
     },
-    setCurrentStoreId: (state, action: PayloadAction<number>) => {
+    setCurrentStoreId: (state, action: PayloadAction<string>) => {
       state.storeId = action.payload;
       if (!state.storeName) {
         state.storeName = null;

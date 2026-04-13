@@ -8,22 +8,22 @@ export function useStoreService({
   userId,
   storeId,
 }: {
-  userId?: number;
-  storeId?: number;
+  userId?: string;
+  storeId?: string;
 }) {
   const queryClient = useQueryClient();
 
   // READ
   const storesQuery = useQuery({
     queryKey: ["stores", userId],
-    queryFn: () => storeServiceApi.getByUserId(userId as number),
+    queryFn: () => storeServiceApi.getByUserId(userId as string),
     enabled: !!userId,
     select: (data: any) => data.data,
   });
 
   const storeFinOneQuery = useQuery({
     queryKey: ["store", storeId],
-    queryFn: () => storeServiceApi.getById(storeId as number),
+    queryFn: () => storeServiceApi.getById(storeId as string),
     enabled: !!storeId,
     select: (data: any) => data.data,
   });
@@ -43,7 +43,7 @@ export function useStoreService({
       storeId,
       storeData,
     }: {
-      storeId: number;
+      storeId: string;
       storeData: IUpdateStore;
     }) => storeServiceApi.updateStore(storeId, storeData),
     onSuccess: () =>
@@ -54,7 +54,7 @@ export function useStoreService({
 
   // DELETE
   const deleteMutation = useMutation({
-    mutationFn: (storeId: number) =>
+    mutationFn: (storeId: string) =>
       storeServiceApi.deleteStore(storeId),
     onSuccess: () =>
       queryClient.invalidateQueries({

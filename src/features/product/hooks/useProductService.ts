@@ -2,7 +2,7 @@
 import { productApiService } from "@/features/product/services/product";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useProductService(storeId: number) {
+export function useProductService(storeId: string) {
   const queryClient = useQueryClient();
 
   const menusQuery = useQuery({
@@ -24,7 +24,7 @@ export function useProductService(storeId: number) {
 
   // UPDATE
   const updateMenuMutation = useMutation({
-    mutationFn: ({ menuId, data }: { menuId: number; data: any }) =>
+    mutationFn: ({ menuId, data }: { menuId: string; data: any }) =>
       productApiService.updateMenu(menuId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -35,7 +35,7 @@ export function useProductService(storeId: number) {
 
   // DELETE
   const deleteMenuMutation = useMutation({
-    mutationFn: (menuId: number) => productApiService.deleteMenu(menuId),
+    mutationFn: (menuId: string) => productApiService.deleteMenu(menuId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["products", storeId],

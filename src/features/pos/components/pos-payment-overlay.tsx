@@ -13,7 +13,7 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 interface Props {
   open: boolean;
   onClose: () => void;
-  storeId: number;
+  storeId: string;
 }
 
 const PosPaymentOverlay = ({ open, onClose, storeId }: Props) => {

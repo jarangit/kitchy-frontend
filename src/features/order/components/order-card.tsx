@@ -13,9 +13,9 @@ import type { IUpdateOrder } from "@/features/order/types/order.dto";
 
 interface Props {
   order: IOrderItem;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
   onUpdateStatus: (data: IUpdateOrder) => void;
-  onEditOrder: (id: number) => void;
+  onEditOrder: (id: string) => void;
   isCanDelete?: boolean;
   isCanAction?: boolean;
 }

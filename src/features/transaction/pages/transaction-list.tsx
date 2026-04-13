@@ -10,7 +10,7 @@ import { LuReceipt } from "react-icons/lu";
 const TransactionListPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const storeId = Number(id);
+  const storeId = id;
 
   const { transactions, isLoading } = useTransactionService(storeId);
 
@@ -58,9 +58,9 @@ const TransactionListPage = () => {
           />
         ) : (
           filteredTransactions.map(
-            (tx: {
-              id: number;
-              orderNumber: string;
+              (tx: {
+                id: string;
+                orderNumber: string;
               status: string;
               createdAt: string;
               totalAmount?: number;

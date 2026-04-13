@@ -5,7 +5,7 @@ export function useCart() {
   const [items, setItems] = useState<ICartItem[]>([]);
 
   const addItem = useCallback(
-    (product: { id: number; name: string; price: number }) => {
+    (product: { id: string; name: string; price: number }) => {
       setItems((prev) => {
         const existing = prev.find((item) => item.productId === product.id);
         if (existing) {
@@ -29,12 +29,12 @@ export function useCart() {
     []
   );
 
-  const removeItem = useCallback((productId: number) => {
+  const removeItem = useCallback((productId: string) => {
     setItems((prev) => prev.filter((item) => item.productId !== productId));
   }, []);
 
   const updateQuantity = useCallback(
-    (productId: number, quantity: number) => {
+    (productId: string, quantity: number) => {
       if (quantity <= 0) {
         removeItem(productId);
         return;

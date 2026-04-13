@@ -2,7 +2,7 @@ import axiosClient from "@/shared/services/axios-client";
 import type { ICreateStation, IUpdateStation } from "@/features/station/types/station.dto";
 
 export const stationServiceApi = {
-  getByStoreId: async (storeId: number) => {
+  getByStoreId: async (storeId: string) => {
     const response = await axiosClient.get(
       `/stations/store/${storeId}`
     );
@@ -12,18 +12,18 @@ export const stationServiceApi = {
     const response = await axiosClient.post("/stations", stationData);
     return response.data;
   },
-  getById: async (stationId: number) => {
+  getById: async (stationId: string) => {
     const response = await axiosClient.get(`/stations/${stationId}`);
     return response.data;
   },
-  update: async (stationId: number, stationData: IUpdateStation) => {
+  update: async (stationId: string, stationData: IUpdateStation) => {
     const response = await axiosClient.patch(
       `/stations/${stationId}`,
       stationData
     );
     return response.data;
   },
-  delete: async (stationId: number) => {
+  delete: async (stationId: string) => {
     const response = await axiosClient.delete(`/stations/${stationId}`);
     return response.data;
   },

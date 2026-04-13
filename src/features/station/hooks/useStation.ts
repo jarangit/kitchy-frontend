@@ -6,21 +6,21 @@ export function useStationService({
   stationId,
   storeId,
 }: {
-  stationId?: number;
-  storeId?: number;
+  stationId?: string;
+  storeId?: string;
 }) {
   const queryClient = useQueryClient();
 
   const stationsQuery = useQuery({
     queryKey: ["stations", storeId],
-    queryFn: () => stationServiceApi.getByStoreId(storeId as number),
+    queryFn: () => stationServiceApi.getByStoreId(storeId as string),
     enabled: !!storeId,
     select: (data) => data.data,
   });
 
   const stationFinOneQuery = useQuery({
     queryKey: ["station", stationId],
-    queryFn: () => stationServiceApi.getById(stationId as number),
+    queryFn: () => stationServiceApi.getById(stationId as string),
     enabled: !!stationId,
     select: (data) => data.data,
   });
@@ -38,7 +38,7 @@ export function useStationService({
       stationId,
       stationData,
     }: {
-      stationId: number;
+      stationId: string;
       stationData: { name: string };
     }) => stationServiceApi.update(stationId, stationData),
     onSuccess: () =>
@@ -48,7 +48,7 @@ export function useStationService({
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (stationId: number) => stationServiceApi.delete(stationId),
+    mutationFn: (stationId: string) => stationServiceApi.delete(stationId),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["stations", stationId],

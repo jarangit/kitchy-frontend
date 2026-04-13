@@ -18,14 +18,14 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
   const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
 
-  const routeStoreId = Number(storeId ?? id);
+  const routeStoreId = storeId ?? id;
 
   useEffect(() => {
     setupAutoReload(10);
   }, []);
 
   useEffect(() => {
-    if (Number.isFinite(routeStoreId) && routeStoreId > 0 && currentStoreId !== routeStoreId) {
+    if (routeStoreId && currentStoreId !== routeStoreId) {
       dispatch(setCurrentStoreId(routeStoreId));
     }
   }, [dispatch, routeStoreId, currentStoreId]);

@@ -1,23 +1,23 @@
 import type { KdsStatus } from "@/features/kds/types/kds.model";
 
 export interface IKdsOrderProductDto {
-  id?: number;
-  productId?: number;
+  id?: string;
+  productId?: string;
   name?: string;
   quantity?: number;
 }
 
 export interface IKdsOrderDto {
-  id: number;
+  id: string;
   orderNumber: string;
   status: string;
   createdAt: string;
-  stationId?: number;
+  stationId?: string;
   stationName?: string;
   products?: IKdsOrderProductDto[];
 }
 
 export interface IKdsUpdateStatusPayload {
-  orderId: number;
+  orderId: string;
   status: KdsStatus;
 }

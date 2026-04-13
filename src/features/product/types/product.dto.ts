@@ -1,10 +1,10 @@
 export interface ICreateMenu {
   name: string;
-  stationId?: number;
-  storeId: number;
+  stationId?: string;
+  storeId: string;
 }
 
 export interface IUpdateMenu {
   name?: string;
-  stationId?: number;
+  stationId?: string;
 }

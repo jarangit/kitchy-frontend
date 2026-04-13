@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/components/ui/button";
 
 interface Props {
-  storeId: number;
+  storeId: string;
   stationName?: string;
   isRefetching: boolean;
 }

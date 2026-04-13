@@ -1,8 +1,8 @@
 export interface ITransaction {
-  id: number;
-  orderId: number;
+  id: string;
+  orderId: string;
   orderNumber: string;
-  storeId: number;
+  storeId: string;
   method: string;
   amount: number;
   receiptId: string;
@@ -12,7 +12,7 @@ export interface ITransaction {
 }
 
 export interface ITransactionItem {
-  productId: number;
+  productId: string;
   name: string;
   price: number;
   quantity: number;

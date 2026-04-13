@@ -27,7 +27,7 @@ const ordersSlice = createSlice({
       const idx = state.orders.findIndex((o) => o.id === action.payload.id);
       if (idx !== -1) state.orders[idx] = action.payload;
     },
-    removeOrder: (state, action: PayloadAction<number>) => {
+    removeOrder: (state, action: PayloadAction<string>) => {
       state.orders = state.orders.filter((o) => o.id !== action.payload);
     },
     clearOrders: (state) => {

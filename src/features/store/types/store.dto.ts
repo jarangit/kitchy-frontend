@@ -1,5 +1,5 @@
 export interface ICreateStore {
-  userId: number;
+  userId: string;
   name: string;
 }
 

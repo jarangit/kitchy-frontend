@@ -13,7 +13,7 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 const PaymentPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const storeId = Number(id);
+  const storeId = id as string;
 
   const { items, subtotal, clearCart, setPaymentResult } = useCartContext();
 

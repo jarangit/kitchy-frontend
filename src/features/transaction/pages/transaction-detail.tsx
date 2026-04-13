@@ -11,7 +11,7 @@ const TransactionDetailPage = () => {
 
   const { data: order, isLoading } = useQuery({
     queryKey: ["transaction", txId],
-    queryFn: () => transactionServiceApi.getById(Number(txId)),
+    queryFn: () => transactionServiceApi.getById(txId as string),
     enabled: !!txId,
     select: (res) => res.data,
   });
@@ -98,8 +98,8 @@ const TransactionDetailPage = () => {
               {order.products.map(
                 (
                   item: {
-                    id?: number;
-                    productId?: number;
+                    id?: string;
+                    productId?: string;
                     name?: string;
                     quantity?: number;
                     price?: number;

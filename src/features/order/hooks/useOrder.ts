@@ -7,9 +7,9 @@ export function useOrderService({
   stationId,
   orderId,
 }: {
-  storeId?: number;
-  stationId?: number;
-  orderId?: number;
+  storeId?: string;
+  stationId?: string;
+  orderId?: string;
 }) {
   const queryClient = useQueryClient();
 
@@ -17,30 +17,30 @@ export function useOrderService({
   const ordersQuery = useQuery({
     queryKey: ["orders", storeId],
     queryFn: () =>
-      orderApiService.getOrdersByStoreId(storeId as number),
+      orderApiService.getOrdersByStoreId(storeId as string),
     enabled: !!storeId,
     select: (data) => data.data,
   });
 
   const orderFindByStationIdQuery = useQuery({
     queryKey: ["ordersByStation", stationId],
-    queryFn: () => orderApiService.getOrdersByStationId(stationId as number),
+    queryFn: () => orderApiService.getOrdersByStationId(stationId as string),
     enabled: !!stationId,
     select: (data) => data.data,
   });
 
   const orderFinOneQuery = useQuery({
     queryKey: ["order", orderId],
-    queryFn: () => orderApiService.getById(orderId as number),
+    queryFn: () => orderApiService.getById(orderId as string),
     enabled: !!orderId,
   });
 
   // CREATE
   const createMutation = useMutation({
     mutationFn: (data: {
-      storeId: number;
+      storeId: string;
       orderNumber: string;
-      products: { productId: number; quantity: number }[];
+      products: { productId: string; quantity: number }[];
     }) =>
       orderApiService.add(data.storeId, data.orderNumber, data.products),
     onSuccess: () =>
@@ -51,7 +51,7 @@ export function useOrderService({
 
   // UPDATE
   const updateMutation = useMutation({
-    mutationFn: ({ orderId, orderData }: { orderId: number; orderData: any }) =>
+    mutationFn: ({ orderId, orderData }: { orderId: string; orderData: any }) =>
       orderApiService.update(orderId, orderData),
     onSuccess: () =>
       queryClient.invalidateQueries({
@@ -61,7 +61,7 @@ export function useOrderService({
 
   // DELETE
   const deleteMutation = useMutation({
-    mutationFn: (orderId: number) => orderApiService.delete(orderId),
+    mutationFn: (orderId: string) => orderApiService.delete(orderId),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["orders", storeId],

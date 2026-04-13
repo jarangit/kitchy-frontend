@@ -1,5 +1,5 @@
 export interface IOrderItem {
-  id: number;
+  id: string;
   orderNumber: string;
   previousOrderNumber?: string | null;
   type: string;

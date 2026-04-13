@@ -22,17 +22,17 @@ const StoreDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
     useStoreService({
-      storeId: id ? +id : undefined,
+      storeId: id,
     });
   const { ordersQuery } = useOrderService({
-    storeId: id ? +id : undefined,
+    storeId: id,
   });
   const navigate = useNavigate();
   const [stations, setStations] = useState<
-    { id: number; name: string; createdAt: string }[]
+    { id: string; name: string; createdAt: string }[]
   >([]);
 
-  const onGetStations = async (storeId: number) => {
+  const onGetStations = async (storeId: string) => {
     try {
       const response = await stationServiceApi.getByStoreId(storeId);
       if (response && response.data.length > 0) {
@@ -244,7 +244,7 @@ const StoreDashboardPage = () => {
               .slice(0, 5)
               .map(
                 (order: {
-                  id: number;
+                  id: string;
                   orderNumber: string;
                   status: string;
                   createdAt: string;

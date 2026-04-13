@@ -26,7 +26,7 @@ const SettingsCategoriesPage = () => {
       </p>
 
       <StationListTemplate
-        storeId={resolvedStoreId ? Number(resolvedStoreId) : undefined}
+        storeId={resolvedStoreId}
       />
     </div>
   );

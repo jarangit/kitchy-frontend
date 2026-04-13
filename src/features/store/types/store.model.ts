@@ -1,7 +1,7 @@
 export interface IStore {
-  id: number;
+  id: string;
   name: string;
-  userId: number;
+  userId: string;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

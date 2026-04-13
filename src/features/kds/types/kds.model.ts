@@ -1,17 +1,17 @@
 export type KdsStatus = "PENDING" | "COOKING" | "READY";
 
 export interface KdsItem {
-  id: number;
+  id: string;
   name: string;
   quantity: number;
 }
 
 export interface KdsOrder {
-  id: number;
+  id: string;
   orderNumber: string;
   status: KdsStatus;
   createdAt: string;
-  stationId?: number;
+  stationId?: string;
   stationName?: string;
   items: KdsItem[];
 }

@@ -5,7 +5,7 @@ import type { KdsOrder, KdsStatus } from "@/features/kds/types/kds.model";
 
 interface Props {
   order: KdsOrder;
-  onMove: (orderId: number, status: KdsStatus) => void;
+  onMove: (orderId: string, status: KdsStatus) => void;
   disabled?: boolean;
 }
 

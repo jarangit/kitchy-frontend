@@ -5,16 +5,15 @@ import { useStationService } from "@/features/station/hooks/useStation";
 import { StationCard } from "@/features/station/components/station-card";
 
 interface Props {
-  storeId?: number;
+  storeId?: string;
 }
 
 const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
   const { id, storeId: storeIdParam } = useParams<{ id?: string; storeId?: string }>();
-  const routeStoreId = Number(storeIdParam ?? id);
-  const storeId = storeIdProp ?? (Number.isFinite(routeStoreId) ? routeStoreId : undefined);
+  const storeId = storeIdProp ?? storeIdParam ?? id;
   const [stationSelected, setStationSelected] = useState<{
     name: string;
-    id: number;
+    id: string;
   }>();
   const {
     stationsQuery,
@@ -32,7 +31,7 @@ const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
 
     if (stationSelected) {
       updateMutation.mutate({
-        stationId: stationSelected.id,
+      stationId: stationSelected.id,
         stationData: { ...data },
       });
       setStationSelected(undefined);
@@ -69,10 +68,10 @@ const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
       </div>
       {stationsQuery && stationsQuery?.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {stationsQuery.map((item: { id: number; name: string; color: string; activeOrders: number }) => (
+          {stationsQuery.map((item: { id: string; name: string; color: string; activeOrders: number }) => (
             <div key={item.id}>
               <StationCard
-                id={String(item.id)}
+                id={item.id}
                 name={item.name}
                 color={item.color}
                 activeOrders={item.activeOrders}
@@ -83,7 +82,7 @@ const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
                   soundEnabled: false,
                 }}
                 onDelete={(stationId: string) => {
-                  deleteMutation.mutate(+stationId);
+                  deleteMutation.mutate(stationId);
                 }}
               />
             </div>

@@ -1,5 +1,5 @@
 export interface ICreateStation {
-  storeId: number;
+  storeId: string;
   name: string;
   color?: string;
 }

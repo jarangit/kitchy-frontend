@@ -1,8 +1,8 @@
 export interface IStation {
-  id: number;
+  id: string;
   name: string;
   color?: string;
-  storeId: number;
+  storeId: string;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

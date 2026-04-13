@@ -14,13 +14,13 @@ const normalizeStatus = (status: string): KdsStatus => {
   return "PENDING";
 };
 
-export const useKds = (storeId?: number, stationId?: number) => {
+export const useKds = (storeId?: string, stationId?: string) => {
   const { updateMutation } = useOrderService({ storeId });
 
   const ordersQuery = useQuery({
     queryKey: ["kds-orders", storeId],
     queryFn: async () => {
-      const response = await orderApiService.getOrdersByStoreId(storeId as number);
+      const response = await orderApiService.getOrdersByStoreId(storeId as string);
       return response.data?.data as IKdsOrderDto[];
     },
     enabled: !!storeId,
@@ -41,7 +41,7 @@ export const useKds = (storeId?: number, stationId?: number) => {
         stationName: order.stationName,
         items:
           order.products?.map((item) => ({
-            id: item.id ?? item.productId ?? 0,
+            id: item.id ?? item.productId ?? "",
             name: item.name ?? `Product #${item.productId ?? "-"}`,
             quantity: item.quantity ?? 1,
           })) ?? [],
@@ -49,7 +49,7 @@ export const useKds = (storeId?: number, stationId?: number) => {
       .filter((order) => !stationId || order.stationId === stationId);
   }, [ordersQuery.data, stationId]);
 
-  const updateStatus = async (orderId: number, status: KdsStatus) => {
+  const updateStatus = async (orderId: string, status: KdsStatus) => {
     await updateMutation.mutateAsync({
       orderId,
       orderData: { status },

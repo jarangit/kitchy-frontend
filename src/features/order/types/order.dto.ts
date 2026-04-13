@@ -5,7 +5,7 @@ export interface ICreateOrder {
 }
 
 export interface IUpdateOrder {
-  id: number;
+  id: string;
   type?: "TOGO" | "DINEIN" | "";
   status?: "PENDING" | "COMPLETED";
   orderNumber?: string;

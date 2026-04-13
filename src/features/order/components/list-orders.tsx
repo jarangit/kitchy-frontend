@@ -52,7 +52,7 @@ export const ListOrders = ({
     );
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     dispatch(
       openModal({
         title: "Confirm Delete",
@@ -63,7 +63,7 @@ export const ListOrders = ({
     );
   };
 
-  const onDeleteOrder = async (id: number) => {
+  const onDeleteOrder = async (id: string) => {
     try {
       await orderApiService.delete(id);
     } catch (error) {
@@ -178,8 +178,8 @@ export const ListOrders = ({
                     : "md:grid-cols-3"
                 }`}
               >
-                {filteredOrders.map((order: any, key: any) => (
-                  <div key={key}>
+                 {filteredOrders.map((order: any, key: any) => (
+                   <div key={key}>
                     <OrderCard
                       order={order}
                       onDelete={() => handleDelete(order.id)}
