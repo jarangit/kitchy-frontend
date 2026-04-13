@@ -1,30 +1,34 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { LuLayoutDashboard, LuShoppingCart, LuHistory, LuSettings, LuChefHat } from "react-icons/lu";
+import { useAppSelector } from "@/shared/hooks/hooks";
 
 const Sidebar = () => {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
+  const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
 
-  const storeMenuList = id
+  const resolvedStoreId = id ?? (currentStoreId ? String(currentStoreId) : undefined);
+
+  const storeMenuList = resolvedStoreId
     ? [
         {
           name: "Dashboard",
-          path: `/store/${id}`,
+          path: `/store/${resolvedStoreId}`,
           icon: <LuLayoutDashboard size={24} />,
         },
         {
           name: "POS",
-          path: `/store/${id}/pos`,
+          path: `/store/${resolvedStoreId}/pos`,
           icon: <LuShoppingCart size={24} />,
         },
         {
           name: "History",
-          path: `/store/${id}/transactions`,
+          path: `/store/${resolvedStoreId}/transactions`,
           icon: <LuHistory size={24} />,
         },
         {
           name: "KDS",
-          path: `/store/${id}/kds`,
+          path: `/store/${resolvedStoreId}/kds`,
           icon: <LuChefHat size={24} />,
         },
       ]
@@ -59,11 +63,11 @@ const Sidebar = () => {
             </Link>
           ))}
         </div>
-        {id && (
+        {resolvedStoreId && (
           <Link
-            to={`/store/${id}/settings`}
+            to={`/store/${resolvedStoreId}/settings`}
             className={`${itemClass} ${
-              location.pathname.startsWith(`/store/${id}/settings`)
+              location.pathname.startsWith(`/store/${resolvedStoreId}/settings`)
                 ? activeClass
                 : inactiveClass
             }`}

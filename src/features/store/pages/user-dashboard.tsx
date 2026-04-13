@@ -9,6 +9,8 @@ import {
 } from "@/shared/components/ui/dialog";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
+import { useAppDispatch } from "@/shared/hooks/hooks";
+import { clearCurrentStore, setCurrentStore } from "@/shared/store/slices/current-store-slice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuPlus, LuStore } from "react-icons/lu";
@@ -21,10 +23,12 @@ export default function UserDashboard() {
   const { stores, storesLoading, createStore } =
     useStoreService({ userId });
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [isCreate, setIsCreate] = useState(false);
 
   const handleLogout = () => {
+    dispatch(clearCurrentStore());
     auth?.logout();
   };
 
@@ -91,7 +95,15 @@ export default function UserDashboard() {
               <div
                 key={item.id}
                 className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5 cursor-pointer hover:border-[var(--color-border-hover)] hover:shadow-md active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
-                onClick={() => navigate(`/store/${item.id}`)}
+                onClick={() => {
+                  dispatch(
+                    setCurrentStore({
+                      storeId: Number(item.id),
+                      storeName: item.name,
+                    })
+                  );
+                  navigate(`/store/${item.id}`);
+                }}
               >
                 <div className="w-10 h-10 rounded-xl bg-[var(--color-success-bg)] flex items-center justify-center text-2xl">
                   🏪
