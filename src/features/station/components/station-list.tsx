@@ -1,16 +1,11 @@
 import { useState } from "react";
 import AddUpStationForm from "@/features/station/components/add-up-station";
-import { useParams } from "react-router-dom";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { StationCard } from "@/features/station/components/station-card";
+import { useAppSelector } from "@/shared/hooks/hooks";
 
-interface Props {
-  storeId?: string;
-}
-
-const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
-  const { id, storeId: storeIdParam } = useParams<{ id?: string; storeId?: string }>();
-  const storeId = storeIdProp ?? storeIdParam ?? id;
+const StationListTemplate = () => {
+  const storeId = useAppSelector((state) => state.currentStore.storeId);
   const [stationSelected, setStationSelected] = useState<{
     name: string;
     id: string;
@@ -21,9 +16,7 @@ const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
     updateMutation,
     stationsQueryIsLoading,
     deleteMutation,
-  } = useStationService({
-    storeId,
-  });
+  } = useStationService({});
   const onSubmitStation = (data: { name: string; color?: string }) => {
     if (!storeId) {
       return;
@@ -38,7 +31,6 @@ const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
       return;
     }
     createMutation.mutate({
-      storeId,
       ...data,
     });
   };

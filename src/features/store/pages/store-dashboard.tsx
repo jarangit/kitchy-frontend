@@ -21,12 +21,8 @@ import {
 const StoreDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
-    useStoreService({
-      storeId: id,
-    });
-  const { ordersQuery } = useOrderService({
-    storeId: id,
-  });
+    useStoreService({});
+  const { ordersQuery } = useOrderService({});
   const navigate = useNavigate();
   const [stations, setStations] = useState<
     { id: string; name: string; createdAt: string }[]

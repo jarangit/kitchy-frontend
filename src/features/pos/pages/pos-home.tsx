@@ -14,10 +14,9 @@ import { LuX } from "react-icons/lu";
 const PosHomePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const storeId = id as string;
 
-  const { storeFinOneQuery } = useStoreService({ storeId });
-  const { productsQuery, productsQueryLoading } = useProductService(storeId);
+  const { storeFinOneQuery } = useStoreService({});
+  const { productsQuery, productsQueryLoading } = useProductService();
   const cart = useCartContext();
 
   const [selectedCategory, setSelectedCategory] = useState("ALL");
@@ -150,7 +149,6 @@ const PosHomePage = () => {
       <PosPaymentOverlay
         open={isPaymentOpen}
         onClose={() => setIsPaymentOpen(false)}
-        storeId={storeId}
       />
     </div>
   );

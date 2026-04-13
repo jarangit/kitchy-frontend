@@ -1,15 +1,15 @@
 import { stationServiceApi } from "@/features/station/services/station";
 import type { ICreateStation } from "@/features/station/types/station.dto";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAppSelector } from "@/shared/hooks/hooks";
 
 export function useStationService({
   stationId,
-  storeId,
 }: {
   stationId?: string;
-  storeId?: string;
 }) {
   const queryClient = useQueryClient();
+  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   const stationsQuery = useQuery({
     queryKey: ["stations", storeId],
@@ -26,7 +26,11 @@ export function useStationService({
   });
 
   const createMutation = useMutation({
-    mutationFn: (data: ICreateStation) => stationServiceApi.add(data),
+    mutationFn: (data: Omit<ICreateStation, "storeId">) =>
+      stationServiceApi.add({
+        storeId: storeId as string,
+        ...data,
+      }),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["stations", stationId],

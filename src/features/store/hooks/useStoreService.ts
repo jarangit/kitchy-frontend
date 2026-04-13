@@ -3,15 +3,15 @@ import { storeServiceApi } from "@/features/store/services/store";
 import type { ICreateStore } from "@/features/store/types/store.dto";
 import type { IUpdateStore } from "@/features/store/types/store.dto";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAppSelector } from "@/shared/hooks/hooks";
 
 export function useStoreService({
   userId,
-  storeId,
 }: {
   userId?: string;
-  storeId?: string;
 }) {
   const queryClient = useQueryClient();
+  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   // READ
   const storesQuery = useQuery({
@@ -40,12 +40,10 @@ export function useStoreService({
   // UPDATE
   const updateMutation = useMutation({
     mutationFn: ({
-      storeId,
       storeData,
     }: {
-      storeId: string;
       storeData: IUpdateStore;
-    }) => storeServiceApi.updateStore(storeId, storeData),
+    }) => storeServiceApi.updateStore(storeId as string, storeData),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["store", storeId],
@@ -54,8 +52,7 @@ export function useStoreService({
 
   // DELETE
   const deleteMutation = useMutation({
-    mutationFn: (storeId: string) =>
-      storeServiceApi.deleteStore(storeId),
+    mutationFn: () => storeServiceApi.deleteStore(storeId as string),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["stores", userId],

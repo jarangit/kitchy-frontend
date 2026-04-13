@@ -25,9 +25,7 @@ const SettingsCategoriesPage = () => {
         category for grouping products.
       </p>
 
-      <StationListTemplate
-        storeId={resolvedStoreId}
-      />
+      <StationListTemplate />
     </div>
   );
 };

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useParams } from "react-router-dom";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import AddUpProductForm from "@/features/product/components/add-up-product";
 import { ProductCard } from "@/features/product/components/product-card";
@@ -7,13 +6,11 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 import { LuPackage } from "react-icons/lu";
 
 const ProductListTemplate = () => {
-  const params = useParams<{ id: string }>();
-  const id = params.id;
   const {
     productsQuery,
     createMenuMutation: createProductMutation,
     deleteMenuMutation: deleteProductMutation,
-  } = useProductService(id as string);
+  } = useProductService();
 
   return (
     <div className="relative">
@@ -45,7 +42,6 @@ const ProductListTemplate = () => {
         _onSubmit={(data) => {
           createProductMutation.mutate({
             ...data,
-            storeId: id,
           });
         }}
       />

@@ -13,7 +13,6 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 const PaymentPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const storeId = id as string;
 
   const { items, subtotal, clearCart, setPaymentResult } = useCartContext();
 
@@ -22,7 +21,7 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { createMutation } = useOrderService({ storeId });
+  const { createMutation } = useOrderService({});
 
   const change =
     paymentMethod === "CASH" && receivedAmount
@@ -41,7 +40,6 @@ const PaymentPage = () => {
     try {
       const orderNumber = `POS-${Date.now()}`;
       await createMutation.mutateAsync({
-        storeId,
         orderNumber,
         products: items.map((item) => ({
           productId: item.productId,

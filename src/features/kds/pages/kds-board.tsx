@@ -9,10 +9,9 @@ import { SkeletonCard } from "@/shared/components/ui/skeleton";
 
 const KdsBoardPage = () => {
   const { id } = useParams<{ id: string }>();
-  const storeId = id as string;
 
   const [activeStationId, setActiveStationId] = useState<string | undefined>();
-  const { stationsQuery } = useStationService({ storeId });
+  const { stationsQuery } = useStationService({});
 
   const activeStation = useMemo(
     () => stationsQuery?.find((s: { id: string }) => s.id === activeStationId),
@@ -20,7 +19,6 @@ const KdsBoardPage = () => {
   );
 
   const { orders, isLoading, isRefetching, isUpdating, updateStatus } = useKds(
-    storeId,
     activeStationId
   );
 
@@ -40,7 +38,7 @@ const KdsBoardPage = () => {
   return (
     <div className="space-y-6 h-full">
       <KdsHeader
-        storeId={storeId}
+        storeId={id as string}
         stationName={activeStation?.name}
         isRefetching={isRefetching}
       />

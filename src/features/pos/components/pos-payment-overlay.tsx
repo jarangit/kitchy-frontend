@@ -13,13 +13,12 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 interface Props {
   open: boolean;
   onClose: () => void;
-  storeId: string;
 }
 
-const PosPaymentOverlay = ({ open, onClose, storeId }: Props) => {
+const PosPaymentOverlay = ({ open, onClose }: Props) => {
   const { items, subtotal, clearCart, setPaymentResult, paymentResult, clearPaymentResult } =
     useCartContext();
-  const { createMutation } = useOrderService({ storeId });
+  const { createMutation } = useOrderService({});
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CASH");
   const [receivedAmount, setReceivedAmount] = useState<string>("");
@@ -60,7 +59,6 @@ const PosPaymentOverlay = ({ open, onClose, storeId }: Props) => {
       const orderNumber = `POS-${Date.now()}`;
 
       await createMutation.mutateAsync({
-        storeId,
         orderNumber,
         products: items.map((item) => ({
           productId: item.productId,

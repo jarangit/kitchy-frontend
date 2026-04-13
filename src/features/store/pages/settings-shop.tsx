@@ -20,14 +20,11 @@ const SettingsShopPage = () => {
   const userId = auth?.user?.id ? String(auth.user.id) : undefined;
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const { storeFinOneQuery, updateStore, deleteStore } = useStoreService({
-    userId,
-    storeId: id,
-  });
+  const { storeFinOneQuery, updateStore, deleteStore } = useStoreService({ userId });
 
   const handleDeleteStore = () => {
     if (id !== undefined) {
-      deleteStore(id);
+      deleteStore();
       navigate("/dashboard");
     }
     setIsDeleteDialogOpen(false);
@@ -53,7 +50,6 @@ const SettingsShopPage = () => {
             defaultValues={{ name: storeFinOneQuery.name }}
             _onSubmit={(data) =>
               updateStore({
-                storeId: String(storeFinOneQuery.id),
                 storeData: { name: data.name },
               })
             }

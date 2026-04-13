@@ -12,7 +12,6 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Select } from "@/shared/components/ui/select";
 import { useStationService } from "@/features/station/hooks/useStation";
-import { useParams } from "react-router-dom";
 import { LuPlus } from "react-icons/lu";
 
 type Props = {
@@ -21,14 +20,10 @@ type Props = {
 };
 
 const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
-  const { id } = useParams<{ id: string }>();
   const [optionStation, setOptionStation] = useState<
     { value: string; label: string }[]
   >([]);
-  const storeId = id;
-  const { stationsQuery } = useStationService({
-    storeId,
-  });
+  const { stationsQuery } = useStationService({});
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const {

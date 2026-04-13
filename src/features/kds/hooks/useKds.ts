@@ -4,6 +4,7 @@ import { orderApiService } from "@/features/order/services/order";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import type { IKdsOrderDto } from "@/features/kds/types/kds.dto";
 import type { KdsOrder, KdsStatus } from "@/features/kds/types/kds.model";
+import { useAppSelector } from "@/shared/hooks/hooks";
 
 const VALID_KDS_STATUS: KdsStatus[] = ["PENDING", "COOKING", "READY"];
 
@@ -14,8 +15,9 @@ const normalizeStatus = (status: string): KdsStatus => {
   return "PENDING";
 };
 
-export const useKds = (storeId?: string, stationId?: string) => {
-  const { updateMutation } = useOrderService({ storeId });
+export const useKds = (stationId?: string) => {
+  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+  const { updateMutation } = useOrderService({});
 
   const ordersQuery = useQuery({
     queryKey: ["kds-orders", storeId],

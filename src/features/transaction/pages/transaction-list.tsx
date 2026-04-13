@@ -10,9 +10,8 @@ import { LuReceipt } from "react-icons/lu";
 const TransactionListPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const storeId = id;
 
-  const { transactions, isLoading } = useTransactionService(storeId);
+  const { transactions, isLoading } = useTransactionService();
 
   const [filter, setFilter] = useState({ search: "", status: "ALL" });
 

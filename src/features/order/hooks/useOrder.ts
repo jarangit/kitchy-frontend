@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { orderApiService } from "@/features/order/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAppSelector } from "@/shared/hooks/hooks";
 
 export function useOrderService({
-  storeId,
   stationId,
   orderId,
 }: {
-  storeId?: string;
   stationId?: string;
   orderId?: string;
 }) {
   const queryClient = useQueryClient();
+  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   // READ
   const ordersQuery = useQuery({
@@ -38,11 +38,10 @@ export function useOrderService({
   // CREATE
   const createMutation = useMutation({
     mutationFn: (data: {
-      storeId: string;
       orderNumber: string;
       products: { productId: string; quantity: number }[];
     }) =>
-      orderApiService.add(data.storeId, data.orderNumber, data.products),
+      orderApiService.add(storeId as string, data.orderNumber, data.products),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["orders", storeId],
