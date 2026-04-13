@@ -98,7 +98,7 @@ export default function UserDashboard() {
                 onClick={() => {
                   dispatch(
                     setCurrentStore({
-                      storeId: Number(item.id),
+                      storeId: item.id,
                       storeName: item.name,
                     })
                   );

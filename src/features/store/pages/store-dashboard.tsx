@@ -45,7 +45,7 @@ const StoreDashboardPage = () => {
 
   useEffect(() => {
     if (id) {
-      onGetStations(+id);
+      onGetStations(id);
     }
   }, [id]);
 
