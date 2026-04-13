@@ -4,9 +4,9 @@ import { Button } from "@/shared/components/ui/button";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const RestaurantManagementPage = () => {
+const StoreManagementPage = () => {
   const { id } = useParams<{ id: string }>();
-  const restaurantId = id ? +id : undefined;
+  const storeId = id ? +id : undefined;
 
   const navigate = useNavigate();
   const [menuSelected, setMenuSelected] = useState("food");
@@ -17,10 +17,10 @@ const RestaurantManagementPage = () => {
 
   return (
     <div className="my-container">
-      <Button onClick={() => navigate(`/restaurant-dashboard/${restaurantId}`)}>
+      <Button onClick={() => navigate(`/store/${storeId}`)}>
         Back
       </Button>
-      <div>Restaurant Management</div>
+      <div>Store Management</div>
 
       <div className="grid grid-cols-4">
         <div className="col-span-1">
@@ -57,4 +57,4 @@ const RestaurantManagementPage = () => {
   );
 };
 
-export default RestaurantManagementPage;
+export default StoreManagementPage;

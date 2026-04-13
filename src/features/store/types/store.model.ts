@@ -1,4 +1,4 @@
-export interface IRestaurant {
+export interface IStore {
   id: number;
   name: string;
   userId: number;
@@ -6,6 +6,6 @@ export interface IRestaurant {
   updatedAt: Date | string;
 }
 
-export interface RestaurantFormData {
+export interface StoreFormData {
   name: string;
 }

@@ -2,7 +2,7 @@ export interface IStation {
   id: number;
   name: string;
   color?: string;
-  restaurantId: number;
+  storeId: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

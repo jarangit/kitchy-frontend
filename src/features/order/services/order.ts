@@ -2,19 +2,19 @@
 import axiosClient from "@/shared/services/axios-client";
 
 export const orderApiService = {
-  getOrdersByRestaurantId: async (restaurantId: number) => {
-    return await axiosClient.get(`/orders/restaurant/${restaurantId}`);
+  getOrdersByStoreId: async (storeId: number) => {
+    return await axiosClient.get(`/orders/store/${storeId}`);
   },
   getById: async (orderId: number) => {
     return await axiosClient.get(`/orders/${orderId}`);
   },
   add: async (
-    restaurantId: number,
+    storeId: number,
     orderNumber: any,
     products: { productId: number; quantity: number }[]
   ) => {
     return await axiosClient.post(`/orders`, {
-      restaurantId,
+      storeId,
       orderNumber,
       products,
     });

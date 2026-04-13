@@ -10,7 +10,7 @@ src/
 ├── features/     # Feature modules
 │   ├── auth/
 │   ├── landing/
-│   ├── restaurant/
+│   ├── store/
 │   ├── order/
 │   ├── station/
 │   ├── product/

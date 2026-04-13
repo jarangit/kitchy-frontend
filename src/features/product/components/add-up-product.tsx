@@ -37,12 +37,12 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   const [optionStation, setOptionStation] = useState<
     { value: string; label: string }[]
   >([]);
-  const restaurantId = id ? +id : undefined;
+  const storeId = id ? +id : undefined;
   const {
     stationsQuery,
     
   } = useStationService({
-    restaurantId,
+    storeId,
   });
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 

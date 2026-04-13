@@ -1,14 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 import LoginPage from "@/features/auth/pages/login";
-import UserDashboardPage from "@/features/restaurant/pages/user-dashboard";
-import RestaurantDashboardPage from "@/features/restaurant/pages/restaurant-dashboard";
+import UserDashboardPage from "@/features/store/pages/user-dashboard";
+import StoreDashboardPage from "@/features/store/pages/store-dashboard";
 import { AuthProvider } from "@/features/auth/context/authContext";
 import { ProtectedRoute } from "@/shared/components/protected-route";
 import HomePage from "@/features/landing/pages/home";
-import RestaurantManagementPage from "@/features/restaurant/pages/management";
-import SettingRestaurantPage from "@/features/restaurant/pages/setting";
+import StoreManagementPage from "@/features/store/pages/management";
+import SettingStorePage from "@/features/store/pages/setting";
 import CreateOrderPage from "@/features/order/pages/create-order";
 import StationPage from "@/features/station/pages/[station]";
+import NotFoundPage from "@/shared/pages/not-found";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/user-dashboard"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               <UserDashboardPage />
@@ -25,31 +26,31 @@ function App() {
           }
         />
         <Route
-          path="/restaurant-dashboard/:id"
+          path="/store/:id"
           element={
             <ProtectedRoute>
-              <RestaurantDashboardPage />
+              <StoreDashboardPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/restaurant/:id/management"
+          path="/store/:id/management"
           element={
             <ProtectedRoute>
-              <RestaurantManagementPage />
+              <StoreManagementPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/restaurant/:id/setting"
+          path="/store/:id/setting"
           element={
             <ProtectedRoute>
-              <SettingRestaurantPage />
+              <SettingStorePage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/restaurant/:id/create-order"
+          path="/store/:id/create-order"
           element={
             <ProtectedRoute>
               <CreateOrderPage />
@@ -57,13 +58,14 @@ function App() {
           }
         />
         <Route
-          path="/restaurant/station/:id"
+          path="/store/:storeId/station/:id"
           element={
             <ProtectedRoute>
               <StationPage />
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </AuthProvider>
   );

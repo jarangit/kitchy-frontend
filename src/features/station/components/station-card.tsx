@@ -13,6 +13,7 @@ interface StationCardProps {
   color: string
   activeOrders: number
   completedToday: number
+  storeId?: number
   displaySettings: {
     cardColor: string
     textSize: "small" | "medium" | "large"
@@ -29,6 +30,7 @@ export function StationCard({
   color,
   activeOrders,
   completedToday,
+  storeId,
   displaySettings,
   onEdit,
   onDelete,
@@ -43,7 +45,7 @@ export function StationCard({
             <CardTitle className="text-lg">{name}</CardTitle>
           </div>
           <div className="flex gap-2">
-            <Link to={`/stations/${id}`}>
+            <Link to={`/store/${storeId}/station/${id}`}>
               <Button variant="outline" size="sm">
                 <Monitor className="w-4 h-4" />
               </Button>
@@ -83,7 +85,7 @@ export function StationCard({
           </div>
 
           <div className="flex gap-2">
-            <Link to={`/stations/${id}`} className="flex-1">
+            <Link to={`/store/${storeId}/station/${id}`} className="flex-1">
               <Button variant="outline" className="w-full bg-transparent">
                 <Monitor className="w-4 h-4 mr-2" />
                 View Station

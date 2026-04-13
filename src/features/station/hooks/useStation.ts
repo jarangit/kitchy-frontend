@@ -4,25 +4,25 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useStationService({
   stationId,
-  restaurantId,
+  storeId,
 }: {
   stationId?: number;
-  restaurantId?: number;
+  storeId?: number;
 }) {
   const queryClient = useQueryClient();
 
   const stationsQuery = useQuery({
-    queryKey: ["stations", restaurantId],
-    queryFn: () => stationServiceApi.getByRestaurantId(restaurantId as number),
-    enabled: !!restaurantId,
-    select: (data) => data.data, // Assuming the API returns { data: [...] }
+    queryKey: ["stations", storeId],
+    queryFn: () => stationServiceApi.getByStoreId(storeId as number),
+    enabled: !!storeId,
+    select: (data) => data.data,
   });
 
   const stationFinOneQuery = useQuery({
     queryKey: ["station", stationId],
     queryFn: () => stationServiceApi.getById(stationId as number),
     enabled: !!stationId,
-    select: (data) => data.data, // Assuming the API returns { data: {...} }
+    select: (data) => data.data,
   });
 
   const createMutation = useMutation({

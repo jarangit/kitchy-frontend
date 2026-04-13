@@ -1,32 +1,31 @@
 import axiosClient from "@/shared/services/axios-client";
-import type { ICreateRestaurant, IUpdateRestaurant } from "@/features/restaurant/types/restaurant.dto";
+import type { ICreateStore, IUpdateStore } from "@/features/store/types/store.dto";
 
-export const restaurantServiceApi = {
-  //  login
+export const storeServiceApi = {
   getByUserId: async (userId: number) => {
-    const response = await axiosClient.get(`/restaurants/user/${userId}`);
+    const response = await axiosClient.get(`/stores/user/${userId}`);
     return response.data;
   },
-  addRestaurant: async (restaurantData: ICreateRestaurant) => {
-    const response = await axiosClient.post("/restaurants", restaurantData);
+  addStore: async (storeData: ICreateStore) => {
+    const response = await axiosClient.post("/stores", storeData);
     return response.data;
   },
-  getById: async (restaurantId: number) => {
-    const response = await axiosClient.get(`/restaurants/${restaurantId}`);
+  getById: async (storeId: number) => {
+    const response = await axiosClient.get(`/stores/${storeId}`);
     return response.data;
   },
-  updateRestaurant: async (
-    restaurantId: number,
-    restaurantData: IUpdateRestaurant
+  updateStore: async (
+    storeId: number,
+    storeData: IUpdateStore
   ) => {
     const response = await axiosClient.patch(
-      `/restaurants/${restaurantId}`,
-      restaurantData
+      `/stores/${storeId}`,
+      storeData
     );
     return response.data;
   },
-  deleteRestaurant: async (restaurantId: number) => {
-    const response = await axiosClient.delete(`/restaurants/${restaurantId}`);
+  deleteStore: async (storeId: number) => {
+    const response = await axiosClient.delete(`/stores/${storeId}`);
     return response.data;
   },
 };

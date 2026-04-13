@@ -1,25 +1,18 @@
 // src/pages/UserDashboard.tsx
-import AddUpRestaurantForm from "@/features/restaurant/components/add-up-restaurant";
+import AddUpStoreForm from "@/features/store/components/add-up-store";
 import { Button } from "@/shared/components/ui/button";
 import { useAuth } from "@/features/auth/hooks/useAuth";
-import { useRestaurantService } from "@/features/restaurant/hooks/useRestaurantService";
+import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// interface Restaurant {
-//   id: number;
-//   name: string;
-//   stationCount: number;
-//   todayOrderCount: number;
-// }
 
 export default function UserDashboard() {
   const auth = useAuth();
   const { user } = auth || {};
   const userId = auth?.user?.id;
 
-  const { restaurants, restaurantsLoading, createRestaurant } =
-    useRestaurantService({ userId });
+  const { stores, storesLoading, createStore } =
+    useStoreService({ userId });
   const navigate = useNavigate();
 
   const [isCreate, setIsCreate] = useState(false);
@@ -29,9 +22,9 @@ export default function UserDashboard() {
     navigate("/login");
   };
 
-  useEffect(() => {}, [restaurants]);
+  useEffect(() => {}, [stores]);
 
-  if (restaurantsLoading) {
+  if (storesLoading) {
     return <div>Loading...</div>;
   }
 
@@ -42,33 +35,33 @@ export default function UserDashboard() {
         <button onClick={handleLogout}>logout</button>
       </div>
       <div className="flex justify-between items-end mb-6">
-        <h1 className="text-2xl font-bold">Your Restaurants</h1>
+        <h1 className="text-2xl font-bold">Your Stores</h1>
         <Button onClick={() => setIsCreate(!isCreate)}>
-          {!isCreate ? "Build new restaurants" : "Cancel"}
+          {!isCreate ? "Build new store" : "Cancel"}
         </Button>
       </div>
 
       {!isCreate ? (
         <div className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {restaurants && restaurants?.length
-              ? restaurants.map((item: any) => (
+            {stores && stores?.length
+              ? stores.map((item: any) => (
                   <div
                     className="bg-blue-300 rounded-lg p-4 cursor-pointer hover:bg-blue-400"
-                    onClick={() => navigate(`/restaurant-dashboard/${item.id}`)}
+                    onClick={() => navigate(`/store/${item.id}`)}
                     key={item.id}
                   >
                     <strong className="">{item.name}</strong>
                   </div>
                 ))
-              : "No restaurants found"}
+              : "No stores found"}
           </div>
         </div>
       ) : (
-        <AddUpRestaurantForm
+        <AddUpStoreForm
           _onSubmit={(data) => {
             if (!userId) return;
-            createRestaurant({ userId: userId, name: data?.name });
+            createStore({ userId: userId, name: data?.name });
             setIsCreate(false);
           }}
         />

@@ -2,10 +2,9 @@ import axiosClient from "@/shared/services/axios-client";
 import type { ICreateStation, IUpdateStation } from "@/features/station/types/station.dto";
 
 export const stationServiceApi = {
-  //  login
-  getByRestaurantId: async (restaurantId: number) => {
+  getByStoreId: async (storeId: number) => {
     const response = await axiosClient.get(
-      `/stations/restaurant/${restaurantId}`
+      `/stations/store/${storeId}`
     );
     return response.data;
   },

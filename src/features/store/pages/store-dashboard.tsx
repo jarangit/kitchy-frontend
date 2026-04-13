@@ -2,36 +2,33 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/shared/components/ui/button";
 import { useOrderService } from "@/features/order/hooks/useOrder";
-import { useRestaurantService } from "@/features/restaurant/hooks/useRestaurantService";
+import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { stationServiceApi } from "@/features/station/services/station";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const menuList = [
-  { name: "Order view", path: "/restaurant-dashboard/orders" },
   { name: "Management", path: "management" },
-  { name: "Live Station Monitor", path: "/restaurant-dashboard/management" },
-  { name: "setting", path: "setting" },
+  { name: "Setting", path: "setting" },
 ];
 
-const RestaurantDashboardPage = () => {
+const StoreDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
   const {
-    restaurantFinOneQuery,
-    restaurantFinOneLoading,
-    restaurantFinOneQueryError,
-  } = useRestaurantService({
-    restaurantId: id ? +id : undefined,
+    storeFinOneQuery,
+    storeFinOneLoading,
+    storeFinOneQueryError,
+  } = useStoreService({
+    storeId: id ? +id : undefined,
   });
   const { deleteMutation, ordersQuery } = useOrderService({
-    restaurantId: id ? +id : undefined,
+    storeId: id ? +id : undefined,
   });
   const navigate = useNavigate();
   const [stations, setStations] = useState<any>();
-  const onGetStations = async (restaurantId: number) => {
+  const onGetStations = async (storeId: number) => {
     try {
-      // Call the API to get stations by restaurant ID
-      const response = await stationServiceApi.getByRestaurantId(restaurantId);
+      const response = await stationServiceApi.getByStoreId(storeId);
       if (response && response.data.length > 0) {
         setStations(response.data);
       }
@@ -40,46 +37,34 @@ const RestaurantDashboardPage = () => {
     }
   };
 
-  // const onGetOrders = async (restaurantId: number) => {
-  //   try {
-  //     const res = await orderApiService.getOrdersByRestaurantId(restaurantId);
-  //     if (res && res.data) {
-  //       setOrders(res.data);
-  //     }
-  //   } catch (error) {
-  //     /* empty */
-  //   }
-  // };
-
   useEffect(() => {
     if (id) {
       onGetStations(+id);
-      // onGetOrders(+id);
     }
   }, [id]);
 
-  if (restaurantFinOneLoading) {
+  if (storeFinOneLoading) {
     return <div>Loading...</div>;
   }
-  if (restaurantFinOneQueryError) {
-    return <div>Error: {restaurantFinOneQueryError}</div>;
+  if (storeFinOneQueryError) {
+    return <div>Error: {storeFinOneQueryError}</div>;
   }
   return (
     <div className="my-container">
       <div className="mb-6">
-        <Link to={"/login"}>Back to Home</Link>
+        <Link to={"/dashboard"}>Back to Dashboard</Link>
       </div>
 
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-2xl font-bold mb-4">
-            {restaurantFinOneQuery?.name}
+            {storeFinOneQuery?.name}
           </h1>
-          <p>Welcome to the restaurant dashboard!</p>
+          <p>Welcome to the store dashboard!</p>
         </div>
         <Button
           onClick={() => {
-            navigate(`/restaurant/${restaurantFinOneQuery.id}/create-order`);
+            navigate(`/store/${storeFinOneQuery.id}/create-order`);
           }}
         >
           New Order
@@ -91,7 +76,7 @@ const RestaurantDashboardPage = () => {
           {menuList.map((item) => (
             <li key={item.name} className="mb-2">
               <Link
-                to={`/restaurant/${restaurantFinOneQuery.id}/${item.path}`}
+                to={`/store/${storeFinOneQuery.id}/${item.path}`}
                 className="text-blue-500 hover:underline"
               >
                 {item.name}
@@ -135,7 +120,7 @@ const RestaurantDashboardPage = () => {
             {stations?.length &&
               stations.map((station: any) => (
                 <Link
-                  to={`/restaurant/station/${station.id}`}
+                  to={`/store/${id}/station/${station.id}`}
                   key={station.id}
                   className="bg-blue-300 rounded-lg p-4 mb-4"
                 >
@@ -145,7 +130,6 @@ const RestaurantDashboardPage = () => {
                     Created At:{" "}
                     {new Date(station.createdAt).toLocaleDateString()}
                   </p>
-                  {/* Add more station details as needed */}
                 </Link>
               ))}
           </div>
@@ -155,4 +139,4 @@ const RestaurantDashboardPage = () => {
   );
 };
 
-export default RestaurantDashboardPage;
+export default StoreDashboardPage;

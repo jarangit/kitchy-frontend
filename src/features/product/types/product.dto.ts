@@ -1,7 +1,7 @@
 export interface ICreateMenu {
   name: string;
   stationId?: number;
-  restaurantId: number;
+  storeId: number;
 }
 
 export interface IUpdateMenu {

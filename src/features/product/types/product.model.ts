@@ -2,7 +2,7 @@ export interface IMenu {
   id: number;
   name: string;
   stationId?: number;
-  restaurantId: number;
+  storeId: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

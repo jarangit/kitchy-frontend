@@ -6,7 +6,7 @@ import { StationCard } from "@/features/station/components/station-card";
 
 const StationListTemplate = () => {
   const { id } = useParams<{ id: string }>();
-  const restaurantId = id ? +id : undefined;
+  const storeId = id ? +id : undefined;
   const [stationSelected, setStationSelected] = useState<{
     name: string;
     id: number;
@@ -18,12 +18,10 @@ const StationListTemplate = () => {
     stationsQueryIsLoading,
     deleteMutation,
   } = useStationService({
-    restaurantId,
+    storeId,
   });
   const onSubmitStation = (data: { name: string; color?: string }) => {
-    // Handle the form submission logic here
     if (stationSelected) {
-      // If a station is selected, update it
       updateMutation.mutate({
         stationId: stationSelected.id,
         stationData: { ...data },
@@ -35,15 +33,12 @@ const StationListTemplate = () => {
       return;
     }
     createMutation.mutate({
-      restaurantId: restaurantId as number,
+      storeId: storeId as number,
       ...data,
     });
   };
 
- 
-
   useEffect(() => {
-  
   }, [stationsQuery]);
 
   if (stationsQueryIsLoading) {
@@ -79,31 +74,7 @@ const StationListTemplate = () => {
                 onDelete={(stationId: string) => {
                   deleteMutation.mutate(+stationId);
                 }}
-                // Add any other required props here, e.g.:
-                // status={item.status}
-                // description={item.description}
               />
-              {/* <strong className="">{item.name}</strong> */}
-              {/* button delete */}
-              {/* <button
-                className="bg-red-500 text-white px-2 py-1 rounded mt-2"
-                onClick={() => {
-                  // Handle delete logic here
-                  console.log("Delete station:", item.id);
-                  deleteMutation.mutate(item.id);
-                }}
-              >
-                Delete
-              </button> */}
-              {/* button edit */}
-              {/* <button
-                className="bg-yellow-500 text-white px-2 py-1 rounded mt-2 ml-2"
-                onClick={() => {
-                  setStationSelected(item);
-                }}
-              >
-                Edit
-              </button> */}
             </div>
           ))}
         </div>

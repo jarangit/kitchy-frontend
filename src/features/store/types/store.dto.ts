@@ -1,8 +1,8 @@
-export interface ICreateRestaurant {
+export interface ICreateStore {
   userId: number;
   name: string;
 }
 
-export interface IUpdateRestaurant {
+export interface IUpdateStore {
   name: string;
 }

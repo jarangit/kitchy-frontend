@@ -3,11 +3,11 @@ import { orderApiService } from "@/features/order/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useOrderService({
-  restaurantId,
+  storeId,
   stationId,
   orderId,
 }: {
-  restaurantId?: number;
+  storeId?: number;
   stationId?: number;
   orderId?: number;
 }) {
@@ -15,18 +15,18 @@ export function useOrderService({
 
   // READ
   const ordersQuery = useQuery({
-    queryKey: ["orders", restaurantId],
+    queryKey: ["orders", storeId],
     queryFn: () =>
-      orderApiService.getOrdersByRestaurantId(restaurantId as number),
-    enabled: !!restaurantId,
-    select: (data) => data.data, // Assuming the API returns { data: [...] }
+      orderApiService.getOrdersByStoreId(storeId as number),
+    enabled: !!storeId,
+    select: (data) => data.data,
   });
 
   const orderFindByStationIdQuery = useQuery({
     queryKey: ["ordersByStation", stationId],
     queryFn: () => orderApiService.getOrdersByStationId(stationId as number),
     enabled: !!stationId,
-    select: (data) => data.data, // Assuming the API returns { data: [...] }
+    select: (data) => data.data,
   });
 
   const orderFinOneQuery = useQuery({
@@ -38,14 +38,14 @@ export function useOrderService({
   // CREATE
   const createMutation = useMutation({
     mutationFn: (data: {
-      restaurantId: number;
+      storeId: number;
       orderNumber: string;
       products: { productId: number; quantity: number }[];
     }) =>
-      orderApiService.add(data.restaurantId, data.orderNumber, data.products),
+      orderApiService.add(data.storeId, data.orderNumber, data.products),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["orders", restaurantId],
+        queryKey: ["orders", storeId],
       }),
   });
 
@@ -55,7 +55,7 @@ export function useOrderService({
       orderApiService.update(orderId, orderData),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["order", restaurantId],
+        queryKey: ["order", storeId],
       }),
   });
 
@@ -64,7 +64,7 @@ export function useOrderService({
     mutationFn: (orderId: number) => orderApiService.delete(orderId),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["orders", restaurantId],
+        queryKey: ["orders", storeId],
       }),
   });
 

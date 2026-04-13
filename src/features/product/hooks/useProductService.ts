@@ -2,14 +2,14 @@
 import { productApiService } from "@/features/product/services/product";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useProductService(restaurantId: number) {
+export function useProductService(storeId: number) {
   const queryClient = useQueryClient();
 
   const menusQuery = useQuery({
-    queryKey: ["products", restaurantId],
-    queryFn: () => productApiService.geProductsByRestaurantId(restaurantId),
-    enabled: !!restaurantId,
-    select: (data) => data.data, // Assuming the API returns { data: [...] }
+    queryKey: ["products", storeId],
+    queryFn: () => productApiService.getProductsByStoreId(storeId),
+    enabled: !!storeId,
+    select: (data) => data.data,
   });
 
   // CREATE
@@ -17,7 +17,7 @@ export function useProductService(restaurantId: number) {
     mutationFn: (newMenu: any) => productApiService.createMenu(newMenu),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["products", restaurantId],
+        queryKey: ["products", storeId],
       });
     },
   });
@@ -28,7 +28,7 @@ export function useProductService(restaurantId: number) {
       productApiService.updateMenu(menuId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["products", restaurantId],
+        queryKey: ["products", storeId],
       });
     },
   });
@@ -38,7 +38,7 @@ export function useProductService(restaurantId: number) {
     mutationFn: (menuId: number) => productApiService.deleteMenu(menuId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["products", restaurantId],
+        queryKey: ["products", storeId],
       });
     },
   });

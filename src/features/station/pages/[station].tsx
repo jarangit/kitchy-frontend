@@ -4,7 +4,7 @@ import { useStationService } from "@/features/station/hooks/useStation";
 import { useParams } from "react-router-dom";
 
 const StationPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string; storeId: string }>();
   const { stationFinOneQuery } = useStationService({
     stationId: id ? +id : undefined,
   });
@@ -12,7 +12,7 @@ const StationPage = () => {
     stationId: id ? +id : undefined,
   });
   console.log(
-    "🚀 ~ StationPage ~ orderByStation, orderFindByStationIdQuery:",
+    "StationPage ~ orderByStation, orderFindByStationIdQuery:",
     orderByStation
   );
 
@@ -29,8 +29,7 @@ const StationPage = () => {
         Station: {stationFinOneQuery.data?.name}
       </h1>
       <p>Station ID: {stationFinOneQuery.data?.id}</p>
-      <p>Restaurant ID: {stationFinOneQuery.data?.restaurantId}</p>
-      {/* Add more station details as needed */}
+      <p>Store ID: {stationFinOneQuery.data?.storeId}</p>
       <hr />
 
       {/* current order item */}

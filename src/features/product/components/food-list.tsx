@@ -38,7 +38,7 @@ const ProductListTemplate = () => {
         _onSubmit={(data) => {
           createProductMutation.mutate({
             ...data,
-            restaurantId: id,
+            storeId: id,
           });
         }}
       />

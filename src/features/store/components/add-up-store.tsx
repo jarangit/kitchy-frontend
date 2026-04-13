@@ -1,21 +1,21 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import type { RestaurantFormData } from "@/features/restaurant/types/restaurant.model";
+import type { StoreFormData } from "@/features/store/types/store.model";
 
 type Props = {
-  _onSubmit?: (data: RestaurantFormData) => void;
-  defaultValues?: RestaurantFormData;
+  _onSubmit?: (data: StoreFormData) => void;
+  defaultValues?: StoreFormData;
 };
 
-const AddUpRestaurantForm = ({ _onSubmit, defaultValues }: Props) => {
+const AddUpStoreForm = ({ _onSubmit, defaultValues }: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<RestaurantFormData>();
+  } = useForm<StoreFormData>();
 
-  const onSubmit = (data: RestaurantFormData) => {
+  const onSubmit = (data: StoreFormData) => {
     // Handle form submission
     console.log(data);
     if (_onSubmit) {
@@ -34,7 +34,7 @@ const AddUpRestaurantForm = ({ _onSubmit, defaultValues }: Props) => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label htmlFor="name" className="block font-medium mb-1">
-          Restaurant Name
+          Store Name
         </label>
         <input
           id="name"
@@ -57,4 +57,4 @@ const AddUpRestaurantForm = ({ _onSubmit, defaultValues }: Props) => {
   );
 };
 
-export default AddUpRestaurantForm;
+export default AddUpStoreForm;

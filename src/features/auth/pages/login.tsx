@@ -13,8 +13,8 @@ const LoginPage = () => {
       const { data } = await userServiceApi.login(email, password);
       if (data.access_token) {
         localStorage.setItem("token", data.access_token);
-        window.location.href = "/user-dashboard";
-        // navigate("/user-dashboard");
+        window.location.href = "/dashboard";
+        // navigate("/dashboard");
       }
     } catch (error: any) {
       setError(error.message || "Login failed");
@@ -29,7 +29,7 @@ const LoginPage = () => {
         .getMe()
         .then((user) => {
           if (user) {
-            navigate("/user-dashboard");
+            navigate("/dashboard");
           }
         })
         .catch(() => {

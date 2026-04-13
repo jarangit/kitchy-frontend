@@ -2,8 +2,8 @@
 import axiosClient from "@/shared/services/axios-client";
 
 export const productApiService = {
-  geProductsByRestaurantId: async (restaurantId: number) => {
-    return await axiosClient.get(`/products/restaurant/${restaurantId}`);
+  getProductsByStoreId: async (storeId: number) => {
+    return await axiosClient.get(`/products/store/${storeId}`);
   },
 
   geProductById: async (MenuId: number) => {

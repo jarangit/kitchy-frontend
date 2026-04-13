@@ -1,64 +1,64 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { restaurantServiceApi } from "@/features/restaurant/services/restaurant";
-import type { ICreateRestaurant } from "@/features/restaurant/types/restaurant.dto";
-import type { IUpdateRestaurant } from "@/features/restaurant/types/restaurant.dto";
+import { storeServiceApi } from "@/features/store/services/store";
+import type { ICreateStore } from "@/features/store/types/store.dto";
+import type { IUpdateStore } from "@/features/store/types/store.dto";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function useRestaurantService({
+export function useStoreService({
   userId,
-  restaurantId,
+  storeId,
 }: {
   userId?: number;
-  restaurantId?: number;
+  storeId?: number;
 }) {
   const queryClient = useQueryClient();
 
   // READ
-  const restaurantsQuery = useQuery({
-    queryKey: ["restaurants", userId],
-    queryFn: () => restaurantServiceApi.getByUserId(userId as number),
+  const storesQuery = useQuery({
+    queryKey: ["stores", userId],
+    queryFn: () => storeServiceApi.getByUserId(userId as number),
     enabled: !!userId,
-    select: (data: any) => data.data, // Assuming the API returns { data: [...] }
+    select: (data: any) => data.data,
   });
 
-  const restaurantFinOneQuery = useQuery({
-    queryKey: ["restaurant", restaurantId],
-    queryFn: () => restaurantServiceApi.getById(restaurantId as number),
-    enabled: !!restaurantId,
-    select: (data: any) => data.data, // Assuming the API returns { data: {...} }
+  const storeFinOneQuery = useQuery({
+    queryKey: ["store", storeId],
+    queryFn: () => storeServiceApi.getById(storeId as number),
+    enabled: !!storeId,
+    select: (data: any) => data.data,
   });
 
   // CREATE
   const createMutation = useMutation({
-    mutationFn: (data: ICreateRestaurant) => restaurantServiceApi.addRestaurant(data),
+    mutationFn: (data: ICreateStore) => storeServiceApi.addStore(data),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["restaurants", userId],
+        queryKey: ["stores", userId],
       }),
   });
 
   // UPDATE
   const updateMutation = useMutation({
     mutationFn: ({
-      restaurantId,
-      restaurantData,
+      storeId,
+      storeData,
     }: {
-      restaurantId: number;
-      restaurantData: IUpdateRestaurant;
-    }) => restaurantServiceApi.updateRestaurant(restaurantId, restaurantData),
+      storeId: number;
+      storeData: IUpdateStore;
+    }) => storeServiceApi.updateStore(storeId, storeData),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["restaurant", restaurantId],
+        queryKey: ["store", storeId],
       }),
   });
 
   // DELETE
   const deleteMutation = useMutation({
-    mutationFn: (restaurantId: number) =>
-      restaurantServiceApi.deleteRestaurant(restaurantId),
+    mutationFn: (storeId: number) =>
+      storeServiceApi.deleteStore(storeId),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["restaurants", userId],
+        queryKey: ["stores", userId],
       }),
   });
 
@@ -68,24 +68,20 @@ export function useRestaurantService({
     }
   };
   return {
-    restaurants: restaurantsQuery.data,
-    restaurantsLoading: restaurantsQuery.isLoading,
+    stores: storesQuery.data,
+    storesLoading: storesQuery.isLoading,
 
-    restaurantFinOneQuery: restaurantFinOneQuery.data,
-    restaurantFinOneLoading: restaurantFinOneQuery.isLoading,
-    restaurantFinOneQueryError: onGetErrors(restaurantFinOneQuery.error),
+    storeFinOneQuery: storeFinOneQuery.data,
+    storeFinOneLoading: storeFinOneQuery.isLoading,
+    storeFinOneQueryError: onGetErrors(storeFinOneQuery.error),
 
-    createRestaurant: createMutation.mutate,
-    createRestaurantLoading: createMutation.isPending,
+    createStore: createMutation.mutate,
+    createStoreLoading: createMutation.isPending,
 
-    updateRestaurant: updateMutation.mutate,
-    updateRestaurantLoading: updateMutation.isPending,
+    updateStore: updateMutation.mutate,
+    updateStoreLoading: updateMutation.isPending,
 
-    deleteRestaurant: deleteMutation.mutate,
-    deleteRestaurantLoading: deleteMutation.isPending,
-    // updateFood: updateMutation.mutate,
-    // updateLoading: updateMutation.isLoading,
-    // deleteFood: deleteMutation.mutate,
-    // deleteLoading: deleteMutation.isLoading,
+    deleteStore: deleteMutation.mutate,
+    deleteStoreLoading: deleteMutation.isPending,
   };
 }
