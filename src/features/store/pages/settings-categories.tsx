@@ -3,13 +3,14 @@ import StationListTemplate from "@/features/station/components/station-list";
 import { LuArrowLeft } from "react-icons/lu";
 
 const SettingsCategoriesPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
   const navigate = useNavigate();
+  const resolvedStoreId = id ?? storeId;
 
   return (
     <div className="space-y-6">
       <button
-        onClick={() => navigate(`/store/${id}/settings`)}
+        onClick={() => navigate(`/store/${resolvedStoreId}/settings`)}
         className="min-h-11 px-2 inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
       >
         <LuArrowLeft size={16} />
@@ -24,7 +25,9 @@ const SettingsCategoriesPage = () => {
         category for grouping products.
       </p>
 
-      <StationListTemplate />
+      <StationListTemplate
+        storeId={resolvedStoreId ? Number(resolvedStoreId) : undefined}
+      />
     </div>
   );
 };

@@ -1,12 +1,17 @@
 import { useState } from "react";
 import AddUpStationForm from "@/features/station/components/add-up-station";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { StationCard } from "@/features/station/components/station-card";
 
-const StationListTemplate = () => {
-  const { id } = useParams<{ id: string }>();
-  const storeId = id ? +id : undefined;
+interface Props {
+  storeId?: number;
+}
+
+const StationListTemplate = ({ storeId: storeIdProp }: Props) => {
+  const { id, storeId: storeIdParam } = useParams<{ id?: string; storeId?: string }>();
+  const routeStoreId = Number(storeIdParam ?? id);
+  const storeId = storeIdProp ?? (Number.isFinite(routeStoreId) ? routeStoreId : undefined);
   const [stationSelected, setStationSelected] = useState<{
     name: string;
     id: number;
@@ -21,6 +26,10 @@ const StationListTemplate = () => {
     storeId,
   });
   const onSubmitStation = (data: { name: string; color?: string }) => {
+    if (!storeId) {
+      return;
+    }
+
     if (stationSelected) {
       updateMutation.mutate({
         stationId: stationSelected.id,
@@ -30,10 +39,18 @@ const StationListTemplate = () => {
       return;
     }
     createMutation.mutate({
-      storeId: storeId as number,
+      storeId,
       ...data,
     });
   };
+
+  if (!storeId) {
+    return (
+      <div className="text-sm text-[var(--color-danger)]">
+        Cannot create station: missing store id.
+      </div>
+    );
+  }
 
   if (stationsQueryIsLoading) {
     return <div>Loading...</div>;
