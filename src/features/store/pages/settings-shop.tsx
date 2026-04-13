@@ -75,6 +75,20 @@ const SettingsShopPage = () => {
         >
           Delete Store
         </Button>
+
+        <div className="pt-4 mt-4 border-t border-[var(--color-border)]">
+          <p className="text-xs text-[var(--color-text-tertiary)] mb-2">
+            Need to work on another store?
+          </p>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => navigate("/dashboard")}
+            className="h-11"
+          >
+            Switch Store
+          </Button>
+        </div>
       </div>
 
       {/* Delete Confirmation Dialog */}
