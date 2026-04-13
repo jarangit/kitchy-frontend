@@ -15,6 +15,7 @@ import {
   LuSettings,
   LuPackage,
   LuMapPin,
+  LuChefHat,
 } from "react-icons/lu";
 
 const StoreDashboardPage = () => {
@@ -183,7 +184,7 @@ const StoreDashboardPage = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <Link
           to={`/store/${id}/pos`}
           className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
@@ -213,6 +214,16 @@ const StoreDashboardPage = () => {
           </div>
           <div className="font-semibold text-[var(--color-text-primary)]">Settings</div>
           <div className="text-sm text-[var(--color-text-secondary)]">Manage store settings</div>
+        </Link>
+        <Link
+          to={`/store/${id}/kds`}
+          className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+        >
+          <div className="w-12 h-12 rounded-full bg-[var(--color-warning-bg)] flex items-center justify-center mb-3">
+            <LuChefHat size={24} className="text-[var(--color-warning)]" />
+          </div>
+          <div className="font-semibold text-[var(--color-text-primary)]">KDS</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">Kitchen order board</div>
         </Link>
       </div>
 

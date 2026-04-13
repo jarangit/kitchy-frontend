@@ -1,0 +1,68 @@
+import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { orderApiService } from "@/features/order/services/order";
+import { useOrderService } from "@/features/order/hooks/useOrder";
+import type { IKdsOrderDto } from "@/features/kds/types/kds.dto";
+import type { KdsOrder, KdsStatus } from "@/features/kds/types/kds.model";
+
+const VALID_KDS_STATUS: KdsStatus[] = ["PENDING", "COOKING", "READY"];
+
+const normalizeStatus = (status: string): KdsStatus => {
+  if (VALID_KDS_STATUS.includes(status as KdsStatus)) {
+    return status as KdsStatus;
+  }
+  return "PENDING";
+};
+
+export const useKds = (storeId?: number, stationId?: number) => {
+  const { updateMutation } = useOrderService({ storeId });
+
+  const ordersQuery = useQuery({
+    queryKey: ["kds-orders", storeId],
+    queryFn: async () => {
+      const response = await orderApiService.getOrdersByStoreId(storeId as number);
+      return response.data?.data as IKdsOrderDto[];
+    },
+    enabled: !!storeId,
+    refetchInterval: 5000,
+    refetchIntervalInBackground: true,
+  });
+
+  const orders = useMemo<KdsOrder[]>(() => {
+    const rawOrders = ordersQuery.data ?? [];
+
+    return rawOrders
+      .map((order) => ({
+        id: order.id,
+        orderNumber: order.orderNumber,
+        status: normalizeStatus(order.status),
+        createdAt: order.createdAt,
+        stationId: order.stationId,
+        stationName: order.stationName,
+        items:
+          order.products?.map((item) => ({
+            id: item.id ?? item.productId ?? 0,
+            name: item.name ?? `Product #${item.productId ?? "-"}`,
+            quantity: item.quantity ?? 1,
+          })) ?? [],
+      }))
+      .filter((order) => !stationId || order.stationId === stationId);
+  }, [ordersQuery.data, stationId]);
+
+  const updateStatus = async (orderId: number, status: KdsStatus) => {
+    await updateMutation.mutateAsync({
+      orderId,
+      orderData: { status },
+    });
+    await ordersQuery.refetch();
+  };
+
+  return {
+    orders,
+    isLoading: ordersQuery.isLoading,
+    isRefetching: ordersQuery.isRefetching,
+    error: ordersQuery.error,
+    updateStatus,
+    isUpdating: updateMutation.isPending,
+  };
+};

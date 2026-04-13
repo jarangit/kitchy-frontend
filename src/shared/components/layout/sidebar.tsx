@@ -1,5 +1,5 @@
 import { Link, useLocation, useParams } from "react-router-dom";
-import { LuLayoutDashboard, LuShoppingCart, LuHistory, LuSettings } from "react-icons/lu";
+import { LuLayoutDashboard, LuShoppingCart, LuHistory, LuSettings, LuChefHat } from "react-icons/lu";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -21,6 +21,11 @@ const Sidebar = () => {
           name: "History",
           path: `/store/${id}/transactions`,
           icon: <LuHistory size={24} />,
+        },
+        {
+          name: "KDS",
+          path: `/store/${id}/kds`,
+          icon: <LuChefHat size={24} />,
         },
       ]
     : [];

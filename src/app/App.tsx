@@ -14,6 +14,7 @@ import { PosLayout } from "@/features/pos/components/pos-layout";
 // Transaction
 import TransactionListPage from "@/features/transaction/pages/transaction-list";
 import TransactionDetailPage from "@/features/transaction/pages/transaction-detail";
+import KdsBoardPage from "@/features/kds/pages/kds-board";
 
 // Settings
 import SettingsPage from "@/features/store/pages/settings";
@@ -86,6 +87,17 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <TransactionDetailPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/store/:id/kds"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <KdsBoardPage />
               </Layout>
             </ProtectedRoute>
           }
