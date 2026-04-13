@@ -69,12 +69,12 @@ const PricingCard = ({
   <div
     className={`relative p-8 rounded-3xl transition-all duration-300 ${
       plan.highlight
-        ? "bg-gray-900 text-white scale-105 shadow-2xl shadow-gray-900/30"
-        : "bg-white border border-gray-200"
+        ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] scale-105 shadow-2xl"
+        : "bg-[var(--color-bg)] border border-[var(--color-border)]"
     } ${isActive ? "opacity-100" : "opacity-100"}`}
   >
     {plan.highlight && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-medium px-4 py-1 rounded-full">
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-sm font-medium px-4 py-1 rounded-full">
         แนะนำ
       </div>
     )}
@@ -82,14 +82,14 @@ const PricingCard = ({
     <div className="mb-6">
       <h3
         className={`text-xl font-semibold mb-2 ${
-          plan.highlight ? "text-white" : "text-gray-900"
+          plan.highlight ? "text-[var(--color-text-inverse)]" : "text-[var(--color-text-primary)]"
         }`}
       >
         {plan.name}
       </h3>
       <p
         className={`text-sm ${
-          plan.highlight ? "text-gray-400" : "text-gray-500"
+          plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"
         }`}
       >
         {plan.description}
@@ -99,7 +99,7 @@ const PricingCard = ({
     <div className="mb-8">
       <span
         className={`text-5xl font-bold ${
-          plan.highlight ? "text-white" : "text-gray-900"
+          plan.highlight ? "text-[var(--color-text-inverse)]" : "text-[var(--color-text-primary)]"
         }`}
       >
         {plan.price === "ติดต่อ" ? "" : "฿"}
@@ -107,7 +107,7 @@ const PricingCard = ({
       </span>
       <span
         className={`text-sm ml-2 ${
-          plan.highlight ? "text-gray-400" : "text-gray-500"
+          plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"
         }`}
       >
         {plan.period}
@@ -118,9 +118,7 @@ const PricingCard = ({
       {plan.features.map((feature, index) => (
         <li key={index} className="flex items-center gap-3">
           <svg
-            className={`w-5 h-5 flex-shrink-0 ${
-              plan.highlight ? "text-orange-400" : "text-orange-500"
-            }`}
+            className="w-5 h-5 flex-shrink-0 text-[var(--color-primary)]"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -133,7 +131,7 @@ const PricingCard = ({
             />
           </svg>
           <span
-            className={plan.highlight ? "text-gray-300" : "text-gray-600"}
+            className={plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"}
           >
             {feature}
           </span>
@@ -142,10 +140,10 @@ const PricingCard = ({
     </ul>
 
     <button
-      className={`w-full py-4 rounded-full font-medium transition-all hover:scale-105 active:scale-95 ${
+      className={`w-full py-4 rounded-full font-medium transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98] h-14 ${
         plan.highlight
-          ? "bg-white text-gray-900 hover:bg-gray-100"
-          : "bg-gray-900 text-white hover:bg-gray-800"
+          ? "bg-[var(--color-bg)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]"
+          : "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:opacity-90"
       }`}
     >
       {plan.cta}
@@ -161,28 +159,28 @@ const Pricing = () => {
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-orange-500 font-medium text-sm tracking-wide uppercase">
+          <span className="text-[var(--color-primary)] font-medium text-sm tracking-wide uppercase">
             Pricing
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mt-4 mb-6">
             แพ็กเกจที่เหมาะกับคุณ
           </h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+          <p className="text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto">
             เลือกแพ็กเกจที่ตอบโจทย์ธุรกิจของคุณ ไม่มีค่าใช้จ่ายแอบแฝง
           </p>
         </div>
 
         {/* Tab Selector */}
         <div className="flex justify-center mb-12">
-          <div className="bg-gray-100 p-1.5 rounded-full inline-flex">
+          <div className="bg-[var(--color-surface)] p-1.5 rounded-full inline-flex">
             {(["free", "pro", "enterprise"] as PlanType[]).map((plan) => (
               <button
                 key={plan}
                 onClick={() => setActiveTab(plan)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] h-11 ${
                   activeTab === plan
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-[var(--color-bg)] text-[var(--color-text-primary)] shadow-sm"
+                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
                 }`}
               >
                 {plan === "free" ? "ฟรี" : plan === "pro" ? "Pro" : "Enterprise"}
@@ -204,11 +202,11 @@ const Pricing = () => {
 
         {/* FAQ Link */}
         <div className="text-center mt-12">
-          <p className="text-gray-500">
+          <p className="text-[var(--color-text-secondary)]">
             มีคำถาม?{" "}
             <a
               href="#faq"
-              className="text-orange-500 hover:text-orange-600 font-medium"
+              className="text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium transition-all duration-[var(--motion-fast)]"
             >
               ดูคำถามที่พบบ่อย
             </a>

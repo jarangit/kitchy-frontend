@@ -40,18 +40,18 @@ const Footer = () => {
   };
 
   return (
-    <footer id="contact" className="bg-gray-900 text-white">
+    <footer id="contact" className="bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]">
       {/* CTA Section */}
-      <div className="border-b border-gray-800">
+      <div className="border-b border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto px-6 py-16">
-          <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-12 text-center">
+          <div className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-3xl p-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               พร้อมที่จะยกระดับครัวของคุณ?
             </h2>
-            <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-[var(--color-text-inverse)]/80 mb-8 max-w-2xl mx-auto">
               เริ่มต้นใช้งาน Kitchy ได้ฟรีวันนี้ ไม่ต้องใช้บัตรเครดิต
             </p>
-            <button className="bg-white text-gray-900 px-8 py-4 rounded-full font-medium text-lg hover:bg-gray-100 transition-all hover:scale-105 active:scale-95">
+            <button className="bg-[var(--color-bg)] text-[var(--color-text-primary)] px-8 py-4 rounded-full font-medium text-lg hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98] h-14">
               เริ่มต้นใช้งานฟรี
             </button>
           </div>
@@ -64,12 +64,12 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold">K</span>
+              <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-xl flex items-center justify-center">
+                <span className="text-[var(--color-text-inverse)] font-bold">K</span>
               </div>
               <span className="text-xl font-semibold">Kitchy</span>
             </div>
-            <p className="text-gray-400 mb-6 leading-relaxed">
+            <p className="text-[var(--color-text-tertiary)] mb-6 leading-relaxed">
               ระบบจัดการครัวอัจฉริยะ ที่ช่วยให้ร้านอาหารของคุณทำงานได้อย่างมีประสิทธิภาพ
             </p>
             {/* Social Links */}
@@ -78,11 +78,11 @@ const Footer = () => {
                 <a
                   key={social}
                   href="#"
-                  className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
+                  className="w-10 h-10 bg-[var(--color-surface)] rounded-full flex items-center justify-center hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
                 >
                   <span className="sr-only">{social}</span>
                   <svg
-                    className="w-5 h-5 text-gray-400"
+                    className="w-5 h-5 text-[var(--color-text-tertiary)]"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -102,7 +102,7 @@ const Footer = () => {
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="text-gray-400 hover:text-white transition-colors text-sm"
+                      className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-inverse)] transition-all duration-[var(--motion-fast)] text-sm"
                     >
                       {link.name}
                     </a>
@@ -115,13 +115,13 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
+      <div className="border-t border-[var(--color-border)]">
         <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">
+          <p className="text-[var(--color-text-secondary)] text-sm">
             © {currentYear} Kitchy. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <span className="text-gray-500 text-sm">Made with ❤️ in Thailand</span>
+            <span className="text-[var(--color-text-secondary)] text-sm">Made with ❤️ in Thailand</span>
           </div>
         </div>
       </div>

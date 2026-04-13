@@ -30,9 +30,15 @@ export default function UserDashboard() {
 
   return (
     <div className="my-container">
-      <div className="flex justify-end gap-3 border p-4">
-        <div>Hello: {user?.email}</div>
-        <button onClick={handleLogout}>logout</button>
+      <div className="flex justify-end items-center gap-3 border border-[var(--color-border)] rounded-xl p-4">
+        <div className="text-[var(--color-text-secondary)]">Hello: {user?.email}</div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleLogout}
+        >
+          Sign Out
+        </Button>
       </div>
       <div className="flex justify-between items-end mb-6">
         <h1 className="text-2xl font-bold">Your Stores</h1>
@@ -47,7 +53,7 @@ export default function UserDashboard() {
             {stores && stores?.length
               ? stores.map((item: any) => (
                   <div
-                    className="bg-blue-300 rounded-lg p-4 cursor-pointer hover:bg-blue-400"
+                    className="bg-[var(--color-primary)] rounded-lg p-4 cursor-pointer hover:bg-[var(--color-primary-hover)] text-[var(--color-text-inverse)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
                     onClick={() => navigate(`/store/${item.id}`)}
                     key={item.id}
                   >

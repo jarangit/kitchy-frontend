@@ -1,5 +1,5 @@
 import { Button } from "@/shared/components/ui/button";
-import { Keyboard } from "lucide-react";
+import { LuKeyboard } from "react-icons/lu";
 import React, { useRef, useState } from "react";
 
 type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({ title, ...props }) => {
   return (
     <div>
       {title && (
-        <label className="block mb-1 text-sm font-medium text-gray-700">
+        <label className="block mb-1 text-sm font-medium text-[var(--color-text-secondary)]">
           {title}
         </label>
       )}
@@ -29,7 +29,7 @@ const Input: React.FC<InputProps> = ({ title, ...props }) => {
           ref={inputRef}
           type="text"
           readOnly={!showKeyboard}
-          className="w-full border-gray-500 text-lg px-4 py-2 h-auto border rounded-md bg-white transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full border-[var(--input-border)] text-lg px-4 py-2 h-auto border rounded-md bg-[var(--input-bg)] transition focus:outline-none focus:border-[var(--input-border-focus)]"
         />
         <Button
           type="button"
@@ -39,7 +39,7 @@ const Input: React.FC<InputProps> = ({ title, ...props }) => {
           onClick={toggleKeyboard}
           aria-label={showKeyboard ? "Show numeric keypad" : "Show keyboard"}
         >
-          <Keyboard className="h-8 w-8" />
+          <LuKeyboard className="h-8 w-8" />
         </Button>
       </div>
     </div>

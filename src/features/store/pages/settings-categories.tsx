@@ -10,16 +10,16 @@ const SettingsCategoriesPage = () => {
     <div className="max-w-3xl mx-auto space-y-6">
       <button
         onClick={() => navigate(`/store/${id}/settings`)}
-        className="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition-colors"
+        className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors active:scale-[0.98]"
       >
         <LuArrowLeft size={16} />
         Back to Settings
       </button>
 
-      <h1 className="text-2xl font-bold text-gray-800">
+      <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
         Category Management
       </h1>
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-[var(--color-text-secondary)]">
         Categories are managed through stations. Each station acts as a
         category for grouping products.
       </p>

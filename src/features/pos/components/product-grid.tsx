@@ -16,15 +16,15 @@ const ProductGrid = ({ products, onAddToCart }: Props) => {
         <button
           key={product.id}
           onClick={() => onAddToCart(product)}
-          className="flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl p-4 hover:border-black hover:shadow-md transition-all cursor-pointer active:scale-95"
+          className="flex flex-col items-center justify-center bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4 hover:border-[var(--color-text-primary)] hover:shadow-md transition-all cursor-pointer active:scale-95"
         >
-          <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-2">
+          <div className="w-12 h-12 bg-[var(--color-surface)] rounded-lg flex items-center justify-center mb-2">
             <span className="text-2xl">🍽</span>
           </div>
-          <span className="text-sm font-medium text-gray-800 text-center leading-tight">
+          <span className="text-sm font-medium text-[var(--color-text-primary)] text-center leading-tight">
             {product.name}
           </span>
-          <span className="text-sm font-bold text-green-600 mt-1">
+          <span className="text-sm font-bold text-[var(--color-success)] mt-1">
             ฿{product.price.toFixed(2)}
           </span>
         </button>

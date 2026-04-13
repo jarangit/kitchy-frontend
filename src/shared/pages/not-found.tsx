@@ -16,12 +16,12 @@ export default function NotFoundPage({
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
-      <h1 className="text-8xl font-bold text-gray-300">{title}</h1>
-      <p className="mt-4 text-xl text-gray-600">{message}</p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[var(--color-surface)] px-4">
+      <h1 className="text-8xl font-bold text-[var(--color-text-tertiary)]">{title}</h1>
+      <p className="mt-4 text-xl text-[var(--color-text-secondary)]">{message}</p>
       <button
         onClick={() => navigate(backTo)}
-        className="mt-8 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+        className="mt-8 px-6 h-11 bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] rounded-lg hover:opacity-90 transition-all duration-[var(--motion-fast)] active:scale-[0.98] cursor-pointer"
       >
         {backLabel}
       </button>

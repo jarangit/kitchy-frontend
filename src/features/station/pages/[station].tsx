@@ -30,14 +30,14 @@ const StationPage = () => {
       </h1>
       <p>Station ID: {stationFinOneQuery.data?.id}</p>
       <p>Store ID: {stationFinOneQuery.data?.storeId}</p>
-      <hr />
+      <hr className="border-[var(--color-border)]" />
 
       {/* current order item */}
       <h2 className="text-xl font-semibold mt-6 mb-4">Current Orders</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orderByStation?.length ? (
           orderByStation?.map((order: any) => (
-            <div key={order.id} className="bg-green-300 rounded-lg p-4 mb-4">
+            <div key={order.id} className="bg-[var(--color-success-bg)] rounded-lg p-4 mb-4">
               <h2 className="text-xl font-semibold">
                 Order ID: {order.orderNumber}
               </h2>

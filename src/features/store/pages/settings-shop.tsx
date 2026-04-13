@@ -20,17 +20,17 @@ const SettingsShopPage = () => {
     <div className="max-w-2xl mx-auto space-y-6">
       <button
         onClick={() => navigate(`/store/${id}/settings`)}
-        className="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition-colors"
+        className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors active:scale-[0.98]"
       >
         <LuArrowLeft size={16} />
         Back to Settings
       </button>
 
-      <h1 className="text-2xl font-bold text-gray-800">Shop Settings</h1>
+      <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Shop Settings</h1>
 
       {/* Edit Store Name */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="font-semibold text-gray-800 mb-4">Store Name</h3>
+      <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
+        <h3 className="font-semibold text-[var(--color-text-primary)] mb-4">Store Name</h3>
         {storeFinOneQuery ? (
           <AddUpStoreForm
             defaultValues={{ name: storeFinOneQuery.name }}
@@ -42,18 +42,18 @@ const SettingsShopPage = () => {
             }
           />
         ) : (
-          <div className="text-gray-400">Loading...</div>
+          <div className="text-[var(--color-text-tertiary)]">Loading...</div>
         )}
       </div>
 
       {/* Danger Zone */}
-      <div className="bg-red-50 rounded-xl border border-red-200 p-6">
-        <h3 className="font-semibold text-red-700 mb-2">Danger Zone</h3>
-        <p className="text-sm text-red-600 mb-4">
+      <div className="bg-[var(--color-danger-bg)] rounded-xl border border-[var(--color-danger)] p-6">
+        <h3 className="font-semibold text-[var(--color-danger)] mb-2">Danger Zone</h3>
+        <p className="text-sm text-[var(--color-danger)] mb-4">
           Deleting a store is permanent and cannot be undone.
         </p>
         <Button
-          variant="destructive"
+          variant="danger"
           onClick={() => {
             if (
               window.confirm(

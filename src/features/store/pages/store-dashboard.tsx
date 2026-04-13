@@ -62,18 +62,18 @@ const StoreDashboardPage = () => {
         <div>
           <Link
             to="/dashboard"
-            className="text-sm text-gray-500 hover:text-black transition-colors"
+            className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors active:scale-[0.98]"
           >
             &larr; Back to stores
           </Link>
           <h1 className="text-2xl font-bold mt-1">
             {storeFinOneQuery?.name}
           </h1>
-          <p className="text-gray-500">Store Dashboard</p>
+          <p className="text-[var(--color-text-secondary)]">Store Dashboard</p>
         </div>
         <Button
           onClick={() => navigate(`/store/${id}/pos`)}
-          className="h-12 px-6 bg-green-600 hover:bg-green-700 text-base font-bold"
+          className="h-12 px-6 bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-bg-hover)] text-base font-bold"
         >
           <LuShoppingCart className="mr-2" size={20} />
           Open POS
@@ -84,65 +84,65 @@ const StoreDashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Link
           to={`/store/${id}/pos`}
-          className="bg-white border border-gray-200 rounded-xl p-5 hover:border-green-400 transition-all"
+          className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all active:scale-[0.98]"
         >
-          <LuShoppingCart size={28} className="text-green-600 mb-2" />
-          <div className="font-semibold text-gray-800">POS</div>
-          <div className="text-sm text-gray-500">Create new orders</div>
+          <LuShoppingCart size={28} className="text-[var(--color-success)] mb-2" />
+          <div className="font-semibold text-[var(--color-text-primary)]">POS</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">Create new orders</div>
         </Link>
         <Link
           to={`/store/${id}/transactions`}
-          className="bg-white border border-gray-200 rounded-xl p-5 hover:border-blue-400 transition-all"
+          className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all active:scale-[0.98]"
         >
-          <LuHistory size={28} className="text-blue-600 mb-2" />
-          <div className="font-semibold text-gray-800">Transactions</div>
-          <div className="text-sm text-gray-500">View order history</div>
+          <LuHistory size={28} className="text-[var(--color-info)] mb-2" />
+          <div className="font-semibold text-[var(--color-text-primary)]">Transactions</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">View order history</div>
         </Link>
         <Link
           to={`/store/${id}/settings`}
-          className="bg-white border border-gray-200 rounded-xl p-5 hover:border-gray-400 transition-all"
+          className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all active:scale-[0.98]"
         >
-          <LuSettings size={28} className="text-gray-600 mb-2" />
-          <div className="font-semibold text-gray-800">Settings</div>
-          <div className="text-sm text-gray-500">Manage store settings</div>
+          <LuSettings size={28} className="text-[var(--color-text-secondary)] mb-2" />
+          <div className="font-semibold text-[var(--color-text-primary)]">Settings</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">Manage store settings</div>
         </Link>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-2xl font-bold text-gray-800">
+        <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4">
+          <div className="text-2xl font-bold text-[var(--color-text-primary)]">
             {ordersQuery?.length || 0}
           </div>
-          <div className="text-sm text-gray-500">Total Orders</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">Total Orders</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-2xl font-bold text-yellow-600">
+        <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4">
+          <div className="text-2xl font-bold text-[var(--color-warning)]">
             {pendingOrders}
           </div>
-          <div className="text-sm text-gray-500">Pending</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">Pending</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-2xl font-bold text-green-600">
+        <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4">
+          <div className="text-2xl font-bold text-[var(--color-success)]">
             {completedOrders}
           </div>
-          <div className="text-sm text-gray-500">Completed</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">Completed</div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <div className="text-2xl font-bold text-blue-600">
+        <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4">
+          <div className="text-2xl font-bold text-[var(--color-info)]">
             {stations?.length || 0}
           </div>
-          <div className="text-sm text-gray-500">Stations</div>
+          <div className="text-sm text-[var(--color-text-secondary)]">Stations</div>
         </div>
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
+      <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-gray-800">Recent Orders</h2>
+          <h2 className="font-bold text-[var(--color-text-primary)]">Recent Orders</h2>
           <Link
             to={`/store/${id}/transactions`}
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-[var(--color-info)] hover:underline"
           >
             View all
           </Link>
@@ -160,10 +160,10 @@ const StoreDashboardPage = () => {
                 }) => (
                   <div
                     key={order.id}
-                    className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0"
+                    className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0"
                   >
                     <div>
-                      <span className="font-medium text-gray-800">
+                      <span className="font-medium text-[var(--color-text-primary)]">
                         {order.orderNumber}
                       </span>
                     </div>
@@ -171,13 +171,13 @@ const StoreDashboardPage = () => {
                       <span
                         className={`text-xs px-2 py-1 rounded-full ${
                           order.status === "COMPLETED"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
+                            ? "bg-[var(--color-success-bg)] text-[var(--color-success)]"
+                            : "bg-[var(--color-warning-bg)] text-[var(--color-warning)]"
                         }`}
                       >
                         {order.status}
                       </span>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-[var(--color-text-tertiary)]">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </span>
                     </div>
@@ -186,7 +186,7 @@ const StoreDashboardPage = () => {
               )}
           </div>
         ) : (
-          <div className="text-center text-gray-400 py-8">
+          <div className="text-center text-[var(--color-text-tertiary)] py-8">
             No orders yet. Open POS to create your first order!
           </div>
         )}
@@ -194,17 +194,17 @@ const StoreDashboardPage = () => {
 
       {/* Stations */}
       {stations && stations.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="font-bold text-gray-800 mb-4">Stations</h2>
+        <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-6">
+          <h2 className="font-bold text-[var(--color-text-primary)] mb-4">Stations</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {stations.map((station) => (
               <Link
                 to={`/store/${id}/station/${station.id}`}
                 key={station.id}
-                className="border border-gray-200 rounded-lg p-4 hover:border-blue-400 transition-all"
+                className="border border-[var(--color-border)] rounded-lg p-4 hover:border-[var(--color-border-hover)] transition-all active:scale-[0.98]"
               >
-                <h3 className="font-semibold text-gray-800">{station.name}</h3>
-                <p className="text-xs text-gray-400">
+                <h3 className="font-semibold text-[var(--color-text-primary)]">{station.name}</h3>
+                <p className="text-xs text-[var(--color-text-tertiary)]">
                   Created{" "}
                   {new Date(station.createdAt).toLocaleDateString()}
                 </p>

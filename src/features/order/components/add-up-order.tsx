@@ -40,18 +40,18 @@ const AddUpOrderForm = ({ _onSubmit, defaultValues }: Props) => {
           id="name"
           type="text"
           {...register("name", { required: "Name is required" })}
-          className="border p-2 w-full rounded"
+          className="border border-[var(--color-border)] p-3 w-full rounded-[var(--input-radius)] bg-[var(--input-bg)] text-[var(--input-text)]"
         />
         {errors.name && (
-          <span className="text-red-500 text-sm">{errors.name.message}</span>
+          <span className="text-[var(--color-danger)] text-sm">{errors.name.message}</span>
         )}
       </div>
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] hover:bg-[var(--button-primary-bg-hover)] px-4 py-2 rounded h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
       >
-        {isSubmitting ? "Saving..." : "Save"}
+        {isSubmitting ? "Saving..." : "Save Order"}
       </button>
     </form>
   );

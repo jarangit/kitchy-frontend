@@ -19,8 +19,8 @@ const TabItem = ({
     <button
       type="button"
       onClick={onClick}
-      className={`px-4 py-2 rounded-lg flex flex-col items-center gap-1 transition-colors
-        ${active ? "bg-black text-white" : "bg-white text-black"}
+      className={`px-4 py-2 rounded-lg flex flex-col items-center gap-1 transition-all duration-[var(--motion-fast)] active:scale-[0.98]
+        ${active ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]" : "bg-[var(--color-bg)] text-[var(--color-text-primary)]"}
         ${className}`}
     >
       {icon && <span>{icon}</span>}

@@ -23,25 +23,25 @@ const TransactionCard = ({ order, onClick }: Props) => {
 
   const statusColor =
     order.status === "COMPLETED"
-      ? "bg-green-100 text-green-700"
-      : "bg-yellow-100 text-yellow-700";
+      ? "bg-[var(--color-success-bg)] text-[var(--color-success)]"
+      : "bg-[var(--color-warning-bg)] text-[var(--color-warning)]";
 
   const itemCount = order.products?.length ?? 0;
 
   return (
     <button
       onClick={onClick}
-      className="w-full bg-white rounded-xl border border-gray-200 p-4 hover:border-gray-400 transition-all text-left"
+      className="w-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-4 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] text-left"
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="font-bold text-gray-800">{order.orderNumber}</span>
+        <span className="font-bold text-[var(--color-text-primary)]">{order.orderNumber}</span>
         <span
           className={`text-xs px-2 py-1 rounded-full font-medium ${statusColor}`}
         >
           {order.status}
         </span>
       </div>
-      <div className="flex items-center justify-between text-sm text-gray-500">
+      <div className="flex items-center justify-between text-sm text-[var(--color-text-secondary)]">
         <span>
           {formattedDate} {formattedTime}
         </span>

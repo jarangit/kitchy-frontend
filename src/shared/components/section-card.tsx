@@ -5,7 +5,7 @@ interface RoleCardProps {
   icon: ReactNode;
   title: string;
   orderCount: number;
-  colorClass?: string;
+  color?: string;
   onClick?: () => void;
 }
 
@@ -13,13 +13,13 @@ export default function RoleCard({
   icon,
   title,
   orderCount,
-  colorClass = "bg-orange-500",
+  color,
   onClick,
 }: RoleCardProps) {
   const { isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
 
   return (
-    <div className="rounded-xl  bg-white p-6 flex flex-col gap-10 items-center text-center w-full max-w-xs  xl:min-w-[350px]"         onClick={onClick}
+    <div className="rounded-xl  bg-[var(--color-bg)] p-6 flex flex-col gap-10 items-center text-center w-full max-w-xs  xl:min-w-[350px]"         onClick={onClick}
 >
       <div className="flex gap-2 w-full items-center justify-start">
         <div className={`text-3xl `}>{icon}</div>
@@ -35,10 +35,11 @@ export default function RoleCard({
         )}
       </p>
       <button
-        className={`px-6 py-2 rounded-md text-white font-medium w-full ${colorClass} cursor-pointer`}
+        className="px-6 py-2 rounded-md text-[var(--color-text-inverse)] font-medium w-full cursor-pointer h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+        style={{ backgroundColor: color || 'var(--color-primary)' }}
         onClick={onClick}
       >
-        Enter
+        Open Station
       </button>
     </div>
   );

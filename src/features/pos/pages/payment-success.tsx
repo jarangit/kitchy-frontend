@@ -23,7 +23,7 @@ const PaymentSuccessPage = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <p className="text-gray-500 mb-4">No payment data found.</p>
+          <p className="text-[var(--color-text-secondary)] mb-4">No payment data found.</p>
           <Button onClick={() => navigate(`/store/${id}/pos`)}>
             Back to POS
           </Button>
@@ -43,19 +43,19 @@ const PaymentSuccessPage = () => {
 
   return (
     <div className="max-w-md mx-auto p-6 flex flex-col items-center justify-center min-h-[80vh]">
-      <div className="text-green-500 mb-4">
+      <div className="text-[var(--color-success)] mb-4">
         <LuCircleCheck size={80} />
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-2">
+      <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
         Payment Successful!
       </h1>
-      <p className="text-gray-500 mb-6">Your order has been placed</p>
+      <p className="text-[var(--color-text-secondary)] mb-6">Your order has been placed</p>
 
-      <div className="w-full bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-        <div className="text-center border-b border-gray-100 pb-4">
-          <div className="text-xs text-gray-500 uppercase">Receipt ID</div>
-          <div className="text-lg font-bold text-gray-800">{receiptId}</div>
+      <div className="w-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 space-y-4">
+        <div className="text-center border-b border-[var(--color-border)] pb-4">
+          <div className="text-xs text-[var(--color-text-secondary)] uppercase">Receipt ID</div>
+          <div className="text-lg font-bold text-[var(--color-text-primary)]">{receiptId}</div>
         </div>
 
         {/* Order Items */}
@@ -63,7 +63,7 @@ const PaymentSuccessPage = () => {
           {items.map((item) => (
             <div
               key={item.productId}
-              className="flex justify-between text-sm text-gray-600"
+              className="flex justify-between text-sm text-[var(--color-text-secondary)]"
             >
               <span>
                 {item.name} x{item.quantity}
@@ -73,22 +73,22 @@ const PaymentSuccessPage = () => {
           ))}
         </div>
 
-        <div className="border-t border-gray-200 pt-3 space-y-2">
-          <div className="flex justify-between font-bold text-gray-800">
+        <div className="border-t border-[var(--color-border)] pt-3 space-y-2">
+          <div className="flex justify-between font-bold text-[var(--color-text-primary)]">
             <span>Total</span>
             <span>฿{subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex justify-between text-sm text-[var(--color-text-secondary)]">
             <span>Payment Method</span>
             <span>{methodLabel[paymentMethod]}</span>
           </div>
           {paymentMethod === "CASH" && (
             <>
-              <div className="flex justify-between text-sm text-gray-600">
+              <div className="flex justify-between text-sm text-[var(--color-text-secondary)]">
                 <span>Received</span>
                 <span>฿{receivedAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-sm font-semibold text-green-600">
+              <div className="flex justify-between text-sm font-semibold text-[var(--color-success)]">
                 <span>Change</span>
                 <span>฿{change.toFixed(2)}</span>
               </div>
@@ -99,7 +99,7 @@ const PaymentSuccessPage = () => {
 
       <Button
         onClick={() => navigate(`/store/${id}/pos`, { replace: true })}
-        className="w-full h-12 mt-6 text-base font-bold bg-black hover:bg-gray-800"
+        className="w-full h-12 mt-6 text-base font-bold bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:opacity-90"
       >
         New Order
       </Button>

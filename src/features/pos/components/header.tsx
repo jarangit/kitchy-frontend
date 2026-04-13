@@ -26,13 +26,13 @@ const PosHeader = ({ shopName }: Props) => {
   });
 
   return (
-    <div className="flex items-center justify-between bg-white border-b px-6 py-3">
-      <h1 className="text-lg font-bold text-gray-800">{shopName}</h1>
+    <div className="flex items-center justify-between bg-[var(--color-bg)] border-b border-[var(--color-border)] px-6 py-3">
+      <h1 className="text-lg font-bold text-[var(--color-text-primary)]">{shopName}</h1>
       <div className="text-right">
-        <div className="text-sm font-semibold text-gray-700">
+        <div className="text-sm font-semibold text-[var(--color-text-primary)]">
           {formattedTime}
         </div>
-        <div className="text-xs text-gray-500">{formattedDate}</div>
+        <div className="text-xs text-[var(--color-text-secondary)]">{formattedDate}</div>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ const SettingsProductsPage = () => {
     <div className="max-w-3xl mx-auto space-y-6">
       <button
         onClick={() => navigate(`/store/${id}/settings`)}
-        className="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition-colors"
+        className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors active:scale-[0.98]"
       >
         <LuArrowLeft size={16} />
         Back to Settings

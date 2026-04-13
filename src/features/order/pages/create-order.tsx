@@ -73,25 +73,25 @@ function CreateOrderPage({}: Props) {
       <h1 className="text-2xl font-bold mb-4">Create Order</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-        <div className="bg-white p-4 rounded shadow col-span-4">
+        <div className="bg-[var(--color-bg)] p-4 rounded shadow col-span-4">
           <h2 className="text-xl font-semibold mb-2">Products</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {productsQuery?.map((product: any) => (
               <div
                 key={product.id}
-                className="border p-4 rounded hover:bg-gray-100 cursor-pointer"
+                className="border border-[var(--color-border)] p-4 rounded hover:bg-[var(--color-surface-hover)] cursor-pointer active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
               >
                 <h3 className="text-lg font-semibold">{product.name}</h3>
-                <Button onClick={() => onAddProduct(product)}>ADD</Button>
+                <Button onClick={() => onAddProduct(product)}>Add to Order</Button>
               </div>
             ))}
           </div>
         </div>
-        <div className="bg-white p-4 rounded shadow col-span-2">
+        <div className="bg-[var(--color-bg)] p-4 rounded shadow col-span-2">
           <h2 className="text-xl font-semibold mb-2">Number Pad</h2>
           <input
             type="text"
-            className="w-full border p-3"
+            className="w-full border border-[var(--color-border)] p-3 rounded-[var(--input-radius)] bg-[var(--input-bg)] text-[var(--input-text)]"
             onChange={(e) => setOrderNumber(e.target.value)}
           />
           {listProductAdded && listProductAdded.length > 0 ? (
@@ -106,7 +106,7 @@ function CreateOrderPage({}: Props) {
               </ul>
             </div>
           ) : (
-            <div className="text-gray-500">No products added yet.</div>
+            <div className="text-[var(--color-text-secondary)]">No products added yet.</div>
           )}
           <Button className="w-full mt-4" onClick={() => onCreateOrder()}>
             Create Order

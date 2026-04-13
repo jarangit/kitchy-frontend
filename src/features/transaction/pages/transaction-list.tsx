@@ -35,13 +35,13 @@ const TransactionListPage = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold text-gray-800">Transaction History</h1>
+      <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Transaction History</h1>
 
       <TransactionFilter onFilterChange={setFilter} />
 
       <div className="space-y-3">
         {filteredTransactions.length === 0 ? (
-          <div className="text-center text-gray-400 py-12">
+          <div className="text-center text-[var(--color-text-tertiary)] py-12">
             No transactions found
           </div>
         ) : (

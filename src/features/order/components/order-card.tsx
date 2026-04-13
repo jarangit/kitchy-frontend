@@ -85,16 +85,16 @@ const OrderCard = ({
   return (
     <div
       className={`w-full h-full rounded-xl p-4  relative  transition-opacity duration-300 flex flex-col justify-between gap-3 ${
-        isToGo ? "bg-red-100" : "bg-green-100"
+        isToGo ? "bg-[var(--color-danger-bg)]" : "bg-[var(--color-success-bg)]"
       }
-      ${!isToGo && isWaitingInStore && "!bg-[#D3CBFF]"}
+      ${!isToGo && isWaitingInStore && "!bg-[var(--color-info-bg)]"}
       ${isFading ? "opacity-0" : "opacity-100"}
       `}
     >
       <div className="space-y-3">
         <div className="flex gap-2 items-center">
           <div className="md:text-4xl font-bold">#{orderNumber}</div>
-          <div className="flex md:hidden items-center text-sm text-gray-700">
+          <div className="flex md:hidden items-center text-sm text-[var(--color-text-secondary)]">
             <FaClock className="mr-1" />
             <ElapsedTime
               createdAt={
@@ -113,8 +113,8 @@ const OrderCard = ({
         <div className="hidden md:flex justify-between flex-wrap gap-3 flex-col">
           <div className="flex flex-wrap gap-2">
             <div
-              className={` inline-block px-3 py-1 text-black font-bold text-lg rounded-full min-w-[60px] text-center ${
-                isToGo ? "bg-[#FF6B6B]" : "bg-[#34C759]"
+              className={` inline-block px-3 py-1 text-[var(--color-text-primary)] font-bold text-lg rounded-full min-w-[60px] text-center ${
+                isToGo ? "bg-[var(--color-danger)]" : "bg-[var(--color-success)]"
               }`}
             >
               {isToGo ? "ToGo" : "Dine-in"}
@@ -122,7 +122,7 @@ const OrderCard = ({
 
             {isWaitingInStore ? (
               <div
-                className={` inline-block px-3 py-1 text-black font-bold text-lg rounded-full min-w-[60px] text-center bg-yellow-300`}
+                className={` inline-block px-3 py-1 text-[var(--color-text-primary)] font-bold text-lg rounded-full min-w-[60px] text-center bg-[var(--color-warning)]`}
               >
                 {isToGo ? "@Wait" : "@ToGo"}
               </div>
@@ -131,7 +131,7 @@ const OrderCard = ({
             )}
           </div>
 
-          <div className="flex items-center text-sm  text-gray-700 gap-1">
+          <div className="flex items-center text-sm  text-[var(--color-text-secondary)] gap-1">
             <ElapsedTime
               createdAt={
                 typeof createdAt === "string"
@@ -145,8 +145,8 @@ const OrderCard = ({
       {/* button update status */}
       {isCanAction ? (
         <button
-          className={`px-4 py-2 text-sm font-medium text-white rounded-lg   w-full cursor-pointer ${
-            status === "PENDING" ? "bg-[#0C60DC]" : "bg-[#770000]"
+          className={`px-4 py-2 text-sm font-medium text-[var(--color-text-inverse)] rounded-lg h-11 w-full cursor-pointer active:scale-[0.98] transition-all duration-[var(--motion-fast)] ${
+            status === "PENDING" ? "bg-[var(--color-info)]" : "bg-[var(--color-danger-hover)]"
           }`}
           onClick={() => handleUpdate()}
         >
@@ -183,7 +183,7 @@ const OrderCard = ({
           {isShowDeleteButton ? (
             <div className="flex items-center gap-2 ">
               <button
-                className={`px-4 py-2 text-sm font-bold text-white rounded-sm   w-full cursor-pointer w-full bg-[#0C60DC]`}
+                className={`px-4 py-2 text-sm font-bold text-[var(--color-text-inverse)] rounded-sm h-11 w-full cursor-pointer bg-[var(--color-info)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]`}
                 onClick={() => onEditOrder(id)}
               >
                 <div className="flex items-center gap-2 justify-center">
@@ -192,7 +192,7 @@ const OrderCard = ({
                 </div>
               </button>
               <button
-                className={`px-4 py-2 text-sm font-bold text-white rounded-sm   w-full cursor-pointer w-full bg-[#DC0C0F]`}
+                className={`px-4 py-2 text-sm font-bold text-[var(--color-text-inverse)] rounded-sm h-11 w-full cursor-pointer bg-[var(--color-danger)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]`}
               >
                 <div
                   className="flex items-center gap-2 justify-center"

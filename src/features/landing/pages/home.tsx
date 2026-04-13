@@ -2,7 +2,7 @@ import { Header, Hero, Features, Pricing, Footer } from "@/features/landing/comp
 
 const HomePage = () => {
   return (
-    <div className="bg-white min-h-screen antialiased">
+    <div className="bg-[var(--color-bg)] min-h-screen antialiased">
       <Header />
       <main>
         <Hero />

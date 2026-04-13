@@ -61,7 +61,7 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
       <TabItem
         title={`Completed `}
         count={orderCount.completed}
-        icon={<FaCheckCircle size={20} color="#34C759" />}
+        icon={<FaCheckCircle size={20} style={{ color: 'var(--color-success)' }} />}
         isActive={tabActive === "COMPLETED"}
         isCanAnimation={true}
         onClick={() => onClickTabItem("COMPLETED")}

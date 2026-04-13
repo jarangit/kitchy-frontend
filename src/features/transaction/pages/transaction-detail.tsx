@@ -24,7 +24,7 @@ const TransactionDetailPage = () => {
   if (!order) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 mb-4">Transaction not found</p>
+        <p className="text-[var(--color-text-secondary)] mb-4">Transaction not found</p>
         <Button onClick={() => navigate(`/store/${storeId}/transactions`)}>
           Back to History
         </Button>
@@ -35,22 +35,22 @@ const TransactionDetailPage = () => {
   const date = new Date(order.createdAt);
   const statusColor =
     order.status === "COMPLETED"
-      ? "bg-green-100 text-green-700"
-      : "bg-yellow-100 text-yellow-700";
+      ? "bg-[var(--color-success-bg)] text-[var(--color-success)]"
+      : "bg-[var(--color-warning-bg)] text-[var(--color-warning)]";
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <button
         onClick={() => navigate(`/store/${storeId}/transactions`)}
-        className="flex items-center gap-2 text-sm text-gray-600 hover:text-black transition-colors"
+        className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
       >
         <LuArrowLeft size={16} />
         Back to History
       </button>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-bold text-gray-800">
+          <h1 className="text-xl font-bold text-[var(--color-text-primary)]">
             Order {order.orderNumber}
           </h1>
           <span
@@ -60,7 +60,7 @@ const TransactionDetailPage = () => {
           </span>
         </div>
 
-        <div className="text-sm text-gray-500 mb-6">
+        <div className="text-sm text-[var(--color-text-secondary)] mb-6">
           {date.toLocaleDateString("th-TH", {
             weekday: "long",
             year: "numeric",
@@ -75,8 +75,8 @@ const TransactionDetailPage = () => {
 
         {/* Order Items */}
         {order.products && order.products.length > 0 && (
-          <div className="space-y-3 border-t border-gray-100 pt-4">
-            <h3 className="font-semibold text-gray-700">Items</h3>
+          <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
+            <h3 className="font-semibold text-[var(--color-text-primary)]">Items</h3>
             {order.products.map(
               (
                 item: {
@@ -90,7 +90,7 @@ const TransactionDetailPage = () => {
               ) => (
                 <div
                   key={item.id || item.productId || index}
-                  className="flex justify-between text-sm text-gray-600"
+                  className="flex justify-between text-sm text-[var(--color-text-secondary)]"
                 >
                   <span>
                     {item.name || `Product #${item.productId}`} x
@@ -109,15 +109,15 @@ const TransactionDetailPage = () => {
         )}
 
         {/* Order Info */}
-        <div className="border-t border-gray-100 pt-4 mt-4 space-y-2 text-sm text-gray-600">
+        <div className="border-t border-[var(--color-border)] pt-4 mt-4 space-y-2 text-sm text-[var(--color-text-secondary)]">
           <div className="flex justify-between">
             <span>Order ID</span>
-            <span className="font-medium text-gray-800">#{order.id}</span>
+            <span className="font-medium text-[var(--color-text-primary)]">#{order.id}</span>
           </div>
           {order.type && (
             <div className="flex justify-between">
               <span>Type</span>
-              <span className="font-medium text-gray-800">{order.type}</span>
+              <span className="font-medium text-[var(--color-text-primary)]">{order.type}</span>
             </div>
           )}
         </div>

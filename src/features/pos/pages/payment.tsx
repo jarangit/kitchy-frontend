@@ -75,7 +75,7 @@ const PaymentPage = () => {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
-          <p className="text-gray-500 mb-4">No items to pay for.</p>
+          <p className="text-[var(--color-text-secondary)] mb-4">No items to pay for.</p>
           <Button onClick={handleCancel}>Back to POS</Button>
         </div>
       </div>
@@ -84,12 +84,12 @@ const PaymentPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-gray-800">Payment</h1>
+      <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Payment</h1>
 
       <OrderSummary items={items} subtotal={subtotal} />
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h3 className="font-bold text-gray-800 mb-4">Payment Method</h3>
+      <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
+        <h3 className="font-bold text-[var(--color-text-primary)] mb-4">Payment Method</h3>
         <PaymentMethodSelector
           selected={paymentMethod}
           onSelect={setPaymentMethod}
@@ -97,11 +97,11 @@ const PaymentPage = () => {
       </div>
 
       {paymentMethod === "CASH" && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="font-bold text-gray-800 mb-4">Cash Payment</h3>
+        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
+          <h3 className="font-bold text-[var(--color-text-primary)] mb-4">Cash Payment</h3>
           <div className="space-y-3">
             <div>
-              <label className="block text-sm text-gray-600 mb-1">
+              <label className="block text-sm text-[var(--color-text-secondary)] mb-1">
                 Received Amount
               </label>
               <input
@@ -109,13 +109,13 @@ const PaymentPage = () => {
                 value={receivedAmount}
                 onChange={(e) => setReceivedAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-lg font-semibold focus:outline-none focus:border-black"
+                className="w-full border border-[var(--color-border-hover)] rounded-lg px-4 py-3 text-lg font-semibold focus:outline-none focus:border-[var(--input-border-focus)]"
               />
             </div>
             {Number(receivedAmount) > 0 && (
               <div className="flex justify-between text-lg font-bold">
                 <span>Change</span>
-                <span className="text-green-600">฿{change.toFixed(2)}</span>
+                <span className="text-[var(--color-success)]">฿{change.toFixed(2)}</span>
               </div>
             )}
           </div>
@@ -123,31 +123,31 @@ const PaymentPage = () => {
       )}
 
       {paymentMethod === "QR" && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6 text-center">
-          <h3 className="font-bold text-gray-800 mb-4">QR Code Payment</h3>
-          <div className="w-48 h-48 bg-gray-100 rounded-xl mx-auto flex items-center justify-center text-gray-400">
+        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 text-center">
+          <h3 className="font-bold text-[var(--color-text-primary)] mb-4">QR Code Payment</h3>
+          <div className="w-48 h-48 bg-[var(--color-surface)] rounded-xl mx-auto flex items-center justify-center text-[var(--color-text-tertiary)]">
             QR Code Placeholder
           </div>
-          <p className="text-sm text-gray-500 mt-3">
+          <p className="text-sm text-[var(--color-text-secondary)] mt-3">
             Scan to pay ฿{subtotal.toFixed(2)}
           </p>
         </div>
       )}
 
       {paymentMethod === "TRANSFER" && (
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h3 className="font-bold text-gray-800 mb-4">Bank Transfer</h3>
-          <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
+          <h3 className="font-bold text-[var(--color-text-primary)] mb-4">Bank Transfer</h3>
+          <div className="bg-[var(--color-surface)] rounded-lg p-4 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Bank</span>
+              <span className="text-[var(--color-text-secondary)]">Bank</span>
               <span className="font-medium">-</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Account</span>
+              <span className="text-[var(--color-text-secondary)]">Account</span>
               <span className="font-medium">-</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Amount</span>
+              <span className="text-[var(--color-text-secondary)]">Amount</span>
               <span className="font-bold">฿{subtotal.toFixed(2)}</span>
             </div>
           </div>
@@ -156,7 +156,7 @@ const PaymentPage = () => {
 
       <div className="flex gap-3">
         <Button
-          variant="outline"
+          variant="secondary"
           onClick={handleCancel}
           className="flex-1 h-12"
           disabled={isProcessing}
@@ -166,9 +166,9 @@ const PaymentPage = () => {
         <Button
           onClick={handleConfirmPayment}
           disabled={!canConfirm || isProcessing}
-          className="flex-1 h-12 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-base font-bold"
+          className="flex-1 h-12 bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-bg-hover)] disabled:bg-[var(--color-border)] text-base font-bold"
         >
-          {isProcessing ? "Processing..." : `Confirm Payment`}
+          {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
         </Button>
       </div>
     </div>

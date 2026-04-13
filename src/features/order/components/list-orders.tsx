@@ -146,28 +146,28 @@ export const ListOrders = ({
         <div className="flex gap-2 font-semibold">
           {isHaveDineInWithToGoOrder ? (
             <div className="flex items-center">
-              <GoDotFill size={25} color="#9747FF" />
+              <GoDotFill size={25} style={{ color: 'var(--color-info)' }} />
               <div>Dine in @ToGo</div>
             </div>
           ) : (
             ""
           )}
           <div className="flex items-center">
-            <GoDotFill size={25} color="#34C759" />
+            <GoDotFill size={25} style={{ color: 'var(--color-success)' }} />
             <div>Dine in</div>
           </div>
           <div className="flex items-center">
-            <GoDotFill size={25} color="#FF6B6B" />
+            <GoDotFill size={25} style={{ color: 'var(--color-danger)' }} />
             <div>To-go</div>
           </div>
         </div>
       </div>
       <div
         ref={containerRef}
-        className={`bg-[#E4E4E4] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto`}
+        className={`bg-[var(--color-surface)] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto`}
       >
         {isLoading && !filteredOrders?.length ? (
-          <div className="text-center text-gray-500">Loading...</div>
+          <div className="text-center text-[var(--color-text-secondary)]">Loading...</div>
         ) : (
           <>
             {filteredOrders.length ? (
@@ -194,7 +194,7 @@ export const ListOrders = ({
                 ))}
               </div>
             ) : (
-              <div className="text-center text-gray-500">
+              <div className="text-center text-[var(--color-text-secondary)]">
                 There are currently no orders
               </div>
             )}

@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Button } from "@/shared/components/ui/button"
 import { Badge } from "@/shared/components/ui/badge"
-import { Plus, Trash2 } from "lucide-react"
+import { LuPlus, LuTrash2 } from "react-icons/lu"
 
 interface MenuItemCardProps {
   id: string
@@ -44,28 +44,28 @@ export function ProductCard({
                 </Badge>
               )} */}
             </div>
-            {/* {description && <p className="text-sm text-gray-600 mb-2">{description}</p>} */}
+            {/* {description && <p className="text-sm text-[var(--color-text-secondary)] mb-2">{description}</p>} */}
             <div className="flex items-center gap-2">
-              {/* <Badge variant="outline">{station}</Badge> */}
-              <Badge variant={isActive ? "default" : "secondary"}>{isActive ? "Active" : "Inactive"}</Badge>
+              {/* <Badge variant="default">{station}</Badge> */}
+              <Badge variant={isActive ? "default" : "default"}>{isActive ? "Active" : "Inactive"}</Badge>
             </div>
           </div>
           {/* <div className="text-right">
-            <PriceDisplay amount={price} className="text-xl font-bold text-green-600" />
+            <PriceDisplay amount={price} className="text-xl font-bold text-[var(--color-success)]" />
           </div> */}
         </div>
       </CardHeader>
       <CardContent className="pt-0">
         {showAddButton ? (
-          <Button  className="w-full" size="sm">
-            <Plus className="w-4 h-4 mr-2" />
+          <Button className="w-full" size="sm">
+            <LuPlus className="w-4 h-4 mr-2" />
             Add to Order
           </Button>
         ) : (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {/* {onToggleBestSeller && (
-                <Button variant="outline" size="sm" onClick={() => onToggleBestSeller(id)}>
+                <Button variant="secondary" size="sm" onClick={() => onToggleBestSeller(id)}>
                   <Star className={`w-4 h-4 ${isBestSeller ? "fill-current text-yellow-500" : ""}`} />
                 </Button>
               )} */}
@@ -73,13 +73,13 @@ export function ProductCard({
             </div>
             <div className="flex gap-2">
               {/* {onEdit && (
-                <Button variant="outline" size="sm" onClick={() => onEdit(id)}>
+                <Button variant="secondary" size="sm" onClick={() => onEdit(id)}>
                   <Edit className="w-4 h-4" />
                 </Button>
               )} */}
               {onDelete && (
-                <Button variant="outline" size="sm" onClick={() => onDelete(id)}>
-                  <Trash2 className="w-4 h-4" />
+                <Button variant="secondary" size="sm" onClick={() => onDelete(id)}>
+                  <LuTrash2 className="w-4 h-4" />
                 </Button>
               )}
             </div>

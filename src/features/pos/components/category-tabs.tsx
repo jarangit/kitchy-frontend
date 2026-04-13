@@ -9,10 +9,10 @@ const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
     <div className="flex gap-2 overflow-x-auto pb-2">
       <button
         onClick={() => onSelect("ALL")}
-        className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+        className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
           selected === "ALL"
-            ? "bg-black text-white"
-            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]"
+            : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]"
         }`}
       >
         All
@@ -21,10 +21,10 @@ const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
         <button
           key={cat}
           onClick={() => onSelect(cat)}
-          className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+          className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
             selected === cat
-              ? "bg-black text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]"
+              : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]"
           }`}
         >
           {cat}

@@ -67,7 +67,7 @@ export function OrderForm({
   return (
     <form
       onSubmit={handleFormSubmit}
-      className=" bg-white p-6 rounded-lg lg:min-w-[300px]"
+      className=" bg-[var(--color-bg)] p-6 rounded-lg lg:min-w-[300px]"
     >
       <div className="flex flex-col space-y-4">
         <label htmlFor="orderNumber" className="text-xl font-semibold">
@@ -81,7 +81,7 @@ export function OrderForm({
         {/* waiting */}
         {orderType == "DINEIN" ? (
           <>
-            <div className="border flex items-center border-black rounded-lg overflow-hidden cursor-pointer">
+            <div className="border flex items-center border-[var(--color-border)] rounded-lg overflow-hidden cursor-pointer">
               <TabItem
                 title={"Table"}
                 className="w-full rounded-none !p-3"
@@ -98,7 +98,7 @@ export function OrderForm({
           </>
         ) : (
           <>
-            <div className="border flex items-center border-black rounded-lg overflow-hidden cursor-pointer">
+            <div className="border flex items-center border-[var(--color-border)] rounded-lg overflow-hidden cursor-pointer">
               <TabItem
                 title={"Pickup"}
                 className="w-full rounded-none !p-3"

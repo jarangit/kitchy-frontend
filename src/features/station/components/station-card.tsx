@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Button } from "@/shared/components/ui/button"
 import { Badge } from "@/shared/components/ui/badge"
-import { Monitor, Edit, Trash2 } from "lucide-react"
+import { LuMonitor, LuPencil, LuTrash2 } from "react-icons/lu"
 import { ColorDot } from "@/shared/components/atoms/color-dot"
 import { Link } from "react-router-dom"
 
@@ -46,18 +46,18 @@ export function StationCard({
           </div>
           <div className="flex gap-2">
             <Link to={`/store/${storeId}/station/${id}`}>
-              <Button variant="outline" size="sm">
-                <Monitor className="w-4 h-4" />
+              <Button variant="secondary" size="sm">
+                <LuMonitor className="w-4 h-4" />
               </Button>
             </Link>
             {onEdit && (
-              <Button variant="outline" size="sm" onClick={() => onEdit(id)}>
-                <Edit className="w-4 h-4" />
+              <Button variant="secondary" size="sm" onClick={() => onEdit(id)}>
+                <LuPencil className="w-4 h-4" />
               </Button>
             )}
             {onDelete && (
-              <Button variant="outline" size="sm" onClick={() => onDelete(id)}>
-                <Trash2 className="w-4 h-4" />
+              <Button variant="secondary" size="sm" onClick={() => onDelete(id)}>
+                <LuTrash2 className="w-4 h-4" />
               </Button>
             )}
           </div>
@@ -66,34 +66,34 @@ export function StationCard({
       <CardContent>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-3 bg-orange-50 rounded-lg">
-              <div className="text-2xl font-bold text-orange-600">{activeOrders}</div>
-              <div className="text-sm text-gray-600">Active Orders</div>
+            <div className="text-center p-3 bg-[var(--color-warning-bg)] rounded-lg">
+              <div className="text-2xl font-bold text-[var(--color-warning)]">{activeOrders}</div>
+              <div className="text-sm text-[var(--color-text-secondary)]">Active Orders</div>
             </div>
-            <div className="text-center p-3 bg-green-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">{completedToday}</div>
-              <div className="text-sm text-gray-600">Completed Today</div>
+            <div className="text-center p-3 bg-[var(--color-success-bg)] rounded-lg">
+              <div className="text-2xl font-bold text-[var(--color-success)]">{completedToday}</div>
+              <div className="text-sm text-[var(--color-text-secondary)]">Completed Today</div>
             </div>
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-medium text-sm text-gray-700">Display Settings</h4>
+            <h4 className="font-medium text-sm text-[var(--color-text-secondary)]">Display Settings</h4>
             <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">Text: {displaySettings.textSize}</Badge>
-              <Badge variant="outline">Sound: {displaySettings.soundEnabled ? "On" : "Off"}</Badge>
+              <Badge variant="default">Text: {displaySettings.textSize}</Badge>
+              <Badge variant="default">Sound: {displaySettings.soundEnabled ? "On" : "Off"}</Badge>
             </div>
           </div>
 
           <div className="flex gap-2">
             <Link to={`/store/${storeId}/station/${id}`} className="flex-1">
-              <Button variant="outline" className="w-full bg-transparent">
-                <Monitor className="w-4 h-4 mr-2" />
+              <Button variant="secondary" className="w-full bg-transparent">
+                <LuMonitor className="w-4 h-4 mr-2" />
                 View Station
               </Button>
             </Link>
             {onEdit && (
-              <Button variant="outline" size="sm" onClick={() => onEdit(id)}>
-                <Edit className="w-4 h-4" />
+              <Button variant="secondary" size="sm" onClick={() => onEdit(id)}>
+                <LuPencil className="w-4 h-4" />
               </Button>
             )}
           </div>

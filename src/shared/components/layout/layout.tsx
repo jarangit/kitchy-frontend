@@ -19,7 +19,7 @@ const Layout = ({ children }: Props) => {
       <Sidebar />
       <div className="flex flex-col min-h-screen flex-grow transition-all duration-300 ml-[60px]">
         {!isOnline && (
-          <section className="w-full p-1 text-white text-center font-semibold bg-red-600 text-sm">
+          <section className="w-full p-1 text-[var(--color-text-inverse)] text-center font-semibold bg-[var(--color-danger)] text-sm">
             You are offline
           </section>
         )}

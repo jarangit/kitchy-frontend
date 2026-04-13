@@ -55,14 +55,14 @@ export function NumericKeypad({
               key={`${rowIndex}-${colIndex}`}
               type="button"
               variant={
-                key === "clear" || key === "backspace" ? "outline" : "default"
+                key === "clear" || key === "backspace" ? "secondary" : "primary"
               }
               className={`p-6 text-xl font-bold ${
                 key === "clear"
-                  ? "bg-yellow-100 hover:bg-yellow-200 text-yellow-800 border border-yellow-300"
+                  ? "bg-[var(--color-warning-bg)] hover:opacity-80 text-[var(--color-warning)] border border-[var(--color-border)]"
                   : key === "backspace"
-                  ? "bg-red-100 hover:bg-red-200 text-red-800 border border-red-300"
-                  : "bg-white hover:bg-gray-200 text-black border border-black"
+                  ? "bg-[var(--color-danger-bg)] hover:opacity-80 text-[var(--color-danger)] border border-[var(--color-border)]"
+                  : "bg-[var(--color-bg)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text-primary)] border border-[var(--color-border)]"
               }`}
               onClick={() => handleKeyPress(key)}
             >
@@ -74,10 +74,11 @@ export function NumericKeypad({
 
       <Button
         type="button"
+        variant="primary"
         onClick={() => {
           onSubmit(), onChange("");
         }}
-        className="w-full bg-black text-white hover:bg-gray-700 text-xl font-bold py-4 px-8 h-auto"
+        className="w-full text-xl font-bold py-4 px-8 h-auto"
         disabled={isLoading}
       >
         {isLoading ? "Adding..." : "Add Order"}

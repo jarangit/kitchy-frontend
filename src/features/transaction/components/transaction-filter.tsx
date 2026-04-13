@@ -25,17 +25,17 @@ const TransactionFilter = ({ onFilterChange }: Props) => {
         placeholder="Search order number..."
         value={search}
         onChange={(e) => handleSearchChange(e.target.value)}
-        className="flex-1 min-w-[200px] border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-black"
+        className="flex-1 min-w-[200px] border border-[var(--color-border)] rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-[var(--input-border-focus)]"
       />
       <div className="flex gap-2">
         {["ALL", "PENDING", "COMPLETED"].map((s) => (
           <button
             key={s}
             onClick={() => handleStatusChange(s)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
               status === s
-                ? "bg-black text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]"
+                : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]"
             }`}
           >
             {s === "ALL" ? "All" : s.charAt(0) + s.slice(1).toLowerCase()}

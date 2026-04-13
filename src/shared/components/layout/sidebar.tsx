@@ -34,11 +34,11 @@ const Sidebar = () => {
 
   const itemClass =
     "p-3 flex flex-col justify-center items-center text-xs gap-1 transition-colors";
-  const activeClass = "bg-gray-300 text-black";
-  const inactiveClass = "text-gray-600 hover:bg-gray-200";
+  const activeClass = "bg-[var(--sidebar-active-bg)] text-[var(--color-text-primary)]";
+  const inactiveClass = "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover-bg)]";
 
   return (
-    <div className="bg-[#EBEBEB] h-screen w-[60px] fixed border-r border-gray-200 pb-12 z-50">
+    <div className="bg-[var(--sidebar-bg)] h-screen w-[60px] fixed border-r border-[var(--color-border)] pb-12 z-50">
       <div className="h-full flex justify-between flex-col">
         <div className="flex flex-col">
           {storeMenuList.map((item) => (

@@ -21,14 +21,14 @@ const CartArea = ({
   onPay,
 }: Props) => {
   return (
-    <div className="flex flex-col h-full bg-white rounded-xl border border-gray-200">
+    <div className="flex flex-col h-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-        <h2 className="font-bold text-gray-800">Cart</h2>
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)]">
+        <h2 className="font-bold text-[var(--color-text-primary)]">Cart</h2>
         {items.length > 0 && (
           <button
             onClick={onClearCart}
-            className="text-xs text-red-500 hover:text-red-700 transition-colors"
+            className="text-xs text-[var(--color-danger)] hover:text-[var(--color-danger-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
           >
             Clear All
           </button>
@@ -38,7 +38,7 @@ const CartArea = ({
       {/* Items */}
       <div className="flex-1 overflow-y-auto px-4">
         {items.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+          <div className="flex items-center justify-center h-full text-[var(--color-text-tertiary)] text-sm">
             No items in cart
           </div>
         ) : (
@@ -59,7 +59,7 @@ const CartArea = ({
         <Button
           onClick={onPay}
           disabled={items.length === 0}
-          className="w-full h-12 text-base font-bold bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="w-full h-12 text-base font-bold bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-bg-hover)] disabled:bg-[var(--color-border)] disabled:cursor-not-allowed"
         >
           Pay ฿{subtotal.toFixed(2)}
         </Button>

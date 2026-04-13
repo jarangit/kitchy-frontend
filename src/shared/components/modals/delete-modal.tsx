@@ -13,9 +13,9 @@ const DeleteModal = ({ content, onConfirm }: Props) => {
 
   return (
     <div>
-      <p className="text-sm text-gray-600 mt-2">{content}</p>
+      <p className="text-sm text-[var(--color-text-secondary)] mt-2">{content}</p>
       <div className="mt-4 flex justify-end gap-2">
-        <button onClick={handleClose} className="text-gray-500">
+        <button onClick={handleClose} className="text-[var(--color-text-secondary)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]">
           Cancel
         </button>
         {onConfirm && (
@@ -24,9 +24,9 @@ const DeleteModal = ({ content, onConfirm }: Props) => {
               onConfirm();
               handleClose();
             }}
-            className="text-red-600 font-medium"
+            className="text-[var(--color-danger)] font-medium active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
           >
-            Confirm
+            Delete
           </button>
         )}
       </div>

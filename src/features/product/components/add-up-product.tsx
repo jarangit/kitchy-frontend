@@ -3,34 +3,22 @@ import { useForm, Controller } from "react-hook-form";
 import type { ProductFormData } from "@/features/product/types/product.model";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button";
-import { Plus } from "lucide-react";
-import { Label } from "@/shared/components/ui/label";
 import { Input } from "@/shared/components/ui/input";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select";
+import { Select } from "@/shared/components/ui/select";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { useParams } from "react-router-dom";
+import { LuPlus } from "react-icons/lu";
 
 type Props = {
   _onSubmit?: (data: ProductFormData) => void;
   defaultValues?: ProductFormData;
 };
-
-
 
 const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   const { id } = useParams<{ id: string }>();
@@ -38,10 +26,7 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
     { value: string; label: string }[]
   >([]);
   const storeId = id ? +id : undefined;
-  const {
-    stationsQuery,
-    
-  } = useStationService({
+  const { stationsQuery } = useStationService({
     storeId,
   });
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -61,7 +46,6 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   });
 
   const onSubmit = (data: ProductFormData) => {
-    console.log("🚀 ~ onSubmit ~ data:", data)
     if (_onSubmit) {
       _onSubmit(data);
     }
@@ -70,6 +54,7 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
     reset();
     setIsCreateDialogOpen(false);
   };
+
   const onCreateOptionStation = () => {
     if (stationsQuery && stationsQuery.length > 0) {
       const options = stationsQuery.map(
@@ -81,6 +66,7 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
       setOptionStation(options);
     }
   };
+
   useEffect(() => {
     if (defaultValues) {
       reset(defaultValues);
@@ -89,86 +75,84 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   }, [defaultValues, reset]);
 
   return (
-    <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-green-600 hover:bg-green-700 absolute top-4 right-4">
-          <Plus className="w-4 h-4 mr-2" />
-          Add Station
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
+    <>
+      <Button
+        variant="primary"
+        className="absolute top-4 right-4"
+        onClick={() => setIsCreateDialogOpen(true)}
+      >
+        <LuPlus className="w-4 h-4" />
+        Add Product
+      </Button>
+
+      <Dialog
+        open={isCreateDialogOpen}
+        onClose={() => setIsCreateDialogOpen(false)}
+      >
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Create New Station</DialogTitle>
+            <DialogTitle>Create New Product</DialogTitle>
             <DialogDescription>
-              Add a new kitchen station to organize your orders
+              Add a new product and assign it to a station
             </DialogDescription>
           </DialogHeader>
+
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="station-name">Station Name</Label>
-              <Input
-                id="station-name"
-                {...register("name", {
-                  required: "Station name is required",
-                  minLength: {
-                    value: 2,
-                    message: "Station name must be at least 2 characters",
-                  },
-                })}
-                placeholder="e.g., Salad Station"
-              />
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.name.message}
-                </p>
+            <Input
+              id="product-name"
+              label="Product Name"
+              placeholder="e.g., Caesar Salad"
+              error={errors.name?.message}
+              {...register("name", {
+                required: "Product name is required",
+                minLength: {
+                  value: 2,
+                  message: "Product name must be at least 2 characters",
+                },
+              })}
+            />
+
+            <Controller
+              name="stationId"
+              control={control}
+              rules={{ required: "Please select a station" }}
+              render={({ field }) => (
+                <div>
+                  <Select
+                    id="product-station"
+                    label="Station"
+                    options={optionStation}
+                    placeholder="Select a station"
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
+                  {errors.stationId && (
+                    <p className="text-[var(--color-danger)] text-sm mt-1">
+                      {errors.stationId.message}
+                    </p>
+                  )}
+                </div>
               )}
-            </div>
-            <div>
-              <Label htmlFor="station-color">Station</Label>
-              <Controller
-                name="stationId"
-                control={control}
-                rules={{ required: "Please select a stationId" }}
-                render={({ field }) => (
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a stationId" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {optionStation.map((color) => (
-                        <SelectItem key={color.value} value={color.value}>
-                          <div className="flex items-center gap-2">
-                            {color.label}
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.stationId && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.stationId.message}
-                </p>
-              )}
-            </div>
+            />
           </div>
+
           <DialogFooter>
             <Button
               type="button"
-              variant="outline"
+              variant="secondary"
               onClick={() => setIsCreateDialogOpen(false)}
             >
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Station"}
+              {isSubmitting ? "Creating..." : "Create Product"}
             </Button>
           </DialogFooter>
         </form>
-      </DialogContent>
-    </Dialog>
+      </Dialog>
+    </>
   );
 };
 

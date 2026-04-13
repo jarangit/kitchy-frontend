@@ -85,7 +85,7 @@ const PosHomePage = () => {
         </div>
 
         {/* Cart Area */}
-        <div className="w-[350px] border-l border-gray-200 p-4">
+        <div className="w-[350px] border-l border-[var(--color-border)] p-4">
           <CartArea
             items={cart.items}
             subtotal={cart.subtotal}
