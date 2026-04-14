@@ -12,7 +12,7 @@ const ErrorModal = () => {
       <div className="mt-6 flex justify-center">
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-[var(--color-surface)] text-[var(--color-success)] rounded-md font-semibold cursor-pointer h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+          className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-md font-semibold cursor-pointer h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
         >
           Reload Page
         </button>

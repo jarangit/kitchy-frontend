@@ -2,6 +2,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { toStatusBadgeVariant } from "@/shared/utils/status";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { stationServiceApi } from "@/features/station/services/station";
@@ -82,19 +83,6 @@ const StoreDashboardPage = () => {
     if (diffMins < 60) return `${diffMins}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     return `${diffDays}d ago`;
-  };
-
-  const getBadgeVariant = (status: string) => {
-    switch (status) {
-      case "COMPLETED":
-        return "success" as const;
-      case "PENDING":
-        return "warning" as const;
-      case "CANCELLED":
-        return "danger" as const;
-      default:
-        return "default" as const;
-    }
   };
 
   return (
@@ -254,9 +242,9 @@ const StoreDashboardPage = () => {
                       <span className="font-mono font-medium text-[var(--color-text-primary)]">
                         {order.orderNumber}
                       </span>
-                      <Badge variant={getBadgeVariant(order.status)}>
-                        {order.status}
-                      </Badge>
+                       <Badge variant={toStatusBadgeVariant(order.status)}>
+                         {order.status}
+                       </Badge>
                     </div>
                     <div className="flex items-center gap-4">
                       {order.totalAmount != null && (

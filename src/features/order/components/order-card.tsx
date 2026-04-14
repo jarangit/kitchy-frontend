@@ -82,9 +82,9 @@ const OrderCard = ({
   return (
     <div
       className={`w-full h-full rounded-xl p-4  relative  transition-opacity duration-300 flex flex-col justify-between gap-3 ${
-        isToGo ? "bg-[var(--color-danger-bg)]" : "bg-[var(--color-success-bg)]"
+        "bg-[var(--color-surface)]"
       }
-      ${!isToGo && isWaitingInStore && "!bg-[var(--color-info-bg)]"}
+      ${!isToGo && isWaitingInStore && "!bg-[var(--color-warning-bg)]"}
       ${isFading ? "opacity-0" : "opacity-100"}
       `}
     >
@@ -109,9 +109,11 @@ const OrderCard = ({
         )}
         <div className="hidden md:flex justify-between flex-wrap gap-3 flex-col">
           <div className="flex flex-wrap gap-2">
-            <div
-              className={` inline-block px-3 py-1 text-[var(--color-text-primary)] font-bold text-lg rounded-full min-w-[60px] text-center ${
-                isToGo ? "bg-[var(--color-danger)]" : "bg-[var(--color-success)]"
+              <div
+                className={` inline-block px-3 py-1 text-[var(--color-text-primary)] font-bold text-lg rounded-full min-w-[60px] text-center ${
+                isToGo
+                  ? "bg-[var(--color-info-bg)]"
+                  : "bg-[var(--color-primary-bg)]"
               }`}
             >
               {isToGo ? "ToGo" : "Dine-in"}
@@ -142,8 +144,10 @@ const OrderCard = ({
       {/* button update status */}
       {isCanAction ? (
         <button
-          className={`px-4 py-2 text-sm font-medium text-[var(--color-text-inverse)] rounded-lg h-11 w-full cursor-pointer active:scale-[0.98] transition-all duration-[var(--motion-fast)] ${
-            status === "PENDING" ? "bg-[var(--color-info)]" : "bg-[var(--color-danger-hover)]"
+          className={`px-4 py-2 text-sm font-medium rounded-lg h-11 w-full cursor-pointer active:scale-[0.98] transition-all duration-[var(--motion-fast)] ${
+            status === "PENDING"
+              ? "bg-[var(--color-success)] text-[var(--color-text-inverse)]"
+              : "bg-[var(--color-warning)] text-[var(--color-text-primary)]"
           }`}
           onClick={() => handleUpdate()}
         >
@@ -180,7 +184,7 @@ const OrderCard = ({
           {isShowDeleteButton ? (
             <div className="flex items-center gap-2 ">
               <button
-                className={`px-4 py-2 text-sm font-bold text-[var(--color-text-inverse)] rounded-sm h-11 w-full cursor-pointer bg-[var(--color-info)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]`}
+                className={`px-4 py-2 text-sm font-bold text-[var(--color-text-primary)] rounded-sm h-11 w-full cursor-pointer bg-[var(--color-surface-hover)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]`}
                 onClick={() => onEditOrder(id)}
               >
                 <div className="flex items-center gap-2 justify-center">

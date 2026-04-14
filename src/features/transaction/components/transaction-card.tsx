@@ -1,4 +1,8 @@
 import { Badge } from "@/shared/components/ui/badge";
+import {
+  toStatusBadgeVariant,
+  toStatusBorderClass,
+} from "@/shared/utils/status";
 
 interface Props {
   order: {
@@ -24,32 +28,6 @@ const TransactionCard = ({ order, onClick }: Props) => {
     minute: "2-digit",
   });
 
-  const getBadgeVariant = () => {
-    switch (order.status) {
-      case "COMPLETED":
-        return "success" as const;
-      case "PENDING":
-        return "warning" as const;
-      case "CANCELLED":
-        return "danger" as const;
-      default:
-        return "default" as const;
-    }
-  };
-
-  const getBorderColor = () => {
-    switch (order.status) {
-      case "COMPLETED":
-        return "border-l-[var(--color-success)]";
-      case "PENDING":
-        return "border-l-[var(--color-warning)]";
-      case "CANCELLED":
-        return "border-l-[var(--color-danger)]";
-      default:
-        return "border-l-[var(--color-border)]";
-    }
-  };
-
   const itemCount = order.products?.length ?? 0;
 
   const totalAmount =
@@ -62,11 +40,11 @@ const TransactionCard = ({ order, onClick }: Props) => {
   return (
     <button
       onClick={onClick}
-      className={`w-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] border-l-4 ${getBorderColor()} p-4 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] text-left`}
+      className={`w-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] border-l-4 ${toStatusBorderClass(order.status)} p-4 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] text-left`}
     >
       <div className="flex items-center justify-between mb-2">
         <span className="font-bold text-[var(--color-text-primary)]">{order.orderNumber}</span>
-        <Badge variant={getBadgeVariant()}>
+        <Badge variant={toStatusBadgeVariant(order.status)}>
           {order.status}
         </Badge>
       </div>

@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { transactionServiceApi } from "@/features/transaction/services/transaction";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
+import { toStatusBadgeVariant } from "@/shared/utils/status";
 import { LuArrowLeft } from "react-icons/lu";
 
 const TransactionDetailPage = () => {
@@ -35,19 +36,6 @@ const TransactionDetailPage = () => {
 
   const date = new Date(order.createdAt);
 
-  const getBadgeVariant = (status: string) => {
-    switch (status) {
-      case "COMPLETED":
-        return "success" as const;
-      case "PENDING":
-        return "warning" as const;
-      case "CANCELLED":
-        return "danger" as const;
-      default:
-        return "default" as const;
-    }
-  };
-
   const grandTotal =
     order.products?.reduce(
       (sum: number, item: { price?: number; quantity?: number }) =>
@@ -72,7 +60,7 @@ const TransactionDetailPage = () => {
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
             {order.orderNumber}
           </h1>
-          <Badge variant={getBadgeVariant(order.status)}>
+          <Badge variant={toStatusBadgeVariant(order.status)}>
             {order.status}
           </Badge>
         </div>

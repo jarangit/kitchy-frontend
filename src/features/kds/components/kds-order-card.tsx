@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import type { KdsOrder, KdsStatus } from "@/features/kds/types/kds.model";
+import { toStatusBadgeVariant } from "@/shared/utils/status";
 
 interface Props {
   order: KdsOrder;
@@ -24,13 +25,6 @@ const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
       : order.status === "COOKING"
         ? { label: "Mark Ready", status: "READY" as const }
         : { label: "Back to Cooking", status: "COOKING" as const };
-
-  const badgeVariant =
-    order.status === "READY"
-      ? "success"
-      : order.status === "COOKING"
-        ? "info"
-        : "warning";
 
   return (
     <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4 space-y-3">
@@ -57,7 +51,7 @@ const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
             {timeLabel}
           </p>
         </div>
-        <Badge variant={badgeVariant}>{order.status}</Badge>
+        <Badge variant={toStatusBadgeVariant(order.status)}>{order.status}</Badge>
       </div>
 
       <div className="space-y-1.5">
