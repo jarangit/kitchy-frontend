@@ -103,17 +103,25 @@ const TransactionDetailPage = () => {
                     name?: string;
                     quantity?: number;
                     price?: number;
+                    note?: string;
                   },
                   index: number
                 ) => (
                   <div
                     key={item.id || item.productId || index}
-                    className="flex justify-between text-sm text-[var(--color-text-secondary)]"
+                    className="flex justify-between gap-3 text-sm text-[var(--color-text-secondary)]"
                   >
-                    <span>
-                      {item.name || `Product #${item.productId}`} x
-                      {item.quantity || 1}
-                    </span>
+                    <div>
+                      <span>
+                        {item.name || `Product #${item.productId}`} x
+                        {item.quantity || 1}
+                      </span>
+                      {item.note && (
+                        <p className="mt-1 text-xs leading-5 text-[var(--color-text-tertiary)]">
+                          Note: {item.note}
+                        </p>
+                      )}
+                    </div>
                     {item.price != null && (
                       <span className="font-medium text-[var(--color-text-primary)]">
                         ฿{((item.price || 0) * (item.quantity || 1)).toFixed(2)}

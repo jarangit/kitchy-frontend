@@ -1,8 +1,10 @@
 export interface ICartItem {
+  cartItemId: string;
   productId: string;
   name: string;
   price: number;
   quantity: number;
+  note?: string;
 }
 
 export type PaymentMethod = "CASH" | "QR";

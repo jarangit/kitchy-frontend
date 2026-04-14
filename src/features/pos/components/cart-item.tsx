@@ -5,52 +5,72 @@ interface Props {
   item: ICartItem;
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemove: (productId: string) => void;
+  onEditNote: (item: ICartItem) => void;
 }
 
-const CartItem = ({ item, onUpdateQuantity, onRemove }: Props) => {
+const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
   return (
-    <div className="flex items-center gap-3 py-3 border-b border-[var(--color-border)] last:border-0">
-      {/* Name + unit price */}
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-medium text-[var(--color-text-primary)] line-clamp-1">
-          {item.name}
+    <div className="border-b border-[var(--color-border)] py-3 last:border-0">
+      <div className="flex items-center gap-3">
+        {/* Name + unit price */}
+        <div className="min-w-0 flex-1">
+          <div className="line-clamp-1 text-sm font-medium text-[var(--color-text-primary)]">
+            {item.name}
+          </div>
+          <div className="mt-0.5 text-xs text-[var(--color-text-secondary)]">
+            ฿{item.price.toFixed(2)} each
+          </div>
         </div>
-        <div className="text-xs text-[var(--color-text-secondary)] mt-0.5">
-          ฿{item.price.toFixed(2)} each
+
+        {/* Quantity controls */}
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+          >
+            <LuMinus size={14} />
+          </button>
+          <span className="text-sm font-semibold w-6 text-center">
+            {item.quantity}
+          </span>
+          <button
+            onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
+            className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+          >
+            <LuPlus size={14} />
+          </button>
         </div>
-      </div>
 
-      {/* Quantity controls */}
-      <div className="flex items-center gap-2">
+        {/* Line total */}
+        <div className="text-sm font-semibold text-[var(--color-text-primary)] w-20 text-right">
+          ฿{(item.price * item.quantity).toFixed(2)}
+        </div>
+
+        {/* Delete */}
         <button
-          onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+          type="button"
+          onClick={() => onRemove(item.productId)}
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-danger)] hover:bg-[var(--color-danger-bg)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
         >
-          <LuMinus size={14} />
-        </button>
-        <span className="text-sm font-semibold w-6 text-center">
-          {item.quantity}
-        </span>
-        <button
-          onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
-        >
-          <LuPlus size={14} />
+          <LuTrash2 size={16} />
         </button>
       </div>
 
-      {/* Line total */}
-      <div className="text-sm font-semibold text-[var(--color-text-primary)] w-20 text-right">
-        ฿{(item.price * item.quantity).toFixed(2)}
-      </div>
+      <div className="mt-3 flex items-start justify-between gap-3">
+        <button
+          type="button"
+          onClick={() => onEditNote(item)}
+          className="inline-flex min-h-9 items-center rounded-full bg-[var(--color-surface)] px-3 text-xs font-medium text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+        >
+          {item.note ? "Edit note" : "Add note"}
+        </button>
 
-      {/* Delete */}
-      <button
-        onClick={() => onRemove(item.productId)}
-        className="w-8 h-8 flex items-center justify-center rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-danger)] hover:bg-[var(--color-danger-bg)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
-      >
-        <LuTrash2 size={16} />
-      </button>
+        {item.note && (
+          <p className="flex-1 rounded-2xl bg-[var(--color-surface)] px-3 py-2 text-xs leading-5 text-[var(--color-text-secondary)]">
+            Note: {item.note}
+          </p>
+        )}
+      </div>
     </div>
   );
 };

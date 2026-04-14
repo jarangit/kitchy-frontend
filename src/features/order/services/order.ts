@@ -11,7 +11,7 @@ export const orderApiService = {
   add: async (
     storeId: string,
     orderNumber: any,
-    products: { productId: string; quantity: number }[],
+    products: { productId: string; quantity: number; note?: string }[],
     orderType: "DINE_IN" | "TOGO" | "DELIVERY",
     tableNumber?: string,
     customerName?: string,

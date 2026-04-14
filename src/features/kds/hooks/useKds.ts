@@ -50,6 +50,7 @@ export const useKds = (stationId?: string) => {
             id: item.id ?? item.productId ?? "",
             name: item.name ?? `Product #${item.productId ?? "-"}`,
             quantity: item.quantity ?? 1,
+            note: item.note,
           })) ?? [],
       }))
       .filter((order) => !stationId || order.stationId === stationId);

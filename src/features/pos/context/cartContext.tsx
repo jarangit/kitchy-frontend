@@ -8,6 +8,7 @@ interface CartState {
   addItem: (product: { id: string; name: string; price: number }) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
+  setItemNote: (productId: string, note: string) => void;
   clearCart: () => void;
   subtotal: number;
   totalItems: number;
@@ -43,6 +44,9 @@ interface CartContextValue extends CartState {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
+const createCartItemId = () =>
+  `cart-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ICartItem[]>([]);
   const [paymentResult, setPaymentResultState] = useState<PaymentResult | null>(null);
@@ -62,13 +66,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
               : item
           );
         }
+
         return [
           ...prev,
           {
+            cartItemId: createCartItemId(),
             productId: product.id,
             name: product.name,
             price: product.price,
             quantity: 1,
+            note: "",
           },
         ];
       });
@@ -94,6 +101,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     },
     [removeItem]
   );
+
+  const setItemNote = useCallback((productId: string, note: string) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.productId === productId ? { ...item, note: note.trim() } : item
+      )
+    );
+  }, []);
 
   const clearCart = useCallback(() => {
     setItems([]);
@@ -154,6 +169,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     addItem,
     removeItem,
     updateQuantity,
+    setItemNote,
     clearCart,
     subtotal,
     totalItems,

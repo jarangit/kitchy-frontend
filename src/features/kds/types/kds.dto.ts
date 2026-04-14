@@ -5,6 +5,7 @@ export interface IKdsOrderProductDto {
   productId?: string;
   name?: string;
   quantity?: number;
+  note?: string;
 }
 
 export interface IKdsOrderDto {

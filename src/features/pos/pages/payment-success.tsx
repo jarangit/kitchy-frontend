@@ -83,7 +83,14 @@ const PaymentSuccessPage = () => {
               key={item.productId}
               className="grid grid-cols-[1fr_auto_auto] gap-2 text-sm text-[var(--color-text-secondary)]"
             >
-              <span>{item.name}</span>
+              <div>
+                <span>{item.name}</span>
+                {item.note && (
+                  <p className="mt-1 text-xs leading-5 text-[var(--color-text-tertiary)]">
+                    Note: {item.note}
+                  </p>
+                )}
+              </div>
               <span className="text-right">x{item.quantity}</span>
               <span className="text-right w-20">
                 ฿{(item.price * item.quantity).toFixed(2)}

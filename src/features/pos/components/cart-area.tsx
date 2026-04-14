@@ -7,6 +7,7 @@ import CartSummary from "./cart-summary";
 import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+import { Input } from "@/shared/components/ui/input";
 
 const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
   { value: "DINE_IN", label: "Dine In" },
@@ -23,12 +24,21 @@ const DELIVERY_PLATFORMS = [
   "Foodpanda",
   "Other",
 ];
+const COMMON_ITEM_NOTES = [
+  "ไม่หวาน",
+  "ไม่เอาผัก",
+  "ไม่ใส่หอม",
+  "เผ็ดน้อย",
+  "เผ็ดมาก",
+  "ไม่ใส่น้ำแข็ง",
+];
 
 interface Props {
   items: ICartItem[];
   subtotal: number;
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
+  onUpdateItemNote: (productId: string, note: string) => void;
   onClearCart: () => void;
   onPay: () => void;
   orderType: OrderType;
@@ -44,6 +54,7 @@ const CartArea = ({
   subtotal,
   onUpdateQuantity,
   onRemoveItem,
+  onUpdateItemNote,
   onClearCart,
   onPay,
   orderType,
@@ -55,12 +66,44 @@ const CartArea = ({
 }: Props) => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const [isTableDialogOpen, setIsTableDialogOpen] = useState(false);
+  const [activeNoteItem, setActiveNoteItem] = useState<ICartItem | null>(null);
+  const [draftNote, setDraftNote] = useState("");
 
   const handleOrderTypeChange = (nextType: OrderType) => {
     onOrderTypeChange(nextType);
     if (nextType === "DINE_IN") {
       setIsTableDialogOpen(true);
     }
+  };
+
+  const handleOpenNoteDialog = (item: ICartItem) => {
+    setActiveNoteItem(item);
+    setDraftNote(item.note ?? "");
+  };
+
+  const handleCloseNoteDialog = () => {
+    setActiveNoteItem(null);
+    setDraftNote("");
+  };
+
+  const handleSaveNote = () => {
+    if (!activeNoteItem) return;
+    onUpdateItemNote(activeNoteItem.productId, draftNote);
+    handleCloseNoteDialog();
+  };
+
+  const handleToggleCommonNote = (note: string) => {
+    const parts = draftNote
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean);
+
+    if (parts.includes(note)) {
+      setDraftNote(parts.filter((part) => part !== note).join(", "));
+      return;
+    }
+
+    setDraftNote([...parts, note].join(", "));
   };
 
   return (
@@ -189,6 +232,7 @@ const CartArea = ({
               item={item}
               onUpdateQuantity={onUpdateQuantity}
               onRemove={onRemoveItem}
+              onEditNote={handleOpenNoteDialog}
             />
           ))
         )}
@@ -237,6 +281,76 @@ const CartArea = ({
               </button>
             );
           })}
+        </div>
+      </Dialog>
+
+      <Dialog open={activeNoteItem != null} onClose={handleCloseNoteDialog}>
+        <DialogHeader>
+          <DialogTitle>
+            {activeNoteItem ? `Note for ${activeNoteItem.name}` : "Item note"}
+          </DialogTitle>
+          <DialogDescription>
+            Add a kitchen note for this item, such as no onion or extra spicy.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div>
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
+              Quick notes
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {COMMON_ITEM_NOTES.map((note) => {
+                const isActive = draftNote
+                  .split(",")
+                  .map((part) => part.trim())
+                  .filter(Boolean)
+                  .includes(note);
+
+                return (
+                  <button
+                    key={note}
+                    type="button"
+                    onClick={() => handleToggleCommonNote(note)}
+                    className={`min-h-10 rounded-full border px-3 text-sm font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                      isActive
+                        ? "border-[var(--button-primary-bg)] bg-[var(--button-primary-bg)] text-[var(--button-primary-text)]"
+                        : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)]"
+                    }`}
+                  >
+                    {note}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <Input
+            value={draftNote}
+            onChange={(e) => setDraftNote(e.target.value)}
+            placeholder="เช่น ไม่หวาน, ไม่เอาผัก"
+            maxLength={120}
+          />
+
+          <div className="flex gap-3">
+            <Button
+              variant="secondary"
+              className="flex-1"
+              onClick={handleCloseNoteDialog}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="ghost"
+              className="flex-1"
+              onClick={() => setDraftNote("")}
+            >
+              Clear note
+            </Button>
+            <Button className="flex-1" onClick={handleSaveNote}>
+              Save note
+            </Button>
+          </div>
         </div>
       </Dialog>
     </div>

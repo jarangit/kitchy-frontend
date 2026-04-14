@@ -1,6 +1,9 @@
 import { useState, useCallback, useMemo } from "react";
 import type { ICartItem } from "@/features/pos/types/pos.model";
 
+const createCartItemId = () =>
+  `cart-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
 export function useCart() {
   const [items, setItems] = useState<ICartItem[]>([]);
 
@@ -15,13 +18,16 @@ export function useCart() {
               : item
           );
         }
+
         return [
           ...prev,
           {
+            cartItemId: createCartItemId(),
             productId: product.id,
             name: product.name,
             price: product.price,
             quantity: 1,
+            note: "",
           },
         ];
       });
@@ -29,19 +35,19 @@ export function useCart() {
     []
   );
 
-  const removeItem = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((item) => item.productId !== productId));
+  const removeItem = useCallback((cartItemId: string) => {
+    setItems((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
   }, []);
 
   const updateQuantity = useCallback(
-    (productId: string, quantity: number) => {
+    (cartItemId: string, quantity: number) => {
       if (quantity <= 0) {
-        removeItem(productId);
+        removeItem(cartItemId);
         return;
       }
       setItems((prev) =>
         prev.map((item) =>
-          item.productId === productId ? { ...item, quantity } : item
+          item.cartItemId === cartItemId ? { ...item, quantity } : item
         )
       );
     },

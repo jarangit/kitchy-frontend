@@ -46,6 +46,7 @@ const PaymentPage = () => {
         products: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
+          note: item.note?.trim() || undefined,
         })),
       });
 

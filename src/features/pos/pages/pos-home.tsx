@@ -101,6 +101,7 @@ const PosHomePage = () => {
             subtotal={cart.subtotal}
             onUpdateQuantity={cart.updateQuantity}
             onRemoveItem={cart.removeItem}
+            onUpdateItemNote={cart.setItemNote}
             onClearCart={cart.clearCart}
             onPay={handlePay}
             orderType={cart.orderType}
@@ -144,6 +145,7 @@ const PosHomePage = () => {
                 subtotal={cart.subtotal}
                 onUpdateQuantity={cart.updateQuantity}
                 onRemoveItem={cart.removeItem}
+                onUpdateItemNote={cart.setItemNote}
                 onClearCart={cart.clearCart}
                 onPay={handlePay}
                 orderType={cart.orderType}

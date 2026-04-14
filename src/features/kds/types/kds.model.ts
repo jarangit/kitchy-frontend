@@ -4,6 +4,7 @@ export interface KdsItem {
   id: string;
   name: string;
   quantity: number;
+  note?: string;
 }
 
 export interface KdsOrder {

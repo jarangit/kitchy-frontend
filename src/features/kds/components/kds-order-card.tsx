@@ -67,9 +67,16 @@ const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
           order.items.map((item) => (
             <div
               key={`${order.id}-${item.id}`}
-              className="flex items-center justify-between text-sm"
+              className="flex items-start justify-between gap-3 text-sm"
             >
-              <span className="text-[var(--color-text-primary)]">{item.name}</span>
+              <div>
+                <span className="text-[var(--color-text-primary)]">{item.name}</span>
+                {item.note && (
+                  <p className="mt-1 text-xs leading-5 text-[var(--color-text-tertiary)]">
+                    Note: {item.note}
+                  </p>
+                )}
+              </div>
               <span className="font-semibold text-[var(--color-text-secondary)]">
                 x{item.quantity}
               </span>
