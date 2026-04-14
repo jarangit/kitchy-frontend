@@ -6,6 +6,7 @@ import {
   LuHistory,
   LuSettings,
   LuChefHat,
+  LuChartBar,
 } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 
@@ -49,6 +50,12 @@ const Sidebar = () => {
           name: "KDS",
           path: `/store/${resolvedStoreId}/kds`,
           icon: <LuChefHat size={22} />,
+          match: "prefix",
+        },
+        {
+          name: "Report",
+          path: `/store/${resolvedStoreId}/report`,
+          icon: <LuChartBar size={22} />,
           match: "prefix",
         },
       ]

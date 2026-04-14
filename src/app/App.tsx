@@ -16,6 +16,9 @@ import TransactionListPage from "@/features/transaction/pages/transaction-list";
 import TransactionDetailPage from "@/features/transaction/pages/transaction-detail";
 import KdsBoardPage from "@/features/kds/pages/kds-board";
 
+// Report
+import ReportPage from "@/features/report/pages/report-page";
+
 // Settings
 import SettingsPage from "@/features/store/pages/settings";
 import SettingsProductsPage from "@/features/store/pages/settings-products";
@@ -101,6 +104,18 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <KdsBoardPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Report */}
+        <Route
+          path="/store/:id/report"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ReportPage />
               </Layout>
             </ProtectedRoute>
           }
