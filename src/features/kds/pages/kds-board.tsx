@@ -9,6 +9,13 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { LuUtensilsCrossed } from "react-icons/lu";
 
+const DUE_NOW_MINUTES = 10;
+
+const getWaitingMinutes = (createdAt: string) => {
+  const diffMs = Date.now() - new Date(createdAt).getTime();
+  return Math.max(0, Math.floor(diffMs / 60000));
+};
+
 const KdsBoardPage = () => {
   const { id } = useParams<{ id: string }>();
   const { stationsQuery } = useStationService({});
@@ -41,6 +48,14 @@ const KdsBoardPage = () => {
       ),
     [readyOrders]
   );
+  const dueNowOrders = useMemo(
+    () => sortedPendingOrders.filter((order) => getWaitingMinutes(order.createdAt) >= DUE_NOW_MINUTES),
+    [sortedPendingOrders]
+  );
+  const nextOrders = useMemo(
+    () => sortedPendingOrders.filter((order) => getWaitingMinutes(order.createdAt) < DUE_NOW_MINUTES),
+    [sortedPendingOrders]
+  );
   const visibleOrders = activeTab === "PENDING" ? sortedPendingOrders : sortedReadyOrders;
 
   return (
@@ -71,7 +86,7 @@ const KdsBoardPage = () => {
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           <SkeletonCard className="min-h-[320px]" />
           <SkeletonCard className="min-h-[320px]" />
           <SkeletonCard className="min-h-[320px]" />
@@ -97,19 +112,72 @@ const KdsBoardPage = () => {
                 />
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                {visibleOrders.map((order, index) => (
-                  <div key={order.id} className="h-full min-h-[340px]">
-                    <KdsOrderCard
-                      order={order}
-                      onMove={updateStatus}
-                      disabled={isUpdating}
-                      queueNumber={activeTab === "PENDING" ? index + 1 : undefined}
-                      prioritize={activeTab === "PENDING"}
-                    />
-                  </div>
-                ))}
-              </div>
+              activeTab === "PENDING" ? (
+                <div className="space-y-6">
+                  {dueNowOrders.length > 0 && (
+                    <section className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-danger-bg)] px-3 text-sm font-semibold text-[var(--color-danger)]">
+                          DUE NOW ({dueNowOrders.length})
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {dueNowOrders.map((order, index) => (
+                          <div key={order.id} className="h-full min-h-[360px]">
+                            <KdsOrderCard
+                              order={order}
+                              onMove={updateStatus}
+                              disabled={isUpdating}
+                              queueNumber={index + 1}
+                              prioritize
+                              priorityTone="due"
+                              showStatusBadge={false}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
+
+                  {nextOrders.length > 0 && (
+                    <section className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-warning-bg)] px-3 text-sm font-semibold text-[var(--color-warning)]">
+                          NEXT ({nextOrders.length})
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {nextOrders.map((order, index) => (
+                          <div key={order.id} className="h-full min-h-[360px]">
+                            <KdsOrderCard
+                              order={order}
+                              onMove={updateStatus}
+                              disabled={isUpdating}
+                              queueNumber={dueNowOrders.length + index + 1}
+                              prioritize
+                              priorityTone="next"
+                              showStatusBadge={false}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {visibleOrders.map((order) => (
+                    <div key={order.id} className="h-full min-h-[360px]">
+                      <KdsOrderCard
+                        order={order}
+                        onMove={updateStatus}
+                        disabled={isUpdating}
+                        showStatusBadge={false}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )
             )}
           </div>
         )

@@ -10,6 +10,8 @@ interface Props {
   disabled?: boolean;
   queueNumber?: number;
   prioritize?: boolean;
+  priorityTone?: "due" | "next" | "normal";
+  showStatusBadge?: boolean;
 }
 
 const KdsOrderCard = ({
@@ -18,6 +20,8 @@ const KdsOrderCard = ({
   disabled,
   queueNumber,
   prioritize = false,
+  priorityTone = "normal",
+  showStatusBadge = true,
 }: Props) => {
   const timeLabel = useMemo(() => {
     const createdAt = new Date(order.createdAt);
@@ -34,13 +38,13 @@ const KdsOrderCard = ({
   }, [order.createdAt]);
 
   const urgency = useMemo(() => {
-    if (waitingMinutes >= 10) {
+    if (priorityTone === "due" || waitingMinutes >= 10) {
       return {
         label: "DUE NOW",
         className: "bg-[var(--color-danger-bg)] text-[var(--color-danger)]",
       };
     }
-    if (waitingMinutes >= 6) {
+    if (priorityTone === "next" || waitingMinutes >= 6) {
       return {
         label: "SOON",
         className: "bg-[var(--color-warning-bg)] text-[var(--color-warning)]",
@@ -97,7 +101,9 @@ const KdsOrderCard = ({
             )}
           </div>
         </div>
-        <Badge variant={toStatusBadgeVariant(order.status)}>{order.status}</Badge>
+        {showStatusBadge && (
+          <Badge variant={toStatusBadgeVariant(order.status)}>{order.status}</Badge>
+        )}
       </div>
 
       <div className="flex-1 space-y-2">
@@ -109,8 +115,11 @@ const KdsOrderCard = ({
               key={`${order.id}-${item.id}`}
               className="flex items-start justify-between gap-3"
             >
-              <div>
-                <span className="text-lg font-semibold text-[var(--color-text-primary)]">
+              <div className="min-w-0 flex-1">
+                <span
+                  className="block max-w-full truncate text-lg font-semibold leading-tight text-[var(--color-text-primary)]"
+                  title={item.name}
+                >
                   {item.name}
                 </span>
                 {item.note && (
