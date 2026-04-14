@@ -18,7 +18,7 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
         <button
           key={method.value}
           onClick={() => onSelect(method.value)}
-          className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+          className={`flex min-h-28 flex-col items-center justify-center rounded-xl border p-4 transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
             selected === method.value
               ? "border-[var(--color-text-primary)] bg-[var(--color-surface)]"
               : "border-[var(--color-border)] hover:border-[var(--color-border-hover)]"
@@ -32,7 +32,7 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
             {method.icon}
           </div>
           <span
-            className={`text-sm font-medium ${
+            className={`text-base font-medium ${
               selected === method.value ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)]"
             }`}
           >

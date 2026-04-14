@@ -33,7 +33,7 @@ const NetworkQualityIcon = ({
   return (
     <div className="group relative">
       <div
-        className="flex h-10 w-10 items-end justify-center gap-0.5 rounded-lg bg-[var(--color-bg)] px-1.5 py-2"
+        className="flex h-12 w-12 items-end justify-center gap-0.5 rounded-lg bg-[var(--color-bg)] px-2 py-2.5"
         title={label}
         aria-label={label}
         tabIndex={0}
@@ -55,7 +55,7 @@ const NetworkQualityIcon = ({
           );
         })}
       </div>
-      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-medium text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
         {label}
       </span>
     </div>
@@ -100,7 +100,7 @@ const PosHeader = ({
   return (
     <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-4 sm:px-6">
       <div className="min-w-0">
-        <h1 className="truncate text-xl font-bold text-[var(--color-text-primary)]">
+        <h1 className="truncate text-2xl font-semibold text-[var(--color-text-primary)]">
           {shopName}
         </h1>
       </div>
@@ -108,10 +108,10 @@ const PosHeader = ({
       <div className="flex items-center gap-2 sm:gap-3">
         <div className="hidden items-center gap-2 rounded-xl bg-[var(--color-surface)] px-3 py-1.5 sm:flex">
           <div className="text-right">
-            <div className="text-sm font-semibold text-[var(--color-text-primary)]">
+            <div className="text-base font-semibold text-[var(--color-text-primary)]">
               {formattedTime}
             </div>
-            <div className="text-xs text-[var(--color-text-secondary)]">
+            <div className="text-sm text-[var(--color-text-secondary)]">
               {formattedDate}
             </div>
           </div>
@@ -129,11 +129,11 @@ const PosHeader = ({
               <button
                 onClick={onCartClick}
                 aria-label={t("pos.header.openCart")}
-                className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] hover:bg-[var(--color-surface-hover)]"
+                className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] hover:bg-[var(--color-surface-hover)]"
               >
                 <LuShoppingCart size={20} className="text-[var(--color-text-primary)]" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[var(--color-info-bg)] px-1 text-xs font-bold text-[var(--color-info)]">
+                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-[var(--color-info-bg)] px-1 text-xs font-semibold text-[var(--color-info)]">
                     {cartItemCount}
                   </span>
                 )}
@@ -147,7 +147,7 @@ const PosHeader = ({
             variant="secondary"
             size="sm"
             onClick={onExit}
-            className="h-11 px-3"
+            className="h-12 px-4 text-base"
           >
             <LuArrowLeft size={16} />
             {t("pos.header.exitPos")}

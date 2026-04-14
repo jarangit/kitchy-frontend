@@ -68,7 +68,7 @@ const PosHomePage = () => {
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Product area */}
-        <div className="flex-1 flex flex-col min-w-0 p-4 overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 p-5 overflow-hidden">
           <CategoryTabs
             categories={categories}
             selected={selectedCategory}
@@ -77,9 +77,9 @@ const PosHomePage = () => {
 
           <div className="flex-1 overflow-y-auto mt-3">
             {isProductsLoading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {Array.from({ length: 10 }).map((_, i) => (
-                  <SkeletonCard key={i} className="min-h-[120px]" />
+                  <SkeletonCard key={i} className="min-h-[140px]" />
                 ))}
               </div>
             ) : (
@@ -131,13 +131,13 @@ const PosHomePage = () => {
           {/* Slide-in panel */}
           <div className="absolute top-0 right-0 bottom-0 w-full max-w-[400px] bg-[var(--color-bg)] border-l border-[var(--color-border)] shadow-sm animate-slide-in-right">
             {/* Close button */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--color-border)]">
-              <span className="text-lg font-bold text-[var(--color-text-primary)]">
+            <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-3">
+              <span className="text-xl font-semibold text-[var(--color-text-primary)]">
                 Cart
               </span>
               <button
                 onClick={closeCart}
-                className="w-11 h-11 flex items-center justify-center rounded-xl bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+                className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] active:scale-[0.98]"
               >
                 <LuX size={20} />
               </button>

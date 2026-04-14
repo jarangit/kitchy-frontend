@@ -40,22 +40,22 @@ const ProductGrid = ({ products, onAddToCart }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {products.map((product) => (
         <button
           key={product.id}
           onClick={() => onAddToCart(product)}
-          className="flex flex-col items-center justify-center bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4 min-h-[120px] hover:border-[var(--color-text-primary)] hover:shadow-md transition-all duration-[var(--motion-fast)] cursor-pointer active:scale-[0.98]"
+          className="flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-text-primary)] hover:shadow-md active:scale-[0.98]"
         >
           <div
-            className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 text-lg font-bold ${getColorForName(product.name)}`}
+            className={`mb-3 flex h-14 w-14 items-center justify-center rounded-full text-xl font-semibold ${getColorForName(product.name)}`}
           >
             {product.name.charAt(0).toUpperCase()}
           </div>
-          <span className="text-sm font-medium text-[var(--color-text-primary)] text-center leading-tight line-clamp-2">
+          <span className="line-clamp-2 text-center text-base font-medium leading-tight text-[var(--color-text-primary)]">
             {product.name}
           </span>
-          <span className="text-base font-bold text-[var(--color-success)] mt-1">
+          <span className="mt-1.5 text-lg font-semibold text-[var(--color-success)]">
             ฿{product.price.toFixed(2)}
           </span>
         </button>

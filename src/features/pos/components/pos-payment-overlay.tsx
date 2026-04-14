@@ -128,10 +128,10 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
         className="!max-w-5xl w-[min(96vw,72rem)] max-h-[92vh] p-0 overflow-hidden"
       >
         <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] px-6 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Payment</h2>
+          <h2 className="text-2xl font-semibold text-[var(--color-text-primary)]">Payment</h2>
           <button
             onClick={handleClosePayment}
-            className="w-11 h-11 rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] flex items-center justify-center"
+            className="flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] active:scale-[0.98]"
             aria-label="Close payment"
           >
             <LuX size={18} />
@@ -152,10 +152,10 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               <OrderSummary items={items} subtotal={subtotal} />
 
               <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">
+                <h3 className="mb-3 text-xl font-semibold text-[var(--color-text-primary)]">
                   Order Info
                 </h3>
-                <div className="space-y-1 text-sm text-[var(--color-text-secondary)] mb-4">
+                <div className="mb-4 space-y-1 text-base text-[var(--color-text-secondary)]">
                   <p>
                     Type: <span className="font-semibold text-[var(--color-text-primary)]">{orderType}</span>
                   </p>
@@ -171,7 +171,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                   )}
                 </div>
 
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+                 <h3 className="mb-4 text-xl font-semibold text-[var(--color-text-primary)]">
                   Payment Method
                 </h3>
                 <PaymentMethodSelector
@@ -183,7 +183,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
 
             {paymentMethod === "CASH" && (
               <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6 mt-6">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+                <h3 className="mb-4 text-xl font-semibold text-[var(--color-text-primary)]">
                   Cash Payment
                 </h3>
                 <div className="space-y-4">
@@ -193,11 +193,11 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                     value={receivedAmount}
                     onChange={(e) => setReceivedAmount(e.target.value)}
                     placeholder="0.00"
-                    className="text-lg font-semibold"
+                    className="text-xl font-semibold"
                   />
 
                   <div>
-                    <p className="text-sm text-[var(--color-text-secondary)] mb-2">
+                    <p className="mb-2 text-base text-[var(--color-text-secondary)]">
                       Quick amounts:
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -215,7 +215,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                   </div>
 
                   {Number(receivedAmount) > 0 && (
-                    <p className="text-xl font-bold text-[var(--color-success)]">
+                    <p className="text-2xl font-semibold text-[var(--color-success)]">
                       Change: ฿{change.toFixed(2)}
                     </p>
                   )}
@@ -225,31 +225,31 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
 
             {paymentMethod === "QR" && (
               <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">
+                <h3 className="mb-6 text-xl font-semibold text-[var(--color-text-primary)]">
                   QR Code Payment
                 </h3>
                 <div className="w-52 h-52 mx-auto border border-[var(--color-border)] rounded-[var(--radius-lg)] flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
                   <LuQrCode size={48} />
-                  <span className="text-sm">QR Code Placeholder</span>
+                  <span className="text-base">QR Code Placeholder</span>
                 </div>
-                <p className="text-sm text-[var(--color-text-secondary)] mt-4">
+                <p className="mt-4 text-base text-[var(--color-text-secondary)]">
                   Scan to pay ฿{subtotal.toFixed(2)}
                 </p>
               </div>
             )}
 
             {errorMessage && (
-              <p className="text-sm text-[var(--color-danger)] mt-4">{errorMessage}</p>
+              <p className="mt-4 text-base text-[var(--color-danger)]">{errorMessage}</p>
             )}
 
             {orderType === "DINE_IN" && !tableNumber && (
-              <p className="text-sm text-[var(--color-danger)] mt-4">
+              <p className="mt-4 text-base text-[var(--color-danger)]">
                 Please select a table before payment.
               </p>
             )}
 
             {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
-              <p className="text-sm text-[var(--color-danger)] mt-4">
+              <p className="mt-4 text-base text-[var(--color-danger)]">
                 Please select delivery platform before payment.
               </p>
             )}
@@ -258,7 +258,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               <Button
                 variant="secondary"
                 onClick={handleClosePayment}
-                className="flex-1 h-12"
+                className="h-12 flex-1 text-base"
                 disabled={isProcessing}
               >
                 Cancel
@@ -266,7 +266,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               <Button
                 onClick={handleConfirmPayment}
                 disabled={!canConfirm || isProcessing}
-                className="flex-1 h-12 text-base font-bold"
+                className="h-12 flex-1 text-lg font-semibold"
               >
                 {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
               </Button>
@@ -282,16 +282,16 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               <LuCircleCheck size={72} />
             </div>
 
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
+            <h2 className="mb-1 text-2xl font-semibold text-[var(--color-text-primary)]">
               Payment Successful!
             </h2>
-            <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-6">
+            <p className="mb-6 text-3xl font-semibold text-[var(--color-text-primary)]">
               ฿{paymentResult.subtotal.toFixed(2)}
             </p>
 
             <div className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-6">
               <div className="text-center pb-4">
-                <p className="text-xs uppercase tracking-widest text-[var(--color-text-secondary)] mb-1">
+                <p className="mb-1 text-sm uppercase tracking-widest text-[var(--color-text-secondary)]">
                   Receipt
                 </p>
                 <p className="font-mono font-bold text-[var(--color-text-primary)]">
@@ -303,12 +303,12 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                 {paymentResult.items.map((item) => (
                   <div
                     key={item.productId}
-                    className="grid grid-cols-[1fr_auto_auto] gap-2 text-sm text-[var(--color-text-secondary)]"
+                    className="grid grid-cols-[1fr_auto_auto] gap-2 text-base text-[var(--color-text-secondary)]"
                   >
                     <div>
                       <span>{item.name}</span>
                       {item.note && (
-                        <p className="mt-1 text-xs leading-5 text-[var(--color-text-tertiary)]">
+                        <p className="mt-1 text-sm leading-5 text-[var(--color-text-tertiary)]">
                           Note: {item.note}
                         </p>
                       )}
@@ -328,7 +328,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                 </div>
               </div>
 
-              <div className="border-t border-[var(--color-border)] pt-3 space-y-2 text-sm">
+              <div className="space-y-2 border-t border-[var(--color-border)] pt-3 text-base">
                 <div className="flex justify-between text-[var(--color-text-secondary)]">
                   <span>Order Type</span>
                   <span>{paymentResult.orderType}</span>
@@ -361,23 +361,23 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                       <span>Cash Received</span>
                       <span>฿{paymentResult.receivedAmount.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between font-semibold text-[var(--color-success)]">
-                      <span>Change</span>
-                      <span>฿{paymentResult.change.toFixed(2)}</span>
-                    </div>
+                  <div className="flex justify-between font-semibold text-[var(--color-success)]">
+                    <span>Change</span>
+                    <span>฿{paymentResult.change.toFixed(2)}</span>
+                  </div>
                   </>
                 )}
               </div>
 
               <div className="border-t border-[var(--color-border)] pt-4 mt-4">
-                <p className="text-sm font-semibold text-[var(--color-text-primary)] text-center mb-2">
+                <p className="mb-2 text-center text-base font-semibold text-[var(--color-text-primary)]">
                   Scan to get digital receipt
                 </p>
                 <div className="w-40 h-40 mx-auto border border-[var(--color-border)] rounded-[var(--radius-lg)] bg-[var(--color-bg)] flex flex-col items-center justify-center gap-2 text-[var(--color-text-tertiary)]">
                   <LuQrCode size={44} />
-                  <span className="text-xs">Receipt QR</span>
+                  <span className="text-sm">Receipt QR</span>
                 </div>
-                <p className="text-xs text-[var(--color-text-tertiary)] text-center mt-2">
+                <p className="mt-2 text-center text-sm text-[var(--color-text-tertiary)]">
                   Ref: #{paymentResult.receiptId}
                 </p>
               </div>
@@ -386,13 +386,13 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             <div className="flex gap-3 w-full mt-6">
               <Button
                 variant="secondary"
-                className="flex-1 h-12"
+                className="h-12 flex-1 text-base"
                 onClick={() => window.print()}
               >
                 <LuPrinter size={18} />
                 Print Receipt
               </Button>
-              <Button className="flex-1 h-12" onClick={handleCloseSuccess}>
+              <Button className="h-12 flex-1 text-base" onClick={handleCloseSuccess}>
                 New Order
               </Button>
             </div>

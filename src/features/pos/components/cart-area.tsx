@@ -171,11 +171,11 @@ const CartArea = ({
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+          <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">
             Cart
           </h2>
           {totalItems > 0 && (
-            <span className="min-w-[24px] h-6 flex items-center justify-center rounded-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-xs font-bold px-1.5">
+            <span className="min-w-7 h-7 flex items-center justify-center rounded-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-sm font-semibold px-1.5">
               {totalItems}
             </span>
           )}
@@ -185,7 +185,7 @@ const CartArea = ({
             variant="ghost"
             size="sm"
             onClick={onClearCart}
-            className="text-xs text-[var(--color-danger)] hover:text-[var(--color-danger-hover)]"
+            className="h-11 px-3 text-sm text-[var(--color-danger)] hover:text-[var(--color-danger-hover)]"
           >
             Clear All
           </Button>
@@ -196,7 +196,7 @@ const CartArea = ({
       <div className="flex-1 overflow-y-auto px-5">
         <div className="pt-4 pb-3 space-y-3 border-b border-[var(--color-border)]">
           <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-tertiary)] mb-2">
+            <p className="mb-2 text-sm font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
               Order Type
             </p>
             <div className="grid grid-cols-3 gap-2">
@@ -206,7 +206,7 @@ const CartArea = ({
                   <button
                     key={option.value}
                     onClick={() => handleOrderTypeChange(option.value)}
-                    className={`h-11 rounded-lg border text-xs font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                    className={`h-12 rounded-lg border text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
                       active
                         ? "border-[var(--color-text-primary)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
                         : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
@@ -222,14 +222,14 @@ const CartArea = ({
           {orderType === "DINE_IN" && (
             <div>
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-[var(--color-text-primary)]">
+                <p className="text-base font-semibold text-[var(--color-text-primary)]">
                   Table: {tableNumber ?? "Not selected"}
                 </p>
                 <div className="flex items-center gap-2">
                   {tableNumber && (
                     <button
                       onClick={() => onTableNumberChange(null)}
-                      className="text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+                      className="h-11 px-3 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
                     >
                       Clear
                     </button>
@@ -237,7 +237,7 @@ const CartArea = ({
                   <Button
                     size="sm"
                     variant="secondary"
-                    className="h-9"
+                    className="h-11 px-4 text-sm"
                     onClick={() => setIsTableDialogOpen(true)}
                   >
                     Select Table
@@ -250,7 +250,7 @@ const CartArea = ({
           {orderType === "DELIVERY" && (
             <div className="space-y-3">
               <div>
-                <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">
+                <p className="mb-2 text-base font-semibold text-[var(--color-text-primary)]">
                   Delivery Platform
                 </p>
                 <div className="grid grid-cols-2 gap-2">
@@ -260,7 +260,7 @@ const CartArea = ({
                       <button
                         key={platform}
                         onClick={() => onDeliveryPlatformChange(platform)}
-                        className={`h-11 rounded-lg border text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                        className={`h-12 rounded-lg border text-base font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
                           active
                             ? "border-[var(--color-primary)] bg-[var(--color-primary-bg)] text-[var(--color-primary)]"
                             : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
@@ -306,7 +306,7 @@ const CartArea = ({
           onClick={onPay}
           disabled={items.length === 0}
           size="lg"
-          className="w-full h-14 text-base font-bold"
+          className="w-full h-14 text-lg font-semibold"
         >
           Pay ฿{subtotal.toFixed(2)}
         </Button>
@@ -331,7 +331,7 @@ const CartArea = ({
                   onTableNumberChange(table);
                   setIsTableDialogOpen(false);
                 }}
-                className={`h-11 rounded-lg border text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                className={`h-12 rounded-lg border text-base font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
                   active
                     ? "border-[var(--color-primary)] bg-[var(--color-primary-bg)] text-[var(--color-primary)]"
                     : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
@@ -358,7 +358,7 @@ const CartArea = ({
 
         <div className="space-y-4">
           <div>
-            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
+            <p className="mb-2 text-sm font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
               {t("pos.noteDialog.quickNotes")}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -374,7 +374,7 @@ const CartArea = ({
                     key={note}
                     type="button"
                     onClick={() => handleToggleCommonNote(note)}
-                    className={`min-h-10 rounded-full border px-3 text-sm font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                    className={`min-h-12 rounded-full border px-4 text-base font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
                       isActive
                         ? "border-[var(--button-primary-bg)] bg-[var(--button-primary-bg)] text-[var(--button-primary-text)]"
                         : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)]"

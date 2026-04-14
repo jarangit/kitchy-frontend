@@ -8,6 +8,7 @@ export const toStatusBadgeVariant = (status: string): BadgeVariant => {
     case "PENDING":
       return "warning";
     case "COOKING":
+    case "PREPARING":
       return "info";
     case "CANCELLED":
       return "danger";
@@ -30,3 +31,28 @@ export const toStatusBorderClass = (status: string): string => {
       return "border-l-[var(--color-border)]";
   }
 };
+
+/* ── Human-readable labels ───────────────────────── */
+
+const STATUS_LABELS: Record<string, string> = {
+  NEW: "New",
+  PREPARING: "Preparing",
+  READY: "Ready",
+  PENDING: "Pending",
+  COOKING: "Cooking",
+  COMPLETED: "Completed",
+  CANCELLED: "Cancelled",
+};
+
+export const formatStatusLabel = (status: string): string =>
+  STATUS_LABELS[status] ?? status;
+
+const TYPE_LABELS: Record<string, string> = {
+  DINE_IN: "Dine In",
+  DINEIN: "Dine In",
+  TOGO: "To Go",
+  DELIVERY: "Delivery",
+};
+
+export const formatOrderTypeLabel = (type: string): string =>
+  TYPE_LABELS[type] ?? type;
