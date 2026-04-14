@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { LuCircleCheck, LuPrinter, LuArrowRight } from "react-icons/lu";
+import { LuCircleCheck, LuPrinter, LuArrowRight, LuQrCode } from "react-icons/lu";
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import { useCartContext } from "@/features/pos/context/cartContext";
 import { Button } from "@/shared/components/ui/button";
@@ -32,7 +32,6 @@ const PaymentSuccessPage = () => {
   const methodLabel: Record<PaymentMethod, string> = {
     CASH: "Cash",
     QR: "QR Code",
-    TRANSFER: "Bank Transfer",
   };
 
   const formattedDate = new Date().toLocaleDateString("th-TH", {
@@ -119,6 +118,20 @@ const PaymentSuccessPage = () => {
               </div>
             </>
           )}
+        </div>
+
+        {/* Customer receipt QR */}
+        <div className="border-t border-[var(--color-border)] pt-4 mt-4">
+          <p className="text-sm font-semibold text-[var(--color-text-primary)] text-center mb-2">
+            Scan to get digital receipt
+          </p>
+          <div className="w-40 h-40 mx-auto border border-[var(--color-border)] rounded-[var(--radius-lg)] bg-[var(--color-surface)] flex flex-col items-center justify-center gap-2 text-[var(--color-text-tertiary)]">
+            <LuQrCode size={44} />
+            <span className="text-xs">Receipt QR</span>
+          </div>
+          <p className="text-xs text-[var(--color-text-tertiary)] text-center mt-2">
+            Ref: #{receiptId}
+          </p>
         </div>
       </div>
 

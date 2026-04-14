@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
-import type { ICartItem, PaymentMethod } from "@/features/pos/types/pos.model";
+import type { ICartItem, OrderType, PaymentMethod } from "@/features/pos/types/pos.model";
 
 // --- Cart State ---
 interface CartState {
@@ -11,6 +11,14 @@ interface CartState {
   clearCart: () => void;
   subtotal: number;
   totalItems: number;
+  orderType: OrderType;
+  tableNumber: string | null;
+  customerName: string;
+  deliveryPlatform: string;
+  setOrderType: (type: OrderType) => void;
+  setTableNumber: (tableNumber: string | null) => void;
+  setCustomerName: (name: string) => void;
+  setDeliveryPlatform: (platform: string) => void;
 }
 
 // --- Payment Result (persisted after successful payment) ---
@@ -21,6 +29,10 @@ export interface PaymentResult {
   paymentMethod: PaymentMethod;
   receivedAmount: number;
   change: number;
+  orderType: OrderType;
+  tableNumber: string | null;
+  customerName: string;
+  deliveryPlatform: string;
 }
 
 interface CartContextValue extends CartState {
@@ -34,6 +46,10 @@ const CartContext = createContext<CartContextValue | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<ICartItem[]>([]);
   const [paymentResult, setPaymentResultState] = useState<PaymentResult | null>(null);
+  const [orderType, setOrderTypeState] = useState<OrderType>("TOGO");
+  const [tableNumber, setTableNumberState] = useState<string | null>(null);
+  const [customerName, setCustomerNameState] = useState("");
+  const [deliveryPlatform, setDeliveryPlatformState] = useState("");
 
   const addItem = useCallback(
     (product: { id: string; name: string; price: number }) => {
@@ -83,6 +99,38 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
   }, []);
 
+  const setOrderType = useCallback((type: OrderType) => {
+    setOrderTypeState(type);
+
+    if (type === "TOGO") {
+      setTableNumberState(null);
+      setCustomerNameState("");
+      setDeliveryPlatformState("");
+      return;
+    }
+
+    if (type === "DINE_IN") {
+      setCustomerNameState("");
+      setDeliveryPlatformState("");
+      return;
+    }
+
+    setTableNumberState(null);
+    setCustomerNameState("");
+  }, []);
+
+  const setTableNumber = useCallback((value: string | null) => {
+    setTableNumberState(value);
+  }, []);
+
+  const setCustomerName = useCallback((value: string) => {
+    setCustomerNameState(value);
+  }, []);
+
+  const setDeliveryPlatform = useCallback((value: string) => {
+    setDeliveryPlatformState(value);
+  }, []);
+
   const subtotal = useMemo(
     () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [items]
@@ -109,6 +157,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     clearCart,
     subtotal,
     totalItems,
+    orderType,
+    tableNumber,
+    customerName,
+    deliveryPlatform,
+    setOrderType,
+    setTableNumber,
+    setCustomerName,
+    setDeliveryPlatform,
     paymentResult,
     setPaymentResult,
     clearPaymentResult,

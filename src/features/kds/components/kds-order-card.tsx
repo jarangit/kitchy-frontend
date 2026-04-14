@@ -39,6 +39,20 @@ const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
           <p className="font-mono font-semibold text-[var(--color-text-primary)]">
             {order.orderNumber}
           </p>
+          {order.orderType && (
+            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
+              {order.orderType}
+              {order.orderType === "DINE_IN" && order.tableNumber
+                ? ` • ${order.tableNumber}`
+                : ""}
+              {order.orderType === "DELIVERY" && order.customerName
+                ? ` • ${order.customerName}`
+                : ""}
+              {order.orderType === "DELIVERY" && order.deliveryPlatform
+                ? ` (${order.deliveryPlatform})`
+                : ""}
+            </p>
+          )}
           <p className="text-xs text-[var(--color-text-tertiary)]">
             {timeLabel}
           </p>

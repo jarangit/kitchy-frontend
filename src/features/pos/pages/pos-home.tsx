@@ -103,6 +103,12 @@ const PosHomePage = () => {
             onRemoveItem={cart.removeItem}
             onClearCart={cart.clearCart}
             onPay={handlePay}
+            orderType={cart.orderType}
+            tableNumber={cart.tableNumber}
+            deliveryPlatform={cart.deliveryPlatform}
+            onOrderTypeChange={cart.setOrderType}
+            onTableNumberChange={cart.setTableNumber}
+            onDeliveryPlatformChange={cart.setDeliveryPlatform}
           />
         </div>
       </div>
@@ -140,6 +146,12 @@ const PosHomePage = () => {
                 onRemoveItem={cart.removeItem}
                 onClearCart={cart.clearCart}
                 onPay={handlePay}
+                orderType={cart.orderType}
+                tableNumber={cart.tableNumber}
+                deliveryPlatform={cart.deliveryPlatform}
+                onOrderTypeChange={cart.setOrderType}
+                onTableNumberChange={cart.setTableNumber}
+                onDeliveryPlatformChange={cart.setDeliveryPlatform}
               />
             </div>
           </div>

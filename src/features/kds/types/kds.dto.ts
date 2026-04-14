@@ -11,6 +11,11 @@ export interface IKdsOrderDto {
   id: string;
   orderNumber: string;
   status: string;
+  orderType?: "DINE_IN" | "TOGO" | "DELIVERY";
+  type?: "DINE_IN" | "TOGO" | "DELIVERY";
+  tableNumber?: string;
+  customerName?: string;
+  deliveryPlatform?: string;
   createdAt: string;
   stationId?: string;
   stationName?: string;

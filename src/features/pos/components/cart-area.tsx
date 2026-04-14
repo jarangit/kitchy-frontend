@@ -1,9 +1,28 @@
+import { useState } from "react";
 import type { ICartItem } from "@/features/pos/types/pos.model";
+import type { OrderType } from "@/features/pos/types/pos.model";
 import { LuShoppingCart } from "react-icons/lu";
 import CartItem from "./cart-item";
 import CartSummary from "./cart-summary";
 import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+
+const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
+  { value: "DINE_IN", label: "Dine In" },
+  { value: "TOGO", label: "To Go" },
+  { value: "DELIVERY", label: "Delivery" },
+];
+
+const TABLE_OPTIONS = Array.from({ length: 20 }, (_, index) => `T${index + 1}`);
+const DELIVERY_PLATFORMS = [
+  "LINE MAN",
+  "GrabFood",
+  "ShopeeFood",
+  "Robinhood",
+  "Foodpanda",
+  "Other",
+];
 
 interface Props {
   items: ICartItem[];
@@ -12,6 +31,12 @@ interface Props {
   onRemoveItem: (productId: string) => void;
   onClearCart: () => void;
   onPay: () => void;
+  orderType: OrderType;
+  tableNumber: string | null;
+  deliveryPlatform: string;
+  onOrderTypeChange: (type: OrderType) => void;
+  onTableNumberChange: (tableNumber: string | null) => void;
+  onDeliveryPlatformChange: (platform: string) => void;
 }
 
 const CartArea = ({
@@ -21,11 +46,25 @@ const CartArea = ({
   onRemoveItem,
   onClearCart,
   onPay,
+  orderType,
+  tableNumber,
+  deliveryPlatform,
+  onOrderTypeChange,
+  onTableNumberChange,
+  onDeliveryPlatformChange,
 }: Props) => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+  const [isTableDialogOpen, setIsTableDialogOpen] = useState(false);
+
+  const handleOrderTypeChange = (nextType: OrderType) => {
+    onOrderTypeChange(nextType);
+    if (nextType === "DINE_IN") {
+      setIsTableDialogOpen(true);
+    }
+  };
 
   return (
-    <div className="flex flex-col h-full bg-[var(--color-bg)]">
+    <div className="w-full flex flex-col h-full bg-[var(--color-bg)]">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-2">
@@ -52,6 +91,90 @@ const CartArea = ({
 
       {/* Items */}
       <div className="flex-1 overflow-y-auto px-5">
+        <div className="pt-4 pb-3 space-y-3 border-b border-[var(--color-border)]">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-tertiary)] mb-2">
+              Order Type
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              {ORDER_TYPE_OPTIONS.map((option) => {
+                const active = orderType === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => handleOrderTypeChange(option.value)}
+                    className={`h-11 rounded-lg border text-xs font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                      active
+                        ? "border-[var(--color-text-primary)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
+                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {orderType === "DINE_IN" && (
+            <div>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-semibold text-[var(--color-text-primary)]">
+                  Table: {tableNumber ?? "Not selected"}
+                </p>
+                <div className="flex items-center gap-2">
+                  {tableNumber && (
+                    <button
+                      onClick={() => onTableNumberChange(null)}
+                      className="text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+                    >
+                      Clear
+                    </button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="h-9"
+                    onClick={() => setIsTableDialogOpen(true)}
+                  >
+                    Select Table
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {orderType === "DELIVERY" && (
+            <div className="space-y-3">
+              <div>
+                <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">
+                  Delivery Platform
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {DELIVERY_PLATFORMS.map((platform) => {
+                    const active = deliveryPlatform === platform;
+                    return (
+                      <button
+                        key={platform}
+                        onClick={() => onDeliveryPlatformChange(platform)}
+                        className={`h-11 rounded-lg border text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                          active
+                            ? "border-[var(--color-primary)] bg-[var(--color-primary-bg)] text-[var(--color-primary)]"
+                            : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
+                        }`}
+                      >
+                        {platform}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          )}
+        </div>
+
+        <div className="pt-3">
         {items.length === 0 ? (
           <EmptyState
             icon={<LuShoppingCart size={32} />}
@@ -69,6 +192,7 @@ const CartArea = ({
             />
           ))
         )}
+        </div>
       </div>
 
       {/* Summary + Pay Button */}
@@ -83,6 +207,38 @@ const CartArea = ({
           Pay ฿{subtotal.toFixed(2)}
         </Button>
       </div>
+
+      <Dialog
+        open={isTableDialogOpen}
+        onClose={() => setIsTableDialogOpen(false)}
+      >
+        <DialogHeader>
+          <DialogTitle>Select Table</DialogTitle>
+          <DialogDescription>Tap to select table for dine in order.</DialogDescription>
+        </DialogHeader>
+
+        <div className="grid grid-cols-4 gap-2">
+          {TABLE_OPTIONS.map((table) => {
+            const active = tableNumber === table;
+            return (
+              <button
+                key={table}
+                onClick={() => {
+                  onTableNumberChange(table);
+                  setIsTableDialogOpen(false);
+                }}
+                className={`h-11 rounded-lg border text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                  active
+                    ? "border-[var(--color-primary)] bg-[var(--color-primary-bg)] text-[var(--color-primary)]"
+                    : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
+                }`}
+              >
+                {table}
+              </button>
+            );
+          })}
+        </div>
+      </Dialog>
     </div>
   );
 };

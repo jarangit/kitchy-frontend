@@ -1,6 +1,10 @@
 export interface ICreateOrder {
   orderNumber: string;
-  orderType: string;
+  orderType: "DINE_IN" | "TOGO" | "DELIVERY";
+  tableNumber?: string;
+  customerName?: string;
+  deliveryPlatform?: string;
+  products: { productId: string; quantity: number }[];
   isWaitingInStore?: boolean;
 }
 

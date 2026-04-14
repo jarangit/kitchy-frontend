@@ -35,7 +35,8 @@ export function Dialog({ open, onClose, children, className = "" }: DialogProps)
         rounded-[var(--dialog-radius)]
         p-[var(--dialog-padding)]
         w-full max-w-md
-        shadow-xl
+        m-auto
+        max-h-[90vh] overflow-y-auto
         open:animate-in open:fade-in open:zoom-in-95
         ${className}
       `.trim()}

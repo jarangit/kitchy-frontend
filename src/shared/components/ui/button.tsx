@@ -13,20 +13,16 @@ const variantStyles: Record<ButtonVariant, string> = {
     bg-[var(--button-primary-bg)]
     text-[var(--button-primary-text)]
     hover:bg-[var(--button-primary-bg-hover)]
-    shadow-sm
   `,
   secondary: `
-    bg-[var(--button-secondary-bg)]
+    bg-[var(--color-surface)]
     text-[var(--button-secondary-text)]
-    border
-    border-[var(--button-secondary-border)]
     hover:bg-[var(--button-secondary-bg-hover)]
   `,
   danger: `
     bg-[var(--button-danger-bg)]
     text-[var(--button-danger-text)]
     hover:bg-[var(--button-danger-bg-hover)]
-    shadow-sm
   `,
   ghost: `
     bg-[var(--button-ghost-bg)]

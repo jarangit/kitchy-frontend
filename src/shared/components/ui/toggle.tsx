@@ -36,14 +36,13 @@ export function Toggle({
           : "var(--toggle-bg)",
       }}
     >
-      <span
-        className="
-          pointer-events-none inline-block
-          w-[var(--toggle-knob-size)] h-[var(--toggle-knob-size)]
-          rounded-full bg-[var(--toggle-knob)]
-          shadow-sm
-          transition-transform duration-[var(--motion-fast)]
-        "
+        <span
+          className="
+            pointer-events-none inline-block
+            w-[var(--toggle-knob-size)] h-[var(--toggle-knob-size)]
+            rounded-full bg-[var(--toggle-knob)]
+            transition-transform duration-[var(--motion-fast)]
+          "
         style={{
           transform: checked ? "translateX(27px)" : "translateX(3px)",
         }}

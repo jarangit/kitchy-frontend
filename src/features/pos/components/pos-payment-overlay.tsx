@@ -9,6 +9,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Dialog } from "@/shared/components/ui/dialog";
 import { Input } from "@/shared/components/ui/input";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 
 interface Props {
   open: boolean;
@@ -16,9 +17,19 @@ interface Props {
 }
 
 const PosPaymentOverlay = ({ open, onClose }: Props) => {
-  const { items, subtotal, clearCart, setPaymentResult, paymentResult, clearPaymentResult } =
-    useCartContext();
-  const { createMutation } = useOrderService({});
+  const {
+    items,
+    subtotal,
+    clearCart,
+    setPaymentResult,
+    paymentResult,
+    clearPaymentResult,
+    orderType,
+    tableNumber,
+    customerName,
+    deliveryPlatform,
+  } = useCartContext();
+  const { createMutation, ordersQuery } = useOrderService({});
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CASH");
   const [receivedAmount, setReceivedAmount] = useState<string>("");
@@ -36,7 +47,9 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
 
   const canConfirm =
     items.length > 0 &&
-    (paymentMethod !== "CASH" || Number(receivedAmount) >= subtotal);
+    (paymentMethod !== "CASH" || Number(receivedAmount) >= subtotal) &&
+    (orderType !== "DINE_IN" || !!tableNumber) &&
+    (orderType !== "DELIVERY" || deliveryPlatform.trim().length > 0);
 
   const quickAmounts = [
     { label: `Exact ฿${subtotal.toLocaleString()}`, value: subtotal },
@@ -56,10 +69,16 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
     setErrorMessage(null);
 
     try {
-      const orderNumber = `POS-${Date.now()}`;
+      const orderNumber = getNextQueueNumber(ordersQuery);
 
       await createMutation.mutateAsync({
         orderNumber,
+        orderType,
+        tableNumber: orderType === "DINE_IN" ? tableNumber ?? undefined : undefined,
+        customerName:
+          orderType === "DELIVERY" ? customerName.trim() : undefined,
+        deliveryPlatform:
+          orderType === "DELIVERY" ? deliveryPlatform.trim() : undefined,
         products: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -73,6 +92,10 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
         paymentMethod,
         receivedAmount: Number(receivedAmount) || subtotal,
         change,
+        orderType,
+        tableNumber,
+        customerName,
+        deliveryPlatform,
       });
 
       clearCart();
@@ -94,12 +117,15 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
   const methodLabel: Record<PaymentMethod, string> = {
     CASH: "Cash",
     QR: "QR Code",
-    TRANSFER: "Bank Transfer",
   };
 
   return (
     <>
-      <Dialog open={open} onClose={handleClosePayment} className="max-w-5xl p-0 overflow-hidden">
+      <Dialog
+        open={open}
+        onClose={handleClosePayment}
+        className="!max-w-5xl w-[min(96vw,72rem)] max-h-[92vh] p-0 overflow-hidden"
+      >
         <div className="bg-[var(--color-surface)] border-b border-[var(--color-border)] px-6 py-4 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Payment</h2>
           <button
@@ -120,11 +146,30 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             />
           </div>
         ) : (
-          <div className="bg-[var(--color-bg)] p-6">
+          <div className="bg-[var(--color-bg)] p-6 overflow-y-auto max-h-[calc(92vh-72px)]">
             <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
               <OrderSummary items={items} subtotal={subtotal} />
 
               <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6">
+                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">
+                  Order Info
+                </h3>
+                <div className="space-y-1 text-sm text-[var(--color-text-secondary)] mb-4">
+                  <p>
+                    Type: <span className="font-semibold text-[var(--color-text-primary)]">{orderType}</span>
+                  </p>
+                  {orderType === "DINE_IN" && (
+                    <p>
+                      Table: <span className="font-semibold text-[var(--color-text-primary)]">{tableNumber ?? "-"}</span>
+                    </p>
+                  )}
+                  {orderType === "DELIVERY" && (
+                    <p>
+                      Platform: <span className="font-semibold text-[var(--color-text-primary)]">{deliveryPlatform || "-"}</span>
+                    </p>
+                  )}
+                </div>
+
                 <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
                   Payment Method
                 </h3>
@@ -192,19 +237,20 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               </div>
             )}
 
-            {paymentMethod === "TRANSFER" && (
-              <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
-                  Bank Transfer
-                </h3>
-                <p className="text-[var(--color-text-secondary)] text-sm">
-                  Coming soon
-                </p>
-              </div>
-            )}
-
             {errorMessage && (
               <p className="text-sm text-[var(--color-danger)] mt-4">{errorMessage}</p>
+            )}
+
+            {orderType === "DINE_IN" && !tableNumber && (
+              <p className="text-sm text-[var(--color-danger)] mt-4">
+                Please select a table before payment.
+              </p>
+            )}
+
+            {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
+              <p className="text-sm text-[var(--color-danger)] mt-4">
+                Please select delivery platform before payment.
+              </p>
             )}
 
             <div className="flex gap-3 mt-6">
@@ -276,6 +322,28 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
 
               <div className="border-t border-[var(--color-border)] pt-3 space-y-2 text-sm">
                 <div className="flex justify-between text-[var(--color-text-secondary)]">
+                  <span>Order Type</span>
+                  <span>{paymentResult.orderType}</span>
+                </div>
+                {paymentResult.orderType === "DINE_IN" && paymentResult.tableNumber && (
+                  <div className="flex justify-between text-[var(--color-text-secondary)]">
+                    <span>Table</span>
+                    <span>{paymentResult.tableNumber}</span>
+                  </div>
+                )}
+                {paymentResult.orderType === "DELIVERY" && paymentResult.customerName && (
+                  <div className="flex justify-between text-[var(--color-text-secondary)]">
+                    <span>Customer</span>
+                    <span>{paymentResult.customerName}</span>
+                  </div>
+                )}
+                {paymentResult.orderType === "DELIVERY" && paymentResult.deliveryPlatform && (
+                  <div className="flex justify-between text-[var(--color-text-secondary)]">
+                    <span>Platform</span>
+                    <span>{paymentResult.deliveryPlatform}</span>
+                  </div>
+                )}
+                <div className="flex justify-between text-[var(--color-text-secondary)]">
                   <span>Payment Method</span>
                   <span>{methodLabel[paymentResult.paymentMethod]}</span>
                 </div>
@@ -291,6 +359,19 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                     </div>
                   </>
                 )}
+              </div>
+
+              <div className="border-t border-[var(--color-border)] pt-4 mt-4">
+                <p className="text-sm font-semibold text-[var(--color-text-primary)] text-center mb-2">
+                  Scan to get digital receipt
+                </p>
+                <div className="w-40 h-40 mx-auto border border-[var(--color-border)] rounded-[var(--radius-lg)] bg-[var(--color-bg)] flex flex-col items-center justify-center gap-2 text-[var(--color-text-tertiary)]">
+                  <LuQrCode size={44} />
+                  <span className="text-xs">Receipt QR</span>
+                </div>
+                <p className="text-xs text-[var(--color-text-tertiary)] text-center mt-2">
+                  Ref: #{paymentResult.receiptId}
+                </p>
               </div>
             </div>
 

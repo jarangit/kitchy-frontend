@@ -19,12 +19,8 @@ type Props = {
 };
 
 const colorOptions = [
-  { value: "#3b82f6", label: "Blue" },
-  { value: "#22c55e", label: "Green" },
-  { value: "#f97316", label: "Orange" },
-  { value: "#a855f7", label: "Purple" },
-  { value: "#ef4444", label: "Red" },
-  { value: "#eab308", label: "Yellow" },
+  { value: "#FFFFFF", label: "White" },
+  { value: "#111315", label: "Charcoal" },
 ];
 
 const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
@@ -39,7 +35,7 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
   } = useForm<StationFormData>({
     defaultValues: {
       name: "",
-      color: "#3b82f6",
+      color: "#111315",
       ...defaultValues,
     },
   });

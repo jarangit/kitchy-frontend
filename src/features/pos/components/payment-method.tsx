@@ -1,5 +1,5 @@
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
-import { LuBanknote, LuQrCode, LuArrowRightLeft } from "react-icons/lu";
+import { LuBanknote, LuQrCode } from "react-icons/lu";
 
 interface Props {
   selected: PaymentMethod;
@@ -9,12 +9,11 @@ interface Props {
 const methods: { value: PaymentMethod; label: string; icon: React.ReactNode }[] = [
   { value: "CASH", label: "Cash", icon: <LuBanknote size={28} /> },
   { value: "QR", label: "QR Code", icon: <LuQrCode size={28} /> },
-  { value: "TRANSFER", label: "Transfer", icon: <LuArrowRightLeft size={28} /> },
 ];
 
 const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid grid-cols-2 gap-3">
       {methods.map((method) => (
         <button
           key={method.value}

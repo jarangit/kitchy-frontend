@@ -148,6 +148,24 @@ const TransactionDetailPage = () => {
               <span className="font-medium text-[var(--color-text-primary)]">{order.type}</span>
             </div>
           )}
+          {order.tableNumber && (
+            <div className="flex justify-between">
+              <span>Table</span>
+              <span className="font-medium text-[var(--color-text-primary)]">{order.tableNumber}</span>
+            </div>
+          )}
+          {order.customerName && (
+            <div className="flex justify-between">
+              <span>Customer</span>
+              <span className="font-medium text-[var(--color-text-primary)]">{order.customerName}</span>
+            </div>
+          )}
+          {order.deliveryPlatform && (
+            <div className="flex justify-between">
+              <span>Platform</span>
+              <span className="font-medium text-[var(--color-text-primary)]">{order.deliveryPlatform}</span>
+            </div>
+          )}
         </div>
       </div>
     </div>

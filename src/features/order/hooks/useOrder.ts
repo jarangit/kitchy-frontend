@@ -2,6 +2,7 @@
 import { orderApiService } from "@/features/order/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "@/shared/hooks/hooks";
+import type { ICreateOrder } from "@/features/order/types/order.dto";
 
 export function useOrderService({
   stationId,
@@ -37,11 +38,16 @@ export function useOrderService({
 
   // CREATE
   const createMutation = useMutation({
-    mutationFn: (data: {
-      orderNumber: string;
-      products: { productId: string; quantity: number }[];
-    }) =>
-      orderApiService.add(storeId as string, data.orderNumber, data.products),
+    mutationFn: (data: ICreateOrder) =>
+      orderApiService.add(
+        storeId as string,
+        data.orderNumber,
+        data.products,
+        data.orderType,
+        data.tableNumber,
+        data.customerName,
+        data.deliveryPlatform
+      ),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["orders", storeId],

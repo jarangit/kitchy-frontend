@@ -22,7 +22,7 @@ export function Input({
         className={`
           w-full
           h-[var(--input-height)]
-          bg-[var(--input-bg)]
+          ${error ? "bg-[var(--color-danger-bg)]" : "bg-[var(--input-bg)]"}
           border
           ${error ? "border-[var(--color-danger)]" : "border-[var(--input-border)]"}
           rounded-[var(--input-radius)]
@@ -32,7 +32,7 @@ export function Input({
           placeholder:text-[var(--input-placeholder)]
           outline-none
           transition-colors duration-[var(--motion-fast)]
-          focus:border-[var(--input-border-focus)]
+          focus:border-[var(--input-border-focus)] focus:ring-2 focus:ring-[var(--input-border-focus)]/25
           disabled:opacity-50
           ${className}
         `.trim()}

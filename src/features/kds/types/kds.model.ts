@@ -10,6 +10,10 @@ export interface KdsOrder {
   id: string;
   orderNumber: string;
   status: KdsStatus;
+  orderType?: "DINE_IN" | "TOGO" | "DELIVERY";
+  tableNumber?: string;
+  customerName?: string;
+  deliveryPlatform?: string;
   createdAt: string;
   stationId?: string;
   stationName?: string;

@@ -32,7 +32,7 @@ export function Select({
           text-sm
           outline-none
           transition-colors duration-[var(--motion-fast)]
-          focus:border-[var(--select-border-focus)]
+          focus:border-[var(--select-border-focus)] focus:ring-2 focus:ring-[var(--select-border-focus)]/25
           ${className}
         `.trim()}
         {...props}

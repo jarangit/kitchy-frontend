@@ -11,12 +11,20 @@ export const orderApiService = {
   add: async (
     storeId: string,
     orderNumber: any,
-    products: { productId: string; quantity: number }[]
+    products: { productId: string; quantity: number }[],
+    orderType: "DINE_IN" | "TOGO" | "DELIVERY",
+    tableNumber?: string,
+    customerName?: string,
+    deliveryPlatform?: string
   ) => {
     return await axiosClient.post(`/orders`, {
       storeId,
       orderNumber,
       products,
+      orderType,
+      tableNumber,
+      customerName,
+      deliveryPlatform,
     });
   },
   update: async (orderId: string, orderData: any) => {

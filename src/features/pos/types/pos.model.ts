@@ -5,7 +5,9 @@ export interface ICartItem {
   quantity: number;
 }
 
-export type PaymentMethod = "CASH" | "QR" | "TRANSFER";
+export type PaymentMethod = "CASH" | "QR";
+
+export type OrderType = "DINE_IN" | "TOGO" | "DELIVERY";
 
 export interface IPaymentInfo {
   method: PaymentMethod;

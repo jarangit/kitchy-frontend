@@ -9,6 +9,7 @@ import PaymentMethodSelector from "@/features/pos/components/payment-method";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 
 const PaymentPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,7 +22,7 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { createMutation } = useOrderService({});
+  const { createMutation, ordersQuery } = useOrderService({});
 
   const change =
     paymentMethod === "CASH" && receivedAmount
@@ -38,9 +39,10 @@ const PaymentPage = () => {
     setErrorMessage(null);
 
     try {
-      const orderNumber = `POS-${Date.now()}`;
+      const orderNumber = getNextQueueNumber(ordersQuery);
       await createMutation.mutateAsync({
         orderNumber,
+        orderType: "TOGO",
         products: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -55,6 +57,10 @@ const PaymentPage = () => {
         paymentMethod,
         receivedAmount: Number(receivedAmount) || subtotal,
         change,
+        orderType: "TOGO",
+        tableNumber: null,
+        customerName: "",
+        deliveryPlatform: "",
       });
 
       // Clear the cart after successful payment
@@ -182,17 +188,6 @@ const PaymentPage = () => {
           </div>
           <p className="text-sm text-[var(--color-text-secondary)] mt-4">
             Scan to pay ฿{subtotal.toFixed(2)}
-          </p>
-        </div>
-      )}
-
-      {paymentMethod === "TRANSFER" && (
-        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
-            Bank Transfer
-          </h3>
-          <p className="text-[var(--color-text-secondary)] text-sm">
-            Coming soon
           </p>
         </div>
       )}
