@@ -13,18 +13,25 @@ export interface ITopProduct {
   revenue: number;
 }
 
+export interface IPaymentBreakdown {
+  method: string;
+  amount: number;
+}
+
 /** Single calendar day data (month mode) */
 export interface ICalendarDay {
   date: string; // YYYY-MM-DD
   revenue: number;
   orders: number;
   topProducts: ITopProduct[];
+  paymentBreakdown: IPaymentBreakdown[];
 }
 
 /** Complete report data returned from the service */
 export interface IReportData {
   summary: IReportSummary;
   topProducts: ITopProduct[];
+  paymentBreakdown: IPaymentBreakdown[];
   /** Only present in "month" mode */
   calendarDays?: ICalendarDay[];
 }

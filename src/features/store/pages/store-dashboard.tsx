@@ -1,295 +1,260 @@
-import { Button } from "@/shared/components/ui/button";
-import { Badge } from "@/shared/components/ui/badge";
-import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
-import { toStatusBadgeVariant } from "@/shared/utils/status";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { stationServiceApi } from "@/features/station/services/station";
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   LuArrowLeft,
-  LuShoppingCart,
+  LuArrowRight,
+  LuChefHat,
   LuMonitor,
   LuReceipt,
   LuSettings,
-  LuPackage,
-  LuMapPin,
-  LuChefHat,
+  LuShoppingCart,
 } from "react-icons/lu";
+
+interface DashboardOrder {
+  createdAt?: string;
+  totalAmount?: number;
+}
+
+const formatCurrency = (value: number): string =>
+  new Intl.NumberFormat("th-TH", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+
+const isSameCalendarDay = (dateValue: string | undefined, targetDate: Date): boolean => {
+  if (!dateValue) return false;
+
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return false;
+
+  return (
+    date.getFullYear() === targetDate.getFullYear() &&
+    date.getMonth() === targetDate.getMonth() &&
+    date.getDate() === targetDate.getDate()
+  );
+};
 
 const StoreDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
     useStoreService({});
   const { ordersQuery } = useOrderService({});
-  const navigate = useNavigate();
   const [stations, setStations] = useState<
     { id: string; name: string; createdAt: string }[]
   >([]);
 
-  const onGetStations = async (storeId: string) => {
-    try {
-      const response = await stationServiceApi.getByStoreId(storeId);
-      if (response && response.data.length > 0) {
-        setStations(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching stations:", error);
-    }
-  };
-
   useEffect(() => {
+    const onGetStations = async (storeId: string) => {
+      try {
+        const response = await stationServiceApi.getByStoreId(storeId);
+        setStations(response?.data ?? []);
+      } catch (error) {
+        console.error("Error fetching stations:", error);
+        setStations([]);
+      }
+    };
+
     if (id) {
       onGetStations(id);
     }
   }, [id]);
 
+  const today = new Date();
+  const todayLabel = useMemo(
+    () =>
+      today.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+      }),
+    [today],
+  );
+
+  const todayOrders = useMemo(
+    () =>
+      (ordersQuery as DashboardOrder[]).filter((order) =>
+        isSameCalendarDay(order.createdAt, today),
+      ),
+    [ordersQuery, today],
+  );
+
+  const todayOrderCount = todayOrders.length;
+  const todayRevenue = todayOrders.reduce(
+    (sum, order) => sum + (typeof order.totalAmount === "number" ? order.totalAmount : 0),
+    0,
+  );
+
   if (storeFinOneLoading) {
     return (
-    <div className="space-y-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
+      <div className="space-y-5">
+        <div className="space-y-2">
+          <SkeletonCard className="h-14" />
+        </div>
+        <SkeletonCard className="h-36" />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <SkeletonCard className="h-24" />
+          <SkeletonCard className="h-24" />
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <SkeletonCard className="h-24" />
+          <SkeletonCard className="h-24" />
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <SkeletonCard className="h-28" />
+          <SkeletonCard className="h-28" />
+          <SkeletonCard className="h-28" />
         </div>
       </div>
     );
   }
+
   if (storeFinOneQueryError) {
     return <div>Error: {storeFinOneQueryError}</div>;
   }
 
-  const pendingOrders =
-    ordersQuery?.filter(
-      (o: { status: string }) => o.status === "PENDING"
-    )?.length || 0;
-  const completedOrders =
-    ordersQuery?.filter(
-      (o: { status: string }) => o.status === "COMPLETED"
-    )?.length || 0;
-
-  const formatRelativeTime = (dateStr: string) => {
-    const now = new Date();
-    const date = new Date(dateStr);
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    const diffHours = Math.floor(diffMs / 3600000);
-    const diffDays = Math.floor(diffMs / 86400000);
-
-    if (diffMins < 1) return "Just now";
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    return `${diffDays}d ago`;
-  };
+  const quickActions = [
+    {
+      label: "Transactions",
+      description: "Order history",
+      icon: <LuReceipt size={20} />,
+      to: `/store/${id}/transactions`,
+    },
+    {
+      label: "KDS",
+      description: "Kitchen board",
+      icon: <LuChefHat size={20} />,
+      to: `/store/${id}/kds`,
+    },
+    {
+      label: "Settings",
+      description: "Manage store",
+      icon: <LuSettings size={20} />,
+      to: `/store/${id}/settings`,
+    },
+  ];
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-end">
+      <div className="space-y-2">
+        <Link
+          to="/dashboard"
+          className="min-h-11 px-2 inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+        >
+          <LuArrowLeft size={16} />
+          Back to stores
+        </Link>
+
         <div>
-          <Link
-            to="/dashboard"
-            className="min-h-11 px-2 inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
-          >
-            <LuArrowLeft size={16} />
-            Back to stores
-          </Link>
-          <h1 className="text-2xl font-bold mt-1">
+          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
             {storeFinOneQuery?.name}
           </h1>
-          <p className="text-[var(--color-text-secondary)]">Store Dashboard</p>
-        </div>
-        <Button
-          onClick={() => navigate(`/store/${id}/pos`)}
-          className="h-12 px-6 gap-2"
-        >
-          <LuShoppingCart size={20} />
-          Open POS
-        </Button>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[var(--color-info-bg)] flex items-center justify-center shrink-0">
-              <LuPackage size={20} className="text-[var(--color-info)]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {ordersQuery?.length || 0}
-              </div>
-              <div className="text-sm text-[var(--color-text-secondary)]">Total Orders</div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[var(--color-warning-bg)] flex items-center justify-center shrink-0">
-              <LuPackage size={20} className="text-[var(--color-warning)]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {pendingOrders}
-              </div>
-              <div className="text-sm text-[var(--color-text-secondary)]">Pending</div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[var(--color-success-bg)] flex items-center justify-center shrink-0">
-              <LuPackage size={20} className="text-[var(--color-success)]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {completedOrders}
-              </div>
-              <div className="text-sm text-[var(--color-text-secondary)]">Completed</div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5">
-          <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-[var(--color-primary-bg)] flex items-center justify-center shrink-0">
-              <LuMapPin size={20} className="text-[var(--color-primary)]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {stations?.length || 0}
-              </div>
-              <div className="text-sm text-[var(--color-text-secondary)]">Stations</div>
-            </div>
-          </div>
+          <p className="text-sm text-[var(--color-text-secondary)]">{todayLabel}</p>
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <Link
-          to={`/store/${id}/pos`}
-          className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 rounded-full bg-[var(--color-success-bg)] flex items-center justify-center mb-3">
-            <LuMonitor size={24} className="text-[var(--color-success)]" />
+      <Link
+        to={`/store/${id}/pos`}
+        className="block rounded-[var(--radius-lg)] border border-[var(--color-primary)] bg-[var(--color-primary)] p-6 text-[var(--color-text-inverse)] transition-all duration-[var(--motion-fast)] hover:opacity-95 active:scale-[0.99]"
+      >
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(255,255,255,0.16)] text-[var(--color-text-inverse)] shrink-0">
+              <LuShoppingCart size={24} />
+            </div>
+            <div className="min-w-0 text-left">
+              <div className="text-2xl font-semibold">Open POS</div>
+              <div className="mt-1 text-sm text-[rgba(255,255,255,0.78)]">
+                Start taking orders
+              </div>
+            </div>
           </div>
-          <div className="font-semibold text-[var(--color-text-primary)]">POS</div>
-          <div className="text-sm text-[var(--color-text-secondary)]">Create new orders</div>
-        </Link>
-        <Link
-          to={`/store/${id}/transactions`}
-          className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 rounded-full bg-[var(--color-info-bg)] flex items-center justify-center mb-3">
-            <LuReceipt size={24} className="text-[var(--color-info)]" />
-          </div>
-          <div className="font-semibold text-[var(--color-text-primary)]">Transactions</div>
-          <div className="text-sm text-[var(--color-text-secondary)]">View order history</div>
-        </Link>
-        <Link
-          to={`/store/${id}/settings`}
-          className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 rounded-full bg-[var(--color-surface)] flex items-center justify-center mb-3">
-            <LuSettings size={24} className="text-[var(--color-text-secondary)]" />
-          </div>
-          <div className="font-semibold text-[var(--color-text-primary)]">Settings</div>
-          <div className="text-sm text-[var(--color-text-secondary)]">Manage store settings</div>
-        </Link>
-        <Link
-          to={`/store/${id}/kds`}
-          className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-5 hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 rounded-full bg-[var(--color-warning-bg)] flex items-center justify-center mb-3">
-            <LuChefHat size={24} className="text-[var(--color-warning)]" />
-          </div>
-          <div className="font-semibold text-[var(--color-text-primary)]">KDS</div>
-          <div className="text-sm text-[var(--color-text-secondary)]">Kitchen order board</div>
-        </Link>
-      </div>
-
-      {/* Recent Orders */}
-      <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">Recent Orders</h2>
-          <Link
-            to={`/store/${id}/transactions`}
-            className="min-h-11 px-2 inline-flex items-center text-sm text-[var(--color-info)] hover:underline active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
-          >
-            View all
-          </Link>
-        </div>
-        {ordersQuery && ordersQuery.length > 0 ? (
-          <div className="space-y-2">
-            {ordersQuery
-              .slice(0, 5)
-              .map(
-                (order: {
-                  id: string;
-                  orderNumber: string;
-                  status: string;
-                  createdAt: string;
-                  totalAmount?: number;
-                }) => (
-                  <div
-                    key={order.id}
-                    className="flex items-center justify-between py-3 border-b border-[var(--color-border)] last:border-0"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono font-medium text-[var(--color-text-primary)]">
-                        {order.orderNumber}
-                      </span>
-                       <Badge variant={toStatusBadgeVariant(order.status)}>
-                         {order.status}
-                       </Badge>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      {order.totalAmount != null && (
-                        <span className="font-medium text-[var(--color-text-primary)]">
-                          ฿{order.totalAmount.toFixed(2)}
-                        </span>
-                      )}
-                      <span className="text-xs text-[var(--color-text-tertiary)]">
-                        {formatRelativeTime(order.createdAt)}
-                      </span>
-                    </div>
-                  </div>
-                )
-              )}
-          </div>
-        ) : (
-          <EmptyState
-            icon={<LuReceipt size={32} />}
-            title="No orders yet"
-            description="Orders will appear here when you start using the POS"
-          />
-        )}
-      </div>
-
-      {/* Stations */}
-      {stations && stations.length > 0 && (
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Stations</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {stations.map((station) => (
-              <Link
-                to={`/store/${id}/station/${station.id}`}
-                key={station.id}
-                className="border border-[var(--color-border)] rounded-lg p-4 hover:border-[var(--color-border-hover)] transition-all active:scale-[0.98]"
-              >
-                <h3 className="font-semibold text-[var(--color-text-primary)]">{station.name}</h3>
-                <p className="text-xs text-[var(--color-text-tertiary)]">
-                  Created{" "}
-                  {new Date(station.createdAt).toLocaleDateString()}
-                </p>
-              </Link>
-            ))}
+          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(255,255,255,0.22)] bg-[rgba(255,255,255,0.08)] text-[var(--color-text-inverse)] shrink-0">
+            <LuArrowRight size={18} />
           </div>
         </div>
-      )}
+      </Link>
+
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
+          Status
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-success-bg)] text-[var(--color-success)]">
+                <LuMonitor size={18} />
+              </div>
+              <div>
+                <div className="text-lg font-semibold text-[var(--color-text-primary)]">
+                  POS Ready
+                </div>
+                <div className="text-sm text-[var(--color-text-secondary)]">
+                  Ready to start shift
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+            <div className="text-lg font-semibold text-[var(--color-text-primary)]">
+              {stations.length} {stations.length === 1 ? "Station" : "Stations"}
+            </div>
+            <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
+              Connected to this store
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
+          Today
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+            <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+              ฿ {formatCurrency(todayRevenue)}
+            </div>
+            <div className="mt-1 text-sm text-[var(--color-text-secondary)]">Revenue</div>
+          </div>
+
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+            <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+              {todayOrderCount} Orders
+            </div>
+            <div className="mt-1 text-sm text-[var(--color-text-secondary)]">Today</div>
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
+          More
+        </h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {quickActions.map((action) => (
+            <Link
+              key={action.label}
+              to={action.to}
+              className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] active:scale-[0.99]"
+            >
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg)] text-[var(--color-text-secondary)]">
+                {action.icon}
+              </div>
+              <div className="font-semibold text-[var(--color-text-primary)]">
+                {action.label}
+              </div>
+              <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                {action.description}
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };

@@ -10,6 +10,7 @@ import type {
   ITopProduct,
   IReportSummary,
   ICalendarDay,
+  IPaymentBreakdown,
 } from "@/features/report/types/report.model";
 import type { DateRangePreset } from "@/features/report/types/report.dto";
 
@@ -47,6 +48,35 @@ function generateTopProducts(seed: number, count: number): ITopProduct[] {
   })
     .sort((a, b) => b.quantitySold - a.quantitySold)
     .slice(0, count);
+}
+
+function generatePaymentBreakdown(
+  revenue: number,
+  seed: number,
+): IPaymentBreakdown[] {
+  const rand = seededRandom(seed);
+  const cashRatio = 0.3 + rand() * 0.35;
+  const cashAmount = Math.round(revenue * cashRatio);
+
+  return [
+    { method: "Cash", amount: cashAmount },
+    { method: "Transfer", amount: revenue - cashAmount },
+  ];
+}
+
+function aggregatePaymentBreakdown(
+  paymentRows: IPaymentBreakdown[],
+): IPaymentBreakdown[] {
+  const totals = new Map<string, number>();
+
+  paymentRows.forEach((row) => {
+    totals.set(row.method, (totals.get(row.method) ?? 0) + row.amount);
+  });
+
+  return Array.from(totals.entries()).map(([method, amount]) => ({
+    method,
+    amount,
+  }));
 }
 
 function parseMonth(month?: string): Date {
@@ -97,6 +127,7 @@ function generateCalendarDays(month?: string): ICalendarDay[] {
       revenue,
       orders,
       topProducts: generateTopProducts(seed + 500, 3),
+      paymentBreakdown: generatePaymentBreakdown(revenue, seed + 900),
     });
   }
 
@@ -130,6 +161,9 @@ export function generateMockReportData(
     const calendarDays = generateCalendarDays(month);
     const totalRevenue = calendarDays.reduce((sum, day) => sum + day.revenue, 0);
     const totalOrders = calendarDays.reduce((sum, day) => sum + day.orders, 0);
+    const paymentBreakdown = aggregatePaymentBreakdown(
+      calendarDays.flatMap((day) => day.paymentBreakdown),
+    );
     const averageOrderValue =
       totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
 
@@ -141,6 +175,7 @@ export function generateMockReportData(
       },
       topProducts:
         calendarDays.length > 0 ? generateTopProducts(getSeedFromMonth(monthStart), 3) : [],
+      paymentBreakdown,
       calendarDays,
     };
   }
@@ -153,6 +188,7 @@ export function generateMockReportData(
         averageOrderValue: 0,
       },
       topProducts: [],
+      paymentBreakdown: [],
     };
   }
 
@@ -171,8 +207,9 @@ export function generateMockReportData(
   };
 
   const topProducts = generateTopProducts(99, 3);
+  const paymentBreakdown = generatePaymentBreakdown(totalRevenue, 120 + days);
 
-  const result: IReportData = { summary, topProducts };
+  const result: IReportData = { summary, topProducts, paymentBreakdown };
 
   return result;
 }

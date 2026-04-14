@@ -1,0 +1,85 @@
+import type {
+  IPaymentBreakdown,
+  ITopProduct,
+} from "@/features/report/types/report.model";
+
+interface Props {
+  products: ITopProduct[];
+  paymentBreakdown: IPaymentBreakdown[];
+  title?: string;
+}
+
+const formatCurrency = (value: number): string =>
+  `฿${new Intl.NumberFormat("th-TH", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value)}`;
+
+const ReportContextCard = ({
+  products,
+  paymentBreakdown,
+  title = "Top Products",
+}: Props) => {
+  if (products.length === 0 && paymentBreakdown.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5">
+      <div className="grid gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)] md:items-start">
+        {products.length > 0 && (
+          <div>
+            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+              {title}
+            </h3>
+            <div className="space-y-2.5">
+              {products.map((product, idx) => (
+                <div
+                  key={product.productId}
+                  className="flex items-center justify-between gap-3 py-2 border-b border-[var(--color-border)] last:border-0"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="w-6 h-6 rounded-full bg-[var(--color-primary)] text-[var(--color-text-inverse)] text-xs font-bold flex items-center justify-center shrink-0">
+                      {idx + 1}
+                    </span>
+                    <span className="text-sm font-medium text-[var(--color-text-primary)] truncate">
+                      {product.name}
+                    </span>
+                  </div>
+                  <span className="text-xs text-[var(--color-text-tertiary)] shrink-0 ml-2 whitespace-nowrap">
+                    {product.quantitySold} sold
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {paymentBreakdown.length > 0 && (
+          <div className="md:border-l md:border-[var(--color-border)] md:pl-5">
+            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3 md:mt-1">
+              Payment
+            </h4>
+            <div className="space-y-2.5">
+              {paymentBreakdown.map((payment) => (
+                <div
+                  key={payment.method}
+                  className="flex items-center justify-between gap-3"
+                >
+                  <span className="text-sm text-[var(--color-text-primary)]">
+                    {payment.method}
+                  </span>
+                  <span className="text-sm text-[var(--color-text-secondary)] shrink-0 whitespace-nowrap">
+                    {formatCurrency(payment.amount)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ReportContextCard;

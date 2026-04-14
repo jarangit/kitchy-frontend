@@ -43,7 +43,7 @@ const MonthReportPanel = ({
 
   return (
     <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] overflow-hidden">
-      <div className="flex flex-col gap-4 border-b border-[var(--color-border)] p-5">
+      <div className="border-b border-[var(--color-border)] p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <h3 className="text-base font-semibold text-[var(--color-text-primary)]">
@@ -58,8 +58,8 @@ const MonthReportPanel = ({
             </div>
           </div>
 
-          <div className="flex w-full items-center gap-2 lg:w-auto lg:justify-end">
-            <div className="min-w-0 flex-1 lg:w-[220px] lg:flex-none">
+          <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto lg:justify-end">
+            <div className="min-w-0 flex-1 sm:min-w-[220px] sm:flex-none">
               <Select
                 aria-label="Filter report by month"
                 value={selectedMonth}
@@ -68,7 +68,7 @@ const MonthReportPanel = ({
               />
             </div>
 
-            <div className="inline-flex shrink-0 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-1">
+            <div className="inline-flex shrink-0 self-end sm:self-auto bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-1">
               {viewOptions.map((option) => {
                 const isActive = viewMode === option.key;
 

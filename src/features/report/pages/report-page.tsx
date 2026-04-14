@@ -9,7 +9,7 @@ import type { ICalendarDay } from "@/features/report/types/report.model";
 import TimeSegmentControl from "@/features/report/components/time-segment-control";
 import RevenueCard from "@/features/report/components/revenue-card";
 import MetricRow from "@/features/report/components/metric-row";
-import TopProductsList from "@/features/report/components/top-products-list";
+import ReportContextCard from "@/features/report/components/report-context-card";
 import MonthReportPanel from "@/features/report/components/month-report-panel";
 import DayDetailDialog from "@/features/report/components/day-detail-dialog";
 
@@ -168,8 +168,9 @@ const ReportPage = () => {
               />
             </>
           ) : (
-            <TopProductsList
+            <ReportContextCard
               products={data.topProducts}
+              paymentBreakdown={data.paymentBreakdown}
               title={getTopProductsTitle(preset)}
             />
           )}
