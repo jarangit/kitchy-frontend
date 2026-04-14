@@ -12,11 +12,13 @@ import {
   DialogFooter,
 } from "@/shared/components/ui/dialog";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 const SettingsShopPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const auth = useAuth();
+  const { t } = useTranslation();
   const userId = auth?.user?.id ? String(auth.user.id) : undefined;
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
@@ -33,11 +35,11 @@ const SettingsShopPage = () => {
   return (
     <>
       <SettingsShell
-        title="Shop Settings"
-        description="Update your store identity and manage high-impact store actions."
+        title={t("settings.shop.title")}
+        description={t("settings.shop.description")}
         onBack={() => navigate(`/store/${id}/settings`)}
       >
-        <SettingsSectionCard title="Store Name">
+        <SettingsSectionCard title={t("settings.shop.storeName")}>
           {storeFinOneQuery ? (
             <AddUpStoreForm
               defaultValues={{ name: storeFinOneQuery.name }}
@@ -48,25 +50,25 @@ const SettingsShopPage = () => {
               }
             />
           ) : (
-            <div className="text-[var(--color-text-tertiary)]">Loading...</div>
+            <div className="text-[var(--color-text-tertiary)]">{t("settings.shop.loading")}</div>
           )}
         </SettingsSectionCard>
 
         <SettingsSectionCard
-          title="Danger Zone"
-          description="Deleting a store is permanent and cannot be undone."
+          title={t("settings.shop.dangerZone")}
+          description={t("settings.shop.dangerDescription")}
         >
           <div className="space-y-6">
             <Button
               variant="danger"
               onClick={() => setIsDeleteDialogOpen(true)}
             >
-              Delete Store
+              {t("settings.shop.deleteStore")}
             </Button>
 
             <div className="border-t border-[var(--color-border)] pt-5">
               <p className="mb-3 text-xs text-[var(--color-text-tertiary)]">
-                Need to work on another store?
+                {t("settings.shop.switchStorePrompt")}
               </p>
               <Button
                 variant="secondary"
@@ -74,7 +76,7 @@ const SettingsShopPage = () => {
                 onClick={() => navigate("/dashboard")}
                 className="h-11"
               >
-                Switch Store
+                {t("settings.shop.switchStore")}
               </Button>
             </div>
           </div>
@@ -84,17 +86,17 @@ const SettingsShopPage = () => {
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
         <DialogHeader>
-          <DialogTitle>Delete Store</DialogTitle>
+          <DialogTitle>{t("settings.shop.deleteDialogTitle")}</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this store? This action is permanent and cannot be undone. All data associated with this store will be lost.
+            {t("settings.shop.deleteDialogDescription")}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="secondary" onClick={() => setIsDeleteDialogOpen(false)}>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button variant="danger" onClick={handleDeleteStore}>
-            Delete
+            {t("settings.shop.deleteConfirm")}
           </Button>
         </DialogFooter>
       </Dialog>

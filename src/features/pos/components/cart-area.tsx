@@ -8,6 +8,8 @@ import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
 import { Input } from "@/shared/components/ui/input";
+import { useTranslation } from "@/shared/i18n/use-translation";
+import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n/presets";
 
 const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
   { value: "DINE_IN", label: "Dine In" },
@@ -16,22 +18,6 @@ const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
 ];
 
 const TABLE_OPTIONS = Array.from({ length: 20 }, (_, index) => `T${index + 1}`);
-const DEFAULT_DELIVERY_PLATFORMS = [
-  "LINE MAN",
-  "GrabFood",
-  "ShopeeFood",
-  "Robinhood",
-  "Foodpanda",
-  "Other",
-];
-const COMMON_ITEM_NOTES = [
-  "ไม่หวาน",
-  "ไม่เอาผัก",
-  "ไม่ใส่หอม",
-  "เผ็ดน้อย",
-  "เผ็ดมาก",
-  "ไม่ใส่น้ำแข็ง",
-];
 const hasQuickNotes = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 };
@@ -73,14 +59,20 @@ const CartArea = ({
   onTableNumberChange,
   onDeliveryPlatformChange,
 }: Props) => {
+  const { t, language } = useTranslation();
+  const defaultDeliveryPlatforms = useMemo(
+    () => getDefaultDeliveryPlatforms(language),
+    [language]
+  );
+  const defaultQuickNotes = useMemo(() => getDefaultQuickNotes(language), [language]);
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const [isTableDialogOpen, setIsTableDialogOpen] = useState(false);
   const [activeNoteItem, setActiveNoteItem] = useState<ICartItem | null>(null);
   const [draftNote, setDraftNote] = useState("");
   const [deliveryPlatforms, setDeliveryPlatforms] = useState(
-    DEFAULT_DELIVERY_PLATFORMS
+    defaultDeliveryPlatforms
   );
-  const [quickNotes, setQuickNotes] = useState(COMMON_ITEM_NOTES);
+  const [quickNotes, setQuickNotes] = useState(defaultQuickNotes);
 
   const deliverySettingsKey = useMemo(
     () => `store:${window.location.pathname.split("/")[2]}:delivery-platforms`,
@@ -90,6 +82,14 @@ const CartArea = ({
     () => `store:${window.location.pathname.split("/")[2]}:quick-notes`,
     []
   );
+
+  useEffect(() => {
+    setDeliveryPlatforms(defaultDeliveryPlatforms);
+  }, [defaultDeliveryPlatforms]);
+
+  useEffect(() => {
+    setQuickNotes(defaultQuickNotes);
+  }, [defaultQuickNotes]);
 
   useEffect(() => {
     const stored = localStorage.getItem(deliverySettingsKey);
@@ -344,17 +344,19 @@ const CartArea = ({
       <Dialog open={activeNoteItem != null} onClose={handleCloseNoteDialog}>
         <DialogHeader>
           <DialogTitle>
-            {activeNoteItem ? `Note for ${activeNoteItem.name}` : "Item note"}
+            {activeNoteItem
+              ? t("pos.noteDialog.title", { name: activeNoteItem.name })
+              : t("pos.noteDialog.fallbackTitle")}
           </DialogTitle>
           <DialogDescription>
-            Add a kitchen note for this item, such as no onion or extra spicy.
+            {t("pos.noteDialog.description")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div>
             <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
-              Quick notes
+              {t("pos.noteDialog.quickNotes")}
             </p>
             <div className="flex flex-wrap gap-2">
               {quickNotes.map((note) => {
@@ -385,7 +387,7 @@ const CartArea = ({
           <Input
             value={draftNote}
             onChange={(e) => setDraftNote(e.target.value)}
-            placeholder="เช่น ไม่หวาน, ไม่เอาผัก"
+            placeholder={t("pos.noteDialog.placeholder")}
             maxLength={120}
           />
 
@@ -395,17 +397,17 @@ const CartArea = ({
               className="flex-1"
               onClick={handleCloseNoteDialog}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button
               variant="ghost"
               className="flex-1"
               onClick={() => setDraftNote("")}
             >
-              Clear note
+              {t("pos.noteDialog.clearNote")}
             </Button>
             <Button className="flex-1" onClick={handleSaveNote}>
-              Save note
+              {t("pos.noteDialog.saveNote")}
             </Button>
           </div>
         </div>

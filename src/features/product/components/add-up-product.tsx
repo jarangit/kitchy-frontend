@@ -13,6 +13,7 @@ import { Input } from "@/shared/components/ui/input";
 import { Select } from "@/shared/components/ui/select";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { LuPlus } from "react-icons/lu";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 type Props = {
   _onSubmit?: (data: ProductFormData) => void;
@@ -20,6 +21,7 @@ type Props = {
 };
 
 const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
+  const { t } = useTranslation();
   const [optionStation, setOptionStation] = useState<
     { value: string; label: string }[]
   >([]);
@@ -77,7 +79,7 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
         onClick={() => setIsCreateDialogOpen(true)}
       >
         <LuPlus className="w-4 h-4" />
-        Add Product
+        {t("settings.products.addProduct")}
       </Button>
 
       <Dialog
@@ -86,23 +88,23 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Create New Product</DialogTitle>
+            <DialogTitle>{t("settings.products.createTitle")}</DialogTitle>
             <DialogDescription>
-              Add a new product and assign it to a station
+              {t("settings.products.createDescription")}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             <Input
               id="product-name"
-              label="Product Name"
-              placeholder="e.g., Caesar Salad"
+              label={t("settings.products.productName")}
+              placeholder={t("settings.products.productNamePlaceholder")}
               error={errors.name?.message}
               {...register("name", {
-                required: "Product name is required",
+                required: t("settings.products.productNameRequired"),
                 minLength: {
                   value: 2,
-                  message: "Product name must be at least 2 characters",
+                  message: t("settings.products.productNameMin"),
                 },
               })}
             />
@@ -110,14 +112,14 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
             <Controller
               name="stationId"
               control={control}
-              rules={{ required: "Please select a station" }}
+              rules={{ required: t("settings.products.stationRequired") }}
               render={({ field }) => (
                 <div>
                   <Select
                     id="product-station"
-                    label="Station"
+                    label={t("settings.products.station")}
                     options={optionStation}
-                    placeholder="Select a station"
+                    placeholder={t("settings.products.stationPlaceholder")}
                     value={field.value}
                     onChange={(e) => field.onChange(e.target.value)}
                     onBlur={field.onBlur}
@@ -139,10 +141,10 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
               variant="secondary"
               onClick={() => setIsCreateDialogOpen(false)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Product"}
+              {isSubmitting ? t("settings.products.creating") : t("settings.products.create")}
             </Button>
           </DialogFooter>
         </form>

@@ -5,15 +5,8 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
-
-const DEFAULT_DELIVERY_PLATFORMS = [
-  "LINE MAN",
-  "GrabFood",
-  "ShopeeFood",
-  "Robinhood",
-  "Foodpanda",
-  "Other",
-];
+import { useTranslation } from "@/shared/i18n/use-translation";
+import { getDefaultDeliveryPlatforms } from "@/shared/i18n/presets";
 
 const getDeliverySettingsKey = (storeId: string) =>
   `store:${storeId}:delivery-platforms`;
@@ -36,14 +29,24 @@ const isDeliveryPlatformSettings = (
 const SettingsDeliveryPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t, language } = useTranslation();
+  const defaultDeliveryPlatforms = useMemo(
+    () => getDefaultDeliveryPlatforms(language),
+    [language]
+  );
   const [supportedPlatforms, setSupportedPlatforms] = useState<string[]>(
-    DEFAULT_DELIVERY_PLATFORMS
+    defaultDeliveryPlatforms
   );
   const [enabledPlatforms, setEnabledPlatforms] = useState<string[]>(
-    DEFAULT_DELIVERY_PLATFORMS
+    defaultDeliveryPlatforms
   );
   const [customPlatform, setCustomPlatform] = useState("");
   const storageKey = useMemo(() => (id ? getDeliverySettingsKey(id) : ""), [id]);
+
+  useEffect(() => {
+    setSupportedPlatforms(defaultDeliveryPlatforms);
+    setEnabledPlatforms(defaultDeliveryPlatforms);
+  }, [defaultDeliveryPlatforms]);
 
   useEffect(() => {
     if (!storageKey) return;
@@ -57,7 +60,7 @@ const SettingsDeliveryPage = () => {
         | string[];
 
       if (Array.isArray(parsed) && parsed.length > 0) {
-        setSupportedPlatforms(Array.from(new Set([...DEFAULT_DELIVERY_PLATFORMS, ...parsed])));
+        setSupportedPlatforms(Array.from(new Set([...defaultDeliveryPlatforms, ...parsed])));
         setEnabledPlatforms(parsed);
         return;
       }
@@ -69,7 +72,7 @@ const SettingsDeliveryPage = () => {
     } catch {
       localStorage.removeItem(storageKey);
     }
-  }, [storageKey]);
+  }, [defaultDeliveryPlatforms, storageKey]);
 
   const persistPlatforms = (
     nextSupportedPlatforms: string[],
@@ -121,13 +124,13 @@ const SettingsDeliveryPage = () => {
 
   return (
     <SettingsShell
-      title="Delivery Platforms"
-      description="Choose which delivery apps your store accepts in POS. These options are saved per store on this device."
+      title={t("settings.delivery.title")}
+      description={t("settings.delivery.description")}
       onBack={() => navigate(`/store/${id}/settings`)}
     >
       <SettingsSectionCard
-        title="Supported Apps"
-        description="Disable apps your store does not use. At least one platform must stay enabled."
+        title={t("settings.delivery.supportedApps")}
+        description={t("settings.delivery.supportedAppsDescription")}
         action={
           <div className="rounded-full bg-[var(--color-bg)] px-3.5 py-1.5 text-sm font-semibold text-[var(--color-text-primary)]">
             {enabledPlatforms.length}/{supportedPlatforms.length}
@@ -146,14 +149,16 @@ const SettingsDeliveryPage = () => {
                 </div>
                 <div className="text-sm leading-6 text-[var(--color-text-secondary)]">
                   {enabledPlatforms.includes(platform)
-                    ? "Available in delivery orders"
-                    : "Hidden from delivery orders"}
+                    ? t("settings.delivery.available")
+                    : t("settings.delivery.hidden")}
                 </div>
               </div>
 
               <div className="flex items-center justify-between gap-3 border-t border-[var(--color-border)] pt-4">
                 <span className="text-sm font-medium text-[var(--color-text-secondary)]">
-                  {enabledPlatforms.includes(platform) ? "Enabled" : "Disabled"}
+                  {enabledPlatforms.includes(platform)
+                    ? t("settings.delivery.enabled")
+                    : t("settings.delivery.disabled")}
                 </span>
                 <Toggle
                   checked={enabledPlatforms.includes(platform)}
@@ -168,17 +173,17 @@ const SettingsDeliveryPage = () => {
       </SettingsSectionCard>
 
       <SettingsSectionCard
-        title="Add Custom Platform"
-        description="Add other delivery partners your store supports. New platforms are enabled immediately."
+        title={t("settings.delivery.addCustomPlatform")}
+        description={t("settings.delivery.addCustomPlatformDescription")}
       >
         <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
             <div className="flex-1">
               <Input
-                label="Platform name"
+                label={t("settings.delivery.platformName")}
                 value={customPlatform}
                 onChange={(e) => setCustomPlatform(e.target.value)}
-                placeholder="Add custom delivery app"
+                placeholder={t("settings.delivery.platformNamePlaceholder")}
               />
             </div>
             <Button
@@ -187,7 +192,7 @@ const SettingsDeliveryPage = () => {
               disabled={customPlatform.trim().length === 0}
             >
               <LuPlus size={16} />
-              Add Platform
+              {t("settings.delivery.addPlatform")}
             </Button>
           </div>
         </div>

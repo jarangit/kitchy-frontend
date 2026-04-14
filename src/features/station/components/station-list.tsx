@@ -4,8 +4,10 @@ import { useStationService } from "@/features/station/hooks/useStation";
 import { StationCard } from "@/features/station/components/station-card";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { SettingsSectionCard } from "@/features/store/components/settings-shell";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 const StationListTemplate = () => {
+  const { t } = useTranslation();
   const storeId = useAppSelector((state) => state.currentStore.storeId);
   const [stationSelected, setStationSelected] = useState<{
     name: string;
@@ -39,20 +41,20 @@ const StationListTemplate = () => {
   if (!storeId) {
     return (
       <div className="text-sm text-[var(--color-danger)]">
-        Cannot create station: missing store id.
+        {t("settings.categories.missingStore")}
       </div>
     );
   }
 
   if (stationsQueryIsLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("settings.categories.loading")}</div>;
   }
 
   return (
     <div className="space-y-6">
       <SettingsSectionCard
-        title="Stations"
-        description="Manage the station groups used as product categories in this store."
+        title={t("settings.categories.stationsTitle")}
+        description={t("settings.categories.stationsDescription")}
       >
         <AddUpStationForm
           _onSubmit={onSubmitStation}
@@ -84,7 +86,7 @@ const StationListTemplate = () => {
               ))}
             </div>
           ) : (
-            <div>No stations found.</div>
+            <div>{t("settings.categories.noStations")}</div>
           )}
         </div>
       </SettingsSectionCard>

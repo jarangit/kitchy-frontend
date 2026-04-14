@@ -4,15 +4,8 @@ import { LuPlus, LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
-
-const DEFAULT_QUICK_NOTES = [
-  "ไม่หวาน",
-  "ไม่เอาผัก",
-  "ไม่ใส่หอม",
-  "เผ็ดน้อย",
-  "เผ็ดมาก",
-  "ไม่ใส่น้ำแข็ง",
-];
+import { useTranslation } from "@/shared/i18n/use-translation";
+import { getDefaultQuickNotes } from "@/shared/i18n/presets";
 
 const getQuickNotesSettingsKey = (storeId: string) =>
   `store:${storeId}:quick-notes`;
@@ -20,9 +13,15 @@ const getQuickNotesSettingsKey = (storeId: string) =>
 const SettingsQuickNotesPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [quickNotes, setQuickNotes] = useState<string[]>(DEFAULT_QUICK_NOTES);
+  const { t, language } = useTranslation();
+  const defaultQuickNotes = useMemo(() => getDefaultQuickNotes(language), [language]);
+  const [quickNotes, setQuickNotes] = useState<string[]>(defaultQuickNotes);
   const [customNote, setCustomNote] = useState("");
   const storageKey = useMemo(() => (id ? getQuickNotesSettingsKey(id) : ""), [id]);
+
+  useEffect(() => {
+    setQuickNotes(defaultQuickNotes);
+  }, [defaultQuickNotes]);
 
   useEffect(() => {
     if (!storageKey) return;
@@ -67,21 +66,21 @@ const SettingsQuickNotesPage = () => {
   };
 
   const handleResetDefault = () => {
-    persistQuickNotes(DEFAULT_QUICK_NOTES);
+    persistQuickNotes(defaultQuickNotes);
   };
 
   return (
     <SettingsShell
-      title="Quick Notes"
-      description="Manage the note shortcuts staff can tap quickly while taking orders in POS."
+      title={t("settings.quickNotes.title")}
+      description={t("settings.quickNotes.description")}
       onBack={() => navigate(`/store/${id}/settings`)}
     >
       <SettingsSectionCard
-        title="Preset Notes"
-        description="These quick notes appear in the POS note dialog. Keep the most common requests here for faster service."
+        title={t("settings.quickNotes.presetNotes")}
+        description={t("settings.quickNotes.presetNotesDescription")}
         action={
           <Button variant="secondary" size="sm" className="h-11" onClick={handleResetDefault}>
-            Reset Default
+            {t("settings.quickNotes.resetDefault")}
           </Button>
         }
       >
@@ -98,7 +97,7 @@ const SettingsQuickNotesPage = () => {
                 type="button"
                 onClick={() => handleRemoveQuickNote(note)}
                 className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-text-tertiary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-danger-bg)] hover:text-[var(--color-danger)] active:scale-[0.98]"
-                aria-label={`Remove ${note}`}
+                aria-label={t("settings.quickNotes.removeAria", { note })}
                 disabled={quickNotes.length === 1}
               >
                 <LuTrash2 size={16} />
@@ -109,17 +108,17 @@ const SettingsQuickNotesPage = () => {
       </SettingsSectionCard>
 
       <SettingsSectionCard
-        title="Add Quick Note"
-        description="Add custom shortcuts for your store, such as special preparation requests or kitchen reminders."
+        title={t("settings.quickNotes.addQuickNote")}
+        description={t("settings.quickNotes.addQuickNoteDescription")}
       >
         <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
             <div className="flex-1">
               <Input
-                label="Quick note"
+                label={t("settings.quickNotes.quickNote")}
                 value={customNote}
                 onChange={(e) => setCustomNote(e.target.value)}
-                placeholder="Add quick note"
+                placeholder={t("settings.quickNotes.quickNotePlaceholder")}
                 maxLength={60}
               />
             </div>
@@ -129,7 +128,7 @@ const SettingsQuickNotesPage = () => {
               disabled={customNote.trim().length === 0}
             >
               <LuPlus size={16} />
-              Add Note
+              {t("settings.quickNotes.addNote")}
             </Button>
           </div>
         </div>

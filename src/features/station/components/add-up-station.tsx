@@ -12,6 +12,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Select } from "@/shared/components/ui/select";
 import { LuPlus } from "react-icons/lu";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 type Props = {
   _onSubmit?: (data: StationFormData) => void;
@@ -24,6 +25,7 @@ const colorOptions = [
 ];
 
 const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
+  const { t } = useTranslation();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const {
@@ -64,7 +66,7 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
         onClick={() => setIsCreateDialogOpen(true)}
       >
         <LuPlus className="w-4 h-4" />
-        Add Station
+        {t("settings.categories.addStation")}
       </Button>
 
       <Dialog
@@ -73,23 +75,23 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
-            <DialogTitle>Create New Station</DialogTitle>
+            <DialogTitle>{t("settings.categories.createTitle")}</DialogTitle>
             <DialogDescription>
-              Add a new kitchen station to organize your orders
+              {t("settings.categories.createDescription")}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
             <Input
               id="station-name"
-              label="Station Name"
-              placeholder="e.g., Salad Station"
+              label={t("settings.categories.stationName")}
+              placeholder={t("settings.categories.stationNamePlaceholder")}
               error={errors.name?.message}
               {...register("name", {
-                required: "Station name is required",
+                required: t("settings.categories.stationNameRequired"),
                 minLength: {
                   value: 2,
-                  message: "Station name must be at least 2 characters",
+                  message: t("settings.categories.stationNameMin"),
                 },
               })}
             />
@@ -97,14 +99,14 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
             <Controller
               name="color"
               control={control}
-              rules={{ required: "Please select a color" }}
+              rules={{ required: t("settings.categories.stationColorRequired") }}
               render={({ field }) => (
                 <div>
                   <Select
                     id="station-color"
-                    label="Station Color"
+                    label={t("settings.categories.stationColor")}
                     options={colorOptions}
-                    placeholder="Select a color"
+                    placeholder={t("settings.categories.stationColorPlaceholder")}
                     value={field.value}
                     onChange={(e) => field.onChange(e.target.value)}
                     onBlur={field.onBlur}
@@ -126,10 +128,10 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
               variant="secondary"
               onClick={() => setIsCreateDialogOpen(false)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Station"}
+              {isSubmitting ? t("settings.categories.creating") : t("settings.categories.create")}
             </Button>
           </DialogFooter>
         </form>

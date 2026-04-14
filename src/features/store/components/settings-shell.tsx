@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { LuArrowLeft } from "react-icons/lu";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface SettingsShellProps {
   title: string;
@@ -16,6 +17,8 @@ export const SettingsShell = ({
   backLabel = "Back to Settings",
   children,
 }: SettingsShellProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full space-y-8 lg:space-y-10">
       <div className="space-y-5">
@@ -25,7 +28,7 @@ export const SettingsShell = ({
             className="inline-flex min-h-11 items-center gap-2 px-1 text-sm text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
           >
             <LuArrowLeft size={16} />
-            {backLabel}
+            {backLabel ?? t("common.backToSettings")}
           </button>
         )}
 

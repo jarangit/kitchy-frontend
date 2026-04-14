@@ -3,50 +3,52 @@ import { LuBike, LuFileText, LuPackage, LuTags, LuStore, LuSun, LuMoon, LuChevro
 import { useTheme } from "@/shared/hooks/useTheme";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
-
-const settingsMenu = [
-  {
-    name: "Product Management",
-    description: "Add, edit, and manage products",
-    path: "products",
-    icon: <LuPackage size={24} />,
-  },
-  {
-    name: "Category Management",
-    description: "Manage product categories",
-    path: "categories",
-    icon: <LuTags size={24} />,
-  },
-  {
-    name: "Shop Settings",
-    description: "Shop name, currency, and more",
-    path: "shop",
-    icon: <LuStore size={24} />,
-  },
-  {
-    name: "Delivery Platforms",
-    description: "Choose delivery apps available in POS",
-    path: "delivery",
-    icon: <LuBike size={24} />,
-  },
-  {
-    name: "Quick Notes",
-    description: "Manage note shortcuts available in POS",
-    path: "quick-notes",
-    icon: <LuFileText size={24} />,
-  },
-];
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 const SettingsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { toggleTheme, isDark } = useTheme();
+  const { t, language, setLanguage } = useTranslation();
+
+  const settingsMenu = [
+    {
+      name: t("settings.menu.products.name"),
+      description: t("settings.menu.products.description"),
+      path: "products",
+      icon: <LuPackage size={24} />,
+    },
+    {
+      name: t("settings.menu.categories.name"),
+      description: t("settings.menu.categories.description"),
+      path: "categories",
+      icon: <LuTags size={24} />,
+    },
+    {
+      name: t("settings.menu.shop.name"),
+      description: t("settings.menu.shop.description"),
+      path: "shop",
+      icon: <LuStore size={24} />,
+    },
+    {
+      name: t("settings.menu.delivery.name"),
+      description: t("settings.menu.delivery.description"),
+      path: "delivery",
+      icon: <LuBike size={24} />,
+    },
+    {
+      name: t("settings.menu.quickNotes.name"),
+      description: t("settings.menu.quickNotes.description"),
+      path: "quick-notes",
+      icon: <LuFileText size={24} />,
+    },
+  ];
 
   return (
     <SettingsShell
-      title="Settings"
-      description="Manage products, categories, delivery apps, and display preferences for this store."
+      title={t("settings.title")}
+      description={t("settings.description")}
     >
-      <SettingsSectionCard title="Management">
+      <SettingsSectionCard title={t("settings.management")}>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {settingsMenu.map((item) => (
             <Link
@@ -72,25 +74,61 @@ const SettingsPage = () => {
         </div>
       </SettingsSectionCard>
 
-      <SettingsSectionCard title="Display">
-        <div className="flex items-center justify-between rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5">
-          <div className="flex items-center gap-4">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-surface-hover)] text-[var(--color-text-secondary)]">
-              {isDark ? <LuMoon size={24} /> : <LuSun size={24} />}
-            </div>
-            <div>
-              <div className="font-semibold text-[var(--color-text-primary)]">Dark Mode</div>
-              <div className="mt-1 text-sm leading-6 text-[var(--color-text-secondary)]">
-                {isDark ? "Dark theme active" : "Light theme active"}
+      <SettingsSectionCard title={t("settings.display")}>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5">
+            <div className="flex items-center gap-4">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--color-surface-hover)] text-[var(--color-text-secondary)]">
+                {isDark ? <LuMoon size={24} /> : <LuSun size={24} />}
+              </div>
+              <div>
+                <div className="font-semibold text-[var(--color-text-primary)]">{t("settings.theme.title")}</div>
+                <div className="mt-1 text-sm leading-6 text-[var(--color-text-secondary)]">
+                  {isDark ? t("settings.theme.dark") : t("settings.theme.light")}
+                </div>
               </div>
             </div>
+
+            <Toggle
+              checked={isDark}
+              onChange={toggleTheme}
+              label={t("settings.theme.title")}
+            />
           </div>
 
-          <Toggle
-            checked={isDark}
-            onChange={toggleTheme}
-            label={`Switch to ${isDark ? "light" : "dark"} mode`}
-          />
+          <div className="flex items-center justify-between rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5">
+            <div>
+              <div className="font-semibold text-[var(--color-text-primary)]">{t("settings.language.title")}</div>
+              <div className="mt-1 text-sm leading-6 text-[var(--color-text-secondary)]">
+                {t("settings.language.description")}
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setLanguage("th")}
+                className={`min-h-11 rounded-full border px-4 text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                  language === "th"
+                    ? "border-[var(--button-primary-bg)] bg-[var(--button-primary-bg)] text-[var(--button-primary-text)]"
+                    : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
+                }`}
+              >
+                {t("settings.language.th")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`min-h-11 rounded-full border px-4 text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+                  language === "en"
+                    ? "border-[var(--button-primary-bg)] bg-[var(--button-primary-bg)] text-[var(--button-primary-text)]"
+                    : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
+                }`}
+              >
+                {t("settings.language.en")}
+              </button>
+            </div>
+          </div>
         </div>
       </SettingsSectionCard>
     </SettingsShell>

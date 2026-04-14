@@ -1,5 +1,6 @@
 import type { ICartItem } from "@/features/pos/types/pos.model";
 import { LuMinus, LuPlus, LuTrash2 } from "react-icons/lu";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   item: ICartItem;
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <div className="border-b border-[var(--color-border)] py-3 last:border-0">
       <div className="flex items-center gap-3">
@@ -62,12 +65,12 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           onClick={() => onEditNote(item)}
           className="inline-flex min-h-9 items-center rounded-full bg-[var(--color-surface)] px-3 text-xs font-medium text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
         >
-          {item.note ? "Edit note" : "Add note"}
+          {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
         </button>
 
         {item.note && (
           <p className="flex-1 rounded-2xl bg-[var(--color-surface)] px-3 py-2 text-xs leading-5 text-[var(--color-text-secondary)]">
-            Note: {item.note}
+            {t("pos.cart.notePrefix", { note: item.note })}
           </p>
         )}
       </div>

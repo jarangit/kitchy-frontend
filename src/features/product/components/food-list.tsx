@@ -5,8 +5,10 @@ import { ProductCard } from "@/features/product/components/product-card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { LuPackage } from "react-icons/lu";
 import { SettingsSectionCard } from "@/features/store/components/settings-shell";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 const ProductListTemplate = () => {
+  const { t } = useTranslation();
   const {
     productsQuery,
     createMenuMutation: createProductMutation,
@@ -16,8 +18,8 @@ const ProductListTemplate = () => {
   return (
     <div className="space-y-6">
       <SettingsSectionCard
-        title="Product List"
-        description="Browse current products and add new items for your store menu."
+        title={t("settings.products.listTitle")}
+        description={t("settings.products.listDescription")}
       >
         {productsQuery && productsQuery.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -37,8 +39,8 @@ const ProductListTemplate = () => {
         ) : (
           <EmptyState
             icon={<LuPackage size={32} />}
-            title="No products found"
-            description="Add your first product to get started"
+            title={t("settings.products.noProductsTitle")}
+            description={t("settings.products.noProductsDescription")}
           />
         )}
       </SettingsSectionCard>
