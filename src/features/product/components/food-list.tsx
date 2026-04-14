@@ -11,8 +11,8 @@ const ProductListTemplate = () => {
   const { t } = useTranslation();
   const {
     productsQuery,
-    createMenuMutation: createProductMutation,
-    deleteMenuMutation: deleteProductMutation,
+    createProductMutation,
+    deleteProductMutation,
   } = useProductService();
 
   return (

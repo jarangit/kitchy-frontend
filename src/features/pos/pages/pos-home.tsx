@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useState, useCallback } from "react";
 import { useProductService } from "@/features/product/hooks/useProductService";
+import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useCartContext } from "@/features/pos/context/cartContext";
 import PosHeader from "@/features/pos/components/header";
@@ -14,36 +15,40 @@ import { LuX } from "react-icons/lu";
 const PosHomePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
 
   const { storeFinOneQuery } = useStoreService({});
-  const { productsQuery, productsQueryLoading } = useProductService();
+  const {
+    productsQuery,
+    productsQueryLoading,
+    productsByCategoryQuery,
+    productsByCategoryLoading,
+  } = useProductService(selectedCategory);
+  const { categoriesQuery } = useCategoryService();
   const cart = useCartContext();
 
-  const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   const toggleCart = useCallback(() => setIsCartOpen((prev) => !prev), []);
   const closeCart = useCallback(() => setIsCartOpen(false), []);
 
-  // Extract unique category names from products (using station as category proxy)
-  const categories = useMemo(() => {
-    if (!productsQuery) return [];
-    const unique = new Set<string>();
-    productsQuery.forEach((p: { stationName?: string }) => {
-      if (p.stationName) unique.add(p.stationName);
-    });
-    return Array.from(unique);
-  }, [productsQuery]);
+  const categories = useMemo(
+    () =>
+      categoriesQuery.map((category) => ({
+        id: category.id,
+        name: category.name,
+      })),
+    [categoriesQuery]
+  );
 
-  // Filter products by selected category
   const filteredProducts = useMemo(() => {
-    if (!productsQuery) return [];
     if (selectedCategory === "ALL") return productsQuery;
-    return productsQuery.filter(
-      (p: { stationName?: string }) => p.stationName === selectedCategory
-    );
-  }, [productsQuery, selectedCategory]);
+    return productsByCategoryQuery;
+  }, [productsByCategoryQuery, productsQuery, selectedCategory]);
+
+  const isProductsLoading =
+    selectedCategory === "ALL" ? productsQueryLoading : productsByCategoryLoading;
 
   const handlePay = () => {
     setIsCartOpen(false);
@@ -71,7 +76,7 @@ const PosHomePage = () => {
           />
 
           <div className="flex-1 overflow-y-auto mt-3">
-            {productsQueryLoading ? (
+            {isProductsLoading ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <SkeletonCard key={i} className="min-h-[120px]" />

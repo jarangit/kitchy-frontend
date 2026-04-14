@@ -19,10 +19,11 @@ import KdsBoardPage from "@/features/kds/pages/kds-board";
 // Settings
 import SettingsPage from "@/features/store/pages/settings";
 import SettingsProductsPage from "@/features/store/pages/settings-products";
-import SettingsCategoriesPage from "@/features/store/pages/settings-categories";
 import SettingsShopPage from "@/features/store/pages/settings-shop";
 import SettingsDeliveryPage from "@/features/store/pages/settings-delivery";
 import SettingsQuickNotesPage from "@/features/store/pages/settings-quick-notes";
+import SettingsStationsPage from "@/features/station/pages/settings-stations";
+import SettingsCategoriesPage from "@/features/category/pages/settings-categories";
 
 // Station
 import StationPage from "@/features/station/pages/[station]";
@@ -122,6 +123,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <SettingsProductsPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/store/:id/settings/stations"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <SettingsStationsPage />
               </Layout>
             </ProtectedRoute>
           }

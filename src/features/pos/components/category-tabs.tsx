@@ -1,5 +1,5 @@
 interface Props {
-  categories: string[];
+  categories: { id: string; name: string }[];
   selected: string;
   onSelect: (category: string) => void;
 }
@@ -19,15 +19,15 @@ const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
       </button>
       {categories.map((cat) => (
         <button
-          key={cat}
-          onClick={() => onSelect(cat)}
+          key={cat.id}
+          onClick={() => onSelect(cat.id)}
           className={`px-5 py-2.5 h-10 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-            selected === cat
+            selected === cat.id
               ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]"
               : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]"
           }`}
         >
-          {cat}
+          {cat.name}
         </button>
       ))}
     </div>

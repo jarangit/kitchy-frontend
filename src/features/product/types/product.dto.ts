@@ -1,10 +1,14 @@
-export interface ICreateMenu {
-  name: string;
-  stationId?: string;
-  storeId: string;
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
 }
 
-export interface IUpdateMenu {
-  name?: string;
-  stationId?: string;
+export interface CreateProductRequest {
+  name: string;
+  storeId: string;
+  stationId: string;
+  categoryId?: string;
 }
+
+export type UpdateProductRequest = Partial<CreateProductRequest>;

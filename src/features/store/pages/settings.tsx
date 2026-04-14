@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { LuBike, LuFileText, LuPackage, LuTags, LuStore, LuSun, LuMoon, LuChevronRight } from "react-icons/lu";
+import { LuBike, LuFileText, LuPackage, LuShapes, LuStore, LuSun, LuMoon, LuChevronRight } from "react-icons/lu";
 import { useTheme } from "@/shared/hooks/useTheme";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
@@ -18,10 +18,16 @@ const SettingsPage = () => {
       icon: <LuPackage size={24} />,
     },
     {
+      name: t("settings.menu.stations.name"),
+      description: t("settings.menu.stations.description"),
+      path: "stations",
+      icon: <LuShapes size={24} />,
+    },
+    {
       name: t("settings.menu.categories.name"),
       description: t("settings.menu.categories.description"),
       path: "categories",
-      icon: <LuTags size={24} />,
+      icon: <LuShapes size={24} />,
     },
     {
       name: t("settings.menu.shop.name"),

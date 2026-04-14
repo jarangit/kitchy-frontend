@@ -12,6 +12,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Select } from "@/shared/components/ui/select";
 import { useStationService } from "@/features/station/hooks/useStation";
+import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { LuPlus } from "react-icons/lu";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
@@ -25,7 +26,11 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   const [optionStation, setOptionStation] = useState<
     { value: string; label: string }[]
   >([]);
+  const [optionCategory, setOptionCategory] = useState<
+    { value: string; label: string }[]
+  >([]);
   const { stationsQuery } = useStationService({});
+  const { categoriesQuery } = useCategoryService();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
   const {
@@ -64,12 +69,25 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
     }
   };
 
+  const onCreateOptionCategory = () => {
+    if (categoriesQuery && categoriesQuery.length > 0) {
+      const options = categoriesQuery.map((category) => ({
+        value: category.id,
+        label: category.name,
+      }));
+      setOptionCategory(options);
+    } else {
+      setOptionCategory([]);
+    }
+  };
+
   useEffect(() => {
     if (defaultValues) {
       reset(defaultValues);
     }
     onCreateOptionStation();
-  }, [defaultValues, reset]);
+    onCreateOptionCategory();
+  }, [defaultValues, reset, stationsQuery, categoriesQuery]);
 
   return (
     <>
@@ -131,6 +149,23 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
                     </p>
                   )}
                 </div>
+              )}
+            />
+
+            <Controller
+              name="categoryId"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  id="product-category"
+                  label="Category"
+                  options={optionCategory}
+                  placeholder="Select a category (optional)"
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(e.target.value || undefined)}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                />
               )}
             />
           </div>
