@@ -4,8 +4,12 @@ export interface IKdsOrderProductDto {
   id?: string;
   productId?: string;
   name?: string;
+  productName?: string;
   quantity?: number;
   note?: string;
+  product?: {
+    name?: string;
+  };
 }
 
 export interface IKdsOrderDto {
@@ -21,6 +25,7 @@ export interface IKdsOrderDto {
   stationId?: string;
   stationName?: string;
   products?: IKdsOrderProductDto[];
+  items?: IKdsOrderProductDto[];
 }
 
 export interface IKdsUpdateStatusPayload {

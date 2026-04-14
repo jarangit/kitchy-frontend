@@ -4,7 +4,6 @@ import { orderApiService } from "@/features/order/services/order";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import type { IKdsOrderDto } from "@/features/kds/types/kds.dto";
 import type { KdsOrder, KdsStatus } from "@/features/kds/types/kds.model";
-import { useAppSelector } from "@/shared/hooks/hooks";
 
 const VALID_KDS_STATUS: KdsStatus[] = ["PENDING", "COOKING", "READY"];
 
@@ -15,17 +14,28 @@ const normalizeStatus = (status: string): KdsStatus => {
   return "PENDING";
 };
 
+const getOrderProducts = (order: IKdsOrderDto) => {
+  if (Array.isArray(order.products) && order.products.length > 0) {
+    return order.products;
+  }
+
+  if (Array.isArray(order.items) && order.items.length > 0) {
+    return order.items;
+  }
+
+  return [];
+};
+
 export const useKds = (stationId?: string) => {
-  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
   const { updateMutation } = useOrderService({});
 
   const ordersQuery = useQuery({
-    queryKey: ["kds-orders", storeId],
+    queryKey: ["kds-orders", stationId],
     queryFn: async () => {
-      const response = await orderApiService.getOrdersByStoreId(storeId as string);
+      const response = await orderApiService.getOrdersByStationId(stationId as string);
       return response.data?.data as IKdsOrderDto[];
     },
-    enabled: !!storeId,
+    enabled: !!stationId,
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
   });
@@ -46,15 +56,18 @@ export const useKds = (stationId?: string) => {
         stationId: order.stationId,
         stationName: order.stationName,
         items:
-          order.products?.map((item) => ({
+          getOrderProducts(order).map((item) => ({
             id: item.id ?? item.productId ?? "",
-            name: item.name ?? `Product #${item.productId ?? "-"}`,
+            name:
+              item.name ??
+              item.productName ??
+              item.product?.name ??
+              `Product #${item.productId ?? "-"}`,
             quantity: item.quantity ?? 1,
             note: item.note,
           })) ?? [],
-      }))
-      .filter((order) => !stationId || order.stationId === stationId);
-  }, [ordersQuery.data, stationId]);
+      }));
+  }, [ordersQuery.data]);
 
   const updateStatus = async (orderId: string, status: KdsStatus) => {
     await updateMutation.mutateAsync({

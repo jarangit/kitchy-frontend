@@ -29,7 +29,7 @@ const KdsHeader = ({ storeId, stationName, isRefetching }: Props) => {
             Kitchen Display System
           </h1>
           <p className="text-sm text-[var(--color-text-secondary)]">
-            {stationName ? `Station: ${stationName}` : "All stations"}
+            {stationName ? `Station: ${stationName}` : "Single station mode"}
           </p>
         </div>
       </div>

@@ -10,6 +10,7 @@ interface Product {
 interface Props {
   products: Product[];
   onAddToCart: (product: Product) => void;
+  quantityByProductId: Record<string, number>;
 }
 
 /** Deterministic color from product name for the initial circle */
@@ -28,7 +29,7 @@ function getColorForName(name: string) {
   return nameColors[Math.abs(hash) % nameColors.length];
 }
 
-const ProductGrid = ({ products, onAddToCart }: Props) => {
+const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
   if (products.length === 0) {
     return (
       <EmptyState
@@ -45,8 +46,17 @@ const ProductGrid = ({ products, onAddToCart }: Props) => {
         <button
           key={product.id}
           onClick={() => onAddToCart(product)}
-          className="flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-text-primary)] hover:shadow-md active:scale-[0.98]"
+          className={`relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl bg-[var(--color-bg)] p-5 transition-all duration-[var(--motion-fast)] hover:shadow-md active:scale-[0.98] ${
+            (quantityByProductId[product.id] ?? 0) > 0
+              ? "border-2 border-[var(--color-primary)]"
+              : "border border-[var(--color-border)] hover:border-[var(--color-text-primary)]"
+          }`}
         >
+          {(quantityByProductId[product.id] ?? 0) > 0 && (
+            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-full bg-[var(--color-primary)] px-1.5 text-sm font-semibold text-[var(--color-text-inverse)] tabular-nums">
+              {quantityByProductId[product.id]}
+            </span>
+          )}
           <div
             className={`mb-3 flex h-14 w-14 items-center justify-center rounded-full text-xl font-semibold ${getColorForName(product.name)}`}
           >

@@ -47,6 +47,15 @@ const PosHomePage = () => {
     return productsByCategoryQuery;
   }, [productsByCategoryQuery, productsQuery, selectedCategory]);
 
+  const quantityByProductId = useMemo(
+    () =>
+      cart.items.reduce<Record<string, number>>((acc, item) => {
+        acc[item.productId] = item.quantity;
+        return acc;
+      }, {}),
+    [cart.items]
+  );
+
   const isProductsLoading =
     selectedCategory === "ALL" ? productsQueryLoading : productsByCategoryLoading;
 
@@ -94,6 +103,7 @@ const PosHomePage = () => {
                   ) || []
                 }
                 onAddToCart={cart.addItem}
+                quantityByProductId={quantityByProductId}
               />
             )}
           </div>

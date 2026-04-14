@@ -8,9 +8,17 @@ interface Props {
   order: KdsOrder;
   onMove: (orderId: string, status: KdsStatus) => void;
   disabled?: boolean;
+  queueNumber?: number;
+  prioritize?: boolean;
 }
 
-const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
+const KdsOrderCard = ({
+  order,
+  onMove,
+  disabled,
+  queueNumber,
+  prioritize = false,
+}: Props) => {
   const timeLabel = useMemo(() => {
     const createdAt = new Date(order.createdAt);
     return createdAt.toLocaleTimeString("th-TH", {
@@ -19,22 +27,50 @@ const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
     });
   }, [order.createdAt]);
 
+  const waitingMinutes = useMemo(() => {
+    const createdAtMs = new Date(order.createdAt).getTime();
+    const diffMs = Date.now() - createdAtMs;
+    return Math.max(0, Math.floor(diffMs / 60000));
+  }, [order.createdAt]);
+
+  const urgency = useMemo(() => {
+    if (waitingMinutes >= 10) {
+      return {
+        label: "DUE NOW",
+        className: "bg-[var(--color-danger-bg)] text-[var(--color-danger)]",
+      };
+    }
+    if (waitingMinutes >= 6) {
+      return {
+        label: "SOON",
+        className: "bg-[var(--color-warning-bg)] text-[var(--color-warning)]",
+      };
+    }
+    return {
+      label: "OK",
+      className: "bg-[var(--color-success-bg)] text-[var(--color-success)]",
+    };
+  }, [waitingMinutes]);
+
   const nextAction =
-    order.status === "PENDING"
-      ? { label: "Start Cooking", status: "COOKING" as const }
-      : order.status === "COOKING"
-        ? { label: "Mark Ready", status: "READY" as const }
-        : { label: "Back to Cooking", status: "COOKING" as const };
+    order.status === "READY"
+      ? { label: "Back to Pending", status: "PENDING" as const }
+      : { label: "Mark Ready", status: "READY" as const };
 
   return (
-    <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-xl p-4 space-y-3">
-      <div className="flex items-start justify-between gap-3">
+    <div className="flex h-full flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+      <div className="mb-3 flex items-start justify-between gap-3">
         <div>
-          <p className="font-mono font-semibold text-[var(--color-text-primary)]">
+          {prioritize && queueNumber != null && (
+            <div className="mb-2 inline-flex min-h-7 items-center rounded-full bg-[var(--color-info-bg)] px-2.5 text-sm font-semibold text-[var(--color-info)]">
+              #{queueNumber} Next
+            </div>
+          )}
+          <p className="font-mono text-xl font-bold text-[var(--color-text-primary)]">
             {order.orderNumber}
           </p>
           {order.orderType && (
-            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
+            <p className="mt-0.5 text-sm font-medium text-[var(--color-text-secondary)]">
               {order.orderType}
               {order.orderType === "DINE_IN" && order.tableNumber
                 ? ` • ${order.tableNumber}`
@@ -47,31 +83,43 @@ const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
                 : ""}
             </p>
           )}
-          <p className="text-xs text-[var(--color-text-tertiary)]">
-            {timeLabel}
-          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <p className="text-base font-semibold text-[var(--color-text-primary)]">
+              {timeLabel}
+            </p>
+            <span className="inline-flex min-h-7 items-center rounded-full bg-[var(--color-surface-hover)] px-2.5 text-sm font-semibold text-[var(--color-text-primary)]">
+              Waiting {waitingMinutes}m
+            </span>
+            {prioritize && (
+              <span className={`inline-flex min-h-7 items-center rounded-full px-2.5 text-sm font-semibold ${urgency.className}`}>
+                {urgency.label}
+              </span>
+            )}
+          </div>
         </div>
         <Badge variant={toStatusBadgeVariant(order.status)}>{order.status}</Badge>
       </div>
 
-      <div className="space-y-1.5">
+      <div className="flex-1 space-y-2">
         {order.items.length === 0 ? (
-          <p className="text-sm text-[var(--color-text-tertiary)]">No items</p>
+          <p className="text-base text-[var(--color-text-tertiary)]">No items</p>
         ) : (
           order.items.map((item) => (
             <div
               key={`${order.id}-${item.id}`}
-              className="flex items-start justify-between gap-3 text-sm"
+              className="flex items-start justify-between gap-3"
             >
               <div>
-                <span className="text-[var(--color-text-primary)]">{item.name}</span>
+                <span className="text-lg font-semibold text-[var(--color-text-primary)]">
+                  {item.name}
+                </span>
                 {item.note && (
-                  <p className="mt-1 text-xs leading-5 text-[var(--color-text-tertiary)]">
+                  <p className="mt-1 text-sm leading-5 text-[var(--color-text-tertiary)]">
                     Note: {item.note}
                   </p>
                 )}
               </div>
-              <span className="font-semibold text-[var(--color-text-secondary)]">
+              <span className="text-lg font-bold text-[var(--color-text-primary)]">
                 x{item.quantity}
               </span>
             </div>
@@ -79,9 +127,9 @@ const KdsOrderCard = ({ order, onMove, disabled }: Props) => {
         )}
       </div>
 
-      <div className="pt-2 border-t border-[var(--color-border)]">
+      <div className="mt-4 border-t border-[var(--color-border)] pt-3">
         <Button
-          className="w-full h-11"
+          className="h-12 w-full text-base font-semibold"
           onClick={() => onMove(order.id, nextAction.status)}
           disabled={disabled}
         >
