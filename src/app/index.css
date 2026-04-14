@@ -102,6 +102,12 @@
   --color-primary: #ffffff;
   --color-primary-hover: #ffffff;
 
+  --color-success: #ffffff;
+  --color-danger: #ffffff;
+  --color-danger-hover: #ffffff;
+  --color-warning: #ffffff;
+  --color-info: #ffffff;
+
   --color-success-bg: rgba(255, 255, 255, 0.1);
   --color-danger-bg: rgba(255, 255, 255, 0.14);
   --color-warning-bg: rgba(255, 255, 255, 0.12);
