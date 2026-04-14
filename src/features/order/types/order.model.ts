@@ -1,9 +1,11 @@
+import type { OrderStatus } from "@/features/order/types/order.dto";
+
 export interface IOrderItem {
   id: string;
   orderNumber: string;
   previousOrderNumber?: string | null;
   type: string;
-  status: string;
+  status: OrderStatus;
   isArchived: boolean;
   archivedAt: null;
   isWaitingInStore: boolean;

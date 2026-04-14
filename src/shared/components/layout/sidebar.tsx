@@ -1,6 +1,22 @@
+import type { ReactNode } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { LuLayoutDashboard, LuShoppingCart, LuHistory, LuSettings, LuChefHat } from "react-icons/lu";
+import {
+  LuLayoutDashboard,
+  LuShoppingCart,
+  LuHistory,
+  LuSettings,
+  LuChefHat,
+} from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
+
+type NavMatch = "exact" | "prefix";
+
+interface NavItem {
+  name: string;
+  path: string;
+  icon: ReactNode;
+  match?: NavMatch;
+}
 
 const Sidebar = () => {
   const location = useLocation();
@@ -9,75 +25,84 @@ const Sidebar = () => {
 
   const resolvedStoreId = id ?? (currentStoreId ? String(currentStoreId) : undefined);
 
-  const storeMenuList = resolvedStoreId
+  const storeMenuList: NavItem[] = resolvedStoreId
     ? [
         {
           name: "Dashboard",
           path: `/store/${resolvedStoreId}`,
-          icon: <LuLayoutDashboard size={24} />,
+          icon: <LuLayoutDashboard size={22} />,
+          match: "exact",
         },
         {
           name: "POS",
           path: `/store/${resolvedStoreId}/pos`,
-          icon: <LuShoppingCart size={24} />,
+          icon: <LuShoppingCart size={22} />,
+          match: "prefix",
         },
         {
           name: "History",
           path: `/store/${resolvedStoreId}/transactions`,
-          icon: <LuHistory size={24} />,
+          icon: <LuHistory size={22} />,
+          match: "prefix",
         },
         {
           name: "KDS",
           path: `/store/${resolvedStoreId}/kds`,
-          icon: <LuChefHat size={24} />,
+          icon: <LuChefHat size={22} />,
+          match: "prefix",
         },
       ]
     : [];
 
-  const isActive = (path: string) => {
-    if (path.endsWith("/pos")) {
-      return location.pathname.startsWith(path);
+  const isActive = (path: string, match: NavMatch = "exact") => {
+    if (match === "prefix") {
+      return location.pathname === path || location.pathname.startsWith(`${path}/`);
     }
     return location.pathname === path;
   };
 
   const itemClass =
-    "p-3 flex flex-col justify-center items-center text-xs gap-1 transition-colors";
-  const activeClass = "bg-[var(--sidebar-active-bg)] text-[var(--color-text-primary)]";
-  const inactiveClass = "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover-bg)]";
+    "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-transparent transition-all duration-[var(--motion-fast)] active:scale-[0.98]";
+  const activeClass =
+    "border-[var(--sidebar-border)] bg-[var(--sidebar-active-bg)] text-[var(--sidebar-active-text)]";
+  const inactiveClass =
+    "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--color-text-primary)]";
+
+  const renderNavItem = (item: NavItem) => {
+    const active = isActive(item.path, item.match);
+
+    return (
+      <Link
+        to={item.path}
+        key={item.name}
+        aria-label={item.name}
+        title={item.name}
+        className={`${itemClass} ${active ? activeClass : inactiveClass}`}
+      >
+        {item.icon}
+        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-medium text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
+          {item.name}
+        </span>
+      </Link>
+    );
+  };
 
   return (
-    <div className="bg-[var(--sidebar-bg)] h-screen w-[60px] fixed border-r border-[var(--color-border)] pb-12 z-50">
-      <div className="h-full flex justify-between flex-col">
-        <div className="flex flex-col">
-          {storeMenuList.map((item) => (
-            <Link
-              to={item.path}
-              key={item.name}
-              className={`${itemClass} ${
-                isActive(item.path) ? activeClass : inactiveClass
-              }`}
-            >
-              <div>{item.icon}</div>
-              <div>{item.name}</div>
-            </Link>
-          ))}
-        </div>
+    <aside className="fixed inset-y-0 left-0 z-50 w-[var(--sidebar-width)] border-r border-[var(--sidebar-border)] bg-[var(--sidebar-bg)]">
+      <div className="flex h-full flex-col justify-between py-4">
+        <nav className="flex flex-col gap-2 px-2">{storeMenuList.map(renderNavItem)}</nav>
         {resolvedStoreId && (
-          <Link
-            to={`/store/${resolvedStoreId}/settings`}
-            className={`${itemClass} ${
-              location.pathname.startsWith(`/store/${resolvedStoreId}/settings`)
-                ? activeClass
-                : inactiveClass
-            }`}
-          >
-            <LuSettings size={24} />
-            <div>Settings</div>
-          </Link>
+          <div className="px-2">
+            {renderNavItem({
+              name: "Settings",
+              path: `/store/${resolvedStoreId}/settings`,
+              icon: <LuSettings size={22} />,
+              match: "prefix",
+            })}
+          </div>
         )}
       </div>
-    </div>
+    </aside>
   );
 };
 

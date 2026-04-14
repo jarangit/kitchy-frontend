@@ -12,7 +12,7 @@ import {
 } from "@/shared/store/slices/order-slice";
 import { useEffect, useRef, useState } from "react";
 import type { IOrderItem } from "@/features/order/types/order.model";
-import type { IUpdateOrder } from "@/features/order/types/order.dto";
+import type { IUpdateOrder, OrderStatus } from "@/features/order/types/order.dto";
 import EditModal from "@/shared/components/modals/edit-modal";
 type Props = {
   isCanDelete?: boolean;
@@ -35,12 +35,23 @@ export const ListOrders = ({
   const selectedStatus = useAppSelector((state) => state.orders.selectedStatus);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const normalizeType = (type: string) => {
+    if (type === "DINEIN") return "DINE_IN";
+    return type;
+  };
+
+  const normalizeStatus = (status: string): OrderStatus => {
+    if (status === "NEW" || status === "PREPARING") return "PENDING";
+    if (status === "READY") return "COMPLETED";
+    return status as OrderStatus;
+  };
+
   // ฟังก์ชัน filter order ตาม type และ status
   let filteredOrders = orders.filter((order) => {
-    const typeMatch =
-      selectedType === "ALL" ? true : order.type === selectedType;
-    const statusMatch =
-      selectedStatus === "ALL" ? true : order.status === selectedStatus;
+    const normalizedType = normalizeType(order.type);
+    const normalizedStatus = normalizeStatus(order.status);
+    const typeMatch = selectedType === "ALL" ? true : normalizedType === selectedType;
+    const statusMatch = selectedStatus === "ALL" ? true : normalizedStatus === selectedStatus;
     return typeMatch && statusMatch;
   });
 
@@ -73,11 +84,11 @@ export const ListOrders = ({
 
   // เมื่อเลือก tab ให้ dispatch ไปที่ store
   const handleTabClick = (
-    typeOrStatus: "PENDING" | "TOGO" | "DINEIN" | "COMPLETED" | "ALL"
+    typeOrStatus: "PENDING" | "TOGO" | "DINE_IN" | "COMPLETED" | "ALL"
   ) => {
     if (
       typeOrStatus === "TOGO" ||
-      typeOrStatus === "DINEIN" ||
+      typeOrStatus === "DINE_IN" ||
       typeOrStatus === "ALL"
     ) {
       dispatch(setSelectedType(typeOrStatus));
@@ -180,9 +191,13 @@ export const ListOrders = ({
               >
                  {filteredOrders.map((order: any, key: any) => (
                    <div key={key}>
-                    <OrderCard
-                      order={order}
-                      onDelete={() => handleDelete(order.id)}
+                     <OrderCard
+                       order={{
+                         ...order,
+                         type: normalizeType(order.type),
+                         status: normalizeStatus(order.status),
+                       }}
+                       onDelete={() => handleDelete(order.id)}
                       onUpdateStatus={(data: IUpdateOrder) =>
                         handleUpdateOrderStatus(data)
                       }

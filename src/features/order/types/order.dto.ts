@@ -1,6 +1,23 @@
+export type OrderType = "DINE_IN" | "TOGO" | "DELIVERY";
+
+export type OrderStatus =
+  | "NEW"
+  | "PREPARING"
+  | "READY"
+  | "PENDING"
+  | "COOKING"
+  | "COMPLETED"
+  | "CANCELLED";
+
+export type ApiResponse<T> = {
+  success: boolean;
+  message: string;
+  data: T;
+};
+
 export interface ICreateOrder {
   orderNumber: string;
-  orderType: "DINE_IN" | "TOGO" | "DELIVERY";
+  orderType: OrderType;
   tableNumber?: string;
   customerName?: string;
   deliveryPlatform?: string;
@@ -10,8 +27,8 @@ export interface ICreateOrder {
 
 export interface IUpdateOrder {
   id: string;
-  type?: "TOGO" | "DINEIN" | "";
-  status?: "PENDING" | "COMPLETED";
+  type?: "TOGO" | "DINE_IN" | "";
+  status?: OrderStatus;
   orderNumber?: string;
   isWaitingInStore?: boolean;
 }

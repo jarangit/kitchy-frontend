@@ -3,7 +3,7 @@ import type { IOrderItem } from "@/features/order/types/order.model";
 
 interface OrdersState {
   orders: IOrderItem[];
-  selectedType: "TOGO" | "DINEIN" | "ALL";
+  selectedType: "TOGO" | "DINE_IN" | "ALL";
   selectedStatus: "PENDING" | "COMPLETED" | "ALL";
 }
 
@@ -35,7 +35,7 @@ const ordersSlice = createSlice({
     },
     setSelectedType: (
       state,
-      action: PayloadAction<"TOGO" | "DINEIN" | "ALL">
+      action: PayloadAction<"TOGO" | "DINE_IN" | "ALL">
     ) => {
       state.selectedType = action.payload;
     },

@@ -6,8 +6,19 @@ import { RiRestaurant2Fill } from "react-icons/ri";
 import { FaCheckCircle } from "react-icons/fa";
 import { useAppSelector } from "@/shared/hooks/hooks";
 
+const toLegacyStatus = (status: string) => {
+  if (status === "NEW" || status === "PREPARING") return "PENDING";
+  if (status === "READY") return "COMPLETED";
+  return status;
+};
+
+const normalizeType = (type: string) => {
+  if (type === "DINEIN") return "DINE_IN";
+  return type;
+};
+
 type Props = {
-  _onClickTabItem: (type: "PENDING" | "TOGO" | "DINEIN" | "COMPLETED") => void;
+  _onClickTabItem: (type: "PENDING" | "TOGO" | "DINE_IN" | "COMPLETED") => void;
 };
 const TabOrder = ({ _onClickTabItem }: Props) => {
   const orders = useAppSelector((state) => state.orders.orders);
@@ -20,7 +31,7 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
   });
 
   const onClickTabItem = (
-    type: "PENDING" | "TOGO" | "DINEIN" | "COMPLETED"
+    type: "PENDING" | "TOGO" | "DINE_IN" | "COMPLETED"
   ) => {
     setTabActive(type);
     _onClickTabItem(type);
@@ -31,14 +42,17 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
   }, []);
 
   useEffect(() => {
-    const total = orders.filter((i) => i.status === "PENDING").length;
+    const total = orders.filter((i) => toLegacyStatus(i.status) === "PENDING").length;
     const togo = orders.filter(
-      (i) => i.type === "TOGO" && i.status === "PENDING"
+      (i) => normalizeType(i.type) === "TOGO" && toLegacyStatus(i.status) === "PENDING"
     ).length;
     const dineIn = orders.filter(
-      (i) => i.type === "DINEIN" && i.status === "PENDING"
+      (i) =>
+        normalizeType(i.type) === "DINE_IN" && toLegacyStatus(i.status) === "PENDING"
     ).length;
-    const completed = orders.filter((i) => i.status === "COMPLETED").length;
+    const completed = orders.filter(
+      (i) => toLegacyStatus(i.status) === "COMPLETED"
+    ).length;
 
     setOrderCount({
       total,
@@ -73,13 +87,13 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
         isActive={tabActive === "TOGO"}
         onClick={() => onClickTabItem("TOGO")}
       />
-      <TabItem
-        title={`DineI`}
-        count={orderCount.dineIn}
-        icon={<RiRestaurant2Fill size={20} />}
-        isActive={tabActive === "DINEIN"}
-        onClick={() => onClickTabItem("DINEIN")}
-      />
+        <TabItem
+          title={`DineI`}
+          count={orderCount.dineIn}
+          icon={<RiRestaurant2Fill size={20} />}
+          isActive={tabActive === "DINE_IN"}
+          onClick={() => onClickTabItem("DINE_IN")}
+        />
     </div>
   );
 };

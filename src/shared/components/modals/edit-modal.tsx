@@ -12,9 +12,9 @@ type Props = {
 function EditModal({ data, _onSubmit }: Props) {
   const { type } = data;
   const [order, setOrder] = useState<IOrderItem>();
-  const allowedTypes = ["TOGO", "DINEIN", ""] as const;
+  const allowedTypes = ["TOGO", "DINE_IN", ""] as const;
   const safeType = allowedTypes.includes(type as any)
-    ? (type as "" | "TOGO" | "DINEIN")
+    ? (type as "" | "TOGO" | "DINE_IN")
     : "";
 
   const onSubmit = (e: any) => {

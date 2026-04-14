@@ -8,7 +8,7 @@ import TabItem from "@/shared/components/atoms/tab-item";
 import type { IOrderItem } from "@/features/order/types/order.model";
 
 interface OrderFormProps {
-  orderType: "TOGO" | "DINEIN" | "";
+  orderType: "TOGO" | "DINE_IN" | "";
   label: string;
   buttonColor: string;
   initValue?: IOrderItem;
@@ -79,7 +79,7 @@ export function OrderForm({
           onChange={(e) => setNumber(e.target.value)}
         />
         {/* waiting */}
-        {orderType == "DINEIN" ? (
+        {orderType == "DINE_IN" ? (
           <>
             <div className="border flex items-center border-[var(--color-border)] rounded-lg overflow-hidden cursor-pointer">
               <TabItem

@@ -41,12 +41,14 @@ const OrderCard = ({
   const isToGo = type === "TOGO";
   const [isShowDeleteButton, setIsShowDeleteButton] = useState(false);
   const actionRef = useRef<HTMLDivElement>(null);
+  const isOpenStatus =
+    status === "PENDING" || status === "NEW" || status === "PREPARING";
 
   // แปลงวันที่เป็น timezone ของ user
   const handleUpdate = () => {
     const payload: IUpdateOrder = {
       id,
-      status: status == "PENDING" ? "COMPLETED" : "PENDING",
+      status: isOpenStatus ? "READY" : "NEW",
     };
     setIsFading(true);
     setTimeout(() => {
@@ -145,13 +147,13 @@ const OrderCard = ({
       {isCanAction ? (
         <button
           className={`px-4 py-2 text-sm font-medium rounded-lg h-11 w-full cursor-pointer active:scale-[0.98] transition-all duration-[var(--motion-fast)] ${
-            status === "PENDING"
+            isOpenStatus
               ? "bg-[var(--color-success)] text-[var(--color-text-inverse)]"
               : "bg-[var(--color-warning)] text-[var(--color-text-primary)]"
           }`}
           onClick={() => handleUpdate()}
         >
-          {status === "PENDING" ? (
+          {isOpenStatus ? (
             <div className="flex items-center gap-2 justify-center">
               <FaCheckCircle />
               <div>Make A Done</div>

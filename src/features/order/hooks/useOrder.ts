@@ -3,6 +3,19 @@ import { orderApiService } from "@/features/order/services/order";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import type { ICreateOrder } from "@/features/order/types/order.dto";
+import { AxiosError } from "axios";
+
+const unwrapApiData = <T,>(response: any): T | undefined => {
+  return response?.data?.data as T | undefined;
+};
+
+const toArray = <T,>(value: unknown): T[] => {
+  return Array.isArray(value) ? (value as T[]) : [];
+};
+
+const isNotFound = (error: unknown) => {
+  return error instanceof AxiosError && error.response?.status === 404;
+};
 
 export function useOrderService({
   stationId,
@@ -17,22 +30,42 @@ export function useOrderService({
   // READ
   const ordersQuery = useQuery({
     queryKey: ["orders", storeId],
-    queryFn: () =>
-      orderApiService.getOrdersByStoreId(storeId as string),
+    queryFn: async () => {
+      try {
+        const response = await orderApiService.getOrdersByStoreId(storeId as string);
+        return toArray<any>(unwrapApiData<any>(response));
+      } catch (error) {
+        if (isNotFound(error)) {
+          return [];
+        }
+        throw error;
+      }
+    },
     enabled: !!storeId,
-    select: (data) => data.data,
   });
 
   const orderFindByStationIdQuery = useQuery({
     queryKey: ["ordersByStation", stationId],
-    queryFn: () => orderApiService.getOrdersByStationId(stationId as string),
+    queryFn: async () => {
+      try {
+        const response = await orderApiService.getOrdersByStationId(stationId as string);
+        return toArray<any>(unwrapApiData<any>(response));
+      } catch (error) {
+        if (isNotFound(error)) {
+          return [];
+        }
+        throw error;
+      }
+    },
     enabled: !!stationId,
-    select: (data) => data.data,
   });
 
   const orderFinOneQuery = useQuery({
     queryKey: ["order", orderId],
-    queryFn: () => orderApiService.getById(orderId as string),
+    queryFn: async () => {
+      const response = await orderApiService.getById(orderId as string);
+      return unwrapApiData<any>(response);
+    },
     enabled: !!orderId,
   });
 
@@ -58,10 +91,10 @@ export function useOrderService({
   const updateMutation = useMutation({
     mutationFn: ({ orderId, orderData }: { orderId: string; orderData: any }) =>
       orderApiService.update(orderId, orderData),
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: ["order", storeId],
-      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["orders", storeId] });
+      queryClient.invalidateQueries({ queryKey: ["order", variables.orderId] });
+    },
   });
 
   // DELETE
@@ -74,13 +107,13 @@ export function useOrderService({
   });
 
   return {
-    ordersQuery: ordersQuery.data?.data,
+    ordersQuery: ordersQuery.data ?? [],
     orderFinOneQuery,
     createMutation,
     updateMutation,
     deleteMutation,
     orderFindByStationIdQuery,
-    orderByStation: orderFindByStationIdQuery.data?.data,
+    orderByStation: orderFindByStationIdQuery.data ?? [],
     isLoading: ordersQuery.isLoading || orderFinOneQuery.isLoading,
   };
 }

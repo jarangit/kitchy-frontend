@@ -17,7 +17,10 @@ const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
   { value: "DELIVERY", label: "Delivery" },
 ];
 
-const TABLE_OPTIONS = Array.from({ length: 20 }, (_, index) => `T${index + 1}`);
+const TABLE_OPTIONS = Array.from(
+  { length: 20 },
+  (_, index) => `T-${String(index + 1).padStart(2, "0")}`
+);
 const hasQuickNotes = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 };
