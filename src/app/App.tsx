@@ -21,6 +21,8 @@ import SettingsPage from "@/features/store/pages/settings";
 import SettingsProductsPage from "@/features/store/pages/settings-products";
 import SettingsCategoriesPage from "@/features/store/pages/settings-categories";
 import SettingsShopPage from "@/features/store/pages/settings-shop";
+import SettingsDeliveryPage from "@/features/store/pages/settings-delivery";
+import SettingsQuickNotesPage from "@/features/store/pages/settings-quick-notes";
 
 // Station
 import StationPage from "@/features/station/pages/[station]";
@@ -140,6 +142,26 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <SettingsShopPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/store/:id/settings/delivery"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <SettingsDeliveryPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/store/:id/settings/quick-notes"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <SettingsQuickNotesPage />
               </Layout>
             </ProtectedRoute>
           }

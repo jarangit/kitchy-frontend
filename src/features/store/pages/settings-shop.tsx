@@ -11,7 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/shared/components/ui/dialog";
-import { LuArrowLeft } from "react-icons/lu";
+import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
 
 const SettingsShopPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,61 +31,55 @@ const SettingsShopPage = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <button
-        onClick={() => navigate(`/store/${id}/settings`)}
-        className="min-h-11 px-2 inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+    <>
+      <SettingsShell
+        title="Shop Settings"
+        description="Update your store identity and manage high-impact store actions."
+        onBack={() => navigate(`/store/${id}/settings`)}
       >
-        <LuArrowLeft size={16} />
-        Back to Settings
-      </button>
+        <SettingsSectionCard title="Store Name">
+          {storeFinOneQuery ? (
+            <AddUpStoreForm
+              defaultValues={{ name: storeFinOneQuery.name }}
+              _onSubmit={(data) =>
+                updateStore({
+                  storeData: { name: data.name },
+                })
+              }
+            />
+          ) : (
+            <div className="text-[var(--color-text-tertiary)]">Loading...</div>
+          )}
+        </SettingsSectionCard>
 
-      <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Shop Settings</h1>
-
-      {/* Edit Store Name */}
-      <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Store Name</h3>
-        {storeFinOneQuery ? (
-          <AddUpStoreForm
-            defaultValues={{ name: storeFinOneQuery.name }}
-            _onSubmit={(data) =>
-              updateStore({
-                storeData: { name: data.name },
-              })
-            }
-          />
-        ) : (
-          <div className="text-[var(--color-text-tertiary)]">Loading...</div>
-        )}
-      </div>
-
-      {/* Danger Zone */}
-      <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">Danger Zone</h3>
-        <p className="text-sm text-[var(--color-text-secondary)] mb-4">
-          Deleting a store is permanent and cannot be undone.
-        </p>
-        <Button
-          variant="danger"
-          onClick={() => setIsDeleteDialogOpen(true)}
+        <SettingsSectionCard
+          title="Danger Zone"
+          description="Deleting a store is permanent and cannot be undone."
         >
-          Delete Store
-        </Button>
+          <div className="space-y-6">
+            <Button
+              variant="danger"
+              onClick={() => setIsDeleteDialogOpen(true)}
+            >
+              Delete Store
+            </Button>
 
-        <div className="pt-4 mt-4 border-t border-[var(--color-border)]">
-          <p className="text-xs text-[var(--color-text-tertiary)] mb-2">
-            Need to work on another store?
-          </p>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => navigate("/dashboard")}
-            className="h-11"
-          >
-            Switch Store
-          </Button>
-        </div>
-      </div>
+            <div className="border-t border-[var(--color-border)] pt-5">
+              <p className="mb-3 text-xs text-[var(--color-text-tertiary)]">
+                Need to work on another store?
+              </p>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => navigate("/dashboard")}
+                className="h-11"
+              >
+                Switch Store
+              </Button>
+            </div>
+          </div>
+        </SettingsSectionCard>
+      </SettingsShell>
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
@@ -104,7 +98,7 @@ const SettingsShopPage = () => {
           </Button>
         </DialogFooter>
       </Dialog>
-    </div>
+    </>
   );
 };
 

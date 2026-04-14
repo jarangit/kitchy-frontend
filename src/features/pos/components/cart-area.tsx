@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ICartItem } from "@/features/pos/types/pos.model";
 import type { OrderType } from "@/features/pos/types/pos.model";
 import { LuShoppingCart } from "react-icons/lu";
@@ -16,7 +16,7 @@ const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
 ];
 
 const TABLE_OPTIONS = Array.from({ length: 20 }, (_, index) => `T${index + 1}`);
-const DELIVERY_PLATFORMS = [
+const DEFAULT_DELIVERY_PLATFORMS = [
   "LINE MAN",
   "GrabFood",
   "ShopeeFood",
@@ -32,6 +32,15 @@ const COMMON_ITEM_NOTES = [
   "เผ็ดมาก",
   "ไม่ใส่น้ำแข็ง",
 ];
+const hasQuickNotes = (value: unknown): value is string[] => {
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
+};
+
+const hasEnabledPlatforms = (
+  value: string[] | { enabledPlatforms?: string[] }
+): value is { enabledPlatforms: string[] } => {
+  return !Array.isArray(value) && Array.isArray(value.enabledPlatforms);
+};
 
 interface Props {
   items: ICartItem[];
@@ -68,6 +77,54 @@ const CartArea = ({
   const [isTableDialogOpen, setIsTableDialogOpen] = useState(false);
   const [activeNoteItem, setActiveNoteItem] = useState<ICartItem | null>(null);
   const [draftNote, setDraftNote] = useState("");
+  const [deliveryPlatforms, setDeliveryPlatforms] = useState(
+    DEFAULT_DELIVERY_PLATFORMS
+  );
+  const [quickNotes, setQuickNotes] = useState(COMMON_ITEM_NOTES);
+
+  const deliverySettingsKey = useMemo(
+    () => `store:${window.location.pathname.split("/")[2]}:delivery-platforms`,
+    []
+  );
+  const quickNotesSettingsKey = useMemo(
+    () => `store:${window.location.pathname.split("/")[2]}:quick-notes`,
+    []
+  );
+
+  useEffect(() => {
+    const stored = localStorage.getItem(deliverySettingsKey);
+    if (!stored) return;
+
+    try {
+      const parsed = JSON.parse(stored) as
+        | string[]
+        | { enabledPlatforms?: string[] };
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        setDeliveryPlatforms(parsed);
+        return;
+      }
+
+      if (hasEnabledPlatforms(parsed) && parsed.enabledPlatforms.length > 0) {
+        setDeliveryPlatforms(parsed.enabledPlatforms);
+      }
+    } catch {
+      localStorage.removeItem(deliverySettingsKey);
+    }
+  }, [deliverySettingsKey]);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(quickNotesSettingsKey);
+    if (!stored) return;
+
+    try {
+      const parsed = JSON.parse(stored) as unknown;
+      if (hasQuickNotes(parsed) && parsed.length > 0) {
+        setQuickNotes(parsed);
+      }
+    } catch {
+      localStorage.removeItem(quickNotesSettingsKey);
+    }
+  }, [quickNotesSettingsKey]);
 
   const handleOrderTypeChange = (nextType: OrderType) => {
     onOrderTypeChange(nextType);
@@ -194,7 +251,7 @@ const CartArea = ({
                   Delivery Platform
                 </p>
                 <div className="grid grid-cols-2 gap-2">
-                  {DELIVERY_PLATFORMS.map((platform) => {
+                  {deliveryPlatforms.map((platform) => {
                     const active = deliveryPlatform === platform;
                     return (
                       <button
@@ -300,7 +357,7 @@ const CartArea = ({
               Quick notes
             </p>
             <div className="flex flex-wrap gap-2">
-              {COMMON_ITEM_NOTES.map((note) => {
+              {quickNotes.map((note) => {
                 const isActive = draftNote
                   .split(",")
                   .map((part) => part.trim())
