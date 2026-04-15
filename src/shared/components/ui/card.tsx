@@ -26,7 +26,7 @@ export function CardHeader({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={`mb-[var(--space-3)] ${className}`.trim()} {...props}>
+    <div className={`mb-[var(--space-4)] ${className}`.trim()} {...props}>
       {children}
     </div>
   );
@@ -54,7 +54,7 @@ export function CardDescription({
 }: HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={`text-sm text-[var(--color-text-secondary)] mt-0.5 ${className}`.trim()}
+      className={`text-sm text-[var(--color-text-secondary)] mt-1 ${className}`.trim()}
       {...props}
     >
       {children}

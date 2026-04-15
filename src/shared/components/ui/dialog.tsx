@@ -54,7 +54,7 @@ export function DialogHeader({
   children: ReactNode;
 }) {
   return (
-    <div className={`mb-[var(--space-4)] ${className}`.trim()}>{children}</div>
+    <div className={`mb-[var(--space-5)] ${className}`.trim()}>{children}</div>
   );
 }
 
@@ -99,7 +99,7 @@ export function DialogFooter({
 }) {
   return (
     <div
-      className={`flex justify-end gap-[var(--space-3)] mt-[var(--space-5)] ${className}`.trim()}
+      className={`flex justify-end gap-[var(--space-4)] mt-[var(--space-6)] ${className}`.trim()}
     >
       {children}
     </div>

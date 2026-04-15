@@ -13,8 +13,8 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="border-b border-[var(--color-border)] py-3 last:border-0">
-      <div className="flex items-center justify-between gap-2">
+    <div className="border-b border-[var(--color-border)] py-4 last:border-0">
+      <div className="flex items-center justify-between gap-3">
         <p
           className="min-w-0 flex-1 line-clamp-1 text-base font-semibold text-[var(--color-text-primary)]"
           title={item.name}
@@ -30,7 +30,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
         </button>
       </div>
 
-      <div className="mt-2.5 flex items-center justify-between gap-3">
+      <div className="mt-3 flex items-center justify-between gap-4">
         <div className="inline-flex items-center gap-1 rounded-full bg-[var(--color-surface)] px-1.5 py-1">
           <button
             onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
@@ -49,7 +49,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={() => onEditNote(item)}

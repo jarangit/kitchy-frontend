@@ -31,9 +31,9 @@ const TransactionListPage = () => {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div className="h-8 w-48 skeleton-shimmer rounded-[var(--radius-md)]" />
-        <div className="space-y-3">
+        <div className="space-y-4">
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
@@ -43,12 +43,12 @@ const TransactionListPage = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Transaction History</h1>
 
       <TransactionFilter onFilterChange={setFilter} />
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {filteredTransactions.length === 0 ? (
           <EmptyState
             icon={<LuReceipt size={32} />}

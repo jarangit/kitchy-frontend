@@ -39,7 +39,7 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
             You are offline
           </section>
         )}
-        <main className={`flex-1 flex flex-col${noPadding ? "" : " p-4"}`}>{children}</main>
+        <main className={`flex-1 flex flex-col${noPadding ? "" : " p-6"}`}>{children}</main>
       </div>
     </div>
   );

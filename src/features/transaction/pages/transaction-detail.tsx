@@ -46,7 +46,7 @@ function Section({
   return (
     <div className="border-t border-[var(--color-border)] pt-5">
       {title && (
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">
           {title}
         </h3>
       )}
@@ -74,9 +74,9 @@ function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
 
 function DetailSkeleton() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Skeleton height="h-9" width="w-32" />
-      <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--card-radius)] p-[var(--card-padding)] space-y-5">
+      <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--card-radius)] p-[var(--card-padding)] space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <Skeleton height="h-7" width="w-36" />
@@ -84,20 +84,20 @@ function DetailSkeleton() {
         </div>
         <Skeleton height="h-4" width="w-48" />
         {/* Order info */}
-        <div className="border-t border-[var(--color-border)] pt-5 space-y-2">
+        <div className="border-t border-[var(--color-border)] pt-6 space-y-2">
           <Skeleton height="h-4" width="w-full" />
           <Skeleton height="h-4" width="w-3/4" />
           <Skeleton height="h-4" width="w-1/2" />
         </div>
         {/* Items */}
-        <div className="border-t border-[var(--color-border)] pt-5 space-y-3">
+        <div className="border-t border-[var(--color-border)] pt-6 space-y-3">
           <Skeleton height="h-3" width="w-16" />
           <Skeleton height="h-5" width="w-full" />
           <Skeleton height="h-5" width="w-full" />
           <Skeleton height="h-5" width="w-3/4" />
         </div>
         {/* Total */}
-        <div className="border-t border-[var(--color-border)] pt-5">
+        <div className="border-t border-[var(--color-border)] pt-6">
           <div className="flex justify-between">
             <Skeleton height="h-6" width="w-20" />
             <Skeleton height="h-6" width="w-28" />
@@ -129,7 +129,7 @@ const TransactionDetailPage = () => {
   /* Not found */
   if (!order) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <Button variant="ghost" size="sm" onClick={goBack}>
           <LuArrowLeft size={16} />
           Back
@@ -172,7 +172,7 @@ const TransactionDetailPage = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Back button */}
       <Button variant="ghost" size="sm" onClick={goBack}>
         <LuArrowLeft size={16} />
@@ -180,7 +180,7 @@ const TransactionDetailPage = () => {
       </Button>
 
       {/* Receipt card */}
-      <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--card-radius)] p-[var(--card-padding)] space-y-5">
+      <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--card-radius)] p-[var(--card-padding)] space-y-6">
         {/* ── Header ──────────────────────────────── */}
         <div>
           <div className="flex items-center justify-between mb-1">
@@ -244,7 +244,7 @@ const TransactionDetailPage = () => {
                 return (
                   <div
                     key={item.id || item.productId || index}
-                    className={`flex justify-between gap-4 py-2.5 ${
+                    className={`flex justify-between gap-4 py-3 ${
                       index < items.length - 1
                         ? "border-b border-[var(--color-border)]"
                         : ""
@@ -275,7 +275,7 @@ const TransactionDetailPage = () => {
 
         {/* ── Summary ─────────────────────────────── */}
         <Section title="Summary">
-          <div className="flex justify-between items-baseline py-1.5">
+          <div className="flex justify-between items-baseline py-2">
             <span className="text-sm text-[var(--color-text-secondary)]">
               Subtotal ({itemCount} item{itemCount !== 1 ? "s" : ""})
             </span>
@@ -283,7 +283,7 @@ const TransactionDetailPage = () => {
               {formatCurrency(grandTotal)}
             </span>
           </div>
-          <div className="border-t border-[var(--color-border)] mt-2 pt-3 flex justify-between items-baseline">
+          <div className="border-t border-[var(--color-border)] mt-3 pt-4 flex justify-between items-baseline">
             <span className="text-base font-semibold text-[var(--color-text-primary)]">
               Total
             </span>

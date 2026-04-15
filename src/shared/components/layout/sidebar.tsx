@@ -96,10 +96,10 @@ const Sidebar = () => {
 
   return (
     <aside className="fixed inset-y-0 left-0 z-50 w-[var(--sidebar-width)] border-r border-[var(--sidebar-border)] bg-[var(--sidebar-bg)]">
-      <div className="flex h-full flex-col justify-between py-4">
-        <nav className="flex flex-col gap-2 px-2">{storeMenuList.map(renderNavItem)}</nav>
+      <div className="flex h-full flex-col justify-between py-5">
+        <nav className="flex flex-col gap-3 px-3">{storeMenuList.map(renderNavItem)}</nav>
         {resolvedStoreId && (
-          <div className="px-2">
+          <div className="px-3">
             {renderNavItem({
               name: "Settings",
               path: `/store/${resolvedStoreId}/settings`,

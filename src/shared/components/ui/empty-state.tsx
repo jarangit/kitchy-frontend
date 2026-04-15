@@ -17,10 +17,10 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center py-16 px-4 ${className}`.trim()}
+      className={`flex flex-col items-center justify-center py-20 px-4 ${className}`.trim()}
     >
       {icon && (
-        <div className="text-[var(--color-text-tertiary)] mb-4">{icon}</div>
+        <div className="text-[var(--color-text-tertiary)] mb-5">{icon}</div>
       )}
       <h3 className="text-lg font-[var(--font-weight-medium)] text-[var(--color-text-primary)] mb-1">
         {title}

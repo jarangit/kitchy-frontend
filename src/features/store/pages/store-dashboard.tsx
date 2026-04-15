@@ -95,15 +95,15 @@ const StoreDashboardPage = () => {
           <SkeletonCard className="h-14" />
         </div>
         <SkeletonCard className="h-36" />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <SkeletonCard className="h-24" />
           <SkeletonCard className="h-24" />
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <SkeletonCard className="h-24" />
           <SkeletonCard className="h-24" />
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <SkeletonCard className="h-28" />
           <SkeletonCard className="h-28" />
           <SkeletonCard className="h-28" />
@@ -138,7 +138,7 @@ const StoreDashboardPage = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="space-y-2">
         <Link
           to="/dashboard"
@@ -158,10 +158,10 @@ const StoreDashboardPage = () => {
 
       <Link
         to={`/store/${id}/pos`}
-        className="block rounded-[var(--radius-lg)] border border-[var(--color-primary)] bg-[var(--color-primary)] p-6 text-[var(--color-text-inverse)] transition-all duration-[var(--motion-fast)] hover:opacity-95 active:scale-[0.99]"
+        className="block rounded-[var(--radius-lg)] border border-[var(--color-primary)] bg-[var(--color-primary)] p-8 text-[var(--color-text-inverse)] transition-all duration-[var(--motion-fast)] hover:opacity-95 active:scale-[0.99]"
       >
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-4">
+          <div className="flex items-center justify-between gap-5">
+            <div className="flex min-w-0 items-center gap-5">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(255,255,255,0.16)] text-[var(--color-text-inverse)] shrink-0">
               <LuShoppingCart size={24} />
             </div>
@@ -178,12 +178,12 @@ const StoreDashboardPage = () => {
         </div>
       </Link>
 
-      <section className="space-y-3">
+      <section className="space-y-4">
         <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
           Status
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-success-bg)] text-[var(--color-success)]">
                 <LuMonitor size={18} />
@@ -199,7 +199,7 @@ const StoreDashboardPage = () => {
             </div>
           </div>
 
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
             <div className="text-lg font-semibold text-[var(--color-text-primary)]">
               {stations.length} {stations.length === 1 ? "Station" : "Stations"}
             </div>
@@ -210,19 +210,19 @@ const StoreDashboardPage = () => {
         </div>
       </section>
 
-      <section className="space-y-3">
+      <section className="space-y-4">
         <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
           Today
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
             <div className="text-2xl font-bold text-[var(--color-text-primary)]">
               ฿ {formatCurrency(todayRevenue)}
             </div>
             <div className="mt-1 text-sm text-[var(--color-text-secondary)]">Revenue</div>
           </div>
 
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
             <div className="text-2xl font-bold text-[var(--color-text-primary)]">
               {todayOrderCount} Orders
             </div>
@@ -231,18 +231,18 @@ const StoreDashboardPage = () => {
         </div>
       </section>
 
-      <section className="space-y-3">
+      <section className="space-y-4">
         <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
           More
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           {quickActions.map((action) => (
             <Link
               key={action.label}
               to={action.to}
-              className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] active:scale-[0.99]"
+              className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] active:scale-[0.99]"
             >
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg)] text-[var(--color-text-secondary)]">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg)] text-[var(--color-text-secondary)]">
                 {action.icon}
               </div>
               <div className="font-semibold text-[var(--color-text-primary)]">

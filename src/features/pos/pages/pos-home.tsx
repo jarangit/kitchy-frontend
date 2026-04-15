@@ -77,16 +77,16 @@ const PosHomePage = () => {
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Product area */}
-        <div className="flex-1 flex flex-col min-w-0 p-5 overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 p-6 overflow-hidden">
           <CategoryTabs
             categories={categories}
             selected={selectedCategory}
             onSelect={setSelectedCategory}
           />
 
-          <div className="flex-1 overflow-y-auto mt-3">
+          <div className="flex-1 overflow-y-auto mt-4">
             {isProductsLoading ? (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <SkeletonCard key={i} className="min-h-[140px]" />
                 ))}

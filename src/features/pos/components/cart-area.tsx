@@ -169,8 +169,8 @@ const CartArea = ({
   return (
     <div className="w-full flex flex-col h-full bg-[var(--color-bg)]">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-border)]">
-        <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
+        <div className="flex items-center gap-3">
           <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">
             Cart
           </h2>
@@ -193,13 +193,13 @@ const CartArea = ({
       </div>
 
       {/* Items */}
-      <div className="flex-1 overflow-y-auto px-5">
-        <div className="pt-4 pb-3 space-y-3 border-b border-[var(--color-border)]">
+      <div className="flex-1 overflow-y-auto px-6">
+        <div className="pt-5 pb-4 space-y-4 border-b border-[var(--color-border)]">
           <div>
-            <p className="mb-2 text-sm font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
+            <p className="mb-3 text-sm font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
               Order Type
             </p>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-3">
               {ORDER_TYPE_OPTIONS.map((option) => {
                 const active = orderType === option.value;
                 return (
@@ -248,12 +248,12 @@ const CartArea = ({
           )}
 
           {orderType === "DELIVERY" && (
-            <div className="space-y-3">
+        <div className="space-y-5">
               <div>
-                <p className="mb-2 text-base font-semibold text-[var(--color-text-primary)]">
+                <p className="mb-3 text-base font-semibold text-[var(--color-text-primary)]">
                   Delivery Platform
                 </p>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   {deliveryPlatforms.map((platform) => {
                     const active = deliveryPlatform === platform;
                     return (
@@ -277,7 +277,7 @@ const CartArea = ({
           )}
         </div>
 
-        <div className="pt-3">
+        <div className="pt-4">
         {items.length === 0 ? (
           <EmptyState
             icon={<LuShoppingCart size={32} />}
@@ -300,7 +300,7 @@ const CartArea = ({
       </div>
 
       {/* Summary + Pay Button */}
-      <div className="px-5 pb-5 space-y-3">
+      <div className="px-6 pb-6 space-y-4">
         {items.length > 0 && <CartSummary subtotal={subtotal} />}
         <Button
           onClick={onPay}
@@ -321,7 +321,7 @@ const CartArea = ({
           <DialogDescription>Tap to select table for dine in order.</DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-3">
           {TABLE_OPTIONS.map((table) => {
             const active = tableNumber === table;
             return (
@@ -361,7 +361,7 @@ const CartArea = ({
             <p className="mb-2 text-sm font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
               {t("pos.noteDialog.quickNotes")}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-3">
               {quickNotes.map((note) => {
                 const isActive = draftNote
                   .split(",")
@@ -394,7 +394,7 @@ const CartArea = ({
             maxLength={120}
           />
 
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             <Button
               variant="secondary"
               className="flex-1"

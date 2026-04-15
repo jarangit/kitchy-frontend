@@ -6,7 +6,7 @@ interface Props {
 
 const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="flex gap-3 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <button
         onClick={() => onSelect("ALL")}
         className={`h-12 whitespace-nowrap rounded-full px-6 py-3 text-base font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${

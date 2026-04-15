@@ -98,14 +98,14 @@ const PosHeader = ({
   });
 
   return (
-    <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-4 sm:px-6">
+    <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5 sm:px-8">
       <div className="min-w-0">
         <h1 className="truncate text-2xl font-semibold text-[var(--color-text-primary)]">
           {shopName}
         </h1>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3">
+      <div className="flex items-center gap-3 sm:gap-4">
         <div className="hidden items-center gap-2 rounded-xl bg-[var(--color-surface)] px-3 py-1.5 sm:flex">
           <div className="text-right">
             <div className="text-base font-semibold text-[var(--color-text-primary)]">

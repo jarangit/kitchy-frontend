@@ -72,9 +72,9 @@ const KdsOrderCard = ({
   }
 
   return (
-    <div className="flex h-full flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+    <div className="flex h-full flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
       {/* ── Product name + quantity (main focus) ── */}
-      <div className="mb-3 flex items-start justify-between gap-3">
+      <div className="mb-4 flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           {card.productName && (
             <span
@@ -97,7 +97,7 @@ const KdsOrderCard = ({
 
       {/* ── Order info (secondary) ── */}
       <div className="flex-1">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {prioritize && queueNumber != null && (
             <span className="inline-flex min-h-7 items-center rounded-full bg-[var(--color-info-bg)] px-2.5 text-sm font-semibold text-[var(--color-info)]">
               #{queueNumber}
@@ -112,7 +112,7 @@ const KdsOrderCard = ({
             {orderInfoParts.join(" ")}
           </p>
         )}
-        <div className="mt-2 flex flex-wrap items-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-3">
           <p className="text-base font-semibold text-[var(--color-text-primary)]">
             {timeLabel}
           </p>
@@ -130,7 +130,7 @@ const KdsOrderCard = ({
       </div>
 
       {/* ── Action button (sticky bottom) ── */}
-      <div className="mt-4 border-t border-[var(--color-border)] pt-3">
+      <div className="mt-5 border-t border-[var(--color-border)] pt-4">
         <Button
           className="h-12 w-full text-base font-semibold"
           onClick={() => onMove(card, nextAction.status)}

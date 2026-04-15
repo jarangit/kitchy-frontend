@@ -59,19 +59,19 @@ const KdsBoardPage = () => {
   const visibleCards = activeTab === "PENDING" ? sortedPending : sortedReady;
 
   return (
-    <div className="space-y-6 h-full">
+    <div className="space-y-8 h-full">
       <KdsHeader
         storeId={id as string}
         stationName={activeStation?.name}
         isRefetching={isRefetching}
       />
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <Button
           variant={activeTab === "PENDING" ? "primary" : "secondary"}
           size="sm"
           onClick={() => setActiveTab("PENDING")}
-          className="h-11 px-4"
+          className="h-11 px-5"
         >
           Pending ({pendingCards.length})
         </Button>
@@ -79,14 +79,14 @@ const KdsBoardPage = () => {
           variant={activeTab === "READY" ? "primary" : "secondary"}
           size="sm"
           onClick={() => setActiveTab("READY")}
-          className="h-11 px-4"
+          className="h-11 px-5"
         >
           Ready ({readyCards.length})
         </Button>
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           <SkeletonCard className="min-h-[280px]" />
           <SkeletonCard className="min-h-[280px]" />
           <SkeletonCard className="min-h-[280px]" />
@@ -109,15 +109,15 @@ const KdsBoardPage = () => {
           />
         </div>
       ) : activeTab === "PENDING" ? (
-        <div className="space-y-6">
+        <div className="space-y-8">
           {dueNow.length > 0 && (
-            <section className="space-y-3">
+            <section className="space-y-4">
               <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-danger-bg)] px-3 text-sm font-semibold text-[var(--color-danger)]">
                 DUE NOW ({dueNow.length})
               </span>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {dueNow.map((card, index) => (
-                  <div key={card.orderStationItemId} className="h-full min-h-[280px]">
+                  <div key={card.orderStationItemId} className="h-full min-h-[300px]">
                     <KdsOrderCard
                       card={card}
                       onMove={updateStatus}
@@ -133,13 +133,13 @@ const KdsBoardPage = () => {
           )}
 
           {next.length > 0 && (
-            <section className="space-y-3">
+            <section className="space-y-4">
               <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-warning-bg)] px-3 text-sm font-semibold text-[var(--color-warning)]">
                 NEXT ({next.length})
               </span>
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {next.map((card, index) => (
-                  <div key={card.orderStationItemId} className="h-full min-h-[280px]">
+                  <div key={card.orderStationItemId} className="h-full min-h-[300px]">
                     <KdsOrderCard
                       card={card}
                       onMove={updateStatus}
@@ -155,9 +155,9 @@ const KdsBoardPage = () => {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {visibleCards.map((card) => (
-            <div key={card.orderStationItemId} className="h-full min-h-[280px]">
+            <div key={card.orderStationItemId} className="h-full min-h-[300px]">
               <KdsOrderCard
                 card={card}
                 onMove={updateStatus}
