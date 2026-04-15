@@ -22,41 +22,41 @@ const KdsBoardPage = () => {
   const activeStation = stationsQuery?.[0];
   const [activeTab, setActiveTab] = useState<"PENDING" | "READY">("PENDING");
 
-  const { orders, isLoading, isRefetching, isUpdating, updateStatus } = useKds(
+  const { cards, isLoading, isRefetching, isUpdating, updateStatus } = useKds(
     activeStation?.id
   );
 
-  const pendingOrders = useMemo(
-    () => orders.filter((order) => order.status !== "READY"),
-    [orders]
+  const pendingCards = useMemo(
+    () => cards.filter((c) => c.status === "PENDING"),
+    [cards]
   );
-  const readyOrders = useMemo(
-    () => orders.filter((order) => order.status === "READY"),
-    [orders]
+  const readyCards = useMemo(
+    () => cards.filter((c) => c.status === "READY"),
+    [cards]
   );
-  const sortedPendingOrders = useMemo(
+  const sortedPending = useMemo(
     () =>
-      [...pendingOrders].sort(
+      [...pendingCards].sort(
         (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       ),
-    [pendingOrders]
+    [pendingCards]
   );
-  const sortedReadyOrders = useMemo(
+  const sortedReady = useMemo(
     () =>
-      [...readyOrders].sort(
+      [...readyCards].sort(
         (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       ),
-    [readyOrders]
+    [readyCards]
   );
-  const dueNowOrders = useMemo(
-    () => sortedPendingOrders.filter((order) => getWaitingMinutes(order.createdAt) >= DUE_NOW_MINUTES),
-    [sortedPendingOrders]
+  const dueNow = useMemo(
+    () => sortedPending.filter((c) => getWaitingMinutes(c.createdAt) >= DUE_NOW_MINUTES),
+    [sortedPending]
   );
-  const nextOrders = useMemo(
-    () => sortedPendingOrders.filter((order) => getWaitingMinutes(order.createdAt) < DUE_NOW_MINUTES),
-    [sortedPendingOrders]
+  const next = useMemo(
+    () => sortedPending.filter((c) => getWaitingMinutes(c.createdAt) < DUE_NOW_MINUTES),
+    [sortedPending]
   );
-  const visibleOrders = activeTab === "PENDING" ? sortedPendingOrders : sortedReadyOrders;
+  const visibleCards = activeTab === "PENDING" ? sortedPending : sortedReady;
 
   return (
     <div className="space-y-6 h-full">
@@ -73,7 +73,7 @@ const KdsBoardPage = () => {
           onClick={() => setActiveTab("PENDING")}
           className="h-11 px-4"
         >
-          Pending ({pendingOrders.length})
+          Pending ({pendingCards.length})
         </Button>
         <Button
           variant={activeTab === "READY" ? "primary" : "secondary"}
@@ -81,106 +81,91 @@ const KdsBoardPage = () => {
           onClick={() => setActiveTab("READY")}
           className="h-11 px-4"
         >
-          Ready ({readyOrders.length})
+          Ready ({readyCards.length})
         </Button>
       </div>
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <SkeletonCard className="min-h-[320px]" />
-          <SkeletonCard className="min-h-[320px]" />
-          <SkeletonCard className="min-h-[320px]" />
+          <SkeletonCard className="min-h-[280px]" />
+          <SkeletonCard className="min-h-[280px]" />
+          <SkeletonCard className="min-h-[280px]" />
+        </div>
+      ) : activeStation == null ? (
+        <div className="min-h-[320px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
+          <p className="text-lg font-semibold text-[var(--color-text-primary)]">
+            No station found
+          </p>
+          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+            Please create a station to use KDS in single-station mode.
+          </p>
+        </div>
+      ) : visibleCards.length === 0 ? (
+        <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+          <EmptyState
+            icon={<LuUtensilsCrossed size={28} />}
+            title={activeTab === "PENDING" ? "No pending items" : "No ready items"}
+            description="Items will appear automatically"
+          />
+        </div>
+      ) : activeTab === "PENDING" ? (
+        <div className="space-y-6">
+          {dueNow.length > 0 && (
+            <section className="space-y-3">
+              <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-danger-bg)] px-3 text-sm font-semibold text-[var(--color-danger)]">
+                DUE NOW ({dueNow.length})
+              </span>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {dueNow.map((card, index) => (
+                  <div key={card.orderStationItemId} className="h-full min-h-[280px]">
+                    <KdsOrderCard
+                      card={card}
+                      onMove={updateStatus}
+                      disabled={isUpdating}
+                      queueNumber={index + 1}
+                      prioritize
+                      priorityTone="due"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {next.length > 0 && (
+            <section className="space-y-3">
+              <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-warning-bg)] px-3 text-sm font-semibold text-[var(--color-warning)]">
+                NEXT ({next.length})
+              </span>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                {next.map((card, index) => (
+                  <div key={card.orderStationItemId} className="h-full min-h-[280px]">
+                    <KdsOrderCard
+                      card={card}
+                      onMove={updateStatus}
+                      disabled={isUpdating}
+                      queueNumber={dueNow.length + index + 1}
+                      prioritize
+                      priorityTone="next"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       ) : (
-        activeStation == null ? (
-          <div className="min-h-[320px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
-            <p className="text-lg font-semibold text-[var(--color-text-primary)]">
-              No station found
-            </p>
-            <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-              Please create a station to use KDS in single-station mode.
-            </p>
-          </div>
-        ) : (
-          <div className="min-h-[420px]">
-            {visibleOrders.length === 0 ? (
-              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-                <EmptyState
-                  icon={<LuUtensilsCrossed size={28} />}
-                  title={activeTab === "PENDING" ? "No pending orders" : "No ready orders"}
-                  description="Orders will appear automatically"
-                />
-              </div>
-            ) : (
-              activeTab === "PENDING" ? (
-                <div className="space-y-6">
-                  {dueNowOrders.length > 0 && (
-                    <section className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-danger-bg)] px-3 text-sm font-semibold text-[var(--color-danger)]">
-                          DUE NOW ({dueNowOrders.length})
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {dueNowOrders.map((order, index) => (
-                          <div key={order.id} className="h-full min-h-[360px]">
-                            <KdsOrderCard
-                              order={order}
-                              onMove={updateStatus}
-                              disabled={isUpdating}
-                              queueNumber={index + 1}
-                              prioritize
-                              priorityTone="due"
-                              showStatusBadge={false}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-                  )}
-
-                  {nextOrders.length > 0 && (
-                    <section className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-warning-bg)] px-3 text-sm font-semibold text-[var(--color-warning)]">
-                          NEXT ({nextOrders.length})
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {nextOrders.map((order, index) => (
-                          <div key={order.id} className="h-full min-h-[360px]">
-                            <KdsOrderCard
-                              order={order}
-                              onMove={updateStatus}
-                              disabled={isUpdating}
-                              queueNumber={dueNowOrders.length + index + 1}
-                              prioritize
-                              priorityTone="next"
-                              showStatusBadge={false}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </section>
-                  )}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-                  {visibleOrders.map((order) => (
-                    <div key={order.id} className="h-full min-h-[360px]">
-                      <KdsOrderCard
-                        order={order}
-                        onMove={updateStatus}
-                        disabled={isUpdating}
-                        showStatusBadge={false}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )
-            )}
-          </div>
-        )
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {visibleCards.map((card) => (
+            <div key={card.orderStationItemId} className="h-full min-h-[280px]">
+              <KdsOrderCard
+                card={card}
+                onMove={updateStatus}
+                disabled={isUpdating}
+              />
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

@@ -1,28 +1,26 @@
-export type KdsStatus = "PENDING" | "COOKING" | "READY";
+export type KdsStatus = "PENDING" | "READY";
 
-export interface KdsItem {
-  id: string;
-  name: string;
+/**
+ * One card = one order-station-item.
+ * Each card shows a single product with its parent order info.
+ */
+export interface KdsCard {
+  /** order-station-item ID -- used as React key and for PATCH */
+  orderStationItemId: string;
+  /** order-item ID -- required by PATCH endpoint */
+  orderItemId: string;
+  status: KdsStatus;
+
+  /* ── Product info ─────────────────────────── */
+  productName: string;
   quantity: number;
   note?: string;
-}
 
-export interface KdsOrder {
-  id: string;
+  /* ── Parent order info ────────────────────── */
   orderNumber: string;
-  status: KdsStatus;
   orderType?: "DINE_IN" | "TOGO" | "DELIVERY";
   tableNumber?: string;
   customerName?: string;
   deliveryPlatform?: string;
   createdAt: string;
-  stationId?: string;
-  stationName?: string;
-  items: KdsItem[];
-}
-
-export interface KdsColumn {
-  key: KdsStatus;
-  title: string;
-  emptyMessage: string;
 }

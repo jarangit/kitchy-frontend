@@ -1,88 +1,109 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { orderApiService } from "@/features/order/services/order";
-import { useOrderService } from "@/features/order/hooks/useOrder";
-import type { IKdsOrderDto } from "@/features/kds/types/kds.dto";
-import type { KdsOrder, KdsStatus } from "@/features/kds/types/kds.model";
+import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
+import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
 
-const VALID_KDS_STATUS: KdsStatus[] = ["PENDING", "COOKING", "READY"];
-
-const normalizeStatus = (status: string): KdsStatus => {
-  if (VALID_KDS_STATUS.includes(status as KdsStatus)) {
-    return status as KdsStatus;
-  }
-  return "PENDING";
+/**
+ * Map backend status ('pending' | 'complete') to KDS UI status.
+ */
+const toKdsStatus = (backendStatus: string): KdsStatus => {
+  return backendStatus === "complete" ? "READY" : "PENDING";
 };
 
-const getOrderProducts = (order: IKdsOrderDto) => {
-  if (Array.isArray(order.products) && order.products.length > 0) {
-    return order.products;
-  }
+/**
+ * Map KDS UI status back to backend status for PATCH.
+ */
+const toBackendStatus = (kdsStatus: KdsStatus): "pending" | "complete" => {
+  return kdsStatus === "READY" ? "complete" : "pending";
+};
 
-  if (Array.isArray(order.items) && order.items.length > 0) {
-    return order.items;
+/**
+ * Unwrap the Axios / API wrapper to get the raw array.
+ * Backend returns the array directly, but Axios wraps it in `response.data`,
+ * and our service layer may further wrap via `ApiResponse.data`.
+ */
+const unwrapPayload = (payload: unknown): IOrderStationItemDto[] => {
+  if (Array.isArray(payload)) return payload;
+
+  if (payload && typeof payload === "object") {
+    const obj = payload as Record<string, unknown>;
+    if (Array.isArray(obj.data)) return obj.data;
+    if (obj.data && typeof obj.data === "object") {
+      const nested = obj.data as Record<string, unknown>;
+      if (Array.isArray(nested.data)) return nested.data;
+    }
   }
 
   return [];
 };
 
-export const useKds = (stationId?: string) => {
-  const { updateMutation } = useOrderService({});
+/**
+ * Map each order-station-item to a flat KdsCard.
+ * No grouping -- 1 backend item = 1 card.
+ */
+const mapToCards = (items: IOrderStationItemDto[]): KdsCard[] => {
+  const cards: KdsCard[] = [];
 
-  const ordersQuery = useQuery({
+  for (const item of items) {
+    const oi = item.orderItem;
+    if (!oi) continue;
+
+    cards.push({
+      orderStationItemId: item.id,
+      orderItemId: oi.id,
+      status: toKdsStatus(item.status),
+      productName: oi.product?.name ?? "",
+      quantity: oi.quantity ?? 1,
+      note: oi.notes ?? undefined,
+      orderNumber: oi.order?.orderNumber ?? "—",
+      orderType: oi.order?.orderType,
+      tableNumber: oi.order?.tableNumber,
+      customerName: oi.order?.customerName,
+      deliveryPlatform: oi.order?.deliveryPlatform,
+      createdAt: oi.order?.createdAt ?? new Date().toISOString(),
+    });
+  }
+
+  return cards;
+};
+
+export const useKds = (stationId?: string) => {
+  const query = useQuery({
     queryKey: ["kds-orders", stationId],
     queryFn: async () => {
-      const response = await orderApiService.getOrdersByStationId(stationId as string);
-      return response.data?.data as IKdsOrderDto[];
+      const response = await orderApiService.getOrderStationItemsByStationId(
+        stationId as string
+      );
+      return response.data as unknown;
     },
     enabled: !!stationId,
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
   });
 
-  const orders = useMemo<KdsOrder[]>(() => {
-    const rawOrders = ordersQuery.data ?? [];
+  const cards = useMemo<KdsCard[]>(() => {
+    return mapToCards(unwrapPayload(query.data));
+  }, [query.data]);
 
-    return rawOrders
-      .map((order) => ({
-        id: order.id,
-        orderNumber: order.orderNumber,
-        status: normalizeStatus(order.status),
-        orderType: order.orderType ?? order.type,
-        tableNumber: order.tableNumber,
-        customerName: order.customerName,
-        deliveryPlatform: order.deliveryPlatform,
-        createdAt: order.createdAt,
-        stationId: order.stationId,
-        stationName: order.stationName,
-        items:
-          getOrderProducts(order).map((item) => ({
-            id: item.id ?? item.productId ?? "",
-            name:
-              item.name ??
-              item.productName ??
-              item.product?.name ??
-              `Product #${item.productId ?? "-"}`,
-            quantity: item.quantity ?? 1,
-            note: item.note,
-          })) ?? [],
-      }));
-  }, [ordersQuery.data]);
+  const updateStatus = async (card: KdsCard, status: KdsStatus) => {
+    if (!stationId) return;
 
-  const updateStatus = async (orderId: string, status: KdsStatus) => {
-    await updateMutation.mutateAsync({
-      orderId,
-      orderData: { status },
+    await orderApiService.updateOrderStationItem(card.orderStationItemId, {
+      status: toBackendStatus(status),
+      stationId,
+      orderItemId: card.orderItemId,
     });
-    await ordersQuery.refetch();
+
+    await query.refetch();
   };
 
   return {
-    orders,
-    isLoading: ordersQuery.isLoading,
-    isRefetching: ordersQuery.isRefetching,
-    error: ordersQuery.error,
+    cards,
+    isLoading: query.isLoading,
+    isRefetching: query.isRefetching,
+    error: query.error,
     updateStatus,
-    isUpdating: updateMutation.isPending,
+    isUpdating: false,
   };
 };

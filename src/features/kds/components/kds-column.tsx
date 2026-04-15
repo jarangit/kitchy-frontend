@@ -1,4 +1,4 @@
-import type { KdsOrder, KdsStatus } from "@/features/kds/types/kds.model";
+import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
 import KdsOrderCard from "@/features/kds/components/kds-order-card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { LuUtensilsCrossed } from "react-icons/lu";
@@ -6,12 +6,12 @@ import { LuUtensilsCrossed } from "react-icons/lu";
 interface Props {
   title: string;
   status: KdsStatus;
-  orders: KdsOrder[];
-  onMove: (orderId: string, status: KdsStatus) => void;
+  cards: KdsCard[];
+  onMove: (card: KdsCard, status: KdsStatus) => void;
   disabled?: boolean;
 }
 
-const KdsColumn = ({ title, status, orders, onMove, disabled }: Props) => {
+const KdsColumn = ({ title, status, cards, onMove, disabled }: Props) => {
   return (
     <section className="min-w-[320px] flex-1 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col">
       <div className="flex items-center justify-between mb-4">
@@ -19,22 +19,22 @@ const KdsColumn = ({ title, status, orders, onMove, disabled }: Props) => {
           {title}
         </h2>
         <span className="text-sm font-medium text-[var(--color-text-secondary)]">
-          {orders.length}
+          {cards.length}
         </span>
       </div>
 
-      {orders.length === 0 ? (
+      {cards.length === 0 ? (
         <EmptyState
           icon={<LuUtensilsCrossed size={28} />}
-          title={`No ${status.toLowerCase()} orders`}
-          description="Orders will appear automatically"
+          title={`No ${status.toLowerCase()} items`}
+          description="Items will appear automatically"
         />
       ) : (
         <div className="space-y-3 overflow-y-auto pr-1">
-          {orders.map((order) => (
+          {cards.map((card) => (
             <KdsOrderCard
-              key={order.id}
-              order={order}
+              key={card.orderStationItemId}
+              card={card}
               onMove={onMove}
               disabled={disabled}
             />

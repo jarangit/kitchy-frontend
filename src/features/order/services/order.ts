@@ -45,4 +45,22 @@ export const orderApiService = {
   getOrdersByStationId: async (stationId: string) => {
     return await axiosClient.get<ApiResponse<unknown>>(`/orders/station/${stationId}`);
   },
+  getOrderStationItemsByStationId: async (stationId: string) => {
+    return await axiosClient.get<ApiResponse<unknown>>(
+      `/order-station-item/station/${stationId}`
+    );
+  },
+  updateOrderStationItem: async (
+    orderStationItemId: string,
+    orderStationItemData: {
+      status: "pending" | "complete";
+      stationId: string;
+      orderItemId: string;
+    }
+  ) => {
+    return await axiosClient.patch(
+      `/order-station-item/${orderStationItemId}`,
+      orderStationItemData
+    );
+  },
 };
