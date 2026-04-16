@@ -79,7 +79,7 @@ const ActiveDot = ({ cx, cy, payload }: DotProps) => {
 };
 
 const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
-  const [activeIndex, setActiveIndex] = useState(Math.max(calendarDays.length - 1, 0));
+  const [, setActiveIndex] = useState(Math.max(calendarDays.length - 1, 0));
 
   const chartData = useMemo<ChartPoint[]>(
     () =>
@@ -111,9 +111,10 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
             data={chartData}
             margin={{ top: 8, right: 12, left: -12, bottom: 8 }}
             onMouseLeave={() => setActiveIndex(chartData.length - 1)}
-            onClick={(state) => {
-              if (state?.activePayload?.[0]?.payload?.day) {
-                onSelectDay(state.activePayload[0].payload.day);
+            onClick={(state: unknown) => {
+              const s = state as { activePayload?: Array<{ payload: ChartPoint }> };
+              if (s?.activePayload?.[0]?.payload?.day) {
+                onSelectDay(s.activePayload[0].payload.day);
               }
             }}
             onMouseMove={(state) => {

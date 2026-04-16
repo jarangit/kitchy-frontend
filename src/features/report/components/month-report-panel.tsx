@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { type JSX, useState } from "react";
 import { LuChartBar, LuList } from "react-icons/lu";
 import type { ICalendarDay } from "@/features/report/types/report.model";
 import { Select } from "@/shared/components/ui/select";
