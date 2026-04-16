@@ -142,17 +142,17 @@ const StoreDashboardPage = () => {
       <div className="space-y-2">
         <Link
           to="/dashboard"
-          className="min-h-11 px-2 inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+          className="min-h-11 px-2 inline-flex items-center gap-2 text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
         >
           <LuArrowLeft size={16} />
           Back to stores
         </Link>
 
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+          <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
             {storeFinOneQuery?.name}
           </h1>
-          <p className="text-sm text-[var(--color-text-secondary)]">{todayLabel}</p>
+          <p className="text-label text-[var(--color-text-secondary)]">{todayLabel}</p>
         </div>
       </div>
 
@@ -166,8 +166,8 @@ const StoreDashboardPage = () => {
               <LuShoppingCart size={24} />
             </div>
             <div className="min-w-0 text-left">
-              <div className="text-2xl font-semibold">Open POS</div>
-              <div className="mt-1 text-sm text-[rgba(255,255,255,0.78)]">
+              <div className="text-heading font-[var(--weight-semibold)]">Open POS</div>
+              <div className="mt-1 text-label text-[rgba(255,255,255,0.78)]">
                 Start taking orders
               </div>
             </div>
@@ -179,7 +179,7 @@ const StoreDashboardPage = () => {
       </Link>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
+        <h2 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
           Status
         </h2>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -189,10 +189,10 @@ const StoreDashboardPage = () => {
                 <LuMonitor size={18} />
               </div>
               <div>
-                <div className="text-lg font-semibold text-[var(--color-text-primary)]">
+                <div className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   POS Ready
                 </div>
-                <div className="text-sm text-[var(--color-text-secondary)]">
+                <div className="text-label text-[var(--color-text-secondary)]">
                   Ready to start shift
                 </div>
               </div>
@@ -200,10 +200,10 @@ const StoreDashboardPage = () => {
           </div>
 
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-lg font-semibold text-[var(--color-text-primary)]">
+            <div className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               {stations.length} {stations.length === 1 ? "Station" : "Stations"}
             </div>
-            <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
+            <div className="mt-1 text-label text-[var(--color-text-secondary)]">
               Connected to this store
             </div>
           </div>
@@ -211,28 +211,28 @@ const StoreDashboardPage = () => {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
+        <h2 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
           Today
         </h2>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+            <div className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
               ฿ {formatCurrency(todayRevenue)}
             </div>
-            <div className="mt-1 text-sm text-[var(--color-text-secondary)]">Revenue</div>
+            <div className="mt-1 text-label text-[var(--color-text-secondary)]">Revenue</div>
           </div>
 
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-2xl font-bold text-[var(--color-text-primary)]">
+            <div className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
               {todayOrderCount} Orders
             </div>
-            <div className="mt-1 text-sm text-[var(--color-text-secondary)]">Today</div>
+            <div className="mt-1 text-label text-[var(--color-text-secondary)]">Today</div>
           </div>
         </div>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
+        <h2 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
           More
         </h2>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
@@ -245,10 +245,10 @@ const StoreDashboardPage = () => {
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg)] text-[var(--color-text-secondary)]">
                 {action.icon}
               </div>
-              <div className="font-semibold text-[var(--color-text-primary)]">
+              <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                 {action.label}
               </div>
-              <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
+              <div className="mt-1 text-label text-[var(--color-text-secondary)]">
                 {action.description}
               </div>
             </Link>

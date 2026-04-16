@@ -25,16 +25,16 @@ const KdsHeader = ({ storeId, stationName, isRefetching }: Props) => {
         </Button>
 
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+          <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
             Kitchen Display System
           </h1>
-          <p className="text-sm text-[var(--color-text-secondary)]">
+          <p className="text-label text-[var(--color-text-secondary)]">
             {stationName ? `Station: ${stationName}` : "Single station mode"}
           </p>
         </div>
       </div>
 
-      <div className="inline-flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-sm text-[var(--color-text-secondary)]">
+      <div className="inline-flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 text-label text-[var(--color-text-secondary)]">
         <LuActivity size={16} className={isRefetching ? "animate-pulse" : ""} />
         {isRefetching ? "Updating..." : "Auto refresh 5s"}
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from "react";
+import { cn } from "@/shared/utils/cn";
 
 interface DialogProps {
   open: boolean;
@@ -7,7 +8,7 @@ interface DialogProps {
   className?: string;
 }
 
-export function Dialog({ open, onClose, children, className = "" }: DialogProps) {
+export function Dialog({ open, onClose, children, className }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -28,18 +29,17 @@ export function Dialog({ open, onClose, children, className = "" }: DialogProps)
       onClick={(e) => {
         if (e.target === dialogRef.current) onClose();
       }}
-      className={`
-        backdrop:bg-[var(--dialog-overlay)]
-        bg-[var(--dialog-bg)]
-        border border-[var(--dialog-border)]
-        rounded-[var(--dialog-radius)]
-        p-[var(--dialog-padding)]
-        w-full max-w-md
-        m-auto
-        max-h-[90vh] overflow-y-auto
-        open:animate-in open:fade-in open:zoom-in-95
-        ${className}
-      `.trim()}
+      className={cn(
+        "backdrop:bg-[var(--dialog-overlay)]",
+        "bg-[var(--dialog-bg)]",
+        "border border-[var(--dialog-border)]",
+        "rounded-[var(--dialog-radius)]",
+        "p-[var(--dialog-padding)]",
+        "w-full max-w-md m-auto",
+        "max-h-[90vh] overflow-y-auto",
+        "open:animate-in open:fade-in open:zoom-in-95",
+        className,
+      )}
     >
       {open && children}
     </dialog>
@@ -47,19 +47,19 @@ export function Dialog({ open, onClose, children, className = "" }: DialogProps)
 }
 
 export function DialogHeader({
-  className = "",
+  className,
   children,
 }: {
   className?: string;
   children: ReactNode;
 }) {
   return (
-    <div className={`mb-[var(--space-5)] ${className}`.trim()}>{children}</div>
+    <div className={cn("mb-[var(--space-5)]", className)}>{children}</div>
   );
 }
 
 export function DialogTitle({
-  className = "",
+  className,
   children,
 }: {
   className?: string;
@@ -67,7 +67,10 @@ export function DialogTitle({
 }) {
   return (
     <h2
-      className={`text-lg font-[var(--font-weight-bold)] text-[var(--color-text-primary)] ${className}`.trim()}
+      className={cn(
+        "text-[length:var(--dialog-title-font-size)] font-[var(--dialog-title-font-weight)] text-[var(--color-text-primary)]",
+        className,
+      )}
     >
       {children}
     </h2>
@@ -75,7 +78,7 @@ export function DialogTitle({
 }
 
 export function DialogDescription({
-  className = "",
+  className,
   children,
 }: {
   className?: string;
@@ -83,7 +86,10 @@ export function DialogDescription({
 }) {
   return (
     <p
-      className={`text-sm text-[var(--color-text-secondary)] mt-1 ${className}`.trim()}
+      className={cn(
+        "text-[length:var(--dialog-description-font-size)] text-[var(--color-text-secondary)] mt-1",
+        className,
+      )}
     >
       {children}
     </p>
@@ -91,7 +97,7 @@ export function DialogDescription({
 }
 
 export function DialogFooter({
-  className = "",
+  className,
   children,
 }: {
   className?: string;
@@ -99,7 +105,10 @@ export function DialogFooter({
 }) {
   return (
     <div
-      className={`flex justify-end gap-[var(--space-4)] mt-[var(--space-6)] ${className}`.trim()}
+      className={cn(
+        "flex justify-end gap-[var(--space-4)] mt-[var(--space-6)]",
+        className,
+      )}
     >
       {children}
     </div>

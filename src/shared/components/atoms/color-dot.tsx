@@ -1,3 +1,5 @@
+import { cn } from "@/shared/utils/cn"
+
 interface StationColorDotProps {
   color: string
   size?: "sm" | "md" | "lg"
@@ -11,5 +13,5 @@ export function ColorDot({ color, size = "md", className = "" }: StationColorDot
     lg: "w-6 h-6",
   }
 
-  return <div className={`rounded-full ${sizeClasses[size]} ${className}`} style={{ backgroundColor: color }} />
+  return <div className={cn("rounded-full", sizeClasses[size], className)} style={{ backgroundColor: color }} />
 }

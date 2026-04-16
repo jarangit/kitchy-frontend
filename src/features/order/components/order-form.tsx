@@ -70,7 +70,7 @@ export function OrderForm({
       className=" bg-[var(--color-bg)] p-6 rounded-lg lg:min-w-[300px]"
     >
       <div className="flex flex-col space-y-4">
-        <label htmlFor="orderNumber" className="text-xl font-semibold">
+        <label htmlFor="orderNumber" className="text-title font-[var(--weight-semibold)]">
           {label}
         </label>
         <Input

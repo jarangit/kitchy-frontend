@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import type { IOrderItem } from "@/features/order/types/order.model";
 import type { IUpdateOrder, OrderStatus } from "@/features/order/types/order.dto";
 import EditModal from "@/shared/components/modals/edit-modal";
+import { cn } from "@/shared/utils/cn";
 type Props = {
   isCanDelete?: boolean;
   isCanUpdate?: boolean;
@@ -175,7 +176,7 @@ export const ListOrders = ({
       </div>
       <div
         ref={containerRef}
-        className={`bg-[var(--color-surface)] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto`}
+        className={cn("bg-[var(--color-surface)] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto")}
       >
         {isLoading && !filteredOrders?.length ? (
           <div className="text-center text-[var(--color-text-secondary)]">Loading...</div>
@@ -183,11 +184,12 @@ export const ListOrders = ({
           <>
             {filteredOrders.length ? (
               <div
-                className={`grid grid-cols-1 md:grid-cols-3   2xl:grid-cols-4 gap-3  ${
+                className={cn(
+                  "grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-3",
                   containerRef.current && containerRef.current.offsetWidth > 950
                     ? "md:grid-cols-4"
                     : "md:grid-cols-3"
-                }`}
+                )}
               >
                  {filteredOrders.map((order: any, key: any) => (
                    <div key={key}>

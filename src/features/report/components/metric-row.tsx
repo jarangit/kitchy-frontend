@@ -44,10 +44,10 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
               <span style={{ color: m.colorText }}>{m.icon}</span>
             </div>
             <div className="min-w-0">
-              <div className="text-xl font-bold text-[var(--color-text-primary)]">
+              <div className="text-title font-[var(--weight-bold)] text-[var(--color-text-primary)]">
                 {m.value}
               </div>
-              <div className="text-xs text-[var(--color-text-secondary)]">
+              <div className="text-caption text-[var(--color-text-secondary)]">
                 {m.label}
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { LuPackage } from "react-icons/lu";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { cn } from "@/shared/utils/cn";
 
 interface Product {
   id: string;
@@ -46,26 +47,27 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
         <button
           key={product.id}
           onClick={() => onAddToCart(product)}
-          className={`relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl bg-[var(--color-bg)] p-6 transition-all duration-[var(--motion-fast)] hover:shadow-md active:scale-[0.98] ${
+          className={cn(
+            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl bg-[var(--color-bg)] p-6 transition-all duration-[var(--motion-fast)] hover:shadow-md active:scale-[0.98]",
             (quantityByProductId[product.id] ?? 0) > 0
               ? "border-2 border-[var(--color-primary)]"
               : "border border-[var(--color-border)] hover:border-[var(--color-text-primary)]"
-          }`}
+          )}
         >
           {(quantityByProductId[product.id] ?? 0) > 0 && (
-            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-full bg-[var(--color-primary)] px-1.5 text-sm font-semibold text-[var(--color-text-inverse)] tabular-nums">
+            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-full bg-[var(--color-primary)] px-1.5 text-label font-[var(--weight-semibold)] text-[var(--color-text-inverse)] tabular-nums">
               {quantityByProductId[product.id]}
             </span>
           )}
           <div
-            className={`mb-4 flex h-14 w-14 items-center justify-center rounded-full text-xl font-semibold ${getColorForName(product.name)}`}
+            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-full text-title font-[var(--weight-semibold)]", getColorForName(product.name))}
           >
             {product.name.charAt(0).toUpperCase()}
           </div>
-          <span className="line-clamp-2 text-center text-base font-medium leading-tight text-[var(--color-text-primary)]">
+          <span className="line-clamp-2 text-center text-body font-[var(--weight-medium)] leading-tight text-[var(--color-text-primary)]">
             {product.name}
           </span>
-          <span className="mt-2 text-lg font-semibold text-[var(--color-success)]">
+          <span className="mt-2 text-subtitle font-[var(--weight-semibold)] text-[var(--color-success)]">
             ฿{product.price.toFixed(2)}
           </span>
         </button>

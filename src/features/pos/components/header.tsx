@@ -3,6 +3,7 @@ import { LuShoppingCart, LuArrowLeft } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { useNetworkQuality } from "@/shared/hooks/useNetworkQuality";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { cn } from "@/shared/utils/cn";
 
 const NetworkQualityIcon = ({
   level,
@@ -45,7 +46,7 @@ const NetworkQualityIcon = ({
           return (
             <span
               key={bar}
-              className={`w-1 rounded-sm ${heightClass}`}
+              className={cn("w-1 rounded-sm", heightClass)}
               style={{
                 backgroundColor: isActive
                   ? levelColor
@@ -55,7 +56,7 @@ const NetworkQualityIcon = ({
           );
         })}
       </div>
-      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1.5 text-xs font-medium text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1.5 text-caption font-[var(--weight-medium)] text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
         {label}
       </span>
     </div>
@@ -100,7 +101,7 @@ const PosHeader = ({
   return (
     <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5 sm:px-8">
       <div className="min-w-0">
-        <h1 className="truncate text-2xl font-semibold text-[var(--color-text-primary)]">
+        <h1 className="truncate text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
           {shopName}
         </h1>
       </div>
@@ -108,10 +109,10 @@ const PosHeader = ({
       <div className="flex items-center gap-3 sm:gap-4">
         <div className="hidden items-center gap-2 rounded-xl bg-[var(--color-surface)] px-3 py-1.5 sm:flex">
           <div className="text-right">
-            <div className="text-base font-semibold text-[var(--color-text-primary)]">
+            <div className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               {formattedTime}
             </div>
-            <div className="text-sm text-[var(--color-text-secondary)]">
+            <div className="text-label text-[var(--color-text-secondary)]">
               {formattedDate}
             </div>
           </div>
@@ -133,7 +134,7 @@ const PosHeader = ({
               >
                 <LuShoppingCart size={20} className="text-[var(--color-text-primary)]" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-[var(--color-info-bg)] px-1 text-xs font-semibold text-[var(--color-info)]">
+                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-[var(--color-info-bg)] px-1 text-caption font-[var(--weight-semibold)] text-[var(--color-info)]">
                     {cartItemCount}
                   </span>
                 )}

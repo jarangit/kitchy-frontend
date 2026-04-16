@@ -33,7 +33,7 @@ const AddUpStoreForm = ({ _onSubmit, defaultValues }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label htmlFor="name" className="block font-medium mb-1">
+        <label htmlFor="name" className="block font-[var(--weight-medium)] mb-1">
           {t("storeForm.name")}
         </label>
         <input
@@ -43,7 +43,7 @@ const AddUpStoreForm = ({ _onSubmit, defaultValues }: Props) => {
           className="border border-[var(--color-border)] p-3 w-full rounded-[var(--input-radius)] bg-[var(--input-bg)] text-[var(--input-text)]"
         />
         {errors.name && (
-          <span className="text-[var(--color-danger)] text-sm">{errors.name.message}</span>
+          <span className="text-[var(--color-danger)] text-label">{errors.name.message}</span>
         )}
       </div>
       <button

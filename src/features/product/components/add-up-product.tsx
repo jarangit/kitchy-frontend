@@ -144,7 +144,7 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
                     name={field.name}
                   />
                   {errors.stationId && (
-                    <p className="text-[var(--color-danger)] text-sm mt-1">
+                    <p className="text-[var(--color-danger)] text-label mt-1">
                       {errors.stationId.message}
                     </p>
                   )}

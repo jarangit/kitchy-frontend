@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { LuBike, LuFileText, LuPackage, LuShapes, LuStore, LuSun, LuMoon, LuChevronRight } from "react-icons/lu";
 import { useTheme } from "@/shared/hooks/useTheme";
 import { Toggle } from "@/shared/components/ui/toggle";
+import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
@@ -70,8 +71,8 @@ const SettingsPage = () => {
               </div>
 
               <div className="flex-1">
-                <div className="font-semibold text-[var(--color-text-primary)]">{item.name}</div>
-                <div className="mt-1 text-sm leading-6 text-[var(--color-text-secondary)]">
+                <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{item.name}</div>
+                <div className="mt-1 text-label leading-6 text-[var(--color-text-secondary)]">
                   {item.description}
                 </div>
               </div>
@@ -88,8 +89,8 @@ const SettingsPage = () => {
                 {isDark ? <LuMoon size={24} /> : <LuSun size={24} />}
               </div>
               <div>
-                <div className="font-semibold text-[var(--color-text-primary)]">{t("settings.theme.title")}</div>
-                <div className="mt-1 text-sm leading-6 text-[var(--color-text-secondary)]">
+                <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{t("settings.theme.title")}</div>
+                <div className="mt-1 text-label leading-6 text-[var(--color-text-secondary)]">
                   {isDark ? t("settings.theme.dark") : t("settings.theme.light")}
                 </div>
               </div>
@@ -104,35 +105,27 @@ const SettingsPage = () => {
 
           <div className="flex items-center justify-between rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5">
             <div>
-              <div className="font-semibold text-[var(--color-text-primary)]">{t("settings.language.title")}</div>
-              <div className="mt-1 text-sm leading-6 text-[var(--color-text-secondary)]">
+              <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{t("settings.language.title")}</div>
+              <div className="mt-1 text-label leading-6 text-[var(--color-text-secondary)]">
                 {t("settings.language.description")}
               </div>
             </div>
 
             <div className="flex gap-2">
-              <button
-                type="button"
+              <ChipTab
+                size="sm"
+                active={language === "th"}
                 onClick={() => setLanguage("th")}
-                className={`min-h-11 rounded-full border px-4 text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-                  language === "th"
-                    ? "border-[var(--button-primary-bg)] bg-[var(--button-primary-bg)] text-[var(--button-primary-text)]"
-                    : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
-                }`}
               >
                 {t("settings.language.th")}
-              </button>
-              <button
-                type="button"
+              </ChipTab>
+              <ChipTab
+                size="sm"
+                active={language === "en"}
                 onClick={() => setLanguage("en")}
-                className={`min-h-11 rounded-full border px-4 text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-                  language === "en"
-                    ? "border-[var(--button-primary-bg)] bg-[var(--button-primary-bg)] text-[var(--button-primary-text)]"
-                    : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
-                }`}
               >
                 {t("settings.language.en")}
-              </button>
+              </ChipTab>
             </div>
           </div>
         </div>

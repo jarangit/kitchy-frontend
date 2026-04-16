@@ -132,7 +132,7 @@ const SettingsDeliveryPage = () => {
         title={t("settings.delivery.supportedApps")}
         description={t("settings.delivery.supportedAppsDescription")}
         action={
-          <div className="rounded-full bg-[var(--color-bg)] px-3.5 py-1.5 text-sm font-semibold text-[var(--color-text-primary)]">
+          <div className="rounded-full bg-[var(--color-bg)] px-3.5 py-1.5 text-label font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             {enabledPlatforms.length}/{supportedPlatforms.length}
           </div>
         }
@@ -144,10 +144,10 @@ const SettingsDeliveryPage = () => {
               className="flex min-h-36 flex-col justify-between rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-4 sm:px-6 sm:py-5"
             >
               <div className="min-w-0 space-y-1.5">
-                <div className="font-semibold text-[var(--color-text-primary)]">
+                <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   {platform}
                 </div>
-                <div className="text-sm leading-6 text-[var(--color-text-secondary)]">
+                <div className="text-label leading-6 text-[var(--color-text-secondary)]">
                   {enabledPlatforms.includes(platform)
                     ? t("settings.delivery.available")
                     : t("settings.delivery.hidden")}
@@ -155,7 +155,7 @@ const SettingsDeliveryPage = () => {
               </div>
 
               <div className="flex items-center justify-between gap-3 border-t border-[var(--color-border)] pt-4">
-                <span className="text-sm font-medium text-[var(--color-text-secondary)]">
+                <span className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
                   {enabledPlatforms.includes(platform)
                     ? t("settings.delivery.enabled")
                     : t("settings.delivery.disabled")}

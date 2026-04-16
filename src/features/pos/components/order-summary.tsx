@@ -8,7 +8,7 @@ interface Props {
 const OrderSummary = ({ items, subtotal }: Props) => {
   return (
     <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6">
-      <h3 className="mb-4 text-xl font-semibold text-[var(--color-text-primary)]">Order Summary</h3>
+      <h3 className="mb-4 text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">Order Summary</h3>
       <div className="space-y-3">
         {items.map((item) => (
           <div
@@ -20,7 +20,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
                 {item.name} x{item.quantity}
               </span>
               {item.note && (
-                <p className="mt-1 text-sm leading-5 text-[var(--color-text-tertiary)]">
+                <p className="mt-1 text-label leading-5 text-[var(--color-text-tertiary)]">
                   Note: {item.note}
                 </p>
               )}
@@ -29,7 +29,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-between border-t border-[var(--color-border)] pt-4 text-xl font-semibold">
+      <div className="mt-4 flex justify-between border-t border-[var(--color-border)] pt-4 text-title font-[var(--weight-semibold)]">
         <span>Total</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>

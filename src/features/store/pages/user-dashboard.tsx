@@ -50,18 +50,18 @@ export default function UserDashboard() {
           {/* Left: Logo + name */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] flex items-center justify-center">
-              <span className="text-lg font-semibold text-[var(--color-text-inverse)]">
+              <span className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-inverse)]">
                 K
               </span>
             </div>
-            <span className="text-xl font-semibold text-[var(--color-text-primary)]">
+            <span className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               Kitchy
             </span>
           </div>
 
           {/* Right: User info + sign out */}
           <div className="flex items-center gap-3">
-            <span className="text-sm text-[var(--color-text-secondary)] hidden sm:inline">
+            <span className="text-label text-[var(--color-text-secondary)] hidden sm:inline">
               {user?.email}
             </span>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
@@ -75,7 +75,7 @@ export default function UserDashboard() {
       <main className="max-w-4xl mx-auto px-6 py-10">
         {/* Welcome section */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+          <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
             Welcome back
           </h1>
           <p className="text-[var(--color-text-secondary)] mt-1">
@@ -84,7 +84,7 @@ export default function UserDashboard() {
         </div>
 
         {/* Your Stores heading */}
-        <h2 className="text-lg font-semibold text-[var(--color-text-primary)] mt-8 mb-4">
+        <h2 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mt-8 mb-4">
           Your Stores
         </h2>
 
@@ -108,7 +108,7 @@ export default function UserDashboard() {
                 <div className="w-10 h-10 rounded-xl bg-[var(--color-success-bg)] flex items-center justify-center text-2xl">
                   🏪
                 </div>
-                <p className="font-medium mt-3 text-[var(--color-text-primary)]">
+                <p className="font-[var(--weight-medium)] mt-3 text-[var(--color-text-primary)]">
                   {item.name}
                 </p>
               </div>
@@ -122,7 +122,7 @@ export default function UserDashboard() {
               <div className="w-10 h-10 rounded-xl bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-secondary)]">
                 <LuPlus size={24} />
               </div>
-              <p className="text-sm font-medium text-[var(--color-text-secondary)]">
+              <p className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
                 Create New Store
               </p>
             </div>

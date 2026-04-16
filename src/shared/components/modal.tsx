@@ -21,7 +21,7 @@ export default function MyModal() {
         <div className="fixed inset-0 bg-[var(--color-overlay)]" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="bg-[var(--dialog-bg)] p-6 rounded shadow-xl w-full max-w-sm">
-            <Dialog.Title className="text-lg font-bold">
+            <Dialog.Title className="text-subtitle font-[var(--weight-bold)]">
               Confirm Delete
             </Dialog.Title>
             <p className="mt-2 text-[var(--color-text-secondary)]">
@@ -34,7 +34,7 @@ export default function MyModal() {
               >
                 Cancel
               </button>
-              <button className="text-[var(--color-danger)] font-medium active:scale-[0.98] transition-all duration-[var(--motion-fast)]">Delete</button>
+              <button                 className="text-[var(--color-danger)] font-[var(--weight-medium)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]">Delete</button>
             </div>
           </Dialog.Panel>
         </div>

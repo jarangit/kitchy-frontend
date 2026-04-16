@@ -15,10 +15,10 @@ const KdsColumn = ({ title, status, cards, onMove, disabled }: Props) => {
   return (
     <section className="min-w-[320px] flex-1 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-xl p-4 flex flex-col">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+        <h2 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
           {title}
         </h2>
-        <span className="text-sm font-medium text-[var(--color-text-secondary)]">
+        <span className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
           {cards.length}
         </span>
       </div>

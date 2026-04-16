@@ -11,6 +11,7 @@ import {
   formatOrderTypeLabel,
 } from "@/shared/utils/status";
 import { LuArrowLeft, LuReceipt } from "react-icons/lu";
+import { cn } from "@/shared/utils/cn";
 
 /* ── Types for API response items ──────────────────── */
 
@@ -46,7 +47,7 @@ function Section({
   return (
     <div className="border-t border-[var(--color-border)] pt-5">
       {title && (
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">
+        <h3 className="text-caption font-[var(--weight-semibold)] uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">
           {title}
         </h3>
       )}
@@ -60,10 +61,10 @@ function Section({
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex justify-between items-baseline py-1.5">
-      <span className="text-sm text-[var(--color-text-secondary)]">
+      <span className="text-body-sm text-[var(--color-text-secondary)]">
         {label}
       </span>
-      <span className="text-sm font-medium text-[var(--color-text-primary)] text-right max-w-[60%] truncate">
+      <span className="text-body-sm font-[var(--weight-medium)] text-[var(--color-text-primary)] text-right max-w-[60%] truncate">
         {value}
       </span>
     </div>
@@ -184,14 +185,14 @@ const TransactionDetailPage = () => {
         {/* ── Header ──────────────────────────────── */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <h1 className="text-xl font-bold text-[var(--color-text-primary)]">
+            <h1 className="text-title font-[var(--weight-bold)] text-[var(--color-text-primary)]">
               {order.orderNumber}
             </h1>
             <Badge variant={toStatusBadgeVariant(order.status)}>
               {formatStatusLabel(order.status)}
             </Badge>
           </div>
-          <p className="text-sm text-[var(--color-text-tertiary)]">
+          <p className="text-label text-[var(--color-text-tertiary)]">
             {formattedDate} · {formattedTime}
           </p>
         </div>
@@ -216,7 +217,7 @@ const TransactionDetailPage = () => {
           <InfoRow
             label="Order ID"
             value={
-              <span className="font-mono text-xs">
+              <span className="font-mono text-caption">
                 #{order.id.length > 12 ? `${order.id.slice(0, 12)}...` : order.id}
               </span>
             }
@@ -244,26 +245,25 @@ const TransactionDetailPage = () => {
                 return (
                   <div
                     key={item.id || item.productId || index}
-                    className={`flex justify-between gap-4 py-3 ${
-                      index < items.length - 1
-                        ? "border-b border-[var(--color-border)]"
-                        : ""
-                    }`}
+                    className={cn(
+                      "flex justify-between gap-4 py-3",
+                      index < items.length - 1 && "border-b border-[var(--color-border)]"
+                    )}
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm text-[var(--color-text-primary)]">
+                      <p className="text-body-sm text-[var(--color-text-primary)]">
                         <span className="tabular-nums text-[var(--color-text-secondary)]">
                           {qty}x
                         </span>{" "}
                         {name}
                       </p>
                       {item.note && (
-                        <p className="mt-0.5 text-xs text-[var(--color-text-tertiary)] line-clamp-2">
+                        <p className="mt-0.5 text-caption text-[var(--color-text-tertiary)] line-clamp-2">
                           Note: {item.note}
                         </p>
                       )}
                     </div>
-                    <span className="text-sm font-medium tabular-nums text-[var(--color-text-primary)] shrink-0 pt-px">
+                    <span className="text-body-sm font-[var(--weight-medium)] tabular-nums text-[var(--color-text-primary)] shrink-0 pt-px">
                       {formatCurrency(lineTotal)}
                     </span>
                   </div>
@@ -276,18 +276,18 @@ const TransactionDetailPage = () => {
         {/* ── Summary ─────────────────────────────── */}
         <Section title="Summary">
           <div className="flex justify-between items-baseline py-2">
-            <span className="text-sm text-[var(--color-text-secondary)]">
+            <span className="text-body-sm text-[var(--color-text-secondary)]">
               Subtotal ({itemCount} item{itemCount !== 1 ? "s" : ""})
             </span>
-            <span className="text-sm tabular-nums text-[var(--color-text-primary)]">
+            <span className="text-body-sm tabular-nums text-[var(--color-text-primary)]">
               {formatCurrency(grandTotal)}
             </span>
           </div>
           <div className="border-t border-[var(--color-border)] mt-3 pt-4 flex justify-between items-baseline">
-            <span className="text-base font-semibold text-[var(--color-text-primary)]">
+            <span className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               Total
             </span>
-            <span className="text-xl font-bold tabular-nums text-[var(--color-text-primary)]">
+            <span className="text-title font-[var(--weight-bold)] tabular-nums text-[var(--color-text-primary)]">
               {formatCurrency(grandTotal)}
             </span>
           </div>
@@ -306,7 +306,7 @@ const TransactionDetailPage = () => {
               <InfoRow
                 label="Receipt"
                 value={
-                  <span className="font-mono text-xs">#{order.receiptId}</span>
+                  <span className="font-mono text-caption">#{order.receiptId}</span>
                 }
               />
             )}

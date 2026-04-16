@@ -1,3 +1,5 @@
+import { ChipTab } from "@/shared/components/ui/chip-tab";
+
 interface Props {
   categories: { id: string; name: string }[];
   selected: string;
@@ -7,28 +9,22 @@ interface Props {
 const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
   return (
     <div className="flex gap-3 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      <button
+      <ChipTab
+        size="lg"
+        active={selected === "ALL"}
         onClick={() => onSelect("ALL")}
-        className={`h-12 whitespace-nowrap rounded-full px-6 py-3 text-base font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-          selected === "ALL"
-            ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]"
-            : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]"
-        }`}
       >
         All
-      </button>
+      </ChipTab>
       {categories.map((cat) => (
-        <button
+        <ChipTab
           key={cat.id}
+          size="lg"
+          active={selected === cat.id}
           onClick={() => onSelect(cat.id)}
-          className={`h-12 whitespace-nowrap rounded-full px-6 py-3 text-base font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-            selected === cat.id
-              ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]"
-              : "bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)]"
-          }`}
         >
           {cat.name}
-        </button>
+        </ChipTab>
       ))}
     </div>
   );

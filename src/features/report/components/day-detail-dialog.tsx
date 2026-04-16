@@ -33,24 +33,24 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
 
       <div className="space-y-6">
         <div>
-          <div className="text-sm text-[var(--color-text-secondary)]">Revenue</div>
-          <div className="mt-1 text-[28px] font-bold text-[var(--color-text-primary)] leading-tight">
+          <div className="text-label text-[var(--color-text-secondary)]">Revenue</div>
+          <div className="mt-1 text-[28px] font-[var(--weight-bold)] text-[var(--color-text-primary)] leading-tight">
             {formatCurrency(day.revenue)}
           </div>
         </div>
 
-        <div className="flex items-center gap-3 text-sm text-[var(--color-text-secondary)]">
+        <div className="flex items-center gap-3 text-label text-[var(--color-text-secondary)]">
           <span>
-            Orders <span className="font-semibold text-[var(--color-text-primary)]">{day.orders}</span>
+            Orders <span className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{day.orders}</span>
           </span>
           <span className="text-[var(--color-text-tertiary)]">|</span>
           <span>
-            Avg <span className="font-semibold text-[var(--color-text-primary)]">{formatCurrency(avg)}</span>
+            Avg <span className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{formatCurrency(avg)}</span>
           </span>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">
+          <h4 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-3">
             Top products
           </h4>
           <div className="space-y-2.5">
@@ -60,14 +60,14 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
                 className="flex items-center justify-between gap-3"
               >
                 <div className="flex min-w-0 items-center gap-2">
-                  <span className="text-sm text-[var(--color-text-secondary)] shrink-0">
+                  <span className="text-label text-[var(--color-text-secondary)] shrink-0">
                     {idx + 1}.
                   </span>
-                  <span className="text-sm text-[var(--color-text-primary)] truncate">
+                  <span className="text-body-sm text-[var(--color-text-primary)] truncate">
                     {product.name}
                   </span>
                 </div>
-                <span className="text-sm text-[var(--color-text-secondary)] shrink-0">
+                <span className="text-label text-[var(--color-text-secondary)] shrink-0">
                   {product.quantitySold}
                 </span>
               </div>
@@ -76,7 +76,7 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">
+          <h4 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-3">
             Payment
           </h4>
           <div className="space-y-2.5">
@@ -85,10 +85,10 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
                 key={payment.method}
                 className="flex items-center justify-between gap-3"
               >
-                <span className="text-sm text-[var(--color-text-primary)]">
+                <span className="text-body-sm text-[var(--color-text-primary)]">
                   {payment.method}
                 </span>
-                <span className="text-sm text-[var(--color-text-secondary)] shrink-0">
+                <span className="text-label text-[var(--color-text-secondary)] shrink-0">
                   {formatCurrency(payment.amount)}
                 </span>
               </div>

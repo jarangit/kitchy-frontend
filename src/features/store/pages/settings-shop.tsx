@@ -67,7 +67,7 @@ const SettingsShopPage = () => {
             </Button>
 
             <div className="border-t border-[var(--color-border)] pt-5">
-              <p className="mb-3 text-xs text-[var(--color-text-tertiary)]">
+              <p className="mb-3 text-caption text-[var(--color-text-tertiary)]">
                 {t("settings.shop.switchStorePrompt")}
               </p>
               <Button

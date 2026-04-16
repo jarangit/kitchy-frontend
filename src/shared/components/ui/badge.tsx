@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "react";
+import { cn } from "@/shared/utils/cn";
 
 export type BadgeVariant =
   | "default"
@@ -7,50 +8,44 @@ export type BadgeVariant =
   | "warning"
   | "info";
 
+export type BadgeSize = "sm" | "md" | "lg";
+
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
+  size?: BadgeSize;
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: `
-    bg-[var(--color-surface)]
-    text-[var(--color-text-secondary)]
-  `,
-  success: `
-    bg-[var(--color-success-bg)]
-    text-[var(--color-success)]
-  `,
-  danger: `
-    bg-[var(--color-danger-bg)]
-    text-[var(--color-danger)]
-  `,
-  warning: `
-    bg-[var(--color-warning-bg)]
-    text-[var(--color-warning)]
-  `,
-  info: `
-    bg-[var(--color-info-bg)]
-    text-[var(--color-info)]
-  `,
+  default: "bg-[var(--badge-default-bg)] text-[var(--badge-default-text)]",
+  success: "bg-[var(--badge-success-bg)] text-[var(--badge-success-text)]",
+  danger: "bg-[var(--badge-danger-bg)] text-[var(--badge-danger-text)]",
+  warning: "bg-[var(--badge-warning-bg)] text-[var(--badge-warning-text)]",
+  info: "bg-[var(--badge-info-bg)] text-[var(--badge-info-text)]",
+};
+
+const sizeStyles: Record<BadgeSize, string> = {
+  sm: "px-[var(--badge-padding-x)] py-[var(--badge-padding-y)] text-[length:var(--badge-font-size)]",
+  md: "px-2.5 py-0.5 text-label min-h-7",
+  lg: "px-3 py-1 text-subtitle font-[var(--weight-bold)] min-w-[60px] text-center",
 };
 
 export function Badge({
   variant = "default",
-  className = "",
+  size = "sm",
+  className,
   children,
   ...props
 }: BadgeProps) {
   return (
     <span
-      className={`
-        inline-flex items-center
-        rounded-[var(--badge-radius)]
-        px-[var(--badge-padding-x)]
-        py-[var(--badge-padding-y)]
-        text-xs font-[var(--font-weight-medium)]
-        ${variantStyles[variant]}
-        ${className}
-      `.trim()}
+      className={cn(
+        "inline-flex items-center",
+        "rounded-[var(--badge-radius)]",
+        "font-[var(--badge-font-weight)]",
+        variantStyles[variant],
+        sizeStyles[size],
+        className,
+      )}
       {...props}
     >
       {children}

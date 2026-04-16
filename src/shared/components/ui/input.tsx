@@ -1,4 +1,5 @@
 import type { InputHTMLAttributes } from "react";
+import { cn } from "@/shared/utils/cn";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -8,34 +9,32 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 export function Input({
   label,
   error,
-  className = "",
+  className,
   ...props
 }: InputProps) {
   return (
     <div>
       {label && (
-        <label className="block text-sm font-[var(--label-font-weight)] text-[var(--label-text)] mb-[var(--space-1)]">
+        <label className="block text-[length:var(--label-font-size)] font-[var(--label-font-weight)] text-[var(--label-text)] mb-[var(--space-1)]">
           {label}
         </label>
       )}
       <input
-        className={`
-          w-full
-          h-[var(--input-height)]
-          ${error ? "bg-[var(--color-danger-bg)]" : "bg-[var(--input-bg)]"}
-          border
-          ${error ? "border-[var(--color-danger)]" : "border-[var(--input-border)]"}
-          rounded-[var(--input-radius)]
-          px-[var(--input-padding-x)]
-          text-[var(--input-text)]
-          text-sm
-          placeholder:text-[var(--input-placeholder)]
-          outline-none
-          transition-colors duration-[var(--motion-fast)]
-          focus:border-[var(--input-border-focus)] focus:ring-2 focus:ring-[var(--input-border-focus)]/25
-          disabled:opacity-50
-          ${className}
-        `.trim()}
+        className={cn(
+          "w-full h-[var(--input-height)]",
+          error ? "bg-[var(--color-danger-bg)]" : "bg-[var(--input-bg)]",
+          "border",
+          error ? "border-[var(--color-danger)]" : "border-[var(--input-border)]",
+          "rounded-[var(--input-radius)]",
+          "px-[var(--input-padding-x)]",
+          "text-[var(--input-text)] text-[length:var(--input-font-size)]",
+          "placeholder:text-[var(--input-placeholder)]",
+          "outline-none",
+          "transition-colors duration-[var(--motion-fast)]",
+          "focus:border-[var(--input-border-focus)] focus:ring-2 focus:ring-[var(--input-border-focus)]/25",
+          "disabled:opacity-50",
+          className,
+        )}
         {...props}
       />
       {error && (

@@ -2,6 +2,7 @@ import { type JSX, useState } from "react";
 import { LuChartBar, LuList } from "react-icons/lu";
 import type { ICalendarDay } from "@/features/report/types/report.model";
 import { Select } from "@/shared/components/ui/select";
+import { SegmentedControl } from "@/shared/components/ui/segmented-control";
 import MonthReportTable from "@/features/report/components/month-report-table";
 import MonthReportChart from "@/features/report/components/month-report-chart";
 
@@ -9,11 +10,10 @@ type MonthViewMode = "table" | "chart";
 
 const viewOptions: {
   key: MonthViewMode;
-  label: string;
-  icon: JSX.Element;
+  label: JSX.Element;
 }[] = [
-  { key: "table", label: "Table view", icon: <LuList size={16} /> },
-  { key: "chart", label: "Chart view", icon: <LuChartBar size={16} /> },
+  { key: "table", label: <LuList size={16} /> },
+  { key: "chart", label: <LuChartBar size={16} /> },
 ];
 
 interface Props {
@@ -46,10 +46,10 @@ const MonthReportPanel = ({
       <div className="border-b border-[var(--color-border)] p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
-            <h3 className="text-base font-semibold text-[var(--color-text-primary)]">
+            <h3 className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               Monthly Report
             </h3>
-            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[var(--color-text-secondary)]">
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-label text-[var(--color-text-secondary)]">
               <span>{formatCurrency(totalRevenue)} revenue</span>
               <span className="text-[var(--color-text-tertiary)]">&middot;</span>
               <span>{totalOrders.toLocaleString()} orders</span>
@@ -68,32 +68,12 @@ const MonthReportPanel = ({
               />
             </div>
 
-            <div className="inline-flex shrink-0 self-end sm:self-auto bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[var(--radius-md)] p-1">
-              {viewOptions.map((option) => {
-                const isActive = viewMode === option.key;
-
-                return (
-                  <button
-                    key={option.key}
-                    type="button"
-                    aria-label={option.label}
-                    title={option.label}
-                    onClick={() => setViewMode(option.key)}
-                    className={`
-                      w-9 h-9 rounded-[calc(var(--radius-md)-4px)] flex items-center justify-center
-                      transition-all duration-[var(--motion-fast)]
-                      ${
-                        isActive
-                          ? "bg-[var(--color-primary)] text-[var(--color-text-inverse)]"
-                          : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]"
-                      }
-                    `}
-                  >
-                    {option.icon}
-                  </button>
-                );
-              })}
-            </div>
+            <SegmentedControl
+              items={viewOptions}
+              value={viewMode}
+              onChange={setViewMode}
+              className="shrink-0 self-end sm:self-auto"
+            />
           </div>
         </div>
       </div>

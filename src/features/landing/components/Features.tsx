@@ -9,7 +9,7 @@ const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
     <div className="w-14 h-14 bg-[var(--color-success-bg)] rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
       {icon}
     </div>
-    <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-3">{title}</h3>
+    <h3 className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-3">{title}</h3>
     <p className="text-[var(--color-text-secondary)] leading-relaxed">{description}</p>
   </div>
 );
@@ -77,13 +77,13 @@ const Features = () => {
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-[var(--color-primary)] font-medium text-sm tracking-wide uppercase">
+          <span className="text-[var(--color-primary)] font-[var(--weight-medium)] text-label tracking-wide uppercase">
             Features
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mt-4 mb-6">
+          <h2 className="text-4xl md:text-5xl font-[var(--weight-bold)] text-[var(--color-text-primary)] mt-4 mb-6">
             ทำไมร้านอาหารต้องเลือก Kitchy
           </h2>
-          <p className="text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+          <p className="text-title text-[var(--color-text-secondary)] max-w-2xl mx-auto">
             ฟีเจอร์ครบครันที่ออกแบบมาเพื่อร้านอาหารโดยเฉพาะ
           </p>
         </div>

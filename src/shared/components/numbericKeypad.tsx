@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { useLoading } from "@/shared/hooks/useLoading";
+import { cn } from "@/shared/utils/cn";
 
 interface NumericKeypadProps {
   value: string;
@@ -56,13 +57,14 @@ export function NumericKeypad({
               variant={
                 key === "clear" || key === "backspace" ? "secondary" : "primary"
               }
-              className={`p-6 text-xl font-bold ${
+              className={cn(
+                "p-6 text-title font-[var(--weight-bold)]",
                 key === "clear"
                   ? "bg-[var(--color-warning-bg)] hover:opacity-80 text-[var(--color-warning)] border border-[var(--color-border)]"
                   : key === "backspace"
                   ? "bg-[var(--color-danger-bg)] hover:opacity-80 text-[var(--color-danger)] border border-[var(--color-border)]"
                   : "bg-[var(--color-bg)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text-primary)] border border-[var(--color-border)]"
-              }`}
+              )}
               onClick={() => handleKeyPress(key)}
             >
               {key === "backspace" ? "⌫" : key === "clear" ? "C" : key}
@@ -77,7 +79,7 @@ export function NumericKeypad({
         onClick={() => {
           onSubmit(), onChange("");
         }}
-        className="w-full text-xl font-bold py-4 px-8 h-auto"
+        className="w-full text-title font-[var(--weight-bold)] py-4 px-8 h-auto"
         disabled={isLoading}
       >
         {isLoading ? "Adding..." : "Add Order"}

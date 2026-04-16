@@ -44,7 +44,7 @@ const TransactionListPage = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Transaction History</h1>
+      <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">Transaction History</h1>
 
       <TransactionFilter onFilterChange={setFilter} />
 

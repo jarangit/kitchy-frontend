@@ -93,10 +93,10 @@ const KdsBoardPage = () => {
         </div>
       ) : activeStation == null ? (
         <div className="min-h-[320px] rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
-          <p className="text-lg font-semibold text-[var(--color-text-primary)]">
+          <p className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             No station found
           </p>
-          <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
+          <p className="mt-2 text-body-sm text-[var(--color-text-secondary)]">
             Please create a station to use KDS in single-station mode.
           </p>
         </div>
@@ -112,7 +112,7 @@ const KdsBoardPage = () => {
         <div className="space-y-8">
           {dueNow.length > 0 && (
             <section className="space-y-4">
-              <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-danger-bg)] px-3 text-sm font-semibold text-[var(--color-danger)]">
+              <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-danger-bg)] px-3 text-label font-[var(--weight-semibold)] text-[var(--color-danger)]">
                 DUE NOW ({dueNow.length})
               </span>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -134,7 +134,7 @@ const KdsBoardPage = () => {
 
           {next.length > 0 && (
             <section className="space-y-4">
-              <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-warning-bg)] px-3 text-sm font-semibold text-[var(--color-warning)]">
+              <span className="inline-flex min-h-8 items-center rounded-full bg-[var(--color-warning-bg)] px-3 text-label font-[var(--weight-semibold)] text-[var(--color-warning)]">
                 NEXT ({next.length})
               </span>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">

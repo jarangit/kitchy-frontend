@@ -16,7 +16,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
     <div className="border-b border-[var(--color-border)] py-4 last:border-0">
       <div className="flex items-center justify-between gap-3">
         <p
-          className="min-w-0 flex-1 line-clamp-1 text-base font-semibold text-[var(--color-text-primary)]"
+          className="min-w-0 flex-1 line-clamp-1 text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]"
           title={item.name}
         >
           {item.name}
@@ -38,7 +38,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           >
             <LuMinus size={18} />
           </button>
-          <span className="min-w-8 text-center text-base font-semibold tabular-nums text-[var(--color-text-primary)]">
+          <span className="min-w-8 text-center text-body font-[var(--weight-semibold)] tabular-nums text-[var(--color-text-primary)]">
             {item.quantity}
           </span>
           <button
@@ -53,14 +53,14 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           <button
             type="button"
             onClick={() => onEditNote(item)}
-            className="inline-flex min-h-10 items-center rounded-full px-3 text-sm font-medium text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="inline-flex min-h-10 items-center rounded-full px-3 text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
           >
             {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
           </button>
-          <p className="text-sm text-[var(--color-text-secondary)] tabular-nums">
+          <p className="text-label text-[var(--color-text-secondary)] tabular-nums">
             ฿{item.price.toFixed(2)}/ea
           </p>
-          <p className="text-base font-semibold tabular-nums text-[var(--color-text-primary)]">
+          <p className="text-body font-[var(--weight-semibold)] tabular-nums text-[var(--color-text-primary)]">
             ฿{(item.price * item.quantity).toFixed(2)}
           </p>
         </div>

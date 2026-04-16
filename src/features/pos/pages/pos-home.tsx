@@ -142,7 +142,7 @@ const PosHomePage = () => {
           <div className="absolute top-0 right-0 bottom-0 w-full max-w-[400px] bg-[var(--color-bg)] border-l border-[var(--color-border)] shadow-sm animate-slide-in-right">
             {/* Close button */}
             <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-3">
-              <span className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <span className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                 Cart
               </span>
               <button

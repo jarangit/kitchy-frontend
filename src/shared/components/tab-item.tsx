@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
+import { cn } from "@/shared/utils/cn";
 
-type Props = React.HTMLAttributes<HTMLDivElement> & {
+type Props = HTMLAttributes<HTMLDivElement> & {
   title: string;
   count: number;
-  icon: React.ReactNode;
+  icon: ReactNode;
   isActive: boolean;
   isCanAnimation?: boolean;
   onClick: () => void;
@@ -16,12 +18,11 @@ const TabItem = ({
   isActive,
   onClick,
   isCanAnimation = false,
-  className = "",
-
+  className,
   ...rest
 }: Props) => {
   const [bouncing, setBouncing] = useState(false);
-  const prevCount = useRef(count); // ใช้เก็บค่าเดิม
+  const prevCount = useRef(count);
 
   useEffect(() => {
     if (count > prevCount.current && prevCount.current !== 0) {
@@ -35,13 +36,16 @@ const TabItem = ({
   useEffect(() => {
     prevCount.current = count;
   }, [count]);
+
   return (
     <div
-      className={`border border-[var(--color-border)] rounded-xl px-4 py-2 w-fit cursor-pointer transition-all active:scale-[0.98] duration-[var(--motion-fast)] ${
-        isActive ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)]" : ""
-      } 
-            ${bouncing && isCanAnimation && "bg-[var(--color-info-bg)] text-[var(--color-text-primary)]"}
-      ${className}`}
+      className={cn(
+        "border border-[var(--color-border)] rounded-xl px-4 py-2 w-fit cursor-pointer",
+        "transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
+        isActive && "bg-[var(--chip-active-bg)] text-[var(--chip-active-text)]",
+        bouncing && isCanAnimation && "bg-[var(--color-info-bg)] text-[var(--color-text-primary)]",
+        className,
+      )}
       onClick={onClick}
       {...rest}
     >
@@ -49,10 +53,9 @@ const TabItem = ({
         {icon}
         <div>
           {`${title} `}
-          <span
-            className={`      ${bouncing && isCanAnimation && "animate-ping"}
-`}
-          >{`(${count})`}</span>
+          <span className={cn(bouncing && isCanAnimation && "animate-ping")}>
+            {`(${count})`}
+          </span>
         </div>
       </div>
     </div>

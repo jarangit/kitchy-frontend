@@ -1,5 +1,6 @@
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import { LuBanknote, LuQrCode } from "react-icons/lu";
+import { cn } from "@/shared/utils/cn";
 
 interface Props {
   selected: PaymentMethod;
@@ -18,23 +19,26 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
         <button
           key={method.value}
           onClick={() => onSelect(method.value)}
-          className={`flex min-h-28 flex-col items-center justify-center rounded-xl border p-4 transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
+          className={cn(
+            "flex min-h-28 flex-col items-center justify-center rounded-xl border p-4 transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
             selected === method.value
               ? "border-[var(--color-text-primary)] bg-[var(--color-surface)]"
               : "border-[var(--color-border)] hover:border-[var(--color-border-hover)]"
-          }`}
+          )}
         >
           <div
-            className={`mb-2 ${
+            className={cn(
+              "mb-2",
               selected === method.value ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-tertiary)]"
-            }`}
+            )}
           >
             {method.icon}
           </div>
           <span
-            className={`text-base font-medium ${
+            className={cn(
+              "text-body font-[var(--weight-medium)]",
               selected === method.value ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)]"
-            }`}
+            )}
           >
             {method.label}
           </span>

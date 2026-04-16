@@ -54,10 +54,10 @@ const PaymentSuccessPage = () => {
         <LuCircleCheck size={72} />
       </div>
 
-      <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
+      <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)] mb-1">
         Payment Successful!
       </h1>
-      <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-6">
+      <p className="text-display font-[var(--weight-bold)] text-[var(--color-text-primary)] mb-6">
         ฿{subtotal.toFixed(2)}
       </p>
 
@@ -65,13 +65,13 @@ const PaymentSuccessPage = () => {
       <div className="w-full bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-6">
         {/* Receipt header */}
         <div className="text-center pb-4">
-          <p className="text-xs uppercase tracking-widest text-[var(--color-text-secondary)] mb-1">
+          <p className="text-caption uppercase tracking-widest text-[var(--color-text-secondary)] mb-1">
             Receipt
           </p>
-          <p className="font-mono font-bold text-[var(--color-text-primary)]">
+          <p className="font-mono font-[var(--weight-bold)] text-[var(--color-text-primary)]">
             #{receiptId}
           </p>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+          <p className="text-label text-[var(--color-text-secondary)] mt-1">
             {formattedDate}
           </p>
         </div>
@@ -81,12 +81,12 @@ const PaymentSuccessPage = () => {
           {items.map((item) => (
             <div
               key={item.productId}
-              className="grid grid-cols-[1fr_auto_auto] gap-2 text-sm text-[var(--color-text-secondary)]"
+              className="grid grid-cols-[1fr_auto_auto] gap-2 text-label text-[var(--color-text-secondary)]"
             >
               <div>
                 <span>{item.name}</span>
                 {item.note && (
-                  <p className="mt-1 text-xs leading-5 text-[var(--color-text-tertiary)]">
+                  <p className="mt-1 text-caption leading-5 text-[var(--color-text-tertiary)]">
                     Note: {item.note}
                   </p>
                 )}
@@ -101,14 +101,14 @@ const PaymentSuccessPage = () => {
 
         {/* Total */}
         <div className="border-t border-[var(--color-border)] pt-3 pb-3">
-          <div className="flex justify-between font-bold text-[var(--color-text-primary)]">
+          <div className="flex justify-between font-[var(--weight-bold)] text-[var(--color-text-primary)]">
             <span>Total</span>
             <span>฿{subtotal.toFixed(2)}</span>
           </div>
         </div>
 
         {/* Payment details */}
-        <div className="border-t border-[var(--color-border)] pt-3 space-y-2 text-sm">
+        <div className="border-t border-[var(--color-border)] pt-3 space-y-2 text-label">
           <div className="flex justify-between text-[var(--color-text-secondary)]">
             <span>Payment Method</span>
             <span>{methodLabel[paymentMethod]}</span>
@@ -119,7 +119,7 @@ const PaymentSuccessPage = () => {
                 <span>Cash Received</span>
                 <span>฿{receivedAmount.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between font-semibold text-[var(--color-success)]">
+              <div className="flex justify-between font-[var(--weight-semibold)] text-[var(--color-success)]">
                 <span>Change</span>
                 <span>฿{change.toFixed(2)}</span>
               </div>
@@ -129,14 +129,14 @@ const PaymentSuccessPage = () => {
 
         {/* Customer receipt QR */}
         <div className="border-t border-[var(--color-border)] pt-4 mt-4">
-          <p className="text-sm font-semibold text-[var(--color-text-primary)] text-center mb-2">
+          <p className="text-label font-[var(--weight-semibold)] text-[var(--color-text-primary)] text-center mb-2">
             Scan to get digital receipt
           </p>
           <div className="w-40 h-40 mx-auto border border-[var(--color-border)] rounded-[var(--radius-lg)] bg-[var(--color-surface)] flex flex-col items-center justify-center gap-2 text-[var(--color-text-tertiary)]">
             <LuQrCode size={44} />
-            <span className="text-xs">Receipt QR</span>
+            <span className="text-caption">Receipt QR</span>
           </div>
-          <p className="text-xs text-[var(--color-text-tertiary)] text-center mt-2">
+          <p className="text-caption text-[var(--color-text-tertiary)] text-center mt-2">
             Ref: #{receiptId}
           </p>
         </div>

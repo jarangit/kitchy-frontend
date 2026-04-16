@@ -9,6 +9,7 @@ import {
   LuChartBar,
 } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
+import { cn } from "@/shared/utils/cn";
 
 type NavMatch = "exact" | "prefix";
 
@@ -84,10 +85,10 @@ const Sidebar = () => {
         key={item.name}
         aria-label={item.name}
         title={item.name}
-        className={`${itemClass} ${active ? activeClass : inactiveClass}`}
+        className={cn(itemClass, active ? activeClass : inactiveClass)}
       >
         {item.icon}
-        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-medium text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
+        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-[var(--weight-medium)] text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
           {item.name}
         </span>
       </Link>

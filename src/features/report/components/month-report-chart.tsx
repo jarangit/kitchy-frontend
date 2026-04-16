@@ -56,7 +56,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps) => {
       <div className="text-[10px] text-[var(--color-text-inverse)]/80">
         {format(parseISO(point.day.date), "MMM dd")}
       </div>
-      <div className="text-sm font-semibold text-[var(--color-text-inverse)]">
+      <div className="text-label font-[var(--weight-semibold)] text-[var(--color-text-inverse)]">
         {formatCurrency(point.revenue)}
       </div>
     </div>
@@ -93,7 +93,7 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
 
   if (calendarDays.length === 0) {
     return (
-      <div className="p-5 text-sm text-[var(--color-text-secondary)]">
+      <div className="p-5 text-body-sm text-[var(--color-text-secondary)]">
         No report data for this month.
       </div>
     );
@@ -101,7 +101,7 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
 
   return (
     <div className="px-3 py-2 sm:px-4 sm:py-3">
-      <div className="mb-1 text-sm font-semibold text-[var(--color-text-primary)]">
+      <div className="mb-1 text-label font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
         Revenue Insights
       </div>
 

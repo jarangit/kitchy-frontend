@@ -35,11 +35,11 @@ const LoginPage = () => {
       <div className="hidden lg:flex flex-col items-center justify-center flex-1 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] px-12">
         {/* Logo square */}
         <div className="w-20 h-20 rounded-2xl bg-[var(--color-bg)]/20 backdrop-blur-sm flex items-center justify-center mb-6">
-          <span className="text-4xl font-semibold text-[var(--color-text-inverse)]">
+          <span className="text-4xl font-[var(--weight-semibold)] text-[var(--color-text-inverse)]">
             K
           </span>
         </div>
-        <h1 className="text-3xl font-semibold text-[var(--color-text-inverse)] mb-2">
+        <h1 className="text-display font-[var(--weight-semibold)] text-[var(--color-text-inverse)] mb-2">
           Kitchy POS
         </h1>
         <p className="text-[var(--color-text-inverse)] opacity-80 text-center leading-relaxed">
@@ -53,10 +53,10 @@ const LoginPage = () => {
       <div className="flex-1 flex items-center justify-center p-6 bg-[var(--color-surface)]">
         <div className="max-w-sm w-full bg-[var(--color-bg)] rounded-[var(--radius-lg)] p-8 shadow-sm border border-[var(--color-border)]">
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-[var(--color-text-primary)]">
+            <h2 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               Sign In
             </h2>
-            <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+            <p className="text-label text-[var(--color-text-secondary)] mt-1">
               Enter your credentials to access your account
             </p>
           </div>
@@ -85,7 +85,7 @@ const LoginPage = () => {
             />
 
             {error && (
-              <p className="text-sm text-[var(--color-danger)]">{error}</p>
+              <p className="text-label text-[var(--color-danger)]">{error}</p>
             )}
 
             <Button type="submit" className="w-full">

@@ -25,7 +25,7 @@ export const SettingsShell = ({
         {onBack && (
           <button
             onClick={onBack}
-            className="inline-flex min-h-11 items-center gap-2 px-1 text-sm text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="inline-flex min-h-11 items-center gap-2 px-1 text-label text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
           >
             <LuArrowLeft size={16} />
             {backLabel ?? t("common.backToSettings")}
@@ -33,11 +33,11 @@ export const SettingsShell = ({
         )}
 
         <div className="space-y-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-7 sm:px-7 sm:py-8">
-          <h1 className="text-2xl font-bold leading-tight text-[var(--color-text-primary)] sm:text-3xl">
+          <h1 className="text-heading font-[var(--weight-bold)] leading-tight text-[var(--color-text-primary)] sm:text-display">
             {title}
           </h1>
           {description && (
-            <p className="max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
+            <p className="max-w-2xl text-body-sm leading-7 text-[var(--color-text-secondary)]">
               {description}
             </p>
           )}
@@ -68,7 +68,7 @@ export const SettingsSectionCard = ({
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
             {title && (
-              <h2 className="text-lg font-semibold text-[var(--color-text-primary)]">
+              <h2 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                 {title}
               </h2>
             )}

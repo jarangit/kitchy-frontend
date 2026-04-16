@@ -31,7 +31,7 @@ const AddUpMenuForm = ({ _onSubmit, defaultValues }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
-        <label htmlFor="name" className="block font-medium mb-1">
+        <label htmlFor="name" className="block font-[var(--weight-medium)] mb-1">
           Menu Name
         </label>
         <input
@@ -42,7 +42,7 @@ const AddUpMenuForm = ({ _onSubmit, defaultValues }: Props) => {
           placeholder="Enter menu name"
         />
         {errors.name && (
-          <span className="text-[var(--color-danger)] text-sm">{errors.name.message}</span>
+          <span className="text-[var(--color-danger)] text-label">{errors.name.message}</span>
         )}
       </div>
       <button

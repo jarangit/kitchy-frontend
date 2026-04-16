@@ -4,6 +4,7 @@ import { Badge } from "@/shared/components/ui/badge"
 import { LuMonitor, LuPencil, LuTrash2 } from "react-icons/lu"
 import { ColorDot } from "@/shared/components/atoms/color-dot"
 import { Link } from "react-router-dom"
+import { cn } from "@/shared/utils/cn"
 
 interface StationCardProps {
   id: string
@@ -35,12 +36,12 @@ export function StationCard({
   className = "",
 }: StationCardProps) {
   return (
-    <Card className={`hover:shadow-lg transition-shadow ${className}`}>
+    <Card className={cn("hover:shadow-lg transition-shadow", className)}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <ColorDot color={color} size="lg" />
-            <CardTitle className="text-lg">{name}</CardTitle>
+            <CardTitle className="text-subtitle">{name}</CardTitle>
           </div>
           <div className="flex gap-2">
             <Link to={`/store/${storeId}/station/${id}`}>
@@ -65,17 +66,17 @@ export function StationCard({
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-3 bg-[var(--color-warning-bg)] rounded-lg">
-              <div className="text-2xl font-bold text-[var(--color-warning)]">{activeOrders}</div>
-              <div className="text-sm text-[var(--color-text-secondary)]">Active Orders</div>
+              <div className="text-heading font-[var(--weight-bold)] text-[var(--color-warning)]">{activeOrders}</div>
+              <div className="text-label text-[var(--color-text-secondary)]">Active Orders</div>
             </div>
             <div className="text-center p-3 bg-[var(--color-success-bg)] rounded-lg">
-              <div className="text-2xl font-bold text-[var(--color-success)]">{completedToday}</div>
-              <div className="text-sm text-[var(--color-text-secondary)]">Completed Today</div>
+              <div className="text-heading font-[var(--weight-bold)] text-[var(--color-success)]">{completedToday}</div>
+              <div className="text-label text-[var(--color-text-secondary)]">Completed Today</div>
             </div>
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-medium text-sm text-[var(--color-text-secondary)]">Display Settings</h4>
+            <h4 className="font-[var(--weight-medium)] text-label text-[var(--color-text-secondary)]">Display Settings</h4>
             <div className="flex flex-wrap gap-2">
               <Badge variant="default">Text: {displaySettings.textSize}</Badge>
               <Badge variant="default">Sound: {displaySettings.soundEnabled ? "On" : "Off"}</Badge>

@@ -71,7 +71,7 @@ const SettingsCategoriesPage = () => {
 
             <div className="mt-4 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-[var(--color-text-secondary)]">
+                <span className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
                   Active
                 </span>
                 <Toggle
@@ -94,7 +94,7 @@ const SettingsCategoriesPage = () => {
           </div>
 
           {categoriesQueryLoading ? (
-            <div className="text-sm text-[var(--color-text-secondary)]">
+            <div className="text-label text-[var(--color-text-secondary)]">
               {t("settings.categories.loading")}
             </div>
           ) : categoriesQuery.length > 0 ? (
@@ -104,16 +104,16 @@ const SettingsCategoriesPage = () => {
                   key={category.id}
                   className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-4"
                 >
-                  <div className="font-semibold text-[var(--color-text-primary)]">
+                  <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                     {category.name}
                   </div>
-                  <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                  <div className="mt-1 text-label text-[var(--color-text-secondary)]">
                     Sort: {category.sortOrder}
                   </div>
-                  <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                  <div className="mt-1 text-label text-[var(--color-text-secondary)]">
                     {category.isActive ? "Active" : "Inactive"}
                   </div>
-                  <div className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                  <div className="mt-1 text-label text-[var(--color-text-secondary)]">
                     ID: {category.id}
                   </div>
                 </div>

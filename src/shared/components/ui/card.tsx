@@ -1,18 +1,19 @@
 import type { HTMLAttributes } from "react";
+import { cn } from "@/shared/utils/cn";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {}
 
-export function Card({ className = "", children, ...props }: CardProps) {
+export function Card({ className, children, ...props }: CardProps) {
   return (
     <div
-      className={`
-        bg-[var(--card-bg)]
-        border border-[var(--card-border)]
-        rounded-[var(--card-radius)]
-        p-[var(--card-padding)]
-        transition-all duration-[var(--motion-fast)]
-        ${className}
-      `.trim()}
+      className={cn(
+        "bg-[var(--card-bg)]",
+        "border border-[var(--card-border)]",
+        "rounded-[var(--card-radius)]",
+        "p-[var(--card-padding)]",
+        "transition-all duration-[var(--motion-fast)]",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -21,25 +22,28 @@ export function Card({ className = "", children, ...props }: CardProps) {
 }
 
 export function CardHeader({
-  className = "",
+  className,
   children,
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={`mb-[var(--space-4)] ${className}`.trim()} {...props}>
+    <div className={cn("mb-[var(--space-4)]", className)} {...props}>
       {children}
     </div>
   );
 }
 
 export function CardTitle({
-  className = "",
+  className,
   children,
   ...props
 }: HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={`font-[var(--font-weight-bold)] text-[var(--color-text-primary)] ${className}`.trim()}
+      className={cn(
+        "text-[length:var(--card-title-font-size)] font-[var(--card-title-font-weight)] text-[var(--color-text-primary)]",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -48,13 +52,16 @@ export function CardTitle({
 }
 
 export function CardDescription({
-  className = "",
+  className,
   children,
   ...props
 }: HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={`text-sm text-[var(--color-text-secondary)] mt-1 ${className}`.trim()}
+      className={cn(
+        "text-[length:var(--card-description-font-size)] text-[var(--color-text-secondary)] mt-1",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -63,7 +70,7 @@ export function CardDescription({
 }
 
 export function CardContent({
-  className = "",
+  className,
   children,
   ...props
 }: HTMLAttributes<HTMLDivElement>) {

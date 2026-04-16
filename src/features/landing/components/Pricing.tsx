@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { SegmentedControl } from "@/shared/components/ui/segmented-control";
+import { cn } from "@/shared/utils/cn";
 
 type PlanType = "free" | "pro" | "enterprise";
 
@@ -67,30 +69,34 @@ const PricingCard = ({
   isActive: boolean;
 }) => (
   <div
-    className={`relative p-8 rounded-3xl transition-all duration-300 ${
+    className={cn(
+      "relative p-8 rounded-3xl transition-all duration-300",
       plan.highlight
         ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] scale-105 shadow-2xl"
-        : "bg-[var(--color-bg)] border border-[var(--color-border)]"
-    } ${isActive ? "opacity-100" : "opacity-100"}`}
+        : "bg-[var(--color-bg)] border border-[var(--color-border)]",
+      isActive ? "opacity-100" : "opacity-100"
+    )}
   >
     {plan.highlight && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-sm font-medium px-4 py-1 rounded-full">
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-label font-[var(--weight-medium)] px-4 py-1 rounded-full">
         แนะนำ
       </div>
     )}
 
     <div className="mb-6">
       <h3
-        className={`text-xl font-semibold mb-2 ${
+        className={cn(
+          "text-title font-[var(--weight-semibold)] mb-2",
           plan.highlight ? "text-[var(--color-text-inverse)]" : "text-[var(--color-text-primary)]"
-        }`}
+        )}
       >
         {plan.name}
       </h3>
       <p
-        className={`text-sm ${
+        className={cn(
+          "text-label",
           plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"
-        }`}
+        )}
       >
         {plan.description}
       </p>
@@ -98,17 +104,19 @@ const PricingCard = ({
 
     <div className="mb-8">
       <span
-        className={`text-5xl font-bold ${
+        className={cn(
+          "text-5xl font-[var(--weight-bold)]",
           plan.highlight ? "text-[var(--color-text-inverse)]" : "text-[var(--color-text-primary)]"
-        }`}
+        )}
       >
         {plan.price === "ติดต่อ" ? "" : "฿"}
         {plan.price}
       </span>
       <span
-        className={`text-sm ml-2 ${
+        className={cn(
+          "text-label ml-2",
           plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"
-        }`}
+        )}
       >
         {plan.period}
       </span>
@@ -140,11 +148,12 @@ const PricingCard = ({
     </ul>
 
     <button
-      className={`w-full py-4 rounded-full font-medium transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98] h-14 ${
+      className={cn(
+        "w-full py-4 rounded-full font-[var(--weight-medium)] transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98] h-14",
         plan.highlight
           ? "bg-[var(--color-bg)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]"
           : "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:opacity-90"
-      }`}
+      )}
     >
       {plan.cta}
     </button>
@@ -159,34 +168,29 @@ const Pricing = () => {
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-[var(--color-primary)] font-medium text-sm tracking-wide uppercase">
+          <span className="text-[var(--color-primary)] font-[var(--weight-medium)] text-label tracking-wide uppercase">
             Pricing
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mt-4 mb-6">
+          <h2 className="text-4xl md:text-5xl font-[var(--weight-bold)] text-[var(--color-text-primary)] mt-4 mb-6">
             แพ็กเกจที่เหมาะกับคุณ
           </h2>
-          <p className="text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+          <p className="text-title text-[var(--color-text-secondary)] max-w-2xl mx-auto">
             เลือกแพ็กเกจที่ตอบโจทย์ธุรกิจของคุณ ไม่มีค่าใช้จ่ายแอบแฝง
           </p>
         </div>
 
         {/* Tab Selector */}
         <div className="flex justify-center mb-12">
-          <div className="bg-[var(--color-surface)] p-1.5 rounded-full inline-flex">
-            {(["free", "pro", "enterprise"] as PlanType[]).map((plan) => (
-              <button
-                key={plan}
-                onClick={() => setActiveTab(plan)}
-                className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] h-11 ${
-                  activeTab === plan
-                    ? "bg-[var(--color-bg)] text-[var(--color-text-primary)] shadow-sm"
-                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
-                }`}
-              >
-                {plan === "free" ? "ฟรี" : plan === "pro" ? "Pro" : "Enterprise"}
-              </button>
-            ))}
-          </div>
+          <SegmentedControl
+            items={[
+              { key: "free" as PlanType, label: "ฟรี" },
+              { key: "pro" as PlanType, label: "Pro" },
+              { key: "enterprise" as PlanType, label: "Enterprise" },
+            ]}
+            value={activeTab}
+            onChange={setActiveTab}
+            className="rounded-full"
+          />
         </div>
 
         {/* Pricing Cards */}
@@ -206,7 +210,7 @@ const Pricing = () => {
             มีคำถาม?{" "}
             <a
               href="#faq"
-              className="text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-medium transition-all duration-[var(--motion-fast)]"
+              className="text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-[var(--weight-medium)] transition-all duration-[var(--motion-fast)]"
             >
               ดูคำถามที่พบบ่อย
             </a>

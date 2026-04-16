@@ -5,6 +5,7 @@ import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
 import { setCurrentStoreId } from "@/shared/store/slices/current-store-slice";
+import { cn } from "@/shared/utils/cn";
 
 type Props = {
   children?: React.ReactNode;
@@ -33,13 +34,13 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
   return (
     <div className="flex">
       {!hideSidebar && <Sidebar />}
-      <div className={`flex flex-col min-h-screen flex-grow transition-all duration-300${hideSidebar ? "" : " ml-[var(--sidebar-width)]"}`}>
+      <div className={cn("flex flex-col min-h-screen flex-grow transition-all duration-300", !hideSidebar && "ml-[var(--sidebar-width)]")}>
         {!isOnline && (
-          <section className="w-full p-1 text-[var(--color-text-inverse)] text-center font-semibold bg-[var(--color-danger)] text-sm">
+          <section className="w-full p-1 text-[var(--color-text-inverse)] text-center font-[var(--weight-semibold)] bg-[var(--color-danger)] text-label">
             You are offline
           </section>
         )}
-        <main className={`flex-1 flex flex-col${noPadding ? "" : " p-6"}`}>{children}</main>
+        <main className={cn("flex-1 flex flex-col", !noPadding && "p-6")}>{children}</main>
       </div>
     </div>
   );

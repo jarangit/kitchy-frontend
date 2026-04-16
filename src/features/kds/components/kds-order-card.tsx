@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Button } from "@/shared/components/ui/button";
+import { Badge, type BadgeVariant } from "@/shared/components/ui/badge";
 import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
 
 interface Props {
@@ -32,23 +33,14 @@ const KdsOrderCard = ({
     return Math.max(0, Math.floor(diffMs / 60000));
   }, [card.createdAt]);
 
-  const urgency = useMemo(() => {
+  const urgency = useMemo<{ label: string; variant: BadgeVariant }>(() => {
     if (priorityTone === "due" || waitingMinutes >= 10) {
-      return {
-        label: "DUE NOW",
-        className: "bg-[var(--color-danger-bg)] text-[var(--color-danger)]",
-      };
+      return { label: "DUE NOW", variant: "danger" };
     }
     if (priorityTone === "next" || waitingMinutes >= 6) {
-      return {
-        label: "SOON",
-        className: "bg-[var(--color-warning-bg)] text-[var(--color-warning)]",
-      };
+      return { label: "SOON", variant: "warning" };
     }
-    return {
-      label: "OK",
-      className: "bg-[var(--color-success-bg)] text-[var(--color-success)]",
-    };
+    return { label: "OK", variant: "success" };
   }, [waitingMinutes, priorityTone]);
 
   const nextAction =
@@ -78,19 +70,19 @@ const KdsOrderCard = ({
         <div className="min-w-0 flex-1">
           {card.productName && (
             <span
-              className="block max-w-full truncate text-2xl font-bold leading-tight text-[var(--color-text-primary)]"
+              className="block max-w-full truncate text-heading font-[var(--weight-bold)] leading-tight text-[var(--color-text-primary)]"
               title={card.productName}
             >
               {card.productName}
             </span>
           )}
           {card.note && (
-            <p className="mt-1 text-sm leading-5 text-[var(--color-text-tertiary)]">
+            <p className="mt-1 text-body-sm leading-5 text-[var(--color-text-tertiary)]">
               Note: {card.note}
             </p>
           )}
         </div>
-        <span className="shrink-0 text-2xl font-bold text-[var(--color-text-primary)]">
+        <span className="shrink-0 text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
           x{card.quantity}
         </span>
       </div>
@@ -99,40 +91,38 @@ const KdsOrderCard = ({
       <div className="flex-1">
         <div className="flex items-center gap-3">
           {prioritize && queueNumber != null && (
-            <span className="inline-flex min-h-7 items-center rounded-full bg-[var(--color-info-bg)] px-2.5 text-sm font-semibold text-[var(--color-info)]">
+            <Badge variant="info" size="md">
               #{queueNumber}
-            </span>
+            </Badge>
           )}
-          <p className="font-mono text-lg font-bold text-[var(--color-text-primary)]">
+          <p className="font-mono text-subtitle font-[var(--weight-bold)] text-[var(--color-text-primary)]">
             {card.orderNumber}
           </p>
         </div>
         {orderInfoParts.length > 0 && (
-          <p className="mt-0.5 text-sm font-medium text-[var(--color-text-secondary)]">
+          <p className="mt-0.5 text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
             {orderInfoParts.join(" ")}
           </p>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <p className="text-base font-semibold text-[var(--color-text-primary)]">
+          <p className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             {timeLabel}
           </p>
-          <span className="inline-flex min-h-7 items-center rounded-full bg-[var(--color-surface-hover)] px-2.5 text-sm font-semibold text-[var(--color-text-primary)]">
+          <Badge variant="default" size="md" className="font-[var(--weight-semibold)]">
             {waitingMinutes}m
-          </span>
+          </Badge>
           {prioritize && (
-            <span
-              className={`inline-flex min-h-7 items-center rounded-full px-2.5 text-sm font-semibold ${urgency.className}`}
-            >
+            <Badge variant={urgency.variant} size="md" className="font-[var(--weight-semibold)]">
               {urgency.label}
-            </span>
+            </Badge>
           )}
         </div>
       </div>
 
       {/* ── Action button (sticky bottom) ── */}
       <div className="mt-5 border-t border-[var(--color-border)] pt-4">
-        <Button
-          className="h-12 w-full text-base font-semibold"
+          <Button
+          className="h-12 w-full text-body font-[var(--weight-semibold)]"
           onClick={() => onMove(card, nextAction.status)}
           disabled={disabled}
         >

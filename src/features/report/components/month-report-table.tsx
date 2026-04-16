@@ -72,7 +72,7 @@ const MonthReportTable = ({
   return (
     <div>
       {calendarDays.length === 0 ? (
-        <div className="p-5 text-sm text-[var(--color-text-secondary)]">
+        <div className="p-5 text-body-sm text-[var(--color-text-secondary)]">
           No report data for this month.
         </div>
       ) : (
@@ -80,7 +80,7 @@ const MonthReportTable = ({
           <table className="w-full min-w-[640px] border-collapse">
             <thead>
               <tr className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
@@ -90,7 +90,7 @@ const MonthReportTable = ({
                     {renderSortIcon("date")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
@@ -100,7 +100,7 @@ const MonthReportTable = ({
                     {renderSortIcon("revenue")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
@@ -110,7 +110,7 @@ const MonthReportTable = ({
                     {renderSortIcon("orders")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
@@ -120,7 +120,7 @@ const MonthReportTable = ({
                     {renderSortIcon("averageOrderValue")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-xs font-semibold uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
@@ -143,19 +143,19 @@ const MonthReportTable = ({
                     className="border-b border-[var(--color-border)] last:border-b-0 cursor-pointer transition-colors duration-[var(--motion-fast)] hover:bg-[var(--color-primary-bg)]"
                     onClick={() => onSelectDay(day)}
                   >
-                    <td className="px-5 py-4 text-sm font-medium text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-label font-[var(--weight-medium)] text-[var(--color-text-primary)] whitespace-nowrap">
                       {format(parseISO(day.date), "d MMM yyyy")}
                     </td>
-                    <td className="px-5 py-4 text-sm text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-primary)] whitespace-nowrap">
                       {formatCurrency(day.revenue)}
                     </td>
-                    <td className="px-5 py-4 text-sm text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-primary)] whitespace-nowrap">
                       {day.orders.toLocaleString()}
                     </td>
-                    <td className="px-5 py-4 text-sm text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-primary)] whitespace-nowrap">
                       {formatCurrency(avg)}
                     </td>
-                    <td className="px-5 py-4 text-sm text-[var(--color-text-secondary)] max-w-[240px] truncate">
+                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-secondary)] max-w-[240px] truncate">
                       {topProduct}
                     </td>
                   </tr>

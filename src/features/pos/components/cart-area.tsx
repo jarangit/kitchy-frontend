@@ -9,6 +9,8 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
 import { Input } from "@/shared/components/ui/input";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { ChipTab } from "@/shared/components/ui/chip-tab";
+import { SelectionChip } from "@/shared/components/ui/selection-chip";
 import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n/presets";
 
 const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
@@ -171,11 +173,11 @@ const CartArea = ({
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">
+          <h2 className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             Cart
           </h2>
           {totalItems > 0 && (
-            <span className="min-w-7 h-7 flex items-center justify-center rounded-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-sm font-semibold px-1.5">
+            <span className="min-w-7 h-7 flex items-center justify-center rounded-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-label font-[var(--weight-semibold)] px-1.5">
               {totalItems}
             </span>
           )}
@@ -185,7 +187,7 @@ const CartArea = ({
             variant="ghost"
             size="sm"
             onClick={onClearCart}
-            className="h-11 px-3 text-sm text-[var(--color-danger)] hover:text-[var(--color-danger-hover)]"
+            className="h-11 px-3 text-label text-[var(--color-danger)] hover:text-[var(--color-danger-hover)]"
           >
             Clear All
           </Button>
@@ -196,40 +198,33 @@ const CartArea = ({
       <div className="flex-1 overflow-y-auto px-6">
         <div className="pt-5 pb-4 space-y-4 border-b border-[var(--color-border)]">
           <div>
-            <p className="mb-3 text-sm font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
+            <p className="mb-3 text-label font-[var(--weight-medium)] uppercase tracking-wide text-[var(--color-text-tertiary)]">
               Order Type
             </p>
             <div className="grid grid-cols-3 gap-3">
-              {ORDER_TYPE_OPTIONS.map((option) => {
-                const active = orderType === option.value;
-                return (
-                  <button
+              {ORDER_TYPE_OPTIONS.map((option) => (
+                  <SelectionChip
                     key={option.value}
+                    active={orderType === option.value}
                     onClick={() => handleOrderTypeChange(option.value)}
-                    className={`h-12 rounded-lg border text-sm font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-                      active
-                        ? "border-[var(--color-text-primary)] bg-[var(--color-surface)] text-[var(--color-text-primary)]"
-                        : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
-                    }`}
                   >
                     {option.label}
-                  </button>
-                );
-              })}
+                  </SelectionChip>
+                ))}
             </div>
           </div>
 
           {orderType === "DINE_IN" && (
             <div>
               <div className="flex items-center justify-between">
-                <p className="text-base font-semibold text-[var(--color-text-primary)]">
+                <p className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   Table: {tableNumber ?? "Not selected"}
                 </p>
                 <div className="flex items-center gap-2">
                   {tableNumber && (
                     <button
                       onClick={() => onTableNumberChange(null)}
-                      className="h-11 px-3 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+                      className="h-11 px-3 text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
                     >
                       Clear
                     </button>
@@ -237,7 +232,7 @@ const CartArea = ({
                   <Button
                     size="sm"
                     variant="secondary"
-                    className="h-11 px-4 text-sm"
+                    className="h-11 px-4 text-label"
                     onClick={() => setIsTableDialogOpen(true)}
                   >
                     Select Table
@@ -250,26 +245,20 @@ const CartArea = ({
           {orderType === "DELIVERY" && (
         <div className="space-y-5">
               <div>
-                <p className="mb-3 text-base font-semibold text-[var(--color-text-primary)]">
+                <p className="mb-3 text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   Delivery Platform
                 </p>
                 <div className="grid grid-cols-2 gap-3">
-                  {deliveryPlatforms.map((platform) => {
-                    const active = deliveryPlatform === platform;
-                    return (
-                      <button
+                  {deliveryPlatforms.map((platform) => (
+                      <SelectionChip
                         key={platform}
+                        active={deliveryPlatform === platform}
                         onClick={() => onDeliveryPlatformChange(platform)}
-                        className={`h-12 rounded-lg border text-base font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-                          active
-                            ? "border-[var(--color-primary)] bg-[var(--color-primary-bg)] text-[var(--color-primary)]"
-                            : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
-                        }`}
+                        className="text-base"
                       >
                         {platform}
-                      </button>
-                    );
-                  })}
+                      </SelectionChip>
+                    ))}
                 </div>
               </div>
 
@@ -306,7 +295,7 @@ const CartArea = ({
           onClick={onPay}
           disabled={items.length === 0}
           size="lg"
-          className="w-full h-14 text-lg font-semibold"
+          className="w-full h-14 text-subtitle font-[var(--weight-semibold)]"
         >
           Pay ฿{subtotal.toFixed(2)}
         </Button>
@@ -322,25 +311,19 @@ const CartArea = ({
         </DialogHeader>
 
         <div className="grid grid-cols-4 gap-3">
-          {TABLE_OPTIONS.map((table) => {
-            const active = tableNumber === table;
-            return (
-              <button
+          {TABLE_OPTIONS.map((table) => (
+              <SelectionChip
                 key={table}
+                active={tableNumber === table}
                 onClick={() => {
                   onTableNumberChange(table);
                   setIsTableDialogOpen(false);
                 }}
-                className={`h-12 rounded-lg border text-base font-semibold transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-                  active
-                    ? "border-[var(--color-primary)] bg-[var(--color-primary-bg)] text-[var(--color-primary)]"
-                    : "border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)]"
-                }`}
+                className="text-base"
               >
                 {table}
-              </button>
-            );
-          })}
+              </SelectionChip>
+            ))}
         </div>
       </Dialog>
 
@@ -358,7 +341,7 @@ const CartArea = ({
 
         <div className="space-y-4">
           <div>
-            <p className="mb-2 text-sm font-medium uppercase tracking-wide text-[var(--color-text-tertiary)]">
+            <p className="mb-2 text-label font-[var(--weight-medium)] uppercase tracking-wide text-[var(--color-text-tertiary)]">
               {t("pos.noteDialog.quickNotes")}
             </p>
             <div className="flex flex-wrap gap-3">
@@ -370,18 +353,13 @@ const CartArea = ({
                   .includes(note);
 
                 return (
-                  <button
+                  <ChipTab
                     key={note}
-                    type="button"
+                    active={isActive}
                     onClick={() => handleToggleCommonNote(note)}
-                    className={`min-h-12 rounded-full border px-4 text-base font-medium transition-all duration-[var(--motion-fast)] active:scale-[0.98] ${
-                      isActive
-                        ? "border-[var(--button-primary-bg)] bg-[var(--button-primary-bg)] text-[var(--button-primary-text)]"
-                        : "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)]"
-                    }`}
                   >
                     {note}
-                  </button>
+                  </ChipTab>
                 );
               })}
             </div>

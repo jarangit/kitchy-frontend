@@ -113,7 +113,7 @@ const PaymentPage = () => {
           <LuArrowLeft size={18} />
           Back
         </Button>
-        <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+        <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
           Payment
         </h1>
       </div>
@@ -125,7 +125,7 @@ const PaymentPage = () => {
 
         {/* Right column — Payment Method */}
         <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+          <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
             Payment Method
           </h3>
           <PaymentMethodSelector
@@ -138,7 +138,7 @@ const PaymentPage = () => {
       {/* Conditional payment details */}
       {paymentMethod === "CASH" && (
         <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
+          <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
             Cash Payment
           </h3>
           <div className="space-y-4">
@@ -148,11 +148,11 @@ const PaymentPage = () => {
               value={receivedAmount}
               onChange={(e) => setReceivedAmount(e.target.value)}
               placeholder="0.00"
-              className="text-lg font-semibold"
+              className="text-subtitle font-[var(--weight-semibold)]"
             />
 
             <div>
-              <p className="text-sm text-[var(--color-text-secondary)] mb-2">
+              <p className="text-label text-[var(--color-text-secondary)] mb-2">
                 Quick amounts:
               </p>
               <div className="flex flex-wrap gap-2">
@@ -170,7 +170,7 @@ const PaymentPage = () => {
             </div>
 
             {Number(receivedAmount) > 0 && (
-              <p className="text-xl font-bold text-[var(--color-success)]">
+              <p className="text-title font-[var(--weight-bold)] text-[var(--color-success)]">
                 Change: ฿{change.toFixed(2)}
               </p>
             )}
@@ -180,14 +180,14 @@ const PaymentPage = () => {
 
       {paymentMethod === "QR" && (
         <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">
+          <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-6">
             QR Code Payment
           </h3>
           <div className="w-52 h-52 mx-auto border-2 border-dashed border-[var(--color-border)] rounded-[var(--radius-lg)] flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
             <LuQrCode size={48} />
-            <span className="text-sm">QR Code Placeholder</span>
+            <span className="text-label">QR Code Placeholder</span>
           </div>
-          <p className="text-sm text-[var(--color-text-secondary)] mt-4">
+          <p className="text-label text-[var(--color-text-secondary)] mt-4">
             Scan to pay ฿{subtotal.toFixed(2)}
           </p>
         </div>
@@ -195,7 +195,7 @@ const PaymentPage = () => {
 
       {/* Error message */}
       {errorMessage && (
-        <p className="text-sm text-[var(--color-danger)] mt-4">
+        <p className="text-label text-[var(--color-danger)] mt-4">
           {errorMessage}
         </p>
       )}
@@ -213,7 +213,7 @@ const PaymentPage = () => {
         <Button
           onClick={handleConfirmPayment}
           disabled={!canConfirm || isProcessing}
-          className="flex-1 h-12 text-base font-bold"
+          className="flex-1 h-12 text-body font-[var(--weight-bold)]"
         >
           {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
         </Button>

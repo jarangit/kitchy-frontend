@@ -144,7 +144,10 @@
   --button-height-md: 44px;
   --button-height-lg: 56px;
   --button-padding-x: var(--space-4);
-  --button-font-weight: var(--font-weight-medium);
+  --button-font-weight: var(--weight-medium);
+  --button-font-size-sm: var(--text-label-size);
+  --button-font-size-md: var(--text-label-size);
+  --button-font-size-lg: var(--text-body-size);
 
   /* ── Card ── */
   --card-bg: var(--color-surface);
@@ -153,6 +156,9 @@
   --card-border-hover: var(--color-border-hover);
   --card-radius: var(--radius-lg);
   --card-padding: var(--space-6);
+  --card-title-font-size: var(--text-body-size);
+  --card-title-font-weight: var(--text-heading-weight);
+  --card-description-font-size: var(--text-body-sm-size);
 
   /* ── Toggle ── */
   --toggle-bg: var(--color-border);
@@ -176,24 +182,77 @@
   --input-radius: var(--radius-md);
   --input-height: 44px;
   --input-padding-x: var(--space-4);
+  --input-font-size: var(--text-label-size);
 
   /* ── Badge ── */
   --badge-radius: 9999px;
   --badge-padding-x: var(--space-2);
   --badge-padding-y: 2px;
+  --badge-font-size: var(--text-caption-size);
+  --badge-font-weight: var(--text-label-weight);
+  --badge-default-bg: var(--color-surface-hover);
+  --badge-default-text: var(--color-text-primary);
+  --badge-success-bg: var(--color-success-bg);
+  --badge-success-text: var(--color-success);
+  --badge-warning-bg: var(--color-warning-bg);
+  --badge-warning-text: var(--color-warning);
+  --badge-danger-bg: var(--color-danger-bg);
+  --badge-danger-text: var(--color-danger);
+  --badge-info-bg: var(--color-info-bg);
+  --badge-info-text: var(--color-info);
+
+  /* ── ChipTab ── */
+  --chip-active-bg: var(--color-text-primary);
+  --chip-active-text: var(--color-text-inverse);
+  --chip-inactive-bg: var(--color-surface);
+  --chip-inactive-text: var(--color-text-secondary);
+  --chip-inactive-bg-hover: var(--color-surface-hover);
+  --chip-radius: 9999px;
+  --chip-height-sm: 36px;
+  --chip-height-md: 44px;
+  --chip-height-lg: 48px;
+  --chip-padding-x: var(--space-4);
+  --chip-font-weight: var(--weight-medium);
+  --chip-font-size: var(--text-label-size);
+
+  /* ── SegmentedControl ── */
+  --segment-bg: var(--color-bg);
+  --segment-border: var(--color-border);
+  --segment-active-bg: var(--color-primary);
+  --segment-active-text: var(--color-text-inverse);
+  --segment-inactive-text: var(--color-text-secondary);
+  --segment-inactive-text-hover: var(--color-text-primary);
+  --segment-radius: var(--radius-md);
+  --segment-font-size: var(--text-label-size);
+  --segment-font-weight: var(--text-label-weight);
+
+  /* ── SelectionChip ── */
+  --selection-border: var(--color-border);
+  --selection-border-hover: var(--color-border-hover);
+  --selection-text: var(--color-text-secondary);
+  --selection-active-border: var(--color-primary);
+  --selection-active-bg: var(--color-primary-bg);
+  --selection-active-text: var(--color-primary);
+  --selection-radius: var(--radius-md);
+  --selection-height: 48px;
+  --selection-font-size: var(--text-label-size);
+  --selection-font-weight: var(--text-heading-weight);
 
   /* ── Dialog ── */
-  --dialog-bg: #ffffff;
-  --dialog-border: rgba(17, 19, 21, 0.22);
+  --dialog-bg: var(--color-surface);
+  --dialog-border: var(--color-border);
   --dialog-radius: var(--radius-lg);
   --dialog-padding: var(--space-6);
   --dialog-overlay: var(--color-overlay);
+  --dialog-title-font-size: var(--text-subtitle-size);
+  --dialog-title-font-weight: var(--text-heading-weight);
+  --dialog-description-font-size: var(--text-body-sm-size);
 
   /* ── Sidebar ── */
   --sidebar-bg: var(--color-surface);
   --sidebar-border: var(--color-border);
   --sidebar-width: 84px;
-  --sidebar-active-bg: var(--gray-300);
+  --sidebar-active-bg: var(--color-surface-hover);
   --sidebar-active-text: var(--color-text-primary);
   --sidebar-text: var(--color-text-secondary);
   --sidebar-hover-bg: var(--color-surface-hover);
@@ -205,34 +264,101 @@
   --select-text: var(--color-text-primary);
   --select-radius: var(--radius-md);
   --select-height: 44px;
+  --select-font-size: var(--text-label-size);
 
   /* ── Label ── */
   --label-text: var(--color-text-primary);
-  --label-font-weight: var(--font-weight-medium);
+  --label-font-weight: var(--weight-medium);
+  --label-font-size: var(--text-label-size);
 }
 
 /* Dark mode component token overrides */
 [data-theme="dark"] {
-  --sidebar-active-bg: rgba(255, 255, 255, 0.2);
+  --sidebar-active-bg: rgba(255, 255, 255, 0.12);
   --button-secondary-bg: var(--color-surface);
   --button-ghost-bg-hover: var(--color-surface-hover);
-  --dialog-bg: #111315;
-  --dialog-border: rgba(255, 255, 255, 0.3);
+  --dialog-bg: var(--color-surface);
+  --dialog-border: var(--color-border);
 }
 
 /* ──────────────────────────────────────────
    TYPOGRAPHY TOKENS
+   Layer 1 → Layer 2 → Layer 3 (same 3-layer system)
    ────────────────────────────────────────── */
-:root {
-  --font-family: "Poppins", sans-serif;
-  --font-display: 32px;
-  --font-title: 20px;
-  --font-body: 16px;
-  --font-caption: 12px;
 
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 600;
+/* ── Layer 1: Primitive Typography ── */
+:root {
+  /* Font families */
+  --font-sans: "Poppins", sans-serif;
+  --font-mono: ui-monospace, "JetBrains Mono", monospace;
+
+  /* Font size scale (raw) */
+  --size-xs:   12px;
+  --size-sm:   14px;
+  --size-base: 16px;
+  --size-lg:   18px;
+  --size-xl:   20px;
+  --size-2xl:  24px;
+  --size-3xl:  30px;
+  --size-4xl:  36px;
+  --size-5xl:  48px;
+
+  /* Font weight scale (raw) */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* Line height scale (raw) */
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+
+  /* Letter spacing scale (raw) */
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide:   0.04em;
+}
+
+/* ── Layer 2: Semantic Typography ── */
+:root {
+  /* Display — hero headings, large feature text */
+  --text-display-size:    var(--size-4xl);
+  --text-display-weight:  var(--weight-bold);
+  --text-display-leading: var(--leading-tight);
+
+  /* Heading — page titles, section headings */
+  --text-heading-size:    var(--size-2xl);
+  --text-heading-weight:  var(--weight-semibold);
+  --text-heading-leading: var(--leading-tight);
+
+  /* Title — card titles, dialog titles, sub-headings */
+  --text-title-size:      var(--size-xl);
+  --text-title-weight:    var(--weight-semibold);
+  --text-title-leading:   var(--leading-snug);
+
+  /* Subtitle — secondary headings, section labels */
+  --text-subtitle-size:   var(--size-lg);
+  --text-subtitle-weight: var(--weight-semibold);
+  --text-subtitle-leading: var(--leading-snug);
+
+  /* Body — default body text */
+  --text-body-size:       var(--size-base);
+  --text-body-weight:     var(--weight-regular);
+  --text-body-leading:    var(--leading-normal);
+
+  /* Body small — descriptions, secondary body */
+  --text-body-sm-size:    var(--size-sm);
+  --text-body-sm-weight:  var(--weight-regular);
+
+  /* Label — form labels, button text, badges */
+  --text-label-size:      var(--size-sm);
+  --text-label-weight:    var(--weight-medium);
+
+  /* Caption — timestamps, footnotes, meta info */
+  --text-caption-size:    var(--size-xs);
+  --text-caption-weight:  var(--weight-regular);
 }
 
 /* ──────────────────────────────────────────
@@ -297,6 +423,17 @@
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+
+  /* Typography — semantic font sizes as Tailwind utilities */
+  /* Usage: text-display, text-heading, text-title, text-subtitle, text-body, text-body-sm, text-label, text-caption */
+  --font-size-display: var(--text-display-size);
+  --font-size-heading: var(--text-heading-size);
+  --font-size-title: var(--text-title-size);
+  --font-size-subtitle: var(--text-subtitle-size);
+  --font-size-body: var(--text-body-size);
+  --font-size-body-sm: var(--text-body-sm-size);
+  --font-size-label: var(--text-label-size);
+  --font-size-caption: var(--text-caption-size);
 }
 
 /* ──────────────────────────────────────────
@@ -304,8 +441,8 @@
    ────────────────────────────────────────── */
 body {
   background-color: var(--color-bg);
-  font-family: var(--font-family);
-  font-size: var(--font-body);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-size);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -379,7 +516,7 @@ body {
   --rdp-day_button-border: 1px solid transparent;
   --rdp-disabled-opacity: 1;
   --rdp-outside-opacity: 0.35;
-  font-family: var(--font-family);
+  font-family: var(--font-sans);
   width: 100%;
 }
 
@@ -399,7 +536,7 @@ body {
 .rdp-wrapper .rdp-weekday {
   padding: 0 0 6px;
   font-size: 10px;
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--weight-medium);
   color: var(--color-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -467,7 +604,7 @@ body {
 }
 
 .rdp-wrapper .rdp-day.rdp-today .rdp-day_button {
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--weight-semibold);
   box-shadow: inset 0 0 0 1px var(--color-border-hover);
 }
 

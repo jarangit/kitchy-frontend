@@ -9,7 +9,7 @@ const CartSummary = ({ subtotal }: Props) => {
         <span>Subtotal</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>
-      <div className="flex justify-between text-xl font-semibold text-[var(--color-text-primary)]">
+      <div className="flex justify-between text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
         <span>Total</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>

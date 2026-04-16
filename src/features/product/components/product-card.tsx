@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui
 import { Button } from "@/shared/components/ui/button"
 import { Badge } from "@/shared/components/ui/badge"
 import { LuPlus, LuTrash2 } from "react-icons/lu"
+import { cn } from "@/shared/utils/cn"
 
 interface MenuItemCardProps {
   id: string
@@ -21,12 +22,12 @@ export function ProductCard({
   className = "",
 }: MenuItemCardProps) {
   return (
-    <Card className={`${!isActive ? "opacity-60" : ""} ${className}`}>
+    <Card className={cn(!isActive && "opacity-60", className)}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <CardTitle className="text-lg">{name}</CardTitle>
+              <CardTitle className="text-subtitle">{name}</CardTitle>
             </div>
             <div className="flex items-center gap-2">
               <Badge variant={isActive ? "success" : "default"}>{isActive ? "Active" : "Inactive"}</Badge>
