@@ -8,7 +8,7 @@ export default function MyModal() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+        className="px-4 py-2 bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] rounded-radius-xs h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
       >
         Open Modal
       </button>
@@ -20,7 +20,7 @@ export default function MyModal() {
       >
         <div className="fixed inset-0 bg-[var(--color-overlay)]" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="bg-[var(--dialog-bg)] p-6 rounded shadow-xl w-full max-w-sm">
+          <Dialog.Panel className="bg-[var(--dialog-bg)] p-6 rounded-radius-xs shadow-xl w-full max-w-sm">
             <Dialog.Title className="text-subtitle font-[var(--weight-bold)]">
               Confirm Delete
             </Dialog.Title>

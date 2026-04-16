@@ -162,7 +162,7 @@ const StoreDashboardPage = () => {
       >
           <div className="flex items-center justify-between gap-5">
             <div className="flex min-w-0 items-center gap-5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(255,255,255,0.16)] text-[var(--color-text-inverse)] shrink-0">
+            <div className="flex h-12 w-12 items-center justify-center rounded-radius-full bg-[rgba(255,255,255,0.16)] text-[var(--color-text-inverse)] shrink-0">
               <LuShoppingCart size={24} />
             </div>
             <div className="min-w-0 text-left">
@@ -172,7 +172,7 @@ const StoreDashboardPage = () => {
               </div>
             </div>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(255,255,255,0.22)] bg-[rgba(255,255,255,0.08)] text-[var(--color-text-inverse)] shrink-0">
+          <div className="flex h-10 w-10 items-center justify-center rounded-radius-full border border-[rgba(255,255,255,0.22)] bg-[rgba(255,255,255,0.08)] text-[var(--color-text-inverse)] shrink-0">
             <LuArrowRight size={18} />
           </div>
         </div>
@@ -185,7 +185,7 @@ const StoreDashboardPage = () => {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-success-bg)] text-[var(--color-success)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-radius-full bg-[var(--color-success-bg)] text-[var(--color-success)]">
                 <LuMonitor size={18} />
               </div>
               <div>
@@ -242,7 +242,7 @@ const StoreDashboardPage = () => {
               to={action.to}
               className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] active:scale-[0.99]"
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-bg)] text-[var(--color-text-secondary)]">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-radius-full bg-[var(--color-bg)] text-[var(--color-text-secondary)]">
                 {action.icon}
               </div>
               <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">

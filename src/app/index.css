@@ -13,38 +13,46 @@
    Raw values. Never use directly in components.
    ────────────────────────────────────────── */
 :root {
-  /* Allowed palette only */
-  --gray-0: #ffffff;
-  --gray-50: #ffffff;
-  --gray-100: #ffffff;
-  --gray-200: #ffffff;
-  --gray-300: #ffffff;
-  --gray-400: #ffffff;
-  --gray-500: #111315;
-  --gray-600: #111315;
-  --gray-700: #111315;
-  --gray-800: #111315;
+  /* Gray scale — monochrome palette */
+  --gray-0:   #ffffff;
+  --gray-50:  #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-400: #a3a3a3;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #404040;
+  --gray-800: #262626;
   --gray-900: #111315;
 
-  /* Legacy token aliases mapped to same allowed palette */
-  --green-50: #ffffff;
-  --green-100: #ffffff;
-  --green-300: #ffffff;
-  --green-500: #111315;
-  --green-600: #111315;
+  /* Status color primitives — green */
+  --green-50:  #f0fdf4;
+  --green-100: #dcfce7;
+  --green-500: #22c55e;
+  --green-600: #15803d;
+  --green-700: #166534;
 
-  --red-50: #ffffff;
-  --red-100: #ffffff;
-  --red-500: #111315;
-  --red-600: #111315;
-  --yellow-50: #ffffff;
-  --yellow-100: #ffffff;
-  --yellow-500: #111315;
-  --yellow-600: #111315;
-  --blue-50: #ffffff;
-  --blue-100: #ffffff;
-  --blue-500: #111315;
-  --blue-600: #111315;
+  /* Status color primitives — red */
+  --red-50:  #fef2f2;
+  --red-100: #fee2e2;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+
+  /* Status color primitives — yellow */
+  --yellow-50:  #fffbeb;
+  --yellow-100: #fef3c7;
+  --yellow-500: #eab308;
+  --yellow-600: #ca8a04;
+  --yellow-700: #b45309;
+
+  /* Status color primitives — blue */
+  --blue-50:  #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
 }
 
 /* ──────────────────────────────────────────
@@ -379,9 +387,32 @@
    RADIUS TOKENS
    ────────────────────────────────────────── */
 :root {
+  --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+}
+
+/* ──────────────────────────────────────────
+   ELEVATION / SHADOW TOKENS
+   Flat UI by default. Use sparingly for overlays & popovers.
+   ────────────────────────────────────────── */
+:root {
+  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md:  0 4px 6px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-lg:  0 10px 15px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.03);
+  --shadow-xl:  0 20px 25px rgba(0, 0, 0, 0.08), 0 8px 10px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="dark"] {
+  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md:  0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg:  0 10px 15px rgba(0, 0, 0, 0.3), 0 4px 6px rgba(0, 0, 0, 0.15);
+  --shadow-xl:  0 20px 25px rgba(0, 0, 0, 0.35), 0 8px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* ──────────────────────────────────────────
@@ -420,9 +451,19 @@
   --color-danger-bg: var(--color-danger-bg);
   --color-warning-bg: var(--color-warning-bg);
   --color-info-bg: var(--color-info-bg);
+  --radius-xs: var(--radius-xs);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  /* Shadows — flat by default, use when needed */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
 
   /* Typography — semantic font sizes as Tailwind utilities */
   /* Usage: text-display, text-heading, text-title, text-subtitle, text-body, text-body-sm, text-label, text-caption */
@@ -448,14 +489,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Flat UI: remove decorative shadows globally */
-.shadow-sm,
-.shadow-md,
-.shadow-lg,
-.shadow-xl,
-.shadow-2xl {
-  box-shadow: none !important;
-}
+/* Flat UI: shadows removed from components by default.
+   Use shadow-xs/sm/md/lg/xl tokens explicitly when needed. */
 
 /* ──────────────────────────────────────────
    SKELETON ANIMATION

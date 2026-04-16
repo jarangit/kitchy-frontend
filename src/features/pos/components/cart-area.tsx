@@ -177,7 +177,7 @@ const CartArea = ({
             Cart
           </h2>
           {totalItems > 0 && (
-            <span className="min-w-7 h-7 flex items-center justify-center rounded-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-label font-[var(--weight-semibold)] px-1.5">
+            <span className="min-w-7 h-7 flex items-center justify-center rounded-radius-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-label font-[var(--weight-semibold)] px-1.5">
               {totalItems}
             </span>
           )}

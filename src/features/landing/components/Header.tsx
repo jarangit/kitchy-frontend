@@ -8,7 +8,7 @@ const Header = () => {
       <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-xl flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-radius-md flex items-center justify-center">
             <span className="text-[var(--color-text-inverse)] text-label font-[var(--weight-bold)]">K</span>
           </div>
           <span className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)] tracking-tight">
@@ -48,7 +48,7 @@ const Header = () => {
           </button>
           <button
             onClick={() => navigate("/login")}
-            className="bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] text-label font-[var(--weight-medium)] px-5 py-2.5 h-11 rounded-full hover:opacity-90 transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98]"
+            className="bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] text-label font-[var(--weight-medium)] px-5 py-2.5 h-11 rounded-radius-full hover:opacity-90 transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98]"
           >
             เริ่มต้นใช้งาน
           </button>

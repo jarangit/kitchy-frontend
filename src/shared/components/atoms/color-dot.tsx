@@ -13,5 +13,5 @@ export function ColorDot({ color, size = "md", className = "" }: StationColorDot
     lg: "w-6 h-6",
   }
 
-  return <div className={cn("rounded-full", sizeClasses[size], className)} style={{ backgroundColor: color }} />
+  return <div className={cn("rounded-radius-full", sizeClasses[size], className)} style={{ backgroundColor: color }} />
 }

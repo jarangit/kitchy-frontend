@@ -124,7 +124,7 @@ const PaymentPage = () => {
         <OrderSummary items={items} subtotal={subtotal} />
 
         {/* Right column — Payment Method */}
-        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6">
+        <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6">
           <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
             Payment Method
           </h3>
@@ -137,7 +137,7 @@ const PaymentPage = () => {
 
       {/* Conditional payment details */}
       {paymentMethod === "CASH" && (
-        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6">
+        <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6">
           <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
             Cash Payment
           </h3>
@@ -179,11 +179,11 @@ const PaymentPage = () => {
       )}
 
       {paymentMethod === "QR" && (
-        <div className="bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
+        <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6 text-center">
           <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-6">
             QR Code Payment
           </h3>
-          <div className="w-52 h-52 mx-auto border-2 border-dashed border-[var(--color-border)] rounded-[var(--radius-lg)] flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
+          <div className="w-52 h-52 mx-auto border-2 border-dashed border-[var(--color-border)] rounded-radius-lg flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
             <LuQrCode size={48} />
             <span className="text-label">QR Code Placeholder</span>
           </div>

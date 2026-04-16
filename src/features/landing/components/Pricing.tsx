@@ -70,7 +70,7 @@ const PricingCard = ({
 }) => (
   <div
     className={cn(
-      "relative p-8 rounded-3xl transition-all duration-300",
+      "relative p-8 rounded-radius-xl transition-all duration-300",
       plan.highlight
         ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] scale-105 shadow-2xl"
         : "bg-[var(--color-bg)] border border-[var(--color-border)]",
@@ -78,7 +78,7 @@ const PricingCard = ({
     )}
   >
     {plan.highlight && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-label font-[var(--weight-medium)] px-4 py-1 rounded-full">
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-label font-[var(--weight-medium)] px-4 py-1 rounded-radius-full">
         แนะนำ
       </div>
     )}
@@ -149,7 +149,7 @@ const PricingCard = ({
 
     <button
       className={cn(
-        "w-full py-4 rounded-full font-[var(--weight-medium)] transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98] h-14",
+        "w-full py-4 rounded-radius-full font-[var(--weight-medium)] transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98] h-14",
         plan.highlight
           ? "bg-[var(--color-bg)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]"
           : "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:opacity-90"
@@ -189,7 +189,7 @@ const Pricing = () => {
             ]}
             value={activeTab}
             onChange={setActiveTab}
-            className="rounded-full"
+            className="rounded-radius-full"
           />
         </div>
 

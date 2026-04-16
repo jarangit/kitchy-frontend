@@ -70,7 +70,7 @@ const Sidebar = () => {
   };
 
   const itemClass =
-    "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-transparent transition-all duration-[var(--motion-fast)] active:scale-[0.98]";
+    "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-radius-lg border border-transparent transition-all duration-[var(--motion-fast)] active:scale-[0.98]";
   const activeClass =
     "border-[var(--sidebar-border)] bg-[var(--sidebar-active-bg)] text-[var(--sidebar-active-text)]";
   const inactiveClass =
@@ -88,7 +88,7 @@ const Sidebar = () => {
         className={cn(itemClass, active ? activeClass : inactiveClass)}
       >
         {item.icon}
-        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-[var(--weight-medium)] text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
+        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-radius-sm border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-[var(--weight-medium)] text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
           {item.name}
         </span>
       </Link>

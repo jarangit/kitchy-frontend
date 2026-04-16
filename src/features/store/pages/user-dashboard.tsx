@@ -49,7 +49,7 @@ export default function UserDashboard() {
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           {/* Left: Logo + name */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] flex items-center justify-center">
+            <div className="w-10 h-10 rounded-radius-md bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] flex items-center justify-center">
               <span className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-inverse)]">
                 K
               </span>
@@ -94,7 +94,7 @@ export default function UserDashboard() {
             {stores.map((item: any) => (
               <div
                 key={item.id}
-                className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5 cursor-pointer hover:border-[var(--color-border-hover)] hover:shadow-md active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+                className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-radius-lg p-5 cursor-pointer hover:border-[var(--color-border-hover)] hover:shadow-md active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
                 onClick={() => {
                   dispatch(
                     setCurrentStore({
@@ -105,7 +105,7 @@ export default function UserDashboard() {
                   navigate(`/store/${item.id}`);
                 }}
               >
-                <div className="w-10 h-10 rounded-xl bg-[var(--color-success-bg)] flex items-center justify-center text-2xl">
+                <div className="w-10 h-10 rounded-radius-md bg-[var(--color-success-bg)] flex items-center justify-center text-2xl">
                   🏪
                 </div>
                 <p className="font-[var(--weight-medium)] mt-3 text-[var(--color-text-primary)]">
@@ -116,10 +116,10 @@ export default function UserDashboard() {
 
             {/* Create new store card */}
             <div
-              className="bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-[var(--radius-lg)] p-5 cursor-pointer hover:border-[var(--color-border-hover)] hover:shadow-md active:scale-[0.98] transition-all duration-[var(--motion-fast)] flex flex-col items-center justify-center gap-2"
+              className="bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-radius-lg p-5 cursor-pointer hover:border-[var(--color-border-hover)] hover:shadow-md active:scale-[0.98] transition-all duration-[var(--motion-fast)] flex flex-col items-center justify-center gap-2"
               onClick={() => setIsCreate(true)}
             >
-              <div className="w-10 h-10 rounded-xl bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-secondary)]">
+              <div className="w-10 h-10 rounded-radius-md bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-secondary)]">
                 <LuPlus size={24} />
               </div>
               <p className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">

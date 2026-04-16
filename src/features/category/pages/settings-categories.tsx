@@ -51,7 +51,7 @@ const SettingsCategoriesPage = () => {
         description={t("settings.categories.featureDescription")}
       >
         <div className="space-y-6">
-          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
+          <div className="rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Input
                 label="Category Name"
@@ -102,7 +102,7 @@ const SettingsCategoriesPage = () => {
               {categoriesQuery.map((category) => (
                 <div
                   key={category.id}
-                  className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-4"
+                  className="rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-4"
                 >
                   <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                     {category.name}

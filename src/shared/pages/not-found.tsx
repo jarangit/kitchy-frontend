@@ -21,7 +21,7 @@ export default function NotFoundPage({
       <p className="mt-4 text-title text-[var(--color-text-secondary)]">{message}</p>
       <button
         onClick={() => navigate(backTo)}
-        className="mt-8 px-6 h-11 bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] rounded-lg hover:opacity-90 transition-all duration-[var(--motion-fast)] active:scale-[0.98] cursor-pointer"
+        className="mt-8 px-6 h-11 bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] rounded-radius-sm hover:opacity-90 transition-all duration-[var(--motion-fast)] active:scale-[0.98] cursor-pointer"
       >
         {backLabel}
       </button>

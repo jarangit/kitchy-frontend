@@ -131,7 +131,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
           <h2 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">Payment</h2>
           <button
             onClick={handleClosePayment}
-            className="flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] active:scale-[0.98]"
+            className="flex h-12 w-12 items-center justify-center rounded-radius-md border border-[var(--color-border)] bg-[var(--color-bg)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] active:scale-[0.98]"
             aria-label="Close payment"
           >
             <LuX size={18} />
@@ -151,7 +151,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
               <OrderSummary items={items} subtotal={subtotal} />
 
-              <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6">
+              <div className="bg-[var(--color-surface)] rounded-radius-md border border-[var(--color-border)] p-6">
                 <h3 className="mb-3 text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   Order Info
                 </h3>
@@ -182,7 +182,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             </div>
 
             {paymentMethod === "CASH" && (
-              <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6 mt-6">
+              <div className="bg-[var(--color-surface)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6">
                 <h3 className="mb-4 text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   Cash Payment
                 </h3>
@@ -224,11 +224,11 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             )}
 
             {paymentMethod === "QR" && (
-              <div className="bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] p-6 mt-6 text-center">
+              <div className="bg-[var(--color-surface)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6 text-center">
                 <h3 className="mb-6 text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   QR Code Payment
                 </h3>
-                <div className="w-52 h-52 mx-auto border border-[var(--color-border)] rounded-[var(--radius-lg)] flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
+                <div className="w-52 h-52 mx-auto border border-[var(--color-border)] rounded-radius-lg flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
                   <LuQrCode size={48} />
                   <span className="text-base">QR Code Placeholder</span>
                 </div>
@@ -289,7 +289,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               ฿{paymentResult.subtotal.toFixed(2)}
             </p>
 
-            <div className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-6">
+            <div className="w-full bg-[var(--color-surface)] border border-[var(--color-border)] rounded-radius-lg p-6">
               <div className="text-center pb-4">
                 <p className="mb-1 text-label uppercase tracking-widest text-[var(--color-text-secondary)]">
                   Receipt
@@ -373,7 +373,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                 <p className="mb-2 text-center text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
                   Scan to get digital receipt
                 </p>
-                <div className="w-40 h-40 mx-auto border border-[var(--color-border)] rounded-[var(--radius-lg)] bg-[var(--color-bg)] flex flex-col items-center justify-center gap-2 text-[var(--color-text-tertiary)]">
+                <div className="w-40 h-40 mx-auto border border-[var(--color-border)] rounded-radius-lg bg-[var(--color-bg)] flex flex-col items-center justify-center gap-2 text-[var(--color-text-tertiary)]">
                   <LuQrCode size={44} />
                   <span className="text-label">Receipt QR</span>
                 </div>

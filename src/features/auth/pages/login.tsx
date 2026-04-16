@@ -34,7 +34,7 @@ const LoginPage = () => {
       {/* Left panel - branding (hidden on mobile) */}
       <div className="hidden lg:flex flex-col items-center justify-center flex-1 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] px-12">
         {/* Logo square */}
-        <div className="w-20 h-20 rounded-2xl bg-[var(--color-bg)]/20 backdrop-blur-sm flex items-center justify-center mb-6">
+        <div className="w-20 h-20 rounded-radius-lg bg-[var(--color-bg)]/20 backdrop-blur-sm flex items-center justify-center mb-6">
           <span className="text-4xl font-[var(--weight-semibold)] text-[var(--color-text-inverse)]">
             K
           </span>
@@ -51,7 +51,7 @@ const LoginPage = () => {
 
       {/* Right panel - login form */}
       <div className="flex-1 flex items-center justify-center p-6 bg-[var(--color-surface)]">
-        <div className="max-w-sm w-full bg-[var(--color-bg)] rounded-[var(--radius-lg)] p-8 shadow-sm border border-[var(--color-border)]">
+        <div className="max-w-sm w-full bg-[var(--color-bg)] rounded-radius-lg p-8 shadow-sm border border-[var(--color-border)]">
           <div className="mb-6">
             <h2 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               Sign In

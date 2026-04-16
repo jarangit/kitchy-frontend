@@ -52,7 +52,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps) => {
   const point = payload[0].payload;
 
   return (
-    <div className="rounded-[10px] bg-[var(--color-text-primary)] px-3 py-2 text-center shadow-lg">
+    <div className="rounded-radius-md bg-[var(--color-text-primary)] px-3 py-2 text-center shadow-lg">
       <div className="text-[10px] text-[var(--color-text-inverse)]/80">
         {format(parseISO(point.day.date), "MMM dd")}
       </div>

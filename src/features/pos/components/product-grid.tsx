@@ -48,19 +48,19 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
           key={product.id}
           onClick={() => onAddToCart(product)}
           className={cn(
-            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-xl bg-[var(--color-bg)] p-6 transition-all duration-[var(--motion-fast)] hover:shadow-md active:scale-[0.98]",
+            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-radius-md bg-[var(--color-bg)] p-6 transition-all duration-[var(--motion-fast)] hover:shadow-md active:scale-[0.98]",
             (quantityByProductId[product.id] ?? 0) > 0
               ? "border-2 border-[var(--color-primary)]"
               : "border border-[var(--color-border)] hover:border-[var(--color-text-primary)]"
           )}
         >
           {(quantityByProductId[product.id] ?? 0) > 0 && (
-            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-full bg-[var(--color-primary)] px-1.5 text-label font-[var(--weight-semibold)] text-[var(--color-text-inverse)] tabular-nums">
+            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-radius-full bg-[var(--color-primary)] px-1.5 text-label font-[var(--weight-semibold)] text-[var(--color-text-inverse)] tabular-nums">
               {quantityByProductId[product.id]}
             </span>
           )}
           <div
-            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-full text-title font-[var(--weight-semibold)]", getColorForName(product.name))}
+            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-radius-full text-title font-[var(--weight-semibold)]", getColorForName(product.name))}
           >
             {product.name.charAt(0).toUpperCase()}
           </div>

@@ -24,17 +24,17 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
         <button
           type="button"
           onClick={() => onRemove(item.productId)}
-          className="h-11 w-11 shrink-0 rounded-lg text-[var(--color-text-tertiary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-danger-bg)] hover:text-[var(--color-danger)] active:scale-[0.98]"
+          className="h-11 w-11 shrink-0 rounded-radius-sm text-[var(--color-text-tertiary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-danger-bg)] hover:text-[var(--color-danger)] active:scale-[0.98]"
         >
           <LuTrash2 size={18} />
         </button>
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-4">
-        <div className="inline-flex items-center gap-1 rounded-full bg-[var(--color-surface)] px-1.5 py-1">
+        <div className="inline-flex items-center gap-1 rounded-radius-full bg-[var(--color-surface)] px-1.5 py-1">
           <button
             onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
           >
             <LuMinus size={18} />
           </button>
@@ -43,7 +43,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           </span>
           <button
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
           >
             <LuPlus size={18} />
           </button>
@@ -53,7 +53,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           <button
             type="button"
             onClick={() => onEditNote(item)}
-            className="inline-flex min-h-10 items-center rounded-full px-3 text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="inline-flex min-h-10 items-center rounded-radius-full px-3 text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
           >
             {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
           </button>

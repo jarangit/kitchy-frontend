@@ -80,7 +80,7 @@ const TransactionCard = ({ order, onClick }: Props) => {
 
   return (
     <div
-      className={cn("w-full bg-[var(--color-bg)] rounded-xl border border-[var(--color-border)] border-l-4", toStatusBorderClass(order.status), "hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] text-left overflow-hidden")}
+      className={cn("w-full bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] border-l-4", toStatusBorderClass(order.status), "hover:border-[var(--color-border-hover)] transition-all duration-[var(--motion-fast)] text-left overflow-hidden")}
     >
       {/* Header row — clickable to expand */}
       <button

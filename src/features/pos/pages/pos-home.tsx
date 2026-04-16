@@ -147,7 +147,7 @@ const PosHomePage = () => {
               </span>
               <button
                 onClick={closeCart}
-                className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] active:scale-[0.98]"
+                className="flex h-12 w-12 items-center justify-center rounded-radius-md bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] active:scale-[0.98]"
               >
                 <LuX size={20} />
               </button>

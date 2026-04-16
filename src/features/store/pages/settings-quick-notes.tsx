@@ -88,7 +88,7 @@ const SettingsQuickNotesPage = () => {
           {quickNotes.map((note) => (
             <div
               key={note}
-              className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-4"
+              className="flex items-center justify-between gap-3 rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-4"
             >
               <span className="text-label font-[var(--weight-medium)] text-[var(--color-text-primary)]">
                 {note}
@@ -96,7 +96,7 @@ const SettingsQuickNotesPage = () => {
               <button
                 type="button"
                 onClick={() => handleRemoveQuickNote(note)}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-[var(--color-text-tertiary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-danger-bg)] hover:text-[var(--color-danger)] active:scale-[0.98]"
+                className="flex h-9 w-9 items-center justify-center rounded-radius-full text-[var(--color-text-tertiary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-danger-bg)] hover:text-[var(--color-danger)] active:scale-[0.98]"
                 aria-label={t("settings.quickNotes.removeAria", { note })}
                 disabled={quickNotes.length === 1}
               >
@@ -111,7 +111,7 @@ const SettingsQuickNotesPage = () => {
         title={t("settings.quickNotes.addQuickNote")}
         description={t("settings.quickNotes.addQuickNoteDescription")}
       >
-        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
+        <div className="rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
             <div className="flex-1">
               <Input

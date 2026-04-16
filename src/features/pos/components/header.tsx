@@ -34,7 +34,7 @@ const NetworkQualityIcon = ({
   return (
     <div className="group relative">
       <div
-        className="flex h-12 w-12 items-end justify-center gap-0.5 rounded-lg bg-[var(--color-bg)] px-2 py-2.5"
+        className="flex h-12 w-12 items-end justify-center gap-0.5 rounded-radius-sm bg-[var(--color-bg)] px-2 py-2.5"
         title={label}
         aria-label={label}
         tabIndex={0}
@@ -46,7 +46,7 @@ const NetworkQualityIcon = ({
           return (
             <span
               key={bar}
-              className={cn("w-1 rounded-sm", heightClass)}
+              className={cn("w-1 rounded-radius-xs", heightClass)}
               style={{
                 backgroundColor: isActive
                   ? levelColor
@@ -56,7 +56,7 @@ const NetworkQualityIcon = ({
           );
         })}
       </div>
-      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1.5 text-caption font-[var(--weight-medium)] text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-radius-sm border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1.5 text-caption font-[var(--weight-medium)] text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
         {label}
       </span>
     </div>
@@ -107,7 +107,7 @@ const PosHeader = ({
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">
-        <div className="hidden items-center gap-2 rounded-xl bg-[var(--color-surface)] px-3 py-1.5 sm:flex">
+        <div className="hidden items-center gap-2 rounded-radius-md bg-[var(--color-surface)] px-3 py-1.5 sm:flex">
           <div className="text-right">
             <div className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               {formattedTime}
@@ -130,11 +130,11 @@ const PosHeader = ({
               <button
                 onClick={onCartClick}
                 aria-label={t("pos.header.openCart")}
-                className="relative flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] hover:bg-[var(--color-surface-hover)]"
+                className="relative flex h-12 w-12 items-center justify-center rounded-radius-md border border-[var(--color-border)] bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] hover:bg-[var(--color-surface-hover)]"
               >
                 <LuShoppingCart size={20} className="text-[var(--color-text-primary)]" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-[var(--color-info-bg)] px-1 text-caption font-[var(--weight-semibold)] text-[var(--color-info)]">
+                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-radius-full bg-[var(--color-info-bg)] px-1 text-caption font-[var(--weight-semibold)] text-[var(--color-info)]">
                     {cartItemCount}
                   </span>
                 )}

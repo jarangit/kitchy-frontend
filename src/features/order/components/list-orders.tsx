@@ -176,7 +176,7 @@ export const ListOrders = ({
       </div>
       <div
         ref={containerRef}
-        className={cn("bg-[var(--color-surface)] rounded-lg flex-col p-3 h-full flex-grow overflow-y-auto")}
+        className={cn("bg-[var(--color-surface)] rounded-radius-sm flex-col p-3 h-full flex-grow overflow-y-auto")}
       >
         {isLoading && !filteredOrders?.length ? (
           <div className="text-center text-[var(--color-text-secondary)]">Loading...</div>

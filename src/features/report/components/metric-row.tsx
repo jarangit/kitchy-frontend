@@ -38,7 +38,7 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
         >
           <div className="flex items-center gap-3">
             <div
-              className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+              className="w-9 h-9 rounded-radius-full flex items-center justify-center shrink-0"
               style={{ backgroundColor: m.colorBg }}
             >
               <span style={{ color: m.colorText }}>{m.icon}</span>
