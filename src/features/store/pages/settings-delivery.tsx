@@ -155,7 +155,7 @@ const SettingsDeliveryPage = () => {
               </div>
 
               <div className="flex items-center justify-between gap-3 border-t border-[var(--color-border)] pt-4">
-                <span className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
+                <span className="text-label text-[var(--color-text-secondary)]">
                   {enabledPlatforms.includes(platform)
                     ? t("settings.delivery.enabled")
                     : t("settings.delivery.disabled")}

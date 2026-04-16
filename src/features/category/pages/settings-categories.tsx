@@ -71,7 +71,7 @@ const SettingsCategoriesPage = () => {
 
             <div className="mt-4 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <span className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
+                <span className="text-label text-[var(--color-text-secondary)]">
                   Active
                 </span>
                 <Toggle

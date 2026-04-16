@@ -101,7 +101,7 @@ const PosHeader = ({
   return (
     <div className="flex items-center justify-between border-b border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5 sm:px-8">
       <div className="min-w-0">
-        <h1 className="truncate text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+        <h1 className="truncate text-heading text-[var(--color-text-primary)]">
           {shopName}
         </h1>
       </div>

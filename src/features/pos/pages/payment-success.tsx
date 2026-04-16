@@ -57,7 +57,7 @@ const PaymentSuccessPage = () => {
       <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)] mb-1">
         Payment Successful!
       </h1>
-      <p className="text-display font-[var(--weight-bold)] text-[var(--color-text-primary)] mb-6">
+      <p className="text-display text-[var(--color-text-primary)] mb-6">
         ฿{subtotal.toFixed(2)}
       </p>
 

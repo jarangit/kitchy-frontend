@@ -90,7 +90,7 @@ const SettingsQuickNotesPage = () => {
               key={note}
               className="flex items-center justify-between gap-3 rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-4"
             >
-              <span className="text-label font-[var(--weight-medium)] text-[var(--color-text-primary)]">
+              <span className="text-label text-[var(--color-text-primary)]">
                 {note}
               </span>
               <button

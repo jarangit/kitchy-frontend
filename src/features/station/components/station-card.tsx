@@ -76,7 +76,7 @@ export function StationCard({
           </div>
 
           <div className="space-y-2">
-            <h4 className="font-[var(--weight-medium)] text-label text-[var(--color-text-secondary)]">Display Settings</h4>
+            <h4 className="text-label text-[var(--color-text-secondary)]">Display Settings</h4>
             <div className="flex flex-wrap gap-2">
               <Badge variant="default">Text: {displaySettings.textSize}</Badge>
               <Badge variant="default">Sound: {displaySettings.soundEnabled ? "On" : "Off"}</Badge>

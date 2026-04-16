@@ -67,7 +67,7 @@ const Footer = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-radius-md flex items-center justify-center">
                 <span className="text-[var(--color-text-inverse)] font-[var(--weight-bold)]">K</span>
               </div>
-              <span className="text-title font-[var(--weight-semibold)]">Kitchy</span>
+              <span className="text-title">Kitchy</span>
             </div>
             <p className="text-[var(--color-text-tertiary)] mb-6 leading-relaxed">
               ระบบจัดการครัวอัจฉริยะ ที่ช่วยให้ร้านอาหารของคุณทำงานได้อย่างมีประสิทธิภาพ

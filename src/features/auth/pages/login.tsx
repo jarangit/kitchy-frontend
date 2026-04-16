@@ -53,7 +53,7 @@ const LoginPage = () => {
       <div className="flex-1 flex items-center justify-center p-6 bg-[var(--color-surface)]">
         <div className="max-w-sm w-full bg-[var(--color-bg)] rounded-radius-lg p-8 shadow-sm border border-[var(--color-border)]">
           <div className="mb-6">
-            <h2 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+            <h2 className="text-heading text-[var(--color-text-primary)]">
               Sign In
             </h2>
             <p className="text-label text-[var(--color-text-secondary)] mt-1">

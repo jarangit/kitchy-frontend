@@ -19,7 +19,7 @@ const Input: React.FC<InputProps> = ({ title, ...props }) => {
   return (
     <div>
       {title && (
-        <label className="block mb-1 text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
+        <label className="block mb-1 text-label text-[var(--color-text-secondary)]">
           {title}
         </label>
       )}

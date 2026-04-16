@@ -163,7 +163,7 @@ const TransactionCard = ({ order, onClick }: Props) => {
           {/* View detail link */}
           <button
             onClick={onClick}
-            className="mt-3 flex items-center gap-1.5 text-label font-[var(--weight-medium)] text-[var(--color-primary)] hover:underline active:scale-[0.98] transition-transform"
+            className="mt-3 flex items-center gap-1.5 text-label text-[var(--color-primary)] hover:underline active:scale-[0.98] transition-transform"
           >
             <LuExternalLink size={14} />
             View full detail

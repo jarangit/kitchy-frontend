@@ -173,7 +173,7 @@ const CartArea = ({
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
         <div className="flex items-center gap-3">
-          <h2 className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+          <h2 className="text-title text-[var(--color-text-primary)]">
             Cart
           </h2>
           {totalItems > 0 && (
@@ -198,7 +198,7 @@ const CartArea = ({
       <div className="flex-1 overflow-y-auto px-6">
         <div className="pt-5 pb-4 space-y-4 border-b border-[var(--color-border)]">
           <div>
-            <p className="mb-3 text-label font-[var(--weight-medium)] uppercase tracking-wide text-[var(--color-text-tertiary)]">
+            <p className="mb-3 text-label uppercase tracking-wide text-[var(--color-text-tertiary)]">
               Order Type
             </p>
             <div className="grid grid-cols-3 gap-3">
@@ -295,7 +295,7 @@ const CartArea = ({
           onClick={onPay}
           disabled={items.length === 0}
           size="lg"
-          className="w-full h-14 text-subtitle font-[var(--weight-semibold)]"
+          className="w-full h-14 text-subtitle"
         >
           Pay ฿{subtotal.toFixed(2)}
         </Button>
@@ -341,7 +341,7 @@ const CartArea = ({
 
         <div className="space-y-4">
           <div>
-            <p className="mb-2 text-label font-[var(--weight-medium)] uppercase tracking-wide text-[var(--color-text-tertiary)]">
+            <p className="mb-2 text-label uppercase tracking-wide text-[var(--color-text-tertiary)]">
               {t("pos.noteDialog.quickNotes")}
             </p>
             <div className="flex flex-wrap gap-3">

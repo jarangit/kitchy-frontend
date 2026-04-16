@@ -100,7 +100,7 @@ const KdsOrderCard = ({
           </p>
         </div>
         {orderInfoParts.length > 0 && (
-          <p className="mt-0.5 text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
+          <p className="mt-0.5 text-label text-[var(--color-text-secondary)]">
             {orderInfoParts.join(" ")}
           </p>
         )}

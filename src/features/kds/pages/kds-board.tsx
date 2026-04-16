@@ -93,7 +93,7 @@ const KdsBoardPage = () => {
         </div>
       ) : activeStation == null ? (
         <div className="min-h-[320px] rounded-radius-md border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
-          <p className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+          <p className="text-subtitle text-[var(--color-text-primary)]">
             No station found
           </p>
           <p className="mt-2 text-body-sm text-[var(--color-text-secondary)]">

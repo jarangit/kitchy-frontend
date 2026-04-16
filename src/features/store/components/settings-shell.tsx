@@ -68,7 +68,7 @@ export const SettingsSectionCard = ({
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
             {title && (
-              <h2 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+              <h2 className="text-subtitle text-[var(--color-text-primary)]">
                 {title}
               </h2>
             )}

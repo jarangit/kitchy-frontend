@@ -60,14 +60,14 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
             </span>
           )}
           <div
-            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-radius-full text-title font-[var(--weight-semibold)]", getColorForName(product.name))}
+            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-radius-full text-title", getColorForName(product.name))}
           >
             {product.name.charAt(0).toUpperCase()}
           </div>
           <span className="line-clamp-2 text-center text-body font-[var(--weight-medium)] leading-tight text-[var(--color-text-primary)]">
             {product.name}
           </span>
-          <span className="mt-2 text-subtitle font-[var(--weight-semibold)] text-[var(--color-success)]">
+          <span className="mt-2 text-subtitle text-[var(--color-success)]">
             ฿{product.price.toFixed(2)}
           </span>
         </button>

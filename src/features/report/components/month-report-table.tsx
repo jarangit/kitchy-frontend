@@ -143,7 +143,7 @@ const MonthReportTable = ({
                     className="border-b border-[var(--color-border)] last:border-b-0 cursor-pointer transition-colors duration-[var(--motion-fast)] hover:bg-[var(--color-primary-bg)]"
                     onClick={() => onSelectDay(day)}
                   >
-                    <td className="px-5 py-4 text-label font-[var(--weight-medium)] text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-label text-[var(--color-text-primary)] whitespace-nowrap">
                       {format(parseISO(day.date), "d MMM yyyy")}
                     </td>
                     <td className="px-5 py-4 text-body-sm text-[var(--color-text-primary)] whitespace-nowrap">

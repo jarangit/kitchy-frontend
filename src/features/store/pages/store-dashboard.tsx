@@ -166,7 +166,7 @@ const StoreDashboardPage = () => {
               <LuShoppingCart size={24} />
             </div>
             <div className="min-w-0 text-left">
-              <div className="text-heading font-[var(--weight-semibold)]">Open POS</div>
+              <div className="text-heading">Open POS</div>
               <div className="mt-1 text-label text-[rgba(255,255,255,0.78)]">
                 Start taking orders
               </div>
@@ -189,7 +189,7 @@ const StoreDashboardPage = () => {
                 <LuMonitor size={18} />
               </div>
               <div>
-                <div className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+                <div className="text-subtitle text-[var(--color-text-primary)]">
                   POS Ready
                 </div>
                 <div className="text-label text-[var(--color-text-secondary)]">
@@ -200,7 +200,7 @@ const StoreDashboardPage = () => {
           </div>
 
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+            <div className="text-subtitle text-[var(--color-text-primary)]">
               {stations.length} {stations.length === 1 ? "Station" : "Stations"}
             </div>
             <div className="mt-1 text-label text-[var(--color-text-secondary)]">

@@ -464,17 +464,56 @@
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
+}
 
-  /* Typography — semantic font sizes as Tailwind utilities */
-  /* Usage: text-display, text-heading, text-title, text-subtitle, text-body, text-body-sm, text-label, text-caption */
-  --font-size-display: var(--text-display-size);
-  --font-size-heading: var(--text-heading-size);
-  --font-size-title: var(--text-title-size);
-  --font-size-subtitle: var(--text-subtitle-size);
-  --font-size-body: var(--text-body-size);
-  --font-size-body-sm: var(--text-body-sm-size);
-  --font-size-label: var(--text-label-size);
-  --font-size-caption: var(--text-caption-size);
+/* ──────────────────────────────────────────
+   TYPOGRAPHY COMPOSITE UTILITIES
+   Each utility bundles font-size + weight + line-height.
+   Override weight with font-[var(--weight-*)] when needed.
+   ────────────────────────────────────────── */
+@utility text-display {
+  font-size: var(--text-display-size);
+  font-weight: var(--text-display-weight);
+  line-height: var(--text-display-leading);
+}
+
+@utility text-heading {
+  font-size: var(--text-heading-size);
+  font-weight: var(--text-heading-weight);
+  line-height: var(--text-heading-leading);
+}
+
+@utility text-title {
+  font-size: var(--text-title-size);
+  font-weight: var(--text-title-weight);
+  line-height: var(--text-title-leading);
+}
+
+@utility text-subtitle {
+  font-size: var(--text-subtitle-size);
+  font-weight: var(--text-subtitle-weight);
+  line-height: var(--text-subtitle-leading);
+}
+
+@utility text-body {
+  font-size: var(--text-body-size);
+  font-weight: var(--text-body-weight);
+  line-height: var(--text-body-leading);
+}
+
+@utility text-body-sm {
+  font-size: var(--text-body-sm-size);
+  font-weight: var(--text-body-sm-weight);
+}
+
+@utility text-label {
+  font-size: var(--text-label-size);
+  font-weight: var(--text-label-weight);
+}
+
+@utility text-caption {
+  font-size: var(--text-caption-size);
+  font-weight: var(--text-caption-weight);
 }
 
 /* ──────────────────────────────────────────

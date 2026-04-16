@@ -39,12 +39,12 @@ const StationPage = () => {
       <hr className="border-[var(--color-border)]" />
 
       {/* current order item */}
-      <h2 className="text-subtitle font-[var(--weight-semibold)]">Current Orders</h2>
+      <h2 className="text-subtitle">Current Orders</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orderByStation?.length ? (
           orderByStation?.map((order: StationOrder) => (
             <div key={order.id} className="bg-[var(--color-success-bg)] rounded-radius-sm p-4 mb-4">
-              <h3 className="text-subtitle font-[var(--weight-semibold)]">
+              <h3 className="text-subtitle">
                 Order ID: {order.orderNumber}
               </h3>
               <p>Order Status: {order.status}</p>

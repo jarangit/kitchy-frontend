@@ -125,7 +125,7 @@ const PaymentPage = () => {
 
         {/* Right column — Payment Method */}
         <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6">
-          <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
+          <h3 className="text-subtitle text-[var(--color-text-primary)] mb-4">
             Payment Method
           </h3>
           <PaymentMethodSelector
@@ -138,7 +138,7 @@ const PaymentPage = () => {
       {/* Conditional payment details */}
       {paymentMethod === "CASH" && (
         <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6">
-          <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
+          <h3 className="text-subtitle text-[var(--color-text-primary)] mb-4">
             Cash Payment
           </h3>
           <div className="space-y-4">
@@ -148,7 +148,7 @@ const PaymentPage = () => {
               value={receivedAmount}
               onChange={(e) => setReceivedAmount(e.target.value)}
               placeholder="0.00"
-              className="text-subtitle font-[var(--weight-semibold)]"
+              className="text-subtitle"
             />
 
             <div>
@@ -180,7 +180,7 @@ const PaymentPage = () => {
 
       {paymentMethod === "QR" && (
         <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6 text-center">
-          <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-6">
+          <h3 className="text-subtitle text-[var(--color-text-primary)] mb-6">
             QR Code Payment
           </h3>
           <div className="w-52 h-52 mx-auto border-2 border-dashed border-[var(--color-border)] rounded-radius-lg flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">

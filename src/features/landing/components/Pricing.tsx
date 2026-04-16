@@ -78,7 +78,7 @@ const PricingCard = ({
     )}
   >
     {plan.highlight && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-label font-[var(--weight-medium)] px-4 py-1 rounded-radius-full">
+      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-label px-4 py-1 rounded-radius-full">
         แนะนำ
       </div>
     )}
@@ -86,7 +86,7 @@ const PricingCard = ({
     <div className="mb-6">
       <h3
         className={cn(
-          "text-title font-[var(--weight-semibold)] mb-2",
+          "text-title mb-2",
           plan.highlight ? "text-[var(--color-text-inverse)]" : "text-[var(--color-text-primary)]"
         )}
       >
@@ -168,7 +168,7 @@ const Pricing = () => {
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-[var(--color-primary)] font-[var(--weight-medium)] text-label tracking-wide uppercase">
+          <span className="text-[var(--color-primary)] text-label tracking-wide uppercase">
             Pricing
           </span>
           <h2 className="text-4xl md:text-5xl font-[var(--weight-bold)] text-[var(--color-text-primary)] mt-4 mb-6">

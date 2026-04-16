@@ -50,11 +50,11 @@ export default function UserDashboard() {
           {/* Left: Logo + name */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-radius-md bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] flex items-center justify-center">
-              <span className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-inverse)]">
+              <span className="text-subtitle text-[var(--color-text-inverse)]">
                 K
               </span>
             </div>
-            <span className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+            <span className="text-title text-[var(--color-text-primary)]">
               Kitchy
             </span>
           </div>
@@ -84,7 +84,7 @@ export default function UserDashboard() {
         </div>
 
         {/* Your Stores heading */}
-        <h2 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mt-8 mb-4">
+        <h2 className="text-subtitle text-[var(--color-text-primary)] mt-8 mb-4">
           Your Stores
         </h2>
 
@@ -122,7 +122,7 @@ export default function UserDashboard() {
               <div className="w-10 h-10 rounded-radius-md bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-secondary)]">
                 <LuPlus size={24} />
               </div>
-              <p className="text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)]">
+              <p className="text-label text-[var(--color-text-secondary)]">
                 Create New Store
               </p>
             </div>

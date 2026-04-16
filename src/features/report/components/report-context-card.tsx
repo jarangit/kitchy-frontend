@@ -29,7 +29,7 @@ const ReportContextCard = ({
       <div className="grid gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)] md:items-start">
         {products.length > 0 && (
           <div>
-            <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
+            <h3 className="text-subtitle text-[var(--color-text-primary)] mb-4">
               {title}
             </h3>
             <div className="space-y-2.5">

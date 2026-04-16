@@ -53,7 +53,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           <button
             type="button"
             onClick={() => onEditNote(item)}
-            className="inline-flex min-h-10 items-center rounded-radius-full px-3 text-label font-[var(--weight-medium)] text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="inline-flex min-h-10 items-center rounded-radius-full px-3 text-label text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
           >
             {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
           </button>

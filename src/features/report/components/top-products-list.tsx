@@ -18,7 +18,7 @@ const TopProductsList = ({ products, title = "Top Products" }: Props) => {
 
   return (
     <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-5">
-      <h3 className="text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-4">
+      <h3 className="text-subtitle text-[var(--color-text-primary)] mb-4">
         {title}
       </h3>
       <div className="space-y-3">
