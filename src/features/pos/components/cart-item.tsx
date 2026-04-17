@@ -1,5 +1,5 @@
 import type { ICartItem } from "@/features/pos/types/pos.model";
-import { LuMinus, LuPlus, LuTrash2 } from "react-icons/lu";
+import { LuPencil, LuPlus, LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
@@ -12,39 +12,48 @@ interface Props {
 
 const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
   const { t } = useTranslation();
+  const noteActionLabel = item.note ? t("pos.cart.editNote") : t("pos.cart.addNote");
 
   return (
-    <div className="border-b border-border py-4 last:border-0">
-      <div className="flex items-center justify-between gap-3">
+    <div className="border-b border-border py-3.5 last:border-0">
+      <div className="flex items-start justify-between gap-3">
         <p
-          className="min-w-0 flex-1 line-clamp-1 text-body font-[var(--weight-semibold)] text-text-primary"
+          className="min-w-0 flex-1 line-clamp-1 text-subtitle font-[var(--weight-semibold)] text-text-primary"
           title={item.name}
         >
           {item.name}
         </p>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={() => onRemove(item.productId)}
-          className="shrink-0 rounded-sm text-text-tertiary hover:bg-danger-bg hover:text-danger"
-        >
-          <LuTrash2 size={18} />
-        </Button>
+        <p className="shrink-0 text-label font-[var(--weight-medium)] tabular-nums text-text-secondary">
+          ฿{(item.price * item.quantity).toFixed(2)}
+        </p>
       </div>
 
-      <div className="mt-3 flex items-center justify-between gap-4">
-        <div className="inline-flex items-center gap-1 rounded-full bg-surface px-1.5 py-1">
+      {item.note ? (
+        <p
+          className="mt-1 line-clamp-1 text-caption text-text-tertiary"
+          title={item.note}
+        >
+          {item.note}
+        </p>
+      ) : null}
+
+      <div className="mt-2 flex items-center justify-between gap-1.5">
+        <div className="inline-flex items-center gap-0.5 rounded-full border border-card-border bg-card-bg px-0.5 py-0.5">
           <Button
             type="button"
             variant="ghost"
             size="icon"
-            onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
-            className="rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            onClick={() =>
+              item.quantity <= 1
+                ? onRemove(item.productId)
+                : onUpdateQuantity(item.productId, item.quantity - 1)
+            }
+            className="h-7 w-7 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            aria-label={item.quantity <= 1 ? "Remove item" : "Decrease quantity"}
           >
-            <LuMinus size={18} />
+            <span className="text-label font-[var(--weight-semibold)] leading-none">-</span>
           </Button>
-          <span className="min-w-8 text-center text-body font-[var(--weight-semibold)] tabular-nums text-text-primary">
+          <span className="min-w-6 text-center text-caption font-[var(--weight-semibold)] tabular-nums text-text-primary">
             {item.quantity}
           </span>
           <Button
@@ -52,28 +61,36 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
             variant="ghost"
             size="icon"
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            className="rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            className="h-7 w-7 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            aria-label="Increase quantity"
           >
-            <LuPlus size={18} />
+            <LuPlus size={14} />
           </Button>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5">
           <Button
             type="button"
             variant="ghost"
-            size="sm"
-            onClick={() => onEditNote(item)}
-            className="rounded-full text-text-secondary hover:bg-surface hover:text-text-primary"
+            size="icon"
+            onClick={() => onRemove(item.productId)}
+            className="h-7 w-7 rounded-full text-text-secondary hover:bg-danger-bg hover:text-danger"
+            aria-label="Remove item"
+            title="Remove item"
           >
-            {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
+            <LuTrash2 size={13} />
           </Button>
-          <p className="text-label text-text-secondary tabular-nums">
-            ฿{item.price.toFixed(2)}/ea
-          </p>
-          <p className="text-body font-[var(--weight-semibold)] tabular-nums text-text-primary">
-            ฿{(item.price * item.quantity).toFixed(2)}
-          </p>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => onEditNote(item)}
+            className="h-7 w-7 rounded-full text-text-secondary hover:bg-surface hover:text-text-primary"
+            aria-label={noteActionLabel}
+            title={noteActionLabel}
+          >
+            <LuPencil size={13} />
+          </Button>
         </div>
       </div>
     </div>

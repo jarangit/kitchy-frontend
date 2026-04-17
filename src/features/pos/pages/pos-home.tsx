@@ -66,7 +66,7 @@ const PosHomePage = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full flex-col">
       {/* Header */}
       <PosHeader
         shopName={storeFinOneQuery?.name || "Store"}
@@ -78,7 +78,7 @@ const PosHomePage = () => {
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Product area */}
-        <div className="flex-1 flex flex-col min-w-0 p-6 overflow-hidden">
+        <div className="flex min-w-0 flex-1 flex-col px-6 py-5 overflow-hidden">
           <CategoryTabs
             categories={categories}
             selected={selectedCategory}
@@ -111,7 +111,7 @@ const PosHomePage = () => {
         </div>
 
         {/* Desktop cart — always visible on lg+ */}
-        <div className="hidden lg:flex w-[380px] shrink-0 border-l border-border">
+        <div className="hidden w-[380px] shrink-0 border-l border-card-border lg:flex">
           <CartArea
             items={cart.items}
             subtotal={cart.subtotal}
@@ -140,19 +140,19 @@ const PosHomePage = () => {
           />
 
           {/* Slide-in panel */}
-          <div className="absolute top-0 right-0 bottom-0 w-full max-w-[400px] bg-bg border-l border-border  animate-slide-in-right">
+          <div className="animate-slide-in-right absolute top-0 right-0 bottom-0 w-full max-w-[400px] border-l border-card-border bg-card-bg">
             {/* Close button */}
-            <div className="flex items-center justify-between border-b border-border px-5 py-3">
+            <div className="flex items-center justify-between border-b border-card-border px-5 py-3">
               <span className="text-title text-text-primary">
                 Cart
               </span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={closeCart}
-                className="h-12 w-12 rounded-md bg-surface hover:bg-surface-hover"
-              >
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  onClick={closeCart}
+                  className="h-12 w-12"
+                >
                 <LuX size={20} />
               </Button>
             </div>

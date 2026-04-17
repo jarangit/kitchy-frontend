@@ -9,6 +9,7 @@ import PaymentMethodSelector from "@/features/pos/components/payment-method";
 import CashPaymentSection from "@/features/pos/components/cash-payment-section";
 import QrPaymentSection from "@/features/pos/components/qr-payment-section";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 
@@ -94,7 +95,7 @@ const PaymentPage = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="mx-auto max-w-5xl px-6 py-8">
       {/* Header */}
       <div className="flex items-center gap-3 mb-8">
         <Button
@@ -112,18 +113,18 @@ const PaymentPage = () => {
       </div>
 
       {/* Two-column layout */}
-      <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
+      <div className="gap-6 space-y-6 lg:grid lg:grid-cols-[1fr_320px] lg:space-y-0">
         <OrderSummary items={items} subtotal={subtotal} />
 
-        <div className="bg-bg rounded-md border border-border p-6">
-          <h3 className="text-subtitle text-text-primary mb-4">
+        <Card>
+          <h3 className="mb-4 text-subtitle text-text-primary">
             Payment Method
           </h3>
           <PaymentMethodSelector
             selected={paymentMethod}
             onSelect={setPaymentMethod}
           />
-        </div>
+        </Card>
       </div>
 
       {paymentMethod === "CASH" && (

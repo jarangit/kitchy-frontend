@@ -12,6 +12,7 @@ import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useAppDispatch } from "@/shared/hooks/hooks";
 import { clearCurrentStore, setCurrentStore } from "@/shared/store/slices/current-store-slice";
 import { Card, CardContent } from "@/shared/components/ui/card";
+import type { IStore } from "@/features/store/types/store.model";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuPlus, LuStore } from "react-icons/lu";
@@ -86,7 +87,7 @@ export default function UserDashboard() {
 
         {hasStores ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {stores.map((item: any) => (
+            {stores.map((item: IStore) => (
               <button
                 key={item.id}
                 type="button"
