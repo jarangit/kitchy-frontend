@@ -126,10 +126,13 @@ const PosHeader = ({
           {/* Cart badge button — tablet only */}
           {onCartClick && (
             <div className="relative lg:hidden">
-              <button
+              <Button
+                type="button"
+                variant="secondary"
+                size="icon"
                 onClick={onCartClick}
                 aria-label={t("pos.header.openCart")}
-                className="relative flex h-12 w-12 items-center justify-center rounded-radius-md border border-border bg-surface transition-all duration-[var(--motion-fast)]  hover:bg-surface-hover"
+                className="relative h-12 w-12 bg-surface"
               >
                 <LuShoppingCart size={20} className="text-text-primary" />
                 {cartItemCount > 0 && (
@@ -137,7 +140,7 @@ const PosHeader = ({
                     {cartItemCount}
                   </span>
                 )}
-              </button>
+              </Button>
             </div>
           )}
         </div>

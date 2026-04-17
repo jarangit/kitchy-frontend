@@ -9,6 +9,7 @@ import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
 import PosPaymentOverlay from "@/features/pos/components/pos-payment-overlay";
+import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { LuX } from "react-icons/lu";
 
@@ -145,12 +146,15 @@ const PosHomePage = () => {
               <span className="text-title text-text-primary">
                 Cart
               </span>
-              <button
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
                 onClick={closeCart}
-                className="flex h-12 w-12 items-center justify-center rounded-radius-md bg-surface transition-all duration-[var(--motion-fast)] hover:bg-surface-hover "
+                className="h-12 w-12 rounded-radius-md bg-surface hover:bg-surface-hover"
               >
                 <LuX size={20} />
-              </button>
+              </Button>
             </div>
 
             {/* Cart content */}

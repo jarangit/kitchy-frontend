@@ -1,4 +1,5 @@
 import { Button } from "@/shared/components/ui/button";
+import { Input as TextInput } from "@/shared/components/ui/input";
 import { LuKeyboard } from "react-icons/lu";
 import React, { useRef, useState } from "react";
 
@@ -24,12 +25,12 @@ const Input: React.FC<InputProps> = ({ title, ...props }) => {
         </label>
       )}
       <div className="relative">
-        <input
+        <TextInput
           {...props}
           ref={inputRef}
           type="text"
           readOnly={!showKeyboard}
-          className="w-full border-input-border text-subtitle px-4 py-2 h-auto border rounded-radius-sm bg-input-bg transition focus:outline-none focus:border-input-border-focus"
+          className="h-auto rounded-radius-sm py-2 pr-16 text-subtitle"
         />
         <Button
           type="button"

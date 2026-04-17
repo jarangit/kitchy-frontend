@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/shared/components/ui/button";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -37,18 +38,22 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => navigate("/login")}
-            className="h-11 px-4 text-label text-text-secondary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
+            className="h-11 px-4 text-text-secondary hover:text-text-primary"
           >
             เข้าสู่ระบบ
-          </button>
-          <button
+          </Button>
+          <Button
+            type="button"
             onClick={() => navigate("/login")}
-            className="h-11 rounded-radius-full bg-primary px-5 py-2.5 text-label text-text-inverse transition-colors duration-[var(--motion-fast)] hover:bg-primary-hover"
+            className="h-11 rounded-radius-full px-5"
           >
             เริ่มต้นใช้งาน
-          </button>
+          </Button>
         </div>
       </div>
     </header>

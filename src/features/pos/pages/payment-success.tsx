@@ -3,6 +3,7 @@ import { LuCircleCheck, LuPrinter, LuArrowRight, LuQrCode } from "react-icons/lu
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import { useCartContext } from "@/features/pos/context/cartContext";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 
 const PaymentSuccessPage = () => {
@@ -62,7 +63,7 @@ const PaymentSuccessPage = () => {
       </p>
 
       {/* Receipt card */}
-      <div className="w-full bg-bg border border-border rounded-radius-lg p-6">
+      <Card className="w-full bg-bg p-6">
         {/* Receipt header */}
         <div className="text-center pb-4">
           <p className="text-caption uppercase tracking-widest text-text-secondary mb-1">
@@ -140,7 +141,7 @@ const PaymentSuccessPage = () => {
             Ref: #{receiptId}
           </p>
         </div>
-      </div>
+      </Card>
 
       {/* Action buttons */}
       <div className="flex gap-3 w-full mt-6 no-print">

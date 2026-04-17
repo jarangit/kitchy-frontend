@@ -1,6 +1,7 @@
 import { type JSX, useState } from "react";
 import { LuChartBar, LuList } from "react-icons/lu";
 import type { ICalendarDay } from "@/features/report/types/report.model";
+import { Card } from "@/shared/components/ui/card";
 import { Select } from "@/shared/components/ui/select";
 import { SegmentedControl } from "@/shared/components/ui/segmented-control";
 import MonthReportTable from "@/features/report/components/month-report-table";
@@ -42,7 +43,7 @@ const MonthReportPanel = ({
   const totalOrders = calendarDays.reduce((sum, day) => sum + day.orders, 0);
 
   return (
-    <div className="bg-surface border border-border rounded-radius-lg overflow-hidden">
+    <Card className="overflow-hidden p-0">
       <div className="border-b border-border p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
@@ -83,7 +84,7 @@ const MonthReportPanel = ({
       ) : (
         <MonthReportChart calendarDays={calendarDays} onSelectDay={onSelectDay} />
       )}
-    </div>
+    </Card>
   );
 };
 

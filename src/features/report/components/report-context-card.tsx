@@ -2,6 +2,7 @@ import type {
   IPaymentBreakdown,
   ITopProduct,
 } from "@/features/report/types/report.model";
+import { Card } from "@/shared/components/ui/card";
 
 interface Props {
   products: ITopProduct[];
@@ -25,7 +26,7 @@ const ReportContextCard = ({
   }
 
   return (
-    <div className="bg-surface border border-border rounded-radius-lg p-5">
+    <Card className="p-5">
       <div className="grid gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)] md:items-start">
         {products.length > 0 && (
           <div>
@@ -78,7 +79,7 @@ const ReportContextCard = ({
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 };
 

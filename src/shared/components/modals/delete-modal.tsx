@@ -1,3 +1,4 @@
+import { Button } from "@/shared/components/ui/button";
 import { useAppDispatch } from "@/shared/hooks/hooks";
 import { closeModal } from "@/shared/store/slices/modal-slice";
 
@@ -15,19 +16,21 @@ const DeleteModal = ({ content, onConfirm }: Props) => {
     <div>
       <p className="text-label text-text-secondary mt-2">{content}</p>
       <div className="mt-4 flex justify-end gap-2">
-        <button onClick={handleClose} className="text-text-secondary  transition-all duration-[var(--motion-fast)]">
+        <Button type="button" variant="ghost" size="sm" onClick={handleClose}>
           Cancel
-        </button>
+        </Button>
         {onConfirm && (
-          <button
+          <Button
+            type="button"
+            variant="danger"
+            size="sm"
             onClick={() => {
               onConfirm();
               handleClose();
             }}
-            className="text-danger font-[var(--weight-medium)]  transition-all duration-[var(--motion-fast)]"
           >
             Delete
-          </button>
+          </Button>
         )}
       </div>
     </div>

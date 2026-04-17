@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -86,23 +87,25 @@ const SettingsQuickNotesPage = () => {
       >
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
           {quickNotes.map((note) => (
-            <div
+            <Card
               key={note}
-              className="flex items-center justify-between gap-3 rounded-radius-lg border border-border bg-bg px-4 py-4"
+              className="flex items-center justify-between gap-3 bg-bg px-4 py-4"
             >
               <span className="text-label text-text-primary">
                 {note}
               </span>
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="icon"
                 onClick={() => handleRemoveQuickNote(note)}
-                className="flex h-9 w-9 items-center justify-center rounded-radius-full text-text-tertiary transition-all duration-[var(--motion-fast)] hover:bg-danger-bg hover:text-danger "
+                className="h-9 w-9 rounded-radius-full text-text-tertiary hover:bg-danger-bg hover:text-danger"
                 aria-label={t("settings.quickNotes.removeAria", { note })}
                 disabled={quickNotes.length === 1}
               >
                 <LuTrash2 size={16} />
-              </button>
-            </div>
+              </Button>
+            </Card>
           ))}
         </div>
       </SettingsSectionCard>
@@ -111,7 +114,7 @@ const SettingsQuickNotesPage = () => {
         title={t("settings.quickNotes.addQuickNote")}
         description={t("settings.quickNotes.addQuickNoteDescription")}
       >
-        <div className="rounded-radius-lg border border-border bg-bg p-5 sm:p-6">
+        <Card className="bg-bg p-5 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
             <div className="flex-1">
               <Input
@@ -131,7 +134,7 @@ const SettingsQuickNotesPage = () => {
               {t("settings.quickNotes.addNote")}
             </Button>
           </div>
-        </div>
+        </Card>
       </SettingsSectionCard>
     </SettingsShell>
   );

@@ -1,4 +1,5 @@
 import type { ITopProduct } from "@/features/report/types/report.model";
+import { Card } from "@/shared/components/ui/card";
 
 interface Props {
   products: ITopProduct[];
@@ -17,7 +18,7 @@ const TopProductsList = ({ products, title = "Top Products" }: Props) => {
   }
 
   return (
-    <div className="bg-surface border border-border rounded-radius-lg p-5">
+    <Card className="p-5">
       <h3 className="text-subtitle text-text-primary mb-4">
         {title}
       </h3>
@@ -46,7 +47,7 @@ const TopProductsList = ({ products, title = "Top Products" }: Props) => {
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 };
 

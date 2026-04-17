@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from "react";
+import { forwardRef, type InputHTMLAttributes } from "react";
 import { cn } from "@/shared/utils/cn";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -6,12 +6,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-export function Input({
-  label,
-  error,
-  className,
-  ...props
-}: InputProps) {
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { label, error, className, ...props },
+  ref,
+) {
   return (
     <div>
       {label && (
@@ -20,6 +18,7 @@ export function Input({
         </label>
       )}
       <input
+        ref={ref}
         className={cn(
           "w-full h-input-height",
           error ? "bg-danger-bg" : "bg-input-bg",
@@ -44,4 +43,4 @@ export function Input({
       )}
     </div>
   );
-}
+});

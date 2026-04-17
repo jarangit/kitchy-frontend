@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Button } from "@/shared/components/ui/button";
 import { useLoading } from "@/shared/hooks/useLoading";
 
 interface RoleCardProps {
@@ -36,13 +37,14 @@ export default function RoleCard({
           </>
         )}
       </p>
-      <button
-        className="h-11 w-full cursor-pointer rounded-radius-sm bg-primary px-6 py-2 font-[var(--weight-medium)] text-text-inverse transition-all duration-[var(--motion-fast)] hover:bg-primary-hover"
+      <Button
+        type="button"
+        className="w-full"
         style={color ? { backgroundColor: color } : undefined}
         onClick={onClick}
       >
         Open Station
-      </button>
+      </Button>
     </div>
   );
 }

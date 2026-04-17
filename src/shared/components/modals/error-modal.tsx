@@ -1,5 +1,7 @@
 
 
+import { Button } from "@/shared/components/ui/button";
+
 const ErrorModal = () => {
   return (
     <div>
@@ -10,12 +12,11 @@ const ErrorModal = () => {
         </p>
       </div>
       <div className="mt-6 flex justify-center">
-        <button
+        <Button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-button-primary-bg text-button-primary-text rounded-radius-sm font-[var(--weight-semibold)] cursor-pointer h-11  transition-all duration-[var(--motion-fast)]"
         >
           Reload Page
-        </button>
+        </Button>
       </div>
     </div>
   );

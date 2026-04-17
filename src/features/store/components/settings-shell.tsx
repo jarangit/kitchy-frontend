@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { LuArrowLeft } from "react-icons/lu";
+import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface SettingsShellProps {
@@ -23,13 +24,16 @@ export const SettingsShell = ({
     <div className="w-full space-y-8 lg:space-y-10">
       <div className="space-y-5">
         {onBack && (
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
             onClick={onBack}
-            className="inline-flex min-h-11 items-center gap-2 px-1 text-label text-text-secondary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
+            className="px-1 text-text-secondary hover:text-text-primary"
           >
             <LuArrowLeft size={16} />
             {backLabel ?? t("common.backToSettings")}
-          </button>
+          </Button>
         )}
 
         <div className="space-y-3 rounded-radius-xl border border-border bg-surface px-6 py-7 sm:px-7 sm:py-8">

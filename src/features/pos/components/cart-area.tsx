@@ -186,12 +186,15 @@ const CartArea = ({
                 </p>
                 <div className="flex items-center gap-2">
                   {tableNumber && (
-                    <button
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
                       onClick={() => onTableNumberChange(null)}
-                      className="h-11 px-3 text-label text-text-secondary hover:text-text-primary transition-all duration-[var(--motion-fast)] "
+                      className="h-11 px-3 text-text-secondary hover:text-text-primary"
                     >
                       Clear
-                    </button>
+                    </Button>
                   )}
                   <Button
                     size="sm"

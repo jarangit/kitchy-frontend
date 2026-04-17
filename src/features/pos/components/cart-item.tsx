@@ -1,5 +1,6 @@
 import type { ICartItem } from "@/features/pos/types/pos.model";
 import { LuMinus, LuPlus, LuTrash2 } from "react-icons/lu";
+import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
@@ -21,42 +22,52 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
         >
           {item.name}
         </p>
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="icon"
           onClick={() => onRemove(item.productId)}
-          className="h-11 w-11 shrink-0 rounded-radius-sm text-text-tertiary transition-all duration-[var(--motion-fast)] hover:bg-danger-bg hover:text-danger "
+          className="shrink-0 rounded-radius-sm text-text-tertiary hover:bg-danger-bg hover:text-danger"
         >
           <LuTrash2 size={18} />
-        </button>
+        </Button>
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-4">
         <div className="inline-flex items-center gap-1 rounded-radius-full bg-surface px-1.5 py-1">
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
             onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-text-secondary transition-all duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary "
+            className="rounded-radius-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
           >
             <LuMinus size={18} />
-          </button>
+          </Button>
           <span className="min-w-8 text-center text-body font-[var(--weight-semibold)] tabular-nums text-text-primary">
             {item.quantity}
           </span>
-          <button
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-text-secondary transition-all duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary "
+            className="rounded-radius-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
           >
             <LuPlus size={18} />
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center gap-3">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => onEditNote(item)}
-            className="inline-flex min-h-10 items-center rounded-radius-full px-3 text-label text-text-secondary transition-all duration-[var(--motion-fast)] hover:bg-surface hover:text-text-primary "
+            className="rounded-radius-full text-text-secondary hover:bg-surface hover:text-text-primary"
           >
             {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
-          </button>
+          </Button>
           <p className="text-label text-text-secondary tabular-nums">
             ฿{item.price.toFixed(2)}/ea
           </p>

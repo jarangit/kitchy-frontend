@@ -6,6 +6,7 @@ import { SettingsSectionCard, SettingsShell } from "@/features/store/components/
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
@@ -51,7 +52,7 @@ const SettingsCategoriesPage = () => {
         description={t("settings.categories.featureDescription")}
       >
         <div className="space-y-6">
-          <div className="rounded-radius-lg border border-border bg-bg p-5 sm:p-6">
+          <Card className="bg-bg p-5 sm:p-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Input
                 label="Category Name"
@@ -91,7 +92,7 @@ const SettingsCategoriesPage = () => {
                 {createCategoryMutation.isPending ? "Creating..." : "Create Category"}
               </Button>
             </div>
-          </div>
+          </Card>
 
           {categoriesQueryLoading ? (
             <div className="text-label text-text-secondary">
@@ -100,9 +101,9 @@ const SettingsCategoriesPage = () => {
           ) : categoriesQuery.length > 0 ? (
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
               {categoriesQuery.map((category) => (
-                <div
+                <Card
                   key={category.id}
-                  className="rounded-radius-lg border border-border bg-bg px-5 py-4"
+                  className="bg-bg px-5 py-4"
                 >
                   <div className="font-[var(--weight-semibold)] text-text-primary">
                     {category.name}
@@ -116,7 +117,7 @@ const SettingsCategoriesPage = () => {
                   <div className="mt-1 text-label text-text-secondary">
                     ID: {category.id}
                   </div>
-                </div>
+                </Card>
               ))}
             </div>
           ) : (

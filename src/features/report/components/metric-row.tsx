@@ -1,4 +1,5 @@
 import { LuShoppingCart, LuTrendingUp } from "react-icons/lu";
+import { Card } from "@/shared/components/ui/card";
 
 interface Props {
   orders: number;
@@ -32,9 +33,9 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {metrics.map((m) => (
-        <div
+        <Card
           key={m.label}
-          className="bg-surface border border-border rounded-radius-lg p-4"
+          className="p-4"
         >
           <div className="flex items-center gap-3">
             <div
@@ -52,7 +53,7 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
               </div>
             </div>
           </div>
-        </div>
+        </Card>
       ))}
     </div>
   );

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LuPlus } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
@@ -139,9 +140,9 @@ const SettingsDeliveryPage = () => {
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {supportedPlatforms.map((platform) => (
-            <div
+            <Card
               key={platform}
-              className="flex min-h-36 flex-col justify-between rounded-radius-lg border border-border bg-bg px-5 py-4 sm:px-6 sm:py-5"
+              className="flex min-h-36 flex-col justify-between bg-bg px-5 py-4 sm:px-6 sm:py-5"
             >
               <div className="min-w-0 space-y-1.5">
                 <div className="font-[var(--weight-semibold)] text-text-primary">
@@ -167,7 +168,7 @@ const SettingsDeliveryPage = () => {
                   disabled={enabledPlatforms.length === 1}
                 />
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       </SettingsSectionCard>
@@ -176,7 +177,7 @@ const SettingsDeliveryPage = () => {
         title={t("settings.delivery.addCustomPlatform")}
         description={t("settings.delivery.addCustomPlatformDescription")}
       >
-        <div className="rounded-radius-lg border border-border bg-bg p-5 sm:p-6">
+        <Card className="bg-bg p-5 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
             <div className="flex-1">
               <Input
@@ -195,7 +196,7 @@ const SettingsDeliveryPage = () => {
               {t("settings.delivery.addPlatform")}
             </Button>
           </div>
-        </div>
+        </Card>
       </SettingsSectionCard>
     </SettingsShell>
   );

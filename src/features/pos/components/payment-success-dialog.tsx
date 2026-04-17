@@ -2,6 +2,7 @@ import { LuCircleCheck, LuPrinter, LuQrCode } from "react-icons/lu";
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import type { PaymentResult } from "@/features/pos/context/cartContext";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { Dialog } from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 
@@ -32,7 +33,7 @@ const PaymentSuccessDialog = ({ open, onClose, paymentResult }: Props) => {
             ฿{paymentResult.subtotal.toFixed(2)}
           </p>
 
-          <div className="w-full bg-surface border border-border rounded-radius-lg p-6">
+          <Card className="w-full p-6">
             <div className="text-center pb-4">
               <p className="mb-1 text-label uppercase tracking-widest text-text-secondary">
                 Receipt
@@ -124,7 +125,7 @@ const PaymentSuccessDialog = ({ open, onClose, paymentResult }: Props) => {
                 Ref: #{paymentResult.receiptId}
               </p>
             </div>
-          </div>
+          </Card>
 
           <div className="flex gap-3 w-full mt-6">
             <Button
