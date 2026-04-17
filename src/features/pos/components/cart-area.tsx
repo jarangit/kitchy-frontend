@@ -4,12 +4,11 @@ import type { OrderType } from "@/features/pos/types/pos.model";
 import { LuShoppingCart } from "react-icons/lu";
 import CartItem from "./cart-item";
 import CartSummary from "./cart-summary";
+import TablePickerDialog from "./table-picker-dialog";
+import ItemNoteDialog from "./item-note-dialog";
 import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
-import { Input } from "@/shared/components/ui/input";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
 import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n/presets";
 
@@ -19,10 +18,6 @@ const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
   { value: "DELIVERY", label: "Delivery" },
 ];
 
-const TABLE_OPTIONS = Array.from(
-  { length: 20 },
-  (_, index) => `T-${String(index + 1).padStart(2, "0")}`
-);
 const hasQuickNotes = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 };
@@ -64,7 +59,7 @@ const CartArea = ({
   onTableNumberChange,
   onDeliveryPlatformChange,
 }: Props) => {
-  const { t, language } = useTranslation();
+  const { language } = useTranslation();
   const defaultDeliveryPlatforms = useMemo(
     () => getDefaultDeliveryPlatforms(language),
     [language]
@@ -73,7 +68,6 @@ const CartArea = ({
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const [isTableDialogOpen, setIsTableDialogOpen] = useState(false);
   const [activeNoteItem, setActiveNoteItem] = useState<ICartItem | null>(null);
-  const [draftNote, setDraftNote] = useState("");
   const [deliveryPlatforms, setDeliveryPlatforms] = useState(
     defaultDeliveryPlatforms
   );
@@ -138,46 +132,16 @@ const CartArea = ({
     }
   };
 
-  const handleOpenNoteDialog = (item: ICartItem) => {
-    setActiveNoteItem(item);
-    setDraftNote(item.note ?? "");
-  };
-
-  const handleCloseNoteDialog = () => {
-    setActiveNoteItem(null);
-    setDraftNote("");
-  };
-
-  const handleSaveNote = () => {
-    if (!activeNoteItem) return;
-    onUpdateItemNote(activeNoteItem.productId, draftNote);
-    handleCloseNoteDialog();
-  };
-
-  const handleToggleCommonNote = (note: string) => {
-    const parts = draftNote
-      .split(",")
-      .map((part) => part.trim())
-      .filter(Boolean);
-
-    if (parts.includes(note)) {
-      setDraftNote(parts.filter((part) => part !== note).join(", "));
-      return;
-    }
-
-    setDraftNote([...parts, note].join(", "));
-  };
-
   return (
-    <div className="w-full flex flex-col h-full bg-[var(--color-bg)]">
+    <div className="w-full flex flex-col h-full bg-bg">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-border)]">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-border">
         <div className="flex items-center gap-3">
-          <h2 className="text-title text-[var(--color-text-primary)]">
+          <h2 className="text-title text-text-primary">
             Cart
           </h2>
           {totalItems > 0 && (
-            <span className="min-w-7 h-7 flex items-center justify-center rounded-radius-full bg-[var(--color-success)] text-[var(--color-text-inverse)] text-label font-[var(--weight-semibold)] px-1.5">
+            <span className="min-w-7 h-7 flex items-center justify-center rounded-radius-full bg-success text-text-inverse text-label font-[var(--weight-semibold)] px-1.5">
               {totalItems}
             </span>
           )}
@@ -187,7 +151,7 @@ const CartArea = ({
             variant="ghost"
             size="sm"
             onClick={onClearCart}
-            className="h-11 px-3 text-label text-[var(--color-danger)] hover:text-[var(--color-danger-hover)]"
+            className="h-11 px-3 text-label text-danger hover:text-danger-hover"
           >
             Clear All
           </Button>
@@ -196,9 +160,9 @@ const CartArea = ({
 
       {/* Items */}
       <div className="flex-1 overflow-y-auto px-6">
-        <div className="pt-5 pb-4 space-y-4 border-b border-[var(--color-border)]">
+        <div className="pt-5 pb-4 space-y-4 border-b border-border">
           <div>
-            <p className="mb-3 text-label uppercase tracking-wide text-[var(--color-text-tertiary)]">
+            <p className="mb-3 text-label uppercase tracking-wide text-text-tertiary">
               Order Type
             </p>
             <div className="grid grid-cols-3 gap-3">
@@ -217,14 +181,14 @@ const CartArea = ({
           {orderType === "DINE_IN" && (
             <div>
               <div className="flex items-center justify-between">
-                <p className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+                <p className="text-body font-[var(--weight-semibold)] text-text-primary">
                   Table: {tableNumber ?? "Not selected"}
                 </p>
                 <div className="flex items-center gap-2">
                   {tableNumber && (
                     <button
                       onClick={() => onTableNumberChange(null)}
-                      className="h-11 px-3 text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+                      className="h-11 px-3 text-label text-text-secondary hover:text-text-primary transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
                     >
                       Clear
                     </button>
@@ -245,7 +209,7 @@ const CartArea = ({
           {orderType === "DELIVERY" && (
         <div className="space-y-5">
               <div>
-                <p className="mb-3 text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+                <p className="mb-3 text-body font-[var(--weight-semibold)] text-text-primary">
                   Delivery Platform
                 </p>
                 <div className="grid grid-cols-2 gap-3">
@@ -281,7 +245,7 @@ const CartArea = ({
               item={item}
               onUpdateQuantity={onUpdateQuantity}
               onRemove={onRemoveItem}
-              onEditNote={handleOpenNoteDialog}
+              onEditNote={() => setActiveNoteItem(item)}
             />
           ))
         )}
@@ -301,98 +265,19 @@ const CartArea = ({
         </Button>
       </div>
 
-      <Dialog
+      <TablePickerDialog
         open={isTableDialogOpen}
         onClose={() => setIsTableDialogOpen(false)}
-      >
-        <DialogHeader>
-          <DialogTitle>Select Table</DialogTitle>
-          <DialogDescription>Tap to select table for dine in order.</DialogDescription>
-        </DialogHeader>
+        tableNumber={tableNumber}
+        onSelect={onTableNumberChange}
+      />
 
-        <div className="grid grid-cols-4 gap-3">
-          {TABLE_OPTIONS.map((table) => (
-              <SelectionChip
-                key={table}
-                active={tableNumber === table}
-                onClick={() => {
-                  onTableNumberChange(table);
-                  setIsTableDialogOpen(false);
-                }}
-                className="text-base"
-              >
-                {table}
-              </SelectionChip>
-            ))}
-        </div>
-      </Dialog>
-
-      <Dialog open={activeNoteItem != null} onClose={handleCloseNoteDialog}>
-        <DialogHeader>
-          <DialogTitle>
-            {activeNoteItem
-              ? t("pos.noteDialog.title", { name: activeNoteItem.name })
-              : t("pos.noteDialog.fallbackTitle")}
-          </DialogTitle>
-          <DialogDescription>
-            {t("pos.noteDialog.description")}
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          <div>
-            <p className="mb-2 text-label uppercase tracking-wide text-[var(--color-text-tertiary)]">
-              {t("pos.noteDialog.quickNotes")}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              {quickNotes.map((note) => {
-                const isActive = draftNote
-                  .split(",")
-                  .map((part) => part.trim())
-                  .filter(Boolean)
-                  .includes(note);
-
-                return (
-                  <ChipTab
-                    key={note}
-                    active={isActive}
-                    onClick={() => handleToggleCommonNote(note)}
-                  >
-                    {note}
-                  </ChipTab>
-                );
-              })}
-            </div>
-          </div>
-
-          <Input
-            value={draftNote}
-            onChange={(e) => setDraftNote(e.target.value)}
-            placeholder={t("pos.noteDialog.placeholder")}
-            maxLength={120}
-          />
-
-          <div className="flex gap-4">
-            <Button
-              variant="secondary"
-              className="flex-1"
-              onClick={handleCloseNoteDialog}
-            >
-              {t("common.cancel")}
-            </Button>
-            <Button
-              variant="ghost"
-              className="flex-1"
-              onClick={() => setDraftNote("")}
-            >
-              {t("pos.noteDialog.clearNote")}
-            </Button>
-            <Button className="flex-1" onClick={handleSaveNote}>
-              {t("pos.noteDialog.saveNote")}
-            </Button>
-          </div>
-        </div>
-      </Dialog>
+      <ItemNoteDialog
+        item={activeNoteItem}
+        onClose={() => setActiveNoteItem(null)}
+        onSave={onUpdateItemNote}
+        quickNotes={quickNotes}
+      />
     </div>
   );
 };

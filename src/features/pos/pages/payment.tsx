@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LuArrowLeft, LuQrCode } from "react-icons/lu";
+import { LuArrowLeft } from "react-icons/lu";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useCartContext } from "@/features/pos/context/cartContext";
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import OrderSummary from "@/features/pos/components/order-summary";
 import PaymentMethodSelector from "@/features/pos/components/payment-method";
+import CashPaymentSection from "@/features/pos/components/cash-payment-section";
+import QrPaymentSection from "@/features/pos/components/qr-payment-section";
 import { Button } from "@/shared/components/ui/button";
-import { Input } from "@/shared/components/ui/input";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 
@@ -50,7 +51,6 @@ const PaymentPage = () => {
         })),
       });
 
-      // Store payment result in context before navigating
       setPaymentResult({
         receiptId: orderNumber,
         items: [...items],
@@ -64,7 +64,6 @@ const PaymentPage = () => {
         deliveryPlatform: "",
       });
 
-      // Clear the cart after successful payment
       clearCart();
 
       navigate(`/store/${id}/pos/payment/success`, { replace: true });
@@ -94,12 +93,6 @@ const PaymentPage = () => {
     );
   }
 
-  const quickAmounts = [
-    { label: `Exact ฿${subtotal.toLocaleString()}`, value: subtotal },
-    { label: "฿500", value: 500 },
-    { label: "฿1,000", value: 1000 },
-  ];
-
   return (
     <div className="max-w-5xl mx-auto p-6">
       {/* Header */}
@@ -113,19 +106,17 @@ const PaymentPage = () => {
           <LuArrowLeft size={18} />
           Back
         </Button>
-        <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+        <h1 className="text-heading text-text-primary">
           Payment
         </h1>
       </div>
 
       {/* Two-column layout */}
       <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
-        {/* Left column — Order Summary */}
         <OrderSummary items={items} subtotal={subtotal} />
 
-        {/* Right column — Payment Method */}
-        <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6">
-          <h3 className="text-subtitle text-[var(--color-text-primary)] mb-4">
+        <div className="bg-bg rounded-radius-md border border-border p-6">
+          <h3 className="text-subtitle text-text-primary mb-4">
             Payment Method
           </h3>
           <PaymentMethodSelector
@@ -135,72 +126,25 @@ const PaymentPage = () => {
         </div>
       </div>
 
-      {/* Conditional payment details */}
       {paymentMethod === "CASH" && (
-        <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6">
-          <h3 className="text-subtitle text-[var(--color-text-primary)] mb-4">
-            Cash Payment
-          </h3>
-          <div className="space-y-4">
-            <Input
-              label="Received Amount"
-              type="number"
-              value={receivedAmount}
-              onChange={(e) => setReceivedAmount(e.target.value)}
-              placeholder="0.00"
-              className="text-subtitle"
-            />
-
-            <div>
-              <p className="text-label text-[var(--color-text-secondary)] mb-2">
-                Quick amounts:
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {quickAmounts.map((amt) => (
-                  <Button
-                    key={amt.value}
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setReceivedAmount(String(amt.value))}
-                  >
-                    {amt.label}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {Number(receivedAmount) > 0 && (
-              <p className="text-title font-[var(--weight-bold)] text-[var(--color-success)]">
-                Change: ฿{change.toFixed(2)}
-              </p>
-            )}
-          </div>
-        </div>
+        <CashPaymentSection
+          subtotal={subtotal}
+          receivedAmount={receivedAmount}
+          onReceivedAmountChange={setReceivedAmount}
+          change={change}
+        />
       )}
 
       {paymentMethod === "QR" && (
-        <div className="bg-[var(--color-bg)] rounded-radius-md border border-[var(--color-border)] p-6 mt-6 text-center">
-          <h3 className="text-subtitle text-[var(--color-text-primary)] mb-6">
-            QR Code Payment
-          </h3>
-          <div className="w-52 h-52 mx-auto border-2 border-dashed border-[var(--color-border)] rounded-radius-lg flex flex-col items-center justify-center gap-3 text-[var(--color-text-tertiary)]">
-            <LuQrCode size={48} />
-            <span className="text-label">QR Code Placeholder</span>
-          </div>
-          <p className="text-label text-[var(--color-text-secondary)] mt-4">
-            Scan to pay ฿{subtotal.toFixed(2)}
-          </p>
-        </div>
+        <QrPaymentSection subtotal={subtotal} />
       )}
 
-      {/* Error message */}
       {errorMessage && (
-        <p className="text-label text-[var(--color-danger)] mt-4">
+        <p className="text-label text-danger mt-4">
           {errorMessage}
         </p>
       )}
 
-      {/* Bottom action bar */}
       <div className="flex gap-3 mt-6">
         <Button
           variant="secondary"
@@ -213,7 +157,7 @@ const PaymentPage = () => {
         <Button
           onClick={handleConfirmPayment}
           disabled={!canConfirm || isProcessing}
-          className="flex-1 h-12 text-body font-[var(--weight-bold)]"
+          className="flex-1 h-12 text-subtitle"
         >
           {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
         </Button>
