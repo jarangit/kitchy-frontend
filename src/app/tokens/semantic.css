@@ -1,0 +1,110 @@
+/* ============================================
+   LAYER 2: SEMANTIC TOKENS
+   Meaning-based. Maps to primitives.
+   ============================================ */
+
+/* ── Semantic Colors ── */
+:root {
+  /* Surfaces */
+  --color-bg: #ffffff;
+  --color-surface: rgba(17, 19, 21, 0.03);
+  --color-surface-hover: rgba(17, 19, 21, 0.08);
+  --color-overlay: rgba(17, 19, 21, 0.55);
+
+  /* Text */
+  --color-text-primary: var(--gray-900);
+  --color-text-secondary: rgba(17, 19, 21, 0.72);
+  --color-text-tertiary: rgba(17, 19, 21, 0.5);
+  --color-text-inverse: var(--gray-0);
+
+  /* Border */
+  --color-border: rgba(17, 19, 21, 0.16);
+  --color-border-hover: rgba(17, 19, 21, 0.28);
+
+  /* Action */
+  --color-primary: #111315;
+  --color-primary-hover: #111315;
+  --color-primary-bg: rgba(17, 19, 21, 0.08);
+
+  /* Status */
+  --color-success: #15803d;
+  --color-success-bg: rgba(21, 128, 61, 0.14);
+  --color-danger: #b91c1c;
+  --color-danger-hover: #991b1b;
+  --color-danger-bg: rgba(185, 28, 28, 0.12);
+  --color-warning: #b45309;
+  --color-warning-bg: rgba(180, 83, 9, 0.14);
+  --color-info: #1d4ed8;
+  --color-info-bg: rgba(29, 78, 216, 0.12);
+}
+
+/* ── Semantic Colors: Dark Mode ── */
+[data-theme="dark"] {
+  --color-bg: #111315;
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-surface-hover: rgba(255, 255, 255, 0.12);
+  --color-overlay: rgba(17, 19, 21, 0.7);
+
+  --color-text-primary: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.78);
+  --color-text-tertiary: rgba(255, 255, 255, 0.55);
+  --color-text-inverse: #111315;
+
+  --color-border: rgba(255, 255, 255, 0.2);
+  --color-border-hover: rgba(255, 255, 255, 0.35);
+
+  --color-primary: #ffffff;
+  --color-primary-hover: #ffffff;
+  --color-primary-bg: rgba(255, 255, 255, 0.12);
+
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --color-danger-hover: #ef4444;
+  --color-warning: #fbbf24;
+  --color-info: #60a5fa;
+
+  --color-success-bg: rgba(74, 222, 128, 0.18);
+  --color-danger-bg: rgba(248, 113, 113, 0.2);
+  --color-warning-bg: rgba(251, 191, 36, 0.2);
+  --color-info-bg: rgba(96, 165, 250, 0.2);
+}
+
+/* ── Semantic Typography ── */
+:root {
+  /* Display — hero headings, large feature text */
+  --text-display-size:    var(--size-4xl);
+  --text-display-weight:  var(--weight-bold);
+  --text-display-leading: var(--leading-tight);
+
+  /* Heading — page titles, section headings */
+  --text-heading-size:    var(--size-2xl);
+  --text-heading-weight:  var(--weight-semibold);
+  --text-heading-leading: var(--leading-tight);
+
+  /* Title — card titles, dialog titles, sub-headings */
+  --text-title-size:      var(--size-xl);
+  --text-title-weight:    var(--weight-semibold);
+  --text-title-leading:   var(--leading-snug);
+
+  /* Subtitle — secondary headings, section labels */
+  --text-subtitle-size:   var(--size-lg);
+  --text-subtitle-weight: var(--weight-semibold);
+  --text-subtitle-leading: var(--leading-snug);
+
+  /* Body — default body text */
+  --text-body-size:       var(--size-base);
+  --text-body-weight:     var(--weight-regular);
+  --text-body-leading:    var(--leading-normal);
+
+  /* Body small — descriptions, secondary body */
+  --text-body-sm-size:    var(--size-sm);
+  --text-body-sm-weight:  var(--weight-regular);
+
+  /* Label — form labels, button text, badges */
+  --text-label-size:      var(--size-sm);
+  --text-label-weight:    var(--weight-medium);
+
+  /* Caption — timestamps, footnotes, meta info */
+  --text-caption-size:    var(--size-xs);
+  --text-caption-weight:  var(--weight-regular);
+}
