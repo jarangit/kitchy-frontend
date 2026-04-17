@@ -75,7 +75,7 @@ const PageHeader = ({ storeName, time, date }: {
         <span>{time}</span>
         <LuRefreshCw size={12} />
       </div>
-      <div className="flex items-center gap-2 rounded-radius-lg border border-border bg-surface px-3 py-1.5">
+      <div className="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5">
         <span className="text-body-sm font-[var(--weight-semibold)] text-text-primary">
           {time}
         </span>
@@ -102,7 +102,7 @@ const HeroSection = ({ storeName, storeId, posLabel, posSubtitle }: {
     </p>
     <Link
       to={`/store/${storeId}/pos`}
-      className="inline-flex h-button-height-lg items-center justify-center rounded-radius-2xl bg-button-primary-bg px-12 text-button-lg font-button text-button-primary-text transition-colors duration-[var(--motion-fast)] hover:bg-button-primary-bg-hover"
+      className="inline-flex h-button-height-lg items-center justify-center rounded-xl bg-button-primary-bg px-12 text-button-lg font-button text-button-primary-text transition-colors duration-[var(--motion-fast)] hover:bg-button-primary-bg-hover"
     >
       {posLabel}
     </Link>
@@ -184,7 +184,7 @@ const StoreDashboardPage = () => {
       <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
         <SkeletonCard className="h-12 w-64" />
         <SkeletonCard className="h-16 w-80" />
-        <SkeletonCard className="h-12 w-48 rounded-radius-2xl" />
+        <SkeletonCard className="h-12 w-48 rounded-xl" />
         <div className="grid grid-cols-2 gap-4 w-full max-w-2xl">
           <SkeletonCard className="h-28" />
           <SkeletonCard className="h-28" />

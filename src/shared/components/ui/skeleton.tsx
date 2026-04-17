@@ -17,7 +17,7 @@ export function Skeleton({
     <div
       className={cn(
         "skeleton-shimmer",
-        circle ? "rounded-full" : "rounded-radius-md",
+        circle ? "rounded-full" : "rounded-md",
         width,
         height,
         className,

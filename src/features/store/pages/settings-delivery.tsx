@@ -133,7 +133,7 @@ const SettingsDeliveryPage = () => {
         title={t("settings.delivery.supportedApps")}
         description={t("settings.delivery.supportedAppsDescription")}
         action={
-          <div className="rounded-radius-full bg-bg px-3.5 py-1.5 text-label font-[var(--weight-semibold)] text-text-primary">
+          <div className="rounded-full bg-bg px-3.5 py-1.5 text-label font-[var(--weight-semibold)] text-text-primary">
             {enabledPlatforms.length}/{supportedPlatforms.length}
           </div>
         }

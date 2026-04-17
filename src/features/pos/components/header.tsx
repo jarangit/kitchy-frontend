@@ -34,7 +34,7 @@ const NetworkQualityIcon = ({
   return (
     <div className="group relative">
       <div
-        className="flex h-12 w-12 items-end justify-center gap-0.5 rounded-radius-sm bg-bg px-2 py-2.5"
+        className="flex h-12 w-12 items-end justify-center gap-0.5 rounded-sm bg-bg px-2 py-2.5"
         title={label}
         aria-label={label}
         tabIndex={0}
@@ -47,7 +47,7 @@ const NetworkQualityIcon = ({
             <span
               key={bar}
               className={cn(
-                "w-1 rounded-radius-xs",
+                "w-1 rounded-xs",
                 heightClass,
                 isActive ? levelColorClass : "bg-border",
               )}
@@ -55,7 +55,7 @@ const NetworkQualityIcon = ({
           );
         })}
       </div>
-      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-radius-sm border border-border bg-surface px-2.5 py-1.5 text-caption font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-border bg-surface px-2.5 py-1.5 text-caption font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
         {label}
       </span>
     </div>
@@ -106,7 +106,7 @@ const PosHeader = ({
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">
-        <div className="hidden items-center gap-2 rounded-radius-md bg-surface px-3 py-1.5 sm:flex">
+        <div className="hidden items-center gap-2 rounded-md bg-surface px-3 py-1.5 sm:flex">
           <div className="text-right">
             <div className="text-body font-[var(--weight-semibold)] text-text-primary">
               {formattedTime}
@@ -136,7 +136,7 @@ const PosHeader = ({
               >
                 <LuShoppingCart size={20} className="text-text-primary" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-radius-full bg-info-bg px-1 text-caption font-[var(--weight-semibold)] text-info">
+                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-info-bg px-1 text-caption font-[var(--weight-semibold)] text-info">
                     {cartItemCount}
                   </span>
                 )}

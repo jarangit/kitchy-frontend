@@ -21,7 +21,7 @@ export default function RoleCard({
 
   return (
     <div
-      className="flex w-full max-w-xs flex-col items-center gap-10 rounded-radius-md bg-bg p-6 text-center xl:min-w-[350px]"
+      className="flex w-full max-w-xs flex-col items-center gap-10 rounded-md bg-bg p-6 text-center xl:min-w-[350px]"
       onClick={onClick}
     >
       <div className="flex gap-2 w-full items-center justify-start">

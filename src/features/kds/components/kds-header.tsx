@@ -34,7 +34,7 @@ const KdsHeader = ({ storeId, stationName, isRefetching }: Props) => {
         </div>
       </div>
 
-      <div className="inline-flex items-center gap-3 rounded-radius-md border border-border bg-surface px-4 py-2.5 text-label text-text-secondary">
+      <div className="inline-flex items-center gap-3 rounded-md border border-border bg-surface px-4 py-2.5 text-label text-text-secondary">
         <LuActivity size={16} className={isRefetching ? "animate-pulse" : ""} />
         {isRefetching ? "Updating..." : "Auto refresh 5s"}
       </div>

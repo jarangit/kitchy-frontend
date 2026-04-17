@@ -75,14 +75,15 @@ Avoid 700 (bold). Let spacing and scale create hierarchy, not weight.
 
 ### Radius Tokens
 
-Use `rounded-radius-*` classes:
+Use Tailwind radius utilities generated from `--radius-*` tokens:
 
-- `rounded-radius-sm`
-- `rounded-radius-md`
-- `rounded-radius-lg` (default for cards)
-- `rounded-radius-xl`
-- `rounded-radius-2xl`
-- `rounded-radius-full` (pills, avatars)
+- `rounded-sm`
+- `rounded-md`
+- `rounded-lg` (default for cards)
+- `rounded-xl`
+- `rounded-full` (pills, avatars)
+
+Do not use `rounded-radius-*`. Tailwind v4 maps `--radius-xl` to `rounded-xl`, not `rounded-radius-xl`.
 
 ### Motion Tokens
 

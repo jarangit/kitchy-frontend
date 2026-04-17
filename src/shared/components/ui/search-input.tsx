@@ -30,7 +30,7 @@ export function SearchInput({
           "w-full h-input-height",
           "bg-input-bg",
           "border border-input-border",
-          "rounded-radius-full pl-10 pr-10",
+          "rounded-full pl-10 pr-10",
           "text-input text-input-text",
           "placeholder:text-input-placeholder",
           "outline-none",

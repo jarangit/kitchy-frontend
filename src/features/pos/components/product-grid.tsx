@@ -48,19 +48,19 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
           key={product.id}
           onClick={() => onAddToCart(product)}
           className={cn(
-            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-radius-md bg-bg p-6 transition-all duration-[var(--motion-fast)]  ",
+            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-md bg-bg p-6 transition-all duration-[var(--motion-fast)]  ",
             (quantityByProductId[product.id] ?? 0) > 0
               ? "border-2 border-primary"
               : "border border-border hover:border-primary"
           )}
         >
           {(quantityByProductId[product.id] ?? 0) > 0 && (
-            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-radius-full bg-primary px-1.5 text-label font-[var(--weight-semibold)] text-text-inverse tabular-nums">
+            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-full bg-primary px-1.5 text-label font-[var(--weight-semibold)] text-text-inverse tabular-nums">
               {quantityByProductId[product.id]}
             </span>
           )}
           <div
-            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-radius-full text-title", getColorForName(product.name))}
+            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-full text-title", getColorForName(product.name))}
           >
             {product.name.charAt(0).toUpperCase()}
           </div>

@@ -151,7 +151,7 @@ const PosHomePage = () => {
                 variant="ghost"
                 size="icon"
                 onClick={closeCart}
-                className="h-12 w-12 rounded-radius-md bg-surface hover:bg-surface-hover"
+                className="h-12 w-12 rounded-md bg-surface hover:bg-surface-hover"
               >
                 <LuX size={20} />
               </Button>

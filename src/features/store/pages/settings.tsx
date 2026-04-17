@@ -67,7 +67,7 @@ const SettingsPage = () => {
               <Card className="flex min-h-40 flex-col bg-bg transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
                 <CardContent className="flex h-full flex-col">
                   <div className="mb-5 flex items-start justify-between gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-surface text-text-secondary">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-text-secondary">
                       {item.icon}
                     </div>
                     <LuChevronRight size={20} className="shrink-0 text-text-tertiary" />
@@ -91,7 +91,7 @@ const SettingsPage = () => {
           <Card className="bg-bg">
             <CardContent className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-surface text-text-secondary">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-text-secondary">
                   {isDark ? <LuMoon size={24} /> : <LuSun size={24} />}
                 </div>
                 <div>

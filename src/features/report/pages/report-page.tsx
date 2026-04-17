@@ -77,7 +77,7 @@ const ReportPage = () => {
           <div className="flex items-center gap-3">
             <Link
               to={`/store/${id}`}
-              className="w-10 h-10 flex items-center justify-center rounded-radius-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)]"
+              className="w-10 h-10 flex items-center justify-center rounded-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)]"
             >
               <LuArrowLeft size={20} />
             </Link>
@@ -86,7 +86,7 @@ const ReportPage = () => {
             </h1>
           </div>
         </div>
-        <div className="bg-danger-bg border border-border rounded-radius-lg p-6 text-center">
+        <div className="bg-danger-bg border border-border rounded-lg p-6 text-center">
           <p className="text-danger">
             Failed to load report data. Please try again.
           </p>
@@ -102,7 +102,7 @@ const ReportPage = () => {
           <div className="flex items-center gap-3 min-w-0">
             <Link
               to={`/store/${id}`}
-              className="w-10 h-10 flex items-center justify-center rounded-radius-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)] shrink-0"
+              className="w-10 h-10 flex items-center justify-center rounded-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)] shrink-0"
             >
               <LuArrowLeft size={20} />
             </Link>

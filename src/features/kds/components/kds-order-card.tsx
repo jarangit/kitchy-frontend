@@ -64,7 +64,7 @@ const KdsOrderCard = ({
   }
 
   return (
-    <div className="flex h-full flex-col rounded-radius-md border border-border bg-surface p-5">
+    <div className="flex h-full flex-col rounded-md border border-border bg-surface p-5">
       {/* ── Product name + quantity (main focus) ── */}
       <div className="mb-4 flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">

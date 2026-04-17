@@ -27,20 +27,20 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           variant="ghost"
           size="icon"
           onClick={() => onRemove(item.productId)}
-          className="shrink-0 rounded-radius-sm text-text-tertiary hover:bg-danger-bg hover:text-danger"
+          className="shrink-0 rounded-sm text-text-tertiary hover:bg-danger-bg hover:text-danger"
         >
           <LuTrash2 size={18} />
         </Button>
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-4">
-        <div className="inline-flex items-center gap-1 rounded-radius-full bg-surface px-1.5 py-1">
+        <div className="inline-flex items-center gap-1 rounded-full bg-surface px-1.5 py-1">
           <Button
             type="button"
             variant="ghost"
             size="icon"
             onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
-            className="rounded-radius-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            className="rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
           >
             <LuMinus size={18} />
           </Button>
@@ -52,7 +52,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
             variant="ghost"
             size="icon"
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            className="rounded-radius-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            className="rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
           >
             <LuPlus size={18} />
           </Button>
@@ -64,7 +64,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
             variant="ghost"
             size="sm"
             onClick={() => onEditNote(item)}
-            className="rounded-radius-full text-text-secondary hover:bg-surface hover:text-text-primary"
+            className="rounded-full text-text-secondary hover:bg-surface hover:text-text-primary"
           >
             {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
           </Button>

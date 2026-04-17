@@ -36,7 +36,7 @@ export const SettingsShell = ({
           </Button>
         )}
 
-        <div className="space-y-3 rounded-radius-xl border border-border bg-surface px-6 py-7 sm:px-7 sm:py-8">
+        <div className="space-y-3 rounded-xl border border-border bg-surface px-6 py-7 sm:px-7 sm:py-8">
           <h1 className="text-heading leading-tight text-text-primary sm:text-display">
             {title}
           </h1>
@@ -67,7 +67,7 @@ export const SettingsSectionCard = ({
   children,
 }: SettingsSectionCardProps) => {
   return (
-    <section className="rounded-radius-xl border border-border bg-surface px-6 py-7 sm:px-7 sm:py-8">
+    <section className="rounded-xl border border-border bg-surface px-6 py-7 sm:px-7 sm:py-8">
       {(title || description || action) && (
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">

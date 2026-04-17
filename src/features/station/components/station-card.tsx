@@ -65,11 +65,11 @@ export function StationCard({
       <CardContent>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
-            <div className="text-center p-3 bg-warning-bg rounded-radius-sm">
+            <div className="text-center p-3 bg-warning-bg rounded-sm">
               <div className="text-heading font-[var(--weight-semibold)] text-warning">{activeOrders}</div>
               <div className="text-label text-text-secondary">Active Orders</div>
             </div>
-            <div className="text-center p-3 bg-success-bg rounded-radius-sm">
+            <div className="text-center p-3 bg-success-bg rounded-sm">
               <div className="text-heading font-[var(--weight-semibold)] text-success">{completedToday}</div>
               <div className="text-label text-text-secondary">Completed Today</div>
             </div>

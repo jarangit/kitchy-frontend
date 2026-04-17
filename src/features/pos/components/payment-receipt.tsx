@@ -128,7 +128,7 @@ const PaymentReceipt = ({
         <p className="mb-2 text-center text-label font-[var(--weight-semibold)] text-text-primary">
           Scan to get digital receipt
         </p>
-        <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-radius-lg border border-border bg-surface text-text-tertiary">
+        <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-lg border border-border bg-surface text-text-tertiary">
           <LuQrCode size={44} />
           <span className="text-caption">Receipt QR</span>
         </div>

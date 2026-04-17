@@ -48,7 +48,7 @@ export default function UserDashboard() {
       <header className="border-b border-border bg-bg/95 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-radius-md border border-border bg-surface">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-surface">
               <span className="text-subtitle text-text-primary">
                 K
               </span>
@@ -103,7 +103,7 @@ export default function UserDashboard() {
               >
                 <Card className="min-h-40 bg-surface transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
                   <CardContent className="flex h-full flex-col justify-between">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-bg text-text-secondary">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-bg text-text-secondary">
                       <LuStore size={22} />
                     </div>
                     <div className="space-y-1">
@@ -124,7 +124,7 @@ export default function UserDashboard() {
             >
               <Card className="flex min-h-40 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
                 <CardContent className="flex flex-col items-center gap-3 py-8">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-surface text-text-secondary">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-text-secondary">
                     <LuPlus size={24} />
                   </div>
                   <div className="space-y-1">

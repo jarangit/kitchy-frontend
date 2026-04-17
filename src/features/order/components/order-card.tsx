@@ -81,7 +81,7 @@ const OrderCard = ({
   return (
     <div
       className={cn(
-        "w-full h-full rounded-radius-md p-4 relative",
+        "w-full h-full rounded-md p-4 relative",
         "transition-opacity duration-300 flex flex-col justify-between gap-3",
         "bg-surface",
         !isToGo && isWaitingInStore && "!bg-warning-bg",

@@ -99,7 +99,7 @@ const SettingsQuickNotesPage = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => handleRemoveQuickNote(note)}
-                className="h-9 w-9 rounded-radius-full text-text-tertiary hover:bg-danger-bg hover:text-danger"
+                className="h-9 w-9 rounded-full text-text-tertiary hover:bg-danger-bg hover:text-danger"
                 aria-label={t("settings.quickNotes.removeAria", { note })}
                 disabled={quickNotes.length === 1}
               >

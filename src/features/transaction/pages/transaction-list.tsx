@@ -32,7 +32,7 @@ const TransactionListPage = () => {
   if (isLoading) {
     return (
       <div className="space-y-8">
-        <div className="h-8 w-48 skeleton-shimmer rounded-radius-md" />
+        <div className="h-8 w-48 skeleton-shimmer rounded-md" />
         <div className="space-y-4">
           <SkeletonCard />
           <SkeletonCard />

@@ -145,7 +145,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
               <OrderSummary items={items} subtotal={subtotal} />
 
-              <div className="bg-surface rounded-radius-md border border-border p-6">
+              <div className="bg-surface rounded-md border border-border p-6">
                 <h3 className="mb-3 text-title text-text-primary">
                   Order Info
                 </h3>
