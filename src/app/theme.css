@@ -260,3 +260,65 @@
   font-size: var(--text-caption-size);
   font-weight: var(--text-caption-weight);
 }
+
+/* ============================================
+   COMPONENT TYPOGRAPHY UTILITIES
+   Tailwind v4 does not generate text-* classes from --font-size-* tokens.
+   These utilities keep component classes tied to Layer 3 design tokens.
+   ============================================ */
+
+@utility text-button-sm {
+  font-size: var(--font-size-button-sm);
+}
+
+@utility text-button-md {
+  font-size: var(--font-size-button-md);
+}
+
+@utility text-button-lg {
+  font-size: var(--font-size-button-lg);
+}
+
+@utility text-card-title {
+  font-size: var(--font-size-card-title);
+}
+
+@utility text-card-desc {
+  font-size: var(--font-size-card-desc);
+}
+
+@utility text-input {
+  font-size: var(--font-size-input);
+}
+
+@utility text-badge {
+  font-size: var(--font-size-badge);
+}
+
+@utility text-chip {
+  font-size: var(--font-size-chip);
+}
+
+@utility text-segment {
+  font-size: var(--font-size-segment);
+}
+
+@utility text-selection {
+  font-size: var(--font-size-selection);
+}
+
+@utility text-dialog-title {
+  font-size: var(--font-size-dialog-title);
+}
+
+@utility text-dialog-desc {
+  font-size: var(--font-size-dialog-desc);
+}
+
+@utility text-select {
+  font-size: var(--font-size-select);
+}
+
+@utility text-label-comp {
+  font-size: var(--font-size-label-comp);
+}
