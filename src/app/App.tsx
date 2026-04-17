@@ -1,10 +1,9 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "@/features/auth/pages/login";
 import UserDashboardPage from "@/features/store/pages/user-dashboard";
 import StoreDashboardPage from "@/features/store/pages/store-dashboard";
 import { AuthProvider } from "@/features/auth/context/authContext";
 import { ProtectedRoute } from "@/shared/components/protected-route";
-import HomePage from "@/features/landing/pages/home";
 import NotFoundPage from "@/shared/pages/not-found";
 
 // POS
@@ -39,7 +38,7 @@ function App() {
     <AuthProvider>
       <Routes>
         {/* Public */}
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
 
         {/* User Dashboard (store selection) */}

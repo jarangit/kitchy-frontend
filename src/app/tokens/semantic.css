@@ -72,7 +72,7 @@
 
 /* ── Semantic Typography ── */
 :root {
-  /* Display — hero headings, large feature text */
+  /* Display — major app page titles and large feature text */
   --text-display-size:    var(--size-4xl);
   --text-display-weight:  var(--weight-semibold); /* 600 — Newsroom: restraint over boldness */
   --text-display-leading: var(--leading-tight);

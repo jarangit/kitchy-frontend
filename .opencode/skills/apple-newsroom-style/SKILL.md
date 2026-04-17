@@ -2,7 +2,9 @@
 
 > **Skill name**: `apple-newsroom-style`
 > **Use when**: Creating, modifying, or reviewing any UI component, page, or layout in this project.
-> **Description**: Comprehensive UI style guide for building calm, editorial, premium interfaces inspired by Apple Newsroom.
+> **Description**: Comprehensive UI style guide for building calm, editorial, premium product-app interfaces inspired by Apple Newsroom.
+
+This repo is the authenticated Kitchy product app only. Apply this style to operational screens such as POS, KDS, store dashboards, settings, reports, transactions, products, stations, and orders. Do not create landing pages, marketing pages, public websites, campaign pages, SEO pages, or promotional hero layouts in this repo; those belong in `/Users/jaran/Documents/dev/personal/kitchy/kitchy-landing`.
 
 ---
 
@@ -23,7 +25,7 @@ Use these `@utility` composite classes (defined in `theme.css`):
 
 | Class | Purpose |
 |---|---|
-| `text-display` | Page hero titles |
+| `text-display` | App page titles and major product headings |
 | `text-heading` | Section headings, large numbers |
 | `text-title` | Card titles, modal titles |
 | `text-subtitle` | Sub-headings, secondary titles |
@@ -90,7 +92,7 @@ Use `duration-[var(--motion-fast)]` for all transitions. Keep interactions subtl
 
 ## Goal
 
-Create a web UI that feels calm, editorial, premium, and highly readable, inspired by Apple Newsroom. This style is not flashy product marketing. It is structured, restrained, image-led, and content-first.
+Create product app UI that feels calm, editorial, premium, and highly readable, inspired by Apple Newsroom. This style is structured, restrained, workflow-first, and content-first.
 
 ---
 
@@ -349,7 +351,7 @@ Color should support content, not dominate it.
 - Clean crops
 - Consistent corner radius
 - Avoid busy overlays on every card
-- Use image-led storytelling in hero areas
+- Use images only when they support product context or item recognition
 
 ### 9.2 Image treatment
 
@@ -375,7 +377,7 @@ Color should support content, not dominate it.
 
 ### 10.3 Scrolling
 
-The page should feel continuous and editorial, not segmented like a dashboard.
+Screens should feel continuous and editorial while still supporting fast operational workflows.
 
 ---
 
@@ -393,7 +395,7 @@ Use a quiet pattern: Category, Date, Small supporting info.
 
 ### 11.3 Section naming
 
-Keep section titles simple: Latest, Stories, More from, Newsroom.
+Keep section titles simple and product-specific: Orders, Reports, Settings, Products, Stations, Transactions.
 
 ---
 
@@ -401,17 +403,17 @@ Keep section titles simple: Latest, Stories, More from, Newsroom.
 
 ### 12.1 Page-level components
 
-TopNav, SectionHeader, HeroStoryCard, FeatureStoryCard, StandardStoryCard, StoryGrid, NewsListRow, Footer.
+AppShell, Sidebar, SectionHeader, DataCard, DetailPanel, Toolbar, FilterBar, EmptyState, Dialog.
 
 ### 12.2 Story card tokens
 
 Each card should use component tokens only. Example:
 
-- `--story-card-bg`
-- `--story-card-radius`
-- `--story-card-padding`
-- `--story-card-title-color`
-- `--story-card-meta-color`
+- `--card-bg`
+- `--card-radius`
+- `--card-padding`
+- `--card-title-color`
+- `--card-meta-color`
 
 ### 12.3 Section tokens
 
@@ -449,7 +451,7 @@ Map meaning: `color.bg.page`, `color.bg.surface`, `color.text.primary`, `color.t
 
 ### 14.3 Component tokens
 
-UI components should call component tokens only. Examples: `hero-story-card.bg`, `hero-story-card.radius`, `top-nav.bg`, `news-list-row.padding`.
+UI components should call component tokens only. Examples: `card.bg`, `card.radius`, `sidebar.bg`, `table-row.padding`.
 
 ---
 

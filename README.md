@@ -1,55 +1,48 @@
-# React + TypeScript + Vite
+# Kitchy Frontend App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the Kitchy authenticated application frontend.
 
-Currently, two official plugins are available:
+It is focused on product workflows only:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Login and auth state
+- Store dashboard
+- POS
+- KDS
+- Orders
+- Stations
+- Products
+- Store settings
+- Reports
+- Transactions
 
-## Expanding the ESLint configuration
+The public landing/marketing site has been split into a separate repository:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```text
+/Users/jaran/Documents/dev/personal/kitchy/kitchy-landing
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Do not add landing pages, marketing pages, public website sections, campaign pages, or SEO content back into this repo.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Tech Stack
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+- React
+- TypeScript
+- Vite
+- Tailwind CSS v4
+- Custom shared UI components in `src/shared/components/ui`
+- Design tokens in `src/app/tokens` and `src/app/theme.css`
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run preview
 ```
-# fl-kds-frontend
+
+## Routing
+
+The root route `/` redirects to `/login`.
+
+All product routes live under app-specific paths such as `/dashboard`, `/store/:id`, `/store/:id/pos`, `/store/:id/kds`, `/store/:id/report`, and `/store/:id/settings`.
