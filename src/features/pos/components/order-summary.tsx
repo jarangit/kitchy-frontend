@@ -7,20 +7,20 @@ interface Props {
 
 const OrderSummary = ({ items, subtotal }: Props) => {
   return (
-    <div className="bg-[var(--color-surface)] rounded-radius-md border border-[var(--color-border)] p-6">
-      <h3 className="mb-4 text-title text-[var(--color-text-primary)]">Order Summary</h3>
+    <div className="bg-surface rounded-radius-md border border-border p-6">
+      <h3 className="mb-4 text-title text-text-primary">Order Summary</h3>
       <div className="space-y-3">
         {items.map((item) => (
           <div
             key={item.productId}
-            className="flex justify-between gap-3 text-base text-[var(--color-text-secondary)]"
+            className="flex justify-between gap-3 text-base text-text-secondary"
           >
             <div>
               <span>
                 {item.name} x{item.quantity}
               </span>
               {item.note && (
-                <p className="mt-1 text-label leading-5 text-[var(--color-text-tertiary)]">
+                <p className="mt-1 text-label leading-5 text-text-tertiary">
                   Note: {item.note}
                 </p>
               )}
@@ -29,7 +29,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-between border-t border-[var(--color-border)] pt-4 text-title">
+      <div className="mt-4 flex justify-between border-t border-border pt-4 text-title">
         <span>Total</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>

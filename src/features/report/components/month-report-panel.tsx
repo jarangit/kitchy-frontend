@@ -42,18 +42,18 @@ const MonthReportPanel = ({
   const totalOrders = calendarDays.reduce((sum, day) => sum + day.orders, 0);
 
   return (
-    <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] overflow-hidden">
-      <div className="border-b border-[var(--color-border)] p-5">
+    <div className="bg-surface border border-border rounded-radius-lg overflow-hidden">
+      <div className="border-b border-border p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
-            <h3 className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+            <h3 className="text-body font-[var(--weight-semibold)] text-text-primary">
               Monthly Report
             </h3>
-            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-label text-[var(--color-text-secondary)]">
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-label text-text-secondary">
               <span>{formatCurrency(totalRevenue)} revenue</span>
-              <span className="text-[var(--color-text-tertiary)]">&middot;</span>
+              <span className="text-text-tertiary">&middot;</span>
               <span>{totalOrders.toLocaleString()} orders</span>
-              <span className="text-[var(--color-text-tertiary)]">&middot;</span>
+              <span className="text-text-tertiary">&middot;</span>
               <span>{calendarDays.length} active days</span>
             </div>
           </div>

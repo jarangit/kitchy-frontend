@@ -35,7 +35,7 @@ export function SegmentedControl<T extends string>({
             type="button"
             onClick={() => onChange(item.key)}
             className={cn(
-              "flex items-center justify-center rounded-[calc(var(--radius-segment)-4px)]",
+              "flex items-center justify-center rounded-radius-sm",
               "px-4 h-8 text-segment font-segment whitespace-nowrap",
               "transition-colors duration-[var(--motion-fast)]",
               isActive

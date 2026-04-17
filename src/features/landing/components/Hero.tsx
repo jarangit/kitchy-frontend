@@ -9,7 +9,7 @@ const Hero = () => {
           ใหม่! รองรับการเชื่อมต่อ POS
         </div>
 
-        <h1 className="mb-6 text-display text-text-primary sm:text-[56px] sm:leading-[1.05] lg:text-[72px]">
+        <h1 className="mb-6 text-display text-text-primary   ">
           จัดการครัวของคุณ
           <br />
           <span className="text-text-secondary">

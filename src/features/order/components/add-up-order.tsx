@@ -47,7 +47,7 @@ const AddUpOrderForm = ({ _onSubmit, defaultValues }: Props) => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-button-primary-bg text-button-primary-text hover:bg-button-primary-bg-hover px-4 py-2 rounded-radius-xs h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+        className="bg-button-primary-bg text-button-primary-text hover:bg-button-primary-bg-hover px-4 py-2 rounded-radius-xs h-11  transition-all duration-[var(--motion-fast)]"
       >
         {isSubmitting ? "Saving..." : "Save Order"}
       </button>

@@ -132,7 +132,7 @@ const SettingsDeliveryPage = () => {
         title={t("settings.delivery.supportedApps")}
         description={t("settings.delivery.supportedAppsDescription")}
         action={
-          <div className="rounded-radius-full bg-[var(--color-bg)] px-3.5 py-1.5 text-label font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+          <div className="rounded-radius-full bg-bg px-3.5 py-1.5 text-label font-[var(--weight-semibold)] text-text-primary">
             {enabledPlatforms.length}/{supportedPlatforms.length}
           </div>
         }
@@ -141,21 +141,21 @@ const SettingsDeliveryPage = () => {
           {supportedPlatforms.map((platform) => (
             <div
               key={platform}
-              className="flex min-h-36 flex-col justify-between rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-4 sm:px-6 sm:py-5"
+              className="flex min-h-36 flex-col justify-between rounded-radius-lg border border-border bg-bg px-5 py-4 sm:px-6 sm:py-5"
             >
               <div className="min-w-0 space-y-1.5">
-                <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+                <div className="font-[var(--weight-semibold)] text-text-primary">
                   {platform}
                 </div>
-                <div className="text-label leading-6 text-[var(--color-text-secondary)]">
+                <div className="text-label leading-6 text-text-secondary">
                   {enabledPlatforms.includes(platform)
                     ? t("settings.delivery.available")
                     : t("settings.delivery.hidden")}
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-3 border-t border-[var(--color-border)] pt-4">
-                <span className="text-label text-[var(--color-text-secondary)]">
+              <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
+                <span className="text-label text-text-secondary">
                   {enabledPlatforms.includes(platform)
                     ? t("settings.delivery.enabled")
                     : t("settings.delivery.disabled")}
@@ -176,7 +176,7 @@ const SettingsDeliveryPage = () => {
         title={t("settings.delivery.addCustomPlatform")}
         description={t("settings.delivery.addCustomPlatformDescription")}
       >
-        <div className="rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
+        <div className="rounded-radius-lg border border-border bg-bg p-5 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
             <div className="flex-1">
               <Input

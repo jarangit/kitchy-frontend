@@ -32,7 +32,7 @@ const TransactionListPage = () => {
   if (isLoading) {
     return (
       <div className="space-y-8">
-        <div className="h-8 w-48 skeleton-shimmer rounded-[var(--radius-md)]" />
+        <div className="h-8 w-48 skeleton-shimmer rounded-radius-md" />
         <div className="space-y-4">
           <SkeletonCard />
           <SkeletonCard />
@@ -44,7 +44,7 @@ const TransactionListPage = () => {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">Transaction History</h1>
+      <h1 className="text-heading font-[var(--weight-semibold)] text-text-primary">Transaction History</h1>
 
       <TransactionFilter onFilterChange={setFilter} />
 

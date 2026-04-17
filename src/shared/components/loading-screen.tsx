@@ -7,10 +7,10 @@ export default function LoadingOverlay() {
   if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-overlay)] backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-dialog-overlay backdrop-blur-sm">
       <div className="flex flex-col items-center space-y-4">
-        <Loader2 className="h-10 w-10 animate-spin text-[var(--color-text-inverse)]" />
-        <p className="text-[var(--color-text-inverse)] text-subtitle font-[var(--weight-medium)]">Loading, please wait...</p>
+        <Loader2 className="h-10 w-10 animate-spin text-text-inverse" />
+        <p className="text-text-inverse text-subtitle font-[var(--weight-medium)]">Loading, please wait...</p>
       </div>
     </div>
   );

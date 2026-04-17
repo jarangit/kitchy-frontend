@@ -28,21 +28,18 @@ export function Toggle({
         "w-toggle-width h-toggle-height",
         "rounded-full",
         "transition-colors duration-[var(--motion-fast)]",
-        "active:scale-[0.95]",
+        checked ? "bg-toggle-bg-active" : "bg-toggle-bg",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         className,
       )}
-      style={{
-        backgroundColor: checked
-          ? "var(--color-toggle-bg-active)"
-          : "var(--color-toggle-bg)",
-      }}
     >
       <span
-        className="pointer-events-none inline-block w-toggle-knob-size h-toggle-knob-size rounded-full bg-toggle-knob transition-transform duration-[var(--motion-fast)]"
-        style={{
-          transform: checked ? "translateX(27px)" : "translateX(3px)",
-        }}
+        className={cn(
+          "pointer-events-none inline-block h-toggle-knob-size w-toggle-knob-size rounded-full bg-toggle-knob transition-transform duration-[var(--motion-fast)]",
+          checked
+            ? "translate-x-[calc(var(--spacing-toggle-width)-var(--spacing-toggle-knob-size)-3px)]"
+            : "translate-x-[3px]",
+        )}
       />
     </button>
   );

@@ -16,10 +16,10 @@ interface Props {
 
 /** Deterministic color from product name for the initial circle */
 const nameColors = [
-  "bg-[var(--color-success-bg)] text-[var(--color-success)]",
-  "bg-[var(--color-info-bg)] text-[var(--color-info)]",
-  "bg-[var(--color-warning-bg)] text-[var(--color-warning)]",
-  "bg-[var(--color-danger-bg)] text-[var(--color-danger)]",
+  "bg-success-bg text-success",
+  "bg-info-bg text-info",
+  "bg-warning-bg text-warning",
+  "bg-danger-bg text-danger",
 ];
 
 function getColorForName(name: string) {
@@ -48,14 +48,14 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
           key={product.id}
           onClick={() => onAddToCart(product)}
           className={cn(
-            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-radius-md bg-[var(--color-bg)] p-6 transition-all duration-[var(--motion-fast)] hover:shadow-md active:scale-[0.98]",
+            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-radius-md bg-bg p-6 transition-all duration-[var(--motion-fast)]  ",
             (quantityByProductId[product.id] ?? 0) > 0
-              ? "border-2 border-[var(--color-primary)]"
-              : "border border-[var(--color-border)] hover:border-[var(--color-text-primary)]"
+              ? "border-2 border-primary"
+              : "border border-border hover:border-primary"
           )}
         >
           {(quantityByProductId[product.id] ?? 0) > 0 && (
-            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-radius-full bg-[var(--color-primary)] px-1.5 text-label font-[var(--weight-semibold)] text-[var(--color-text-inverse)] tabular-nums">
+            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-radius-full bg-primary px-1.5 text-label font-[var(--weight-semibold)] text-text-inverse tabular-nums">
               {quantityByProductId[product.id]}
             </span>
           )}
@@ -64,10 +64,10 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
           >
             {product.name.charAt(0).toUpperCase()}
           </div>
-          <span className="line-clamp-2 text-center text-body font-[var(--weight-medium)] leading-tight text-[var(--color-text-primary)]">
+          <span className="line-clamp-2 text-center text-body font-[var(--weight-medium)] leading-tight text-text-primary">
             {product.name}
           </span>
-          <span className="mt-2 text-subtitle text-[var(--color-success)]">
+          <span className="mt-2 text-subtitle text-success">
             ฿{product.price.toFixed(2)}
           </span>
         </button>

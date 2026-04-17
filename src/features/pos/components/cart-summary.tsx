@@ -4,12 +4,12 @@ interface Props {
 
 const CartSummary = ({ subtotal }: Props) => {
   return (
-    <div className="space-y-3 border-t border-[var(--color-border)] pt-4">
-      <div className="flex justify-between text-base text-[var(--color-text-secondary)]">
+    <div className="space-y-3 border-t border-border pt-4">
+      <div className="flex justify-between text-base text-text-secondary">
         <span>Subtotal</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>
-      <div className="flex justify-between text-title text-[var(--color-text-primary)]">
+      <div className="flex justify-between text-title text-text-primary">
         <span>Total</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>

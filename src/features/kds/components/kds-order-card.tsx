@@ -64,25 +64,25 @@ const KdsOrderCard = ({
   }
 
   return (
-    <div className="flex h-full flex-col rounded-radius-md border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+    <div className="flex h-full flex-col rounded-radius-md border border-border bg-surface p-5">
       {/* ── Product name + quantity (main focus) ── */}
       <div className="mb-4 flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           {card.productName && (
             <span
-              className="block max-w-full truncate text-heading font-[var(--weight-semibold)] leading-tight text-[var(--color-text-primary)]"
+              className="block max-w-full truncate text-heading font-[var(--weight-semibold)] leading-tight text-text-primary"
               title={card.productName}
             >
               {card.productName}
             </span>
           )}
           {card.note && (
-            <p className="mt-1 text-body-sm leading-5 text-[var(--color-text-tertiary)]">
+            <p className="mt-1 text-body-sm leading-5 text-text-tertiary">
               Note: {card.note}
             </p>
           )}
         </div>
-        <span className="shrink-0 text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+        <span className="shrink-0 text-heading font-[var(--weight-semibold)] text-text-primary">
           x{card.quantity}
         </span>
       </div>
@@ -95,17 +95,17 @@ const KdsOrderCard = ({
               #{queueNumber}
             </Badge>
           )}
-          <p className="font-mono text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+          <p className="font-mono text-subtitle font-[var(--weight-semibold)] text-text-primary">
             {card.orderNumber}
           </p>
         </div>
         {orderInfoParts.length > 0 && (
-          <p className="mt-0.5 text-label text-[var(--color-text-secondary)]">
+          <p className="mt-0.5 text-label text-text-secondary">
             {orderInfoParts.join(" ")}
           </p>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <p className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+          <p className="text-body font-[var(--weight-semibold)] text-text-primary">
             {timeLabel}
           </p>
           <Badge variant="default" size="md" className="font-[var(--weight-semibold)]">
@@ -120,7 +120,7 @@ const KdsOrderCard = ({
       </div>
 
       {/* ── Action button (sticky bottom) ── */}
-      <div className="mt-5 border-t border-[var(--color-border)] pt-4">
+      <div className="mt-5 border-t border-border pt-4">
           <Button
           className="h-12 w-full text-body font-[var(--weight-semibold)]"
           onClick={() => onMove(card, nextAction.status)}

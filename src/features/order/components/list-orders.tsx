@@ -158,28 +158,28 @@ export const ListOrders = ({
         <div className="flex gap-2 font-semibold">
           {isHaveDineInWithToGoOrder ? (
             <div className="flex items-center">
-              <GoDotFill size={25} style={{ color: 'var(--color-info)' }} />
+              <GoDotFill size={25} className="text-info" />
               <div>Dine in @ToGo</div>
             </div>
           ) : (
             ""
           )}
           <div className="flex items-center">
-            <GoDotFill size={25} style={{ color: 'var(--color-success)' }} />
+            <GoDotFill size={25} className="text-success" />
             <div>Dine in</div>
           </div>
           <div className="flex items-center">
-            <GoDotFill size={25} style={{ color: 'var(--color-danger)' }} />
+            <GoDotFill size={25} className="text-danger" />
             <div>To-go</div>
           </div>
         </div>
       </div>
       <div
         ref={containerRef}
-        className={cn("bg-[var(--color-surface)] rounded-radius-sm flex-col p-3 h-full flex-grow overflow-y-auto")}
+        className={cn("bg-surface rounded-radius-sm flex-col p-3 h-full flex-grow overflow-y-auto")}
       >
         {isLoading && !filteredOrders?.length ? (
-          <div className="text-center text-[var(--color-text-secondary)]">Loading...</div>
+          <div className="text-center text-text-secondary">Loading...</div>
         ) : (
           <>
             {filteredOrders.length ? (
@@ -211,7 +211,7 @@ export const ListOrders = ({
                 ))}
               </div>
             ) : (
-              <div className="text-center text-[var(--color-text-secondary)]">
+              <div className="text-center text-text-secondary">
                 There are currently no orders
               </div>
             )}

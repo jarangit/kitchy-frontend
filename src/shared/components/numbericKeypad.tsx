@@ -60,10 +60,10 @@ export function NumericKeypad({
               className={cn(
                 "p-6 text-title font-[var(--weight-bold)]",
                 key === "clear"
-                  ? "bg-[var(--color-warning-bg)] hover:opacity-80 text-[var(--color-warning)] border border-[var(--color-border)]"
+                  ? "bg-warning-bg hover:opacity-80 text-warning border border-border"
                   : key === "backspace"
-                  ? "bg-[var(--color-danger-bg)] hover:opacity-80 text-[var(--color-danger)] border border-[var(--color-border)]"
-                  : "bg-[var(--color-bg)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text-primary)] border border-[var(--color-border)]"
+                  ? "bg-danger-bg hover:opacity-80 text-danger border border-border"
+                  : "bg-bg hover:bg-surface-hover text-text-primary border border-border"
               )}
               onClick={() => handleKeyPress(key)}
             >

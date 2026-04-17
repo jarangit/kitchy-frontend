@@ -13,12 +13,12 @@ interface Props {
 
 const KdsColumn = ({ title, status, cards, onMove, disabled }: Props) => {
   return (
-    <section className="min-w-[320px] flex-1 bg-[var(--color-bg)] border border-[var(--color-border)] rounded-radius-md p-4 flex flex-col">
+    <section className="min-w-[320px] flex-1 bg-bg border border-border rounded-radius-md p-4 flex flex-col">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-subtitle text-[var(--color-text-primary)]">
+        <h2 className="text-subtitle text-text-primary">
           {title}
         </h2>
-        <span className="text-label text-[var(--color-text-secondary)]">
+        <span className="text-label text-text-secondary">
           {cards.length}
         </span>
       </div>

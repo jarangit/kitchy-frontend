@@ -40,7 +40,7 @@ const StationListTemplate = () => {
 
   if (!storeId) {
     return (
-      <div className="text-label text-[var(--color-danger)]">
+      <div className="text-label text-danger">
         {t("settings.categories.missingStore")}
       </div>
     );

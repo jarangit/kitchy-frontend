@@ -110,7 +110,7 @@ const PosHomePage = () => {
         </div>
 
         {/* Desktop cart — always visible on lg+ */}
-        <div className="hidden lg:flex w-[380px] shrink-0 border-l border-[var(--color-border)]">
+        <div className="hidden lg:flex w-[380px] shrink-0 border-l border-border">
           <CartArea
             items={cart.items}
             subtotal={cart.subtotal}
@@ -134,20 +134,20 @@ const PosHomePage = () => {
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* Backdrop */}
           <div
-            className="absolute inset-0 bg-[var(--color-overlay)] transition-opacity duration-[var(--motion-normal)]"
+            className="absolute inset-0 bg-dialog-overlay transition-opacity duration-[var(--motion-normal)]"
             onClick={closeCart}
           />
 
           {/* Slide-in panel */}
-          <div className="absolute top-0 right-0 bottom-0 w-full max-w-[400px] bg-[var(--color-bg)] border-l border-[var(--color-border)] shadow-sm animate-slide-in-right">
+          <div className="absolute top-0 right-0 bottom-0 w-full max-w-[400px] bg-bg border-l border-border  animate-slide-in-right">
             {/* Close button */}
-            <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-3">
-              <span className="text-title text-[var(--color-text-primary)]">
+            <div className="flex items-center justify-between border-b border-border px-5 py-3">
+              <span className="text-title text-text-primary">
                 Cart
               </span>
               <button
                 onClick={closeCart}
-                className="flex h-12 w-12 items-center justify-center rounded-radius-md bg-[var(--color-surface)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] active:scale-[0.98]"
+                className="flex h-12 w-12 items-center justify-center rounded-radius-md bg-surface transition-all duration-[var(--motion-fast)] hover:bg-surface-hover "
               >
                 <LuX size={20} />
               </button>

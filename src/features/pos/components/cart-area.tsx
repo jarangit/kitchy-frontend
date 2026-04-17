@@ -188,7 +188,7 @@ const CartArea = ({
                   {tableNumber && (
                     <button
                       onClick={() => onTableNumberChange(null)}
-                      className="h-11 px-3 text-label text-text-secondary hover:text-text-primary transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+                      className="h-11 px-3 text-label text-text-secondary hover:text-text-primary transition-all duration-[var(--motion-fast)] "
                     >
                       Clear
                     </button>

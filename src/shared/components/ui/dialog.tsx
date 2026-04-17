@@ -37,7 +37,7 @@ export function Dialog({ open, onClose, children, className }: DialogProps) {
         "p-dialog-padding",
         "w-full max-w-md m-auto",
         "max-h-[90vh] overflow-y-auto",
-        "shadow-sm",
+        "",
         className,
       )}
     >

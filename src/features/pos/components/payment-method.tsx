@@ -20,16 +20,16 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
           key={method.value}
           onClick={() => onSelect(method.value)}
           className={cn(
-            "flex min-h-28 flex-col items-center justify-center rounded-radius-md border p-4 transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
+            "flex min-h-28 flex-col items-center justify-center rounded-radius-md border p-4 transition-all duration-[var(--motion-fast)] ",
             selected === method.value
-              ? "border-[var(--color-text-primary)] bg-[var(--color-surface)]"
-              : "border-[var(--color-border)] hover:border-[var(--color-border-hover)]"
+              ? "border-primary bg-surface"
+              : "border-border hover:border-border-hover"
           )}
         >
           <div
             className={cn(
               "mb-2",
-              selected === method.value ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-tertiary)]"
+              selected === method.value ? "text-text-primary" : "text-text-tertiary"
             )}
           >
             {method.icon}
@@ -37,7 +37,7 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
           <span
             className={cn(
               "text-body font-[var(--weight-medium)]",
-              selected === method.value ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)]"
+              selected === method.value ? "text-text-primary" : "text-text-secondary"
             )}
           >
             {method.label}

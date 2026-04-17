@@ -51,7 +51,7 @@ const SettingsCategoriesPage = () => {
         description={t("settings.categories.featureDescription")}
       >
         <div className="space-y-6">
-          <div className="rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-5 sm:p-6">
+          <div className="rounded-radius-lg border border-border bg-bg p-5 sm:p-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <Input
                 label="Category Name"
@@ -71,7 +71,7 @@ const SettingsCategoriesPage = () => {
 
             <div className="mt-4 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <span className="text-label text-[var(--color-text-secondary)]">
+                <span className="text-label text-text-secondary">
                   Active
                 </span>
                 <Toggle
@@ -94,7 +94,7 @@ const SettingsCategoriesPage = () => {
           </div>
 
           {categoriesQueryLoading ? (
-            <div className="text-label text-[var(--color-text-secondary)]">
+            <div className="text-label text-text-secondary">
               {t("settings.categories.loading")}
             </div>
           ) : categoriesQuery.length > 0 ? (
@@ -102,18 +102,18 @@ const SettingsCategoriesPage = () => {
               {categoriesQuery.map((category) => (
                 <div
                   key={category.id}
-                  className="rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-4"
+                  className="rounded-radius-lg border border-border bg-bg px-5 py-4"
                 >
-                  <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+                  <div className="font-[var(--weight-semibold)] text-text-primary">
                     {category.name}
                   </div>
-                  <div className="mt-1 text-label text-[var(--color-text-secondary)]">
+                  <div className="mt-1 text-label text-text-secondary">
                     Sort: {category.sortOrder}
                   </div>
-                  <div className="mt-1 text-label text-[var(--color-text-secondary)]">
+                  <div className="mt-1 text-label text-text-secondary">
                     {category.isActive ? "Active" : "Inactive"}
                   </div>
-                  <div className="mt-1 text-label text-[var(--color-text-secondary)]">
+                  <div className="mt-1 text-label text-text-secondary">
                     ID: {category.id}
                   </div>
                 </div>

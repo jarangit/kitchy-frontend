@@ -34,7 +34,7 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
       {metrics.map((m) => (
         <div
           key={m.label}
-          className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-4"
+          className="bg-surface border border-border rounded-radius-lg p-4"
         >
           <div className="flex items-center gap-3">
             <div
@@ -44,10 +44,10 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
               <span style={{ color: m.colorText }}>{m.icon}</span>
             </div>
             <div className="min-w-0">
-              <div className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+              <div className="text-title font-[var(--weight-semibold)] text-text-primary">
                 {m.value}
               </div>
-              <div className="text-caption text-[var(--color-text-secondary)]">
+              <div className="text-caption text-text-secondary">
                 {m.label}
               </div>
             </div>

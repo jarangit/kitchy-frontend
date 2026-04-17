@@ -63,67 +63,67 @@ const MonthReportTable = ({
     if (sortKey !== key) return null;
 
     return sortDirection === "asc" ? (
-      <LuChevronUp size={14} className="text-[var(--color-text-tertiary)]" />
+      <LuChevronUp size={14} className="text-text-tertiary" />
     ) : (
-      <LuChevronDown size={14} className="text-[var(--color-text-tertiary)]" />
+      <LuChevronDown size={14} className="text-text-tertiary" />
     );
   };
 
   return (
     <div>
       {calendarDays.length === 0 ? (
-        <div className="p-5 text-body-sm text-[var(--color-text-secondary)]">
+        <div className="p-5 text-body-sm text-text-secondary">
           No report data for this month.
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] border-collapse">
             <thead>
-              <tr className="border-b border-[var(--color-border)] bg-[var(--color-bg)]">
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+              <tr className="border-b border-border bg-bg">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
+                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
                     onClick={() => handleSort("date")}
                   >
                     <span>Date</span>
                     {renderSortIcon("date")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
+                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
                     onClick={() => handleSort("revenue")}
                   >
                     <span>Revenue</span>
                     {renderSortIcon("revenue")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
+                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
                     onClick={() => handleSort("orders")}
                   >
                     <span>Orders</span>
                     {renderSortIcon("orders")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
+                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
                     onClick={() => handleSort("averageOrderValue")}
                   >
                     <span>Avg / Order</span>
                     {renderSortIcon("averageOrderValue")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-[0.04em] text-[var(--color-text-tertiary)]">
+                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)]"
+                    className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
                     onClick={() => handleSort("topProduct")}
                   >
                     <span>Top Product</span>
@@ -140,22 +140,22 @@ const MonthReportTable = ({
                 return (
                   <tr
                     key={day.date}
-                    className="border-b border-[var(--color-border)] last:border-b-0 cursor-pointer transition-colors duration-[var(--motion-fast)] hover:bg-[var(--color-primary-bg)]"
+                    className="border-b border-border last:border-b-0 cursor-pointer transition-colors duration-[var(--motion-fast)] hover:bg-primary-bg"
                     onClick={() => onSelectDay(day)}
                   >
-                    <td className="px-5 py-4 text-label text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-label text-text-primary whitespace-nowrap">
                       {format(parseISO(day.date), "d MMM yyyy")}
                     </td>
-                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-body-sm text-text-primary whitespace-nowrap">
                       {formatCurrency(day.revenue)}
                     </td>
-                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-body-sm text-text-primary whitespace-nowrap">
                       {day.orders.toLocaleString()}
                     </td>
-                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-primary)] whitespace-nowrap">
+                    <td className="px-5 py-4 text-body-sm text-text-primary whitespace-nowrap">
                       {formatCurrency(avg)}
                     </td>
-                    <td className="px-5 py-4 text-body-sm text-[var(--color-text-secondary)] max-w-[240px] truncate">
+                    <td className="px-5 py-4 text-body-sm text-text-secondary max-w-[240px] truncate">
                       {topProduct}
                     </td>
                   </tr>

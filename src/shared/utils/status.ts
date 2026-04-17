@@ -20,15 +20,15 @@ export const toStatusBadgeVariant = (status: string): BadgeVariant => {
 export const toStatusBorderClass = (status: string): string => {
   switch (toStatusBadgeVariant(status)) {
     case "success":
-      return "border-l-[var(--color-success)]";
+      return "border-l-success";
     case "warning":
-      return "border-l-[var(--color-warning)]";
+      return "border-l-warning";
     case "info":
-      return "border-l-[var(--color-info)]";
+      return "border-l-info";
     case "danger":
-      return "border-l-[var(--color-danger)]";
+      return "border-l-danger";
     default:
-      return "border-l-[var(--color-border)]";
+      return "border-l-border";
   }
 };
 

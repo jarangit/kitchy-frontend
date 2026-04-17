@@ -34,7 +34,7 @@ const Countdown = ({ seconds, onComplete }: CountdownProps) => {
   };
 
   return (
-    <div className="text-title font-mono text-center text-[var(--color-danger)]">
+    <div className="text-title font-mono text-center text-danger">
       ⏳ {formatTime(timeLeft)}
     </div>
   );

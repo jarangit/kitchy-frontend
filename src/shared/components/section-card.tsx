@@ -16,11 +16,13 @@ export default function RoleCard({
   color,
   onClick,
 }: RoleCardProps) {
-  const { isLoading } = useLoading(); // ✅ เรียก Hook มาใช้
+  const { isLoading } = useLoading();
 
   return (
-    <div className="rounded-radius-md  bg-[var(--color-bg)] p-6 flex flex-col gap-10 items-center text-center w-full max-w-xs  xl:min-w-[350px]"         onClick={onClick}
->
+    <div
+      className="flex w-full max-w-xs flex-col items-center gap-10 rounded-radius-md bg-bg p-6 text-center xl:min-w-[350px]"
+      onClick={onClick}
+    >
       <div className="flex gap-2 w-full items-center justify-start">
         <div className={`text-display `}>{icon}</div>
         <h2 className="text-subtitle">{title}</h2>
@@ -35,8 +37,8 @@ export default function RoleCard({
         )}
       </p>
       <button
-        className="px-6 py-2 rounded-radius-sm text-[var(--color-text-inverse)] font-[var(--weight-medium)] w-full cursor-pointer h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
-        style={{ backgroundColor: color || 'var(--color-primary)' }}
+        className="h-11 w-full cursor-pointer rounded-radius-sm bg-primary px-6 py-2 font-[var(--weight-medium)] text-text-inverse transition-all duration-[var(--motion-fast)] hover:bg-primary-hover"
+        style={color ? { backgroundColor: color } : undefined}
         onClick={onClick}
       >
         Open Station

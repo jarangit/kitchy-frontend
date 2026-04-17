@@ -113,7 +113,7 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
                     name={field.name}
                   />
                   {errors.color && (
-                    <p className="text-[var(--color-danger)] text-label mt-1">
+                    <p className="text-danger text-label mt-1">
                       {errors.color.message}
                     </p>
                   )}

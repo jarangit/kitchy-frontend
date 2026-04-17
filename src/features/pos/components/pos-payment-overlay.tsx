@@ -122,7 +122,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
           <h2 className="text-heading text-text-primary">Payment</h2>
           <button
             onClick={handleClosePayment}
-            className="flex h-12 w-12 items-center justify-center rounded-radius-md border border-border bg-bg transition-all duration-[var(--motion-fast)] hover:bg-surface-hover active:scale-[0.98]"
+            className="flex h-12 w-12 items-center justify-center rounded-radius-md border border-border bg-bg transition-all duration-[var(--motion-fast)] hover:bg-surface-hover "
             aria-label="Close payment"
           >
             <LuX size={18} />

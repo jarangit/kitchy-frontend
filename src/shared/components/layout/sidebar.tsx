@@ -70,7 +70,7 @@ const Sidebar = () => {
   };
 
   const itemClass =
-    "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-radius-xl border border-transparent transition-all duration-[var(--motion-fast)] active:scale-[0.98]";
+    "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-radius-xl border border-transparent transition-all duration-[var(--motion-fast)] ";
   const activeClass =
     "border-sidebar-border bg-sidebar-active-bg text-sidebar-active-text";
   const inactiveClass =

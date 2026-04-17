@@ -83,15 +83,15 @@ const OrderCard = ({
       className={cn(
         "w-full h-full rounded-radius-md p-4 relative",
         "transition-opacity duration-300 flex flex-col justify-between gap-3",
-        "bg-[var(--color-surface)]",
-        !isToGo && isWaitingInStore && "!bg-[var(--color-warning-bg)]",
+        "bg-surface",
+        !isToGo && isWaitingInStore && "!bg-warning-bg",
         isFading ? "opacity-0" : "opacity-100",
       )}
     >
       <div className="space-y-3">
         <div className="flex gap-2 items-center">
           <div className="md:text-display font-[var(--weight-semibold)]">#{orderNumber}</div>
-          <div className="flex md:hidden items-center text-label text-[var(--color-text-secondary)]">
+          <div className="flex md:hidden items-center text-label text-text-secondary">
             <FaClock className="mr-1" />
             <ElapsedTime createdAt={createdAtStr} />
           </div>
@@ -115,7 +115,7 @@ const OrderCard = ({
             )}
           </div>
 
-          <div className="flex items-center text-label text-[var(--color-text-secondary)] gap-1">
+          <div className="flex items-center text-label text-text-secondary gap-1">
             <ElapsedTime createdAt={createdAtStr} />
           </div>
         </div>
@@ -126,8 +126,8 @@ const OrderCard = ({
           variant={isOpenStatus ? "primary" : "secondary"}
           className={cn(
             "w-full",
-            isOpenStatus && "bg-[var(--color-success)] hover:bg-[var(--color-success)]",
-            !isOpenStatus && "bg-[var(--color-warning)] text-[var(--color-text-primary)] hover:bg-[var(--color-warning)]",
+            isOpenStatus && "bg-success hover:bg-success",
+            !isOpenStatus && "bg-warning text-text-primary hover:bg-warning",
           )}
           onClick={handleUpdate}
         >

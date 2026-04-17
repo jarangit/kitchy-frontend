@@ -92,16 +92,16 @@ const KdsBoardPage = () => {
           <SkeletonCard className="min-h-[280px]" />
         </div>
       ) : activeStation == null ? (
-        <div className="min-h-[320px] rounded-radius-md border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center">
-          <p className="text-subtitle text-[var(--color-text-primary)]">
+        <div className="min-h-[320px] rounded-radius-md border border-border bg-surface p-6 text-center">
+          <p className="text-subtitle text-text-primary">
             No station found
           </p>
-          <p className="mt-2 text-body-sm text-[var(--color-text-secondary)]">
+          <p className="mt-2 text-body-sm text-text-secondary">
             Please create a station to use KDS in single-station mode.
           </p>
         </div>
       ) : visibleCards.length === 0 ? (
-        <div className="rounded-radius-md border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
+        <div className="rounded-radius-md border border-border bg-surface p-6">
           <EmptyState
             icon={<LuUtensilsCrossed size={28} />}
             title={activeTab === "PENDING" ? "No pending items" : "No ready items"}
@@ -112,7 +112,7 @@ const KdsBoardPage = () => {
         <div className="space-y-8">
           {dueNow.length > 0 && (
             <section className="space-y-4">
-              <span className="inline-flex min-h-8 items-center rounded-radius-full bg-[var(--color-danger-bg)] px-3 text-label font-[var(--weight-semibold)] text-[var(--color-danger)]">
+              <span className="inline-flex min-h-8 items-center rounded-radius-full bg-danger-bg px-3 text-label font-[var(--weight-semibold)] text-danger">
                 DUE NOW ({dueNow.length})
               </span>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
@@ -134,7 +134,7 @@ const KdsBoardPage = () => {
 
           {next.length > 0 && (
             <section className="space-y-4">
-              <span className="inline-flex min-h-8 items-center rounded-radius-full bg-[var(--color-warning-bg)] px-3 text-label font-[var(--weight-semibold)] text-[var(--color-warning)]">
+              <span className="inline-flex min-h-8 items-center rounded-radius-full bg-warning-bg px-3 text-label font-[var(--weight-semibold)] text-warning">
                 NEXT ({next.length})
               </span>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">

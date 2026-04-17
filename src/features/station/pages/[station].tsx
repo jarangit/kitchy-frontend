@@ -31,19 +31,19 @@ const StationPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+      <h1 className="text-heading font-[var(--weight-semibold)] text-text-primary">
         Station: {stationFinOneQuery.data?.name}
       </h1>
-      <p className="text-[var(--color-text-secondary)]">Station ID: {stationFinOneQuery.data?.id}</p>
-      <p className="text-[var(--color-text-secondary)]">Store ID: {stationFinOneQuery.data?.storeId}</p>
-      <hr className="border-[var(--color-border)]" />
+      <p className="text-text-secondary">Station ID: {stationFinOneQuery.data?.id}</p>
+      <p className="text-text-secondary">Store ID: {stationFinOneQuery.data?.storeId}</p>
+      <hr className="border-border" />
 
       {/* current order item */}
       <h2 className="text-subtitle">Current Orders</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {orderByStation?.length ? (
           orderByStation?.map((order: StationOrder) => (
-            <div key={order.id} className="bg-[var(--color-success-bg)] rounded-radius-sm p-4 mb-4">
+            <div key={order.id} className="bg-success-bg rounded-radius-sm p-4 mb-4">
               <h3 className="text-subtitle">
                 Order ID: {order.orderNumber}
               </h3>

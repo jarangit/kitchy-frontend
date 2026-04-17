@@ -13,10 +13,10 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="border-b border-[var(--color-border)] py-4 last:border-0">
+    <div className="border-b border-border py-4 last:border-0">
       <div className="flex items-center justify-between gap-3">
         <p
-          className="min-w-0 flex-1 line-clamp-1 text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]"
+          className="min-w-0 flex-1 line-clamp-1 text-body font-[var(--weight-semibold)] text-text-primary"
           title={item.name}
         >
           {item.name}
@@ -24,26 +24,26 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
         <button
           type="button"
           onClick={() => onRemove(item.productId)}
-          className="h-11 w-11 shrink-0 rounded-radius-sm text-[var(--color-text-tertiary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-danger-bg)] hover:text-[var(--color-danger)] active:scale-[0.98]"
+          className="h-11 w-11 shrink-0 rounded-radius-sm text-text-tertiary transition-all duration-[var(--motion-fast)] hover:bg-danger-bg hover:text-danger "
         >
           <LuTrash2 size={18} />
         </button>
       </div>
 
       <div className="mt-3 flex items-center justify-between gap-4">
-        <div className="inline-flex items-center gap-1 rounded-radius-full bg-[var(--color-surface)] px-1.5 py-1">
+        <div className="inline-flex items-center gap-1 rounded-radius-full bg-surface px-1.5 py-1">
           <button
             onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-text-secondary transition-all duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary "
           >
             <LuMinus size={18} />
           </button>
-          <span className="min-w-8 text-center text-body font-[var(--weight-semibold)] tabular-nums text-[var(--color-text-primary)]">
+          <span className="min-w-8 text-center text-body font-[var(--weight-semibold)] tabular-nums text-text-primary">
             {item.quantity}
           </span>
           <button
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface-hover)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="flex h-11 w-11 items-center justify-center rounded-radius-full text-text-secondary transition-all duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary "
           >
             <LuPlus size={18} />
           </button>
@@ -53,14 +53,14 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
           <button
             type="button"
             onClick={() => onEditNote(item)}
-            className="inline-flex min-h-10 items-center rounded-radius-full px-3 text-label text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="inline-flex min-h-10 items-center rounded-radius-full px-3 text-label text-text-secondary transition-all duration-[var(--motion-fast)] hover:bg-surface hover:text-text-primary "
           >
             {item.note ? t("pos.cart.editNote") : t("pos.cart.addNote")}
           </button>
-          <p className="text-label text-[var(--color-text-secondary)] tabular-nums">
+          <p className="text-label text-text-secondary tabular-nums">
             ฿{item.price.toFixed(2)}/ea
           </p>
-          <p className="text-body font-[var(--weight-semibold)] tabular-nums text-[var(--color-text-primary)]">
+          <p className="text-body font-[var(--weight-semibold)] tabular-nums text-text-primary">
             ฿{(item.price * item.quantity).toFixed(2)}
           </p>
         </div>

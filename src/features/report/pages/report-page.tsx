@@ -77,17 +77,17 @@ const ReportPage = () => {
           <div className="flex items-center gap-3">
             <Link
               to={`/store/${id}`}
-              className="w-10 h-10 flex items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)]"
+              className="w-10 h-10 flex items-center justify-center rounded-radius-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)]"
             >
               <LuArrowLeft size={20} />
             </Link>
-            <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+            <h1 className="text-heading font-[var(--weight-semibold)] text-text-primary">
               Report
             </h1>
           </div>
         </div>
-        <div className="bg-[var(--color-danger-bg)] border border-[var(--color-border)] rounded-[var(--radius-lg)] p-6 text-center">
-          <p className="text-[var(--color-danger)]">
+        <div className="bg-danger-bg border border-border rounded-radius-lg p-6 text-center">
+          <p className="text-danger">
             Failed to load report data. Please try again.
           </p>
         </div>
@@ -102,15 +102,15 @@ const ReportPage = () => {
           <div className="flex items-center gap-3 min-w-0">
             <Link
               to={`/store/${id}`}
-              className="w-10 h-10 flex items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-hover)] transition-all duration-[var(--motion-fast)] shrink-0"
+              className="w-10 h-10 flex items-center justify-center rounded-radius-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)] shrink-0"
             >
               <LuArrowLeft size={20} />
             </Link>
             <div className="min-w-0">
-              <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
+              <h1 className="text-2xl font-[var(--weight-semibold)] text-text-primary">
                 Report
               </h1>
-              <p className="text-label text-[var(--color-text-secondary)]">
+              <p className="text-label text-text-secondary">
                 {subtitle}
               </p>
             </div>

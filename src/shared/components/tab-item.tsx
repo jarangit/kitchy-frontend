@@ -41,7 +41,7 @@ const TabItem = ({
     <div
       className={cn(
         "border border-border rounded-xl px-4 py-2 w-fit cursor-pointer",
-        "transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
+        "transition-all duration-[var(--motion-fast)] ",
         isActive && "bg-chip-active-bg text-chip-active-text",
         bouncing && isCanAnimation && "bg-info-bg text-text-primary",
         className,

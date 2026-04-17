@@ -174,7 +174,7 @@ const Pricing = () => {
           <span className="text-label uppercase tracking-wide text-text-secondary">
             Pricing
           </span>
-          <h2 className="mt-4 mb-6 text-display text-text-primary sm:text-[48px] sm:leading-[1.08]">
+          <h2 className="mt-4 mb-6 text-display text-text-primary  ">
             แพ็กเกจที่เหมาะกับคุณ
           </h2>
           <p className="mx-auto max-w-2xl text-title text-text-secondary">

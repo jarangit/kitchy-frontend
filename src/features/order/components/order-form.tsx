@@ -67,7 +67,7 @@ export function OrderForm({
   return (
     <form
       onSubmit={handleFormSubmit}
-      className=" bg-[var(--color-bg)] p-6 rounded-radius-sm lg:min-w-[300px]"
+      className=" bg-bg p-6 rounded-radius-sm lg:min-w-[300px]"
     >
       <div className="flex flex-col space-y-4">
         <label htmlFor="orderNumber" className="text-title">
@@ -81,16 +81,16 @@ export function OrderForm({
         {/* waiting */}
         {orderType == "DINE_IN" ? (
           <>
-            <div className="border flex items-center border-[var(--color-border)] rounded-radius-sm overflow-hidden cursor-pointer">
+            <div className="border flex items-center border-border rounded-radius-sm overflow-hidden cursor-pointer">
               <TabItem
                 title={"Table"}
-                className="w-full rounded-none !p-3"
+                className="w-full rounded-radius-sm !p-3"
                 active={!isWaitingInStore}
                 onClick={() => onTapToggleIsWaiting(false)}
               />
               <TabItem
                 title={"@ToGo"}
-                className="w-full rounded-none !p-3"
+                className="w-full rounded-radius-sm !p-3"
                 active={isWaitingInStore}
                 onClick={() => onTapToggleIsWaiting(true)}
               />
@@ -98,16 +98,16 @@ export function OrderForm({
           </>
         ) : (
           <>
-            <div className="border flex items-center border-[var(--color-border)] rounded-radius-sm overflow-hidden cursor-pointer">
+            <div className="border flex items-center border-border rounded-radius-sm overflow-hidden cursor-pointer">
               <TabItem
                 title={"Pickup"}
-                className="w-full rounded-none !p-3"
+                className="w-full rounded-radius-sm !p-3"
                 active={!isWaitingInStore}
                 onClick={() => onTapToggleIsWaiting(false)}
               />
               <TabItem
                 title={"@Waiting"}
-                className="w-full rounded-none !p-3"
+                className="w-full rounded-radius-sm !p-3"
                 active={isWaitingInStore}
                 onClick={() => onTapToggleIsWaiting(true)}
               />

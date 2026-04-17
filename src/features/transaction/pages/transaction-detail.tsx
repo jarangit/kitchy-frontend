@@ -45,9 +45,9 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <div className="border-t border-[var(--color-border)] pt-5">
+    <div className="border-t border-border pt-5">
       {title && (
-        <h3 className="text-caption font-[var(--weight-semibold)] uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">
+        <h3 className="text-caption font-[var(--weight-semibold)] uppercase tracking-wider text-text-tertiary mb-4">
           {title}
         </h3>
       )}
@@ -61,10 +61,10 @@ function Section({
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex justify-between items-baseline py-1.5">
-      <span className="text-body-sm text-[var(--color-text-secondary)]">
+      <span className="text-body-sm text-text-secondary">
         {label}
       </span>
-      <span className="text-body-sm font-[var(--weight-medium)] text-[var(--color-text-primary)] text-right max-w-[60%] truncate">
+      <span className="text-body-sm font-[var(--weight-medium)] text-text-primary text-right max-w-[60%] truncate">
         {value}
       </span>
     </div>
@@ -85,20 +85,20 @@ function DetailSkeleton() {
         </div>
         <Skeleton height="h-4" width="w-48" />
         {/* Order info */}
-        <div className="border-t border-[var(--color-border)] pt-6 space-y-2">
+        <div className="border-t border-border pt-6 space-y-2">
           <Skeleton height="h-4" width="w-full" />
           <Skeleton height="h-4" width="w-3/4" />
           <Skeleton height="h-4" width="w-1/2" />
         </div>
         {/* Items */}
-        <div className="border-t border-[var(--color-border)] pt-6 space-y-3">
+        <div className="border-t border-border pt-6 space-y-3">
           <Skeleton height="h-3" width="w-16" />
           <Skeleton height="h-5" width="w-full" />
           <Skeleton height="h-5" width="w-full" />
           <Skeleton height="h-5" width="w-3/4" />
         </div>
         {/* Total */}
-        <div className="border-t border-[var(--color-border)] pt-6">
+        <div className="border-t border-border pt-6">
           <div className="flex justify-between">
             <Skeleton height="h-6" width="w-20" />
             <Skeleton height="h-6" width="w-28" />
@@ -185,14 +185,14 @@ const TransactionDetailPage = () => {
         {/* ── Header ──────────────────────────────── */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <h1 className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+            <h1 className="text-title font-[var(--weight-semibold)] text-text-primary">
               {order.orderNumber}
             </h1>
             <Badge variant={toStatusBadgeVariant(order.status)}>
               {formatStatusLabel(order.status)}
             </Badge>
           </div>
-          <p className="text-label text-[var(--color-text-tertiary)]">
+          <p className="text-label text-text-tertiary">
             {formattedDate} · {formattedTime}
           </p>
         </div>
@@ -247,23 +247,23 @@ const TransactionDetailPage = () => {
                     key={item.id || item.productId || index}
                     className={cn(
                       "flex justify-between gap-4 py-3",
-                      index < items.length - 1 && "border-b border-[var(--color-border)]"
+                      index < items.length - 1 && "border-b border-border"
                     )}
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="text-body-sm text-[var(--color-text-primary)]">
-                        <span className="tabular-nums text-[var(--color-text-secondary)]">
+                      <p className="text-body-sm text-text-primary">
+                        <span className="tabular-nums text-text-secondary">
                           {qty}x
                         </span>{" "}
                         {name}
                       </p>
                       {item.note && (
-                        <p className="mt-0.5 text-caption text-[var(--color-text-tertiary)] line-clamp-2">
+                        <p className="mt-0.5 text-caption text-text-tertiary line-clamp-2">
                           Note: {item.note}
                         </p>
                       )}
                     </div>
-                    <span className="text-body-sm font-[var(--weight-medium)] tabular-nums text-[var(--color-text-primary)] shrink-0 pt-px">
+                    <span className="text-body-sm font-[var(--weight-medium)] tabular-nums text-text-primary shrink-0 pt-px">
                       {formatCurrency(lineTotal)}
                     </span>
                   </div>
@@ -276,18 +276,18 @@ const TransactionDetailPage = () => {
         {/* ── Summary ─────────────────────────────── */}
         <Section title="Summary">
           <div className="flex justify-between items-baseline py-2">
-            <span className="text-body-sm text-[var(--color-text-secondary)]">
+            <span className="text-body-sm text-text-secondary">
               Subtotal ({itemCount} item{itemCount !== 1 ? "s" : ""})
             </span>
-            <span className="text-body-sm tabular-nums text-[var(--color-text-primary)]">
+            <span className="text-body-sm tabular-nums text-text-primary">
               {formatCurrency(grandTotal)}
             </span>
           </div>
-          <div className="border-t border-[var(--color-border)] mt-3 pt-4 flex justify-between items-baseline">
-            <span className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+          <div className="border-t border-border mt-3 pt-4 flex justify-between items-baseline">
+            <span className="text-body font-[var(--weight-semibold)] text-text-primary">
               Total
             </span>
-            <span className="text-title font-[var(--weight-semibold)] tabular-nums text-[var(--color-text-primary)]">
+            <span className="text-title font-[var(--weight-semibold)] tabular-nums text-text-primary">
               {formatCurrency(grandTotal)}
             </span>
           </div>
