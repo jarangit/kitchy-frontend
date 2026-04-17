@@ -1,10 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { LuCircleCheck, LuPrinter, LuArrowRight, LuQrCode } from "react-icons/lu";
-import type { PaymentMethod } from "@/features/pos/types/pos.model";
+import { LuCircleCheck, LuPrinter, LuArrowRight } from "react-icons/lu";
 import { useCartContext } from "@/features/pos/context/cartContext";
 import { Button } from "@/shared/components/ui/button";
-import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import PaymentReceipt from "@/features/pos/components/payment-receipt";
 
 const PaymentSuccessPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,13 +26,7 @@ const PaymentSuccessPage = () => {
     );
   }
 
-  const { receiptId, items, subtotal, paymentMethod, receivedAmount, change } =
-    paymentResult;
-
-  const methodLabel: Record<PaymentMethod, string> = {
-    CASH: "Cash",
-    QR: "QR Code",
-  };
+  const { subtotal } = paymentResult;
 
   const formattedDate = new Date().toLocaleDateString("th-TH", {
     day: "numeric",
@@ -62,86 +55,11 @@ const PaymentSuccessPage = () => {
         ฿{subtotal.toFixed(2)}
       </p>
 
-      {/* Receipt card */}
-      <Card className="w-full bg-bg p-6">
-        {/* Receipt header */}
-        <div className="text-center pb-4">
-          <p className="text-caption uppercase tracking-widest text-text-secondary mb-1">
-            Receipt
-          </p>
-          <p className="font-mono font-[var(--weight-semibold)] text-text-primary">
-            #{receiptId}
-          </p>
-          <p className="text-label text-text-secondary mt-1">
-            {formattedDate}
-          </p>
-        </div>
-
-        {/* Items list */}
-        <div className="border-t border-border pt-4 pb-4 space-y-2">
-          {items.map((item) => (
-            <div
-              key={item.productId}
-              className="grid grid-cols-[1fr_auto_auto] gap-2 text-label text-text-secondary"
-            >
-              <div>
-                <span>{item.name}</span>
-                {item.note && (
-                  <p className="mt-1 text-caption leading-5 text-text-tertiary">
-                    Note: {item.note}
-                  </p>
-                )}
-              </div>
-              <span className="text-right">x{item.quantity}</span>
-              <span className="text-right w-20">
-                ฿{(item.price * item.quantity).toFixed(2)}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Total */}
-        <div className="border-t border-border pt-3 pb-3">
-          <div className="flex justify-between font-[var(--weight-semibold)] text-text-primary">
-            <span>Total</span>
-            <span>฿{subtotal.toFixed(2)}</span>
-          </div>
-        </div>
-
-        {/* Payment details */}
-        <div className="border-t border-border pt-3 space-y-2 text-label">
-          <div className="flex justify-between text-text-secondary">
-            <span>Payment Method</span>
-            <span>{methodLabel[paymentMethod]}</span>
-          </div>
-          {paymentMethod === "CASH" && (
-            <>
-              <div className="flex justify-between text-text-secondary">
-                <span>Cash Received</span>
-                <span>฿{receivedAmount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between font-[var(--weight-semibold)] text-success">
-                <span>Change</span>
-                <span>฿{change.toFixed(2)}</span>
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* Customer receipt QR */}
-        <div className="border-t border-border pt-4 mt-4">
-          <p className="text-label font-[var(--weight-semibold)] text-text-primary text-center mb-2">
-            Scan to get digital receipt
-          </p>
-          <div className="w-40 h-40 mx-auto border border-border rounded-radius-lg bg-surface flex flex-col items-center justify-center gap-2 text-text-tertiary">
-            <LuQrCode size={44} />
-            <span className="text-caption">Receipt QR</span>
-          </div>
-          <p className="text-caption text-text-tertiary text-center mt-2">
-            Ref: #{receiptId}
-          </p>
-        </div>
-      </Card>
+      <PaymentReceipt
+        paymentResult={paymentResult}
+        dateLabel={formattedDate}
+        className="w-full bg-bg p-6"
+      />
 
       {/* Action buttons */}
       <div className="flex gap-3 w-full mt-6 no-print">

@@ -1,64 +1,68 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
+import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { cn } from "@/shared/utils/cn";
 
-type Props = HTMLAttributes<HTMLDivElement> & {
+type Props = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "title"> & {
   title: string;
-  count: number;
-  icon: ReactNode;
-  isActive: boolean;
+  count?: number;
+  icon?: ReactNode;
+  active?: boolean;
+  isActive?: boolean;
   isCanAnimation?: boolean;
-  onClick: () => void;
 };
 
 const TabItem = ({
   title,
   icon,
   count,
+  active,
   isActive,
-  onClick,
   isCanAnimation = false,
   className,
   ...rest
 }: Props) => {
   const [bouncing, setBouncing] = useState(false);
-  const prevCount = useRef(count);
+  const prevCount = useRef(count ?? 0);
+  const resolvedActive = active ?? isActive ?? false;
 
   useEffect(() => {
-    if (count > prevCount.current && prevCount.current !== 0) {
+    const nextCount = count ?? 0;
+
+    if (nextCount > prevCount.current && prevCount.current !== 0) {
       setBouncing(true);
       const timeout = setTimeout(() => setBouncing(false), 300);
       return () => clearTimeout(timeout);
     }
-    prevCount.current = count;
+    prevCount.current = nextCount;
   }, [count]);
 
   useEffect(() => {
-    prevCount.current = count;
+    prevCount.current = count ?? 0;
   }, [count]);
 
   return (
-    <div
+    <ChipTab
+      active={resolvedActive}
+      size="sm"
       className={cn(
-        "border border-border rounded-xl px-4 py-2 w-fit cursor-pointer",
-        "transition-all duration-[var(--motion-fast)] ",
-        isActive && "bg-chip-active-bg text-chip-active-text",
+        "gap-2",
+        count === undefined && "flex-col gap-1 rounded-lg",
         bouncing && isCanAnimation && "bg-info-bg text-text-primary",
         className,
       )}
-      onClick={onClick}
       {...rest}
     >
-      <div className="flex items-center gap-2">
-        {icon}
-        <div>
-          {`${title} `}
+      {icon && <span>{icon}</span>}
+      <span className={cn(count === undefined && "font-[var(--weight-medium)]")}>
+        {title}
+        {count !== undefined && (
           <span className={cn(bouncing && isCanAnimation && "animate-ping")}>
-            {`(${count})`}
+            {` (${count})`}
           </span>
-        </div>
-      </div>
-    </div>
+        )}
+      </span>
+    </ChipTab>
   );
 };
 

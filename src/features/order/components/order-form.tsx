@@ -3,8 +3,8 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import { NumericKeypad } from "@/shared/components/numbericKeypad";
-import Input from "@/shared/components/atoms/input";
-import TabItem from "@/shared/components/atoms/tab-item";
+import { Input } from "@/shared/components/ui/input";
+import TabItem from "@/shared/components/tab-item";
 import type { IOrderItem } from "@/features/order/types/order.model";
 
 interface OrderFormProps {
@@ -77,6 +77,7 @@ export function OrderForm({
           value={number}
           placeholder="Enter number"
           onChange={(e) => setNumber(e.target.value)}
+          keyboardToggle
         />
         {/* waiting */}
         {orderType == "DINE_IN" ? (
