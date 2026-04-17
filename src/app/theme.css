@@ -4,7 +4,7 @@
    ============================================ */
 
 @theme inline {
-  /* Colors */
+  /* ── Semantic Colors (Layer 2) ── */
   --color-bg: var(--color-bg);
   --color-surface: var(--color-surface);
   --color-surface-hover: var(--color-surface-hover);
@@ -27,7 +27,91 @@
   --color-warning-bg: var(--color-warning-bg);
   --color-info-bg: var(--color-info-bg);
 
-  /* Radius */
+  /* ── Component Colors (Layer 3) ── */
+  /* Button */
+  --color-button-primary-bg: var(--color-button-primary-bg);
+  --color-button-primary-bg-hover: var(--color-button-primary-bg-hover);
+  --color-button-primary-text: var(--color-button-primary-text);
+  --color-button-secondary-bg: var(--color-button-secondary-bg);
+  --color-button-secondary-bg-hover: var(--color-button-secondary-bg-hover);
+  --color-button-secondary-text: var(--color-button-secondary-text);
+  --color-button-secondary-border: var(--color-button-secondary-border);
+  --color-button-danger-bg: var(--color-button-danger-bg);
+  --color-button-danger-bg-hover: var(--color-button-danger-bg-hover);
+  --color-button-danger-text: var(--color-button-danger-text);
+  --color-button-ghost-bg: var(--color-button-ghost-bg);
+  --color-button-ghost-bg-hover: var(--color-button-ghost-bg-hover);
+  --color-button-ghost-text: var(--color-button-ghost-text);
+  /* Card */
+  --color-card-bg: var(--color-card-bg);
+  --color-card-bg-hover: var(--color-card-bg-hover);
+  --color-card-border: var(--color-card-border);
+  --color-card-border-hover: var(--color-card-border-hover);
+  /* Toggle */
+  --color-toggle-bg: var(--color-toggle-bg);
+  --color-toggle-bg-active: var(--color-toggle-bg-active);
+  --color-toggle-knob: var(--color-toggle-knob);
+  /* Skeleton */
+  --color-skeleton-bg: var(--color-skeleton-bg);
+  --color-skeleton-shimmer: var(--color-skeleton-shimmer);
+  /* Input */
+  --color-input-bg: var(--color-input-bg);
+  --color-input-border: var(--color-input-border);
+  --color-input-border-hover: var(--color-input-border-hover);
+  --color-input-border-focus: var(--color-input-border-focus);
+  --color-input-text: var(--color-input-text);
+  --color-input-placeholder: var(--color-input-placeholder);
+  /* Badge */
+  --color-badge-default-bg: var(--color-badge-default-bg);
+  --color-badge-default-text: var(--color-badge-default-text);
+  --color-badge-success-bg: var(--color-badge-success-bg);
+  --color-badge-success-text: var(--color-badge-success-text);
+  --color-badge-warning-bg: var(--color-badge-warning-bg);
+  --color-badge-warning-text: var(--color-badge-warning-text);
+  --color-badge-danger-bg: var(--color-badge-danger-bg);
+  --color-badge-danger-text: var(--color-badge-danger-text);
+  --color-badge-info-bg: var(--color-badge-info-bg);
+  --color-badge-info-text: var(--color-badge-info-text);
+  /* ChipTab */
+  --color-chip-active-bg: var(--color-chip-active-bg);
+  --color-chip-active-text: var(--color-chip-active-text);
+  --color-chip-inactive-bg: var(--color-chip-inactive-bg);
+  --color-chip-inactive-text: var(--color-chip-inactive-text);
+  --color-chip-inactive-bg-hover: var(--color-chip-inactive-bg-hover);
+  /* SegmentedControl */
+  --color-segment-bg: var(--color-segment-bg);
+  --color-segment-border: var(--color-segment-border);
+  --color-segment-active-bg: var(--color-segment-active-bg);
+  --color-segment-active-text: var(--color-segment-active-text);
+  --color-segment-inactive-text: var(--color-segment-inactive-text);
+  --color-segment-inactive-text-hover: var(--color-segment-inactive-text-hover);
+  /* SelectionChip */
+  --color-selection-border: var(--color-selection-border);
+  --color-selection-border-hover: var(--color-selection-border-hover);
+  --color-selection-text: var(--color-selection-text);
+  --color-selection-active-border: var(--color-selection-active-border);
+  --color-selection-active-bg: var(--color-selection-active-bg);
+  --color-selection-active-text: var(--color-selection-active-text);
+  /* Dialog */
+  --color-dialog-bg: var(--color-dialog-bg);
+  --color-dialog-border: var(--color-dialog-border);
+  --color-dialog-overlay: var(--color-dialog-overlay);
+  /* Sidebar */
+  --color-sidebar-bg: var(--color-sidebar-bg);
+  --color-sidebar-border: var(--color-sidebar-border);
+  --color-sidebar-active-bg: var(--color-sidebar-active-bg);
+  --color-sidebar-active-text: var(--color-sidebar-active-text);
+  --color-sidebar-text: var(--color-sidebar-text);
+  --color-sidebar-hover-bg: var(--color-sidebar-hover-bg);
+  /* Select */
+  --color-select-bg: var(--color-select-bg);
+  --color-select-border: var(--color-select-border);
+  --color-select-border-focus: var(--color-select-border-focus);
+  --color-select-text: var(--color-select-text);
+  /* Label */
+  --color-label-comp-text: var(--color-label-comp-text);
+
+  /* ── Semantic Radius (Layer 2) ── */
   --radius-xs: var(--radius-xs);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
@@ -35,12 +119,91 @@
   --radius-xl: var(--radius-xl);
   --radius-full: var(--radius-full);
 
-  /* Shadows */
+  /* ── Component Radius (Layer 3) ── */
+  --radius-button: var(--radius-button);
+  --radius-card: var(--radius-card);
+  --radius-input: var(--radius-input);
+  --radius-badge: var(--radius-badge);
+  --radius-chip: var(--radius-chip);
+  --radius-segment: var(--radius-segment);
+  --radius-selection: var(--radius-selection);
+  --radius-dialog: var(--radius-dialog);
+  --radius-select: var(--radius-select);
+
+  /* ── Primitive Spacing (Layer 1) ── */
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-5: var(--space-5);
+  --spacing-6: var(--space-6);
+  --spacing-7: var(--space-7);
+  --spacing-8: var(--space-8);
+
+  /* ── Component Spacing (Layer 3) ── */
+  /* Button */
+  --spacing-button-height-sm: var(--spacing-button-height-sm);
+  --spacing-button-height-md: var(--spacing-button-height-md);
+  --spacing-button-height-lg: var(--spacing-button-height-lg);
+  --spacing-button-padding-x: var(--spacing-button-padding-x);
+  /* Card */
+  --spacing-card-padding: var(--spacing-card-padding);
+  /* Toggle */
+  --spacing-toggle-width: var(--spacing-toggle-width);
+  --spacing-toggle-height: var(--spacing-toggle-height);
+  --spacing-toggle-knob-size: var(--spacing-toggle-knob-size);
+  /* Input */
+  --spacing-input-height: var(--spacing-input-height);
+  --spacing-input-padding-x: var(--spacing-input-padding-x);
+  /* Badge */
+  --spacing-badge-padding-x: var(--spacing-badge-padding-x);
+  --spacing-badge-padding-y: var(--spacing-badge-padding-y);
+  /* ChipTab */
+  --spacing-chip-height-sm: var(--spacing-chip-height-sm);
+  --spacing-chip-height-md: var(--spacing-chip-height-md);
+  --spacing-chip-height-lg: var(--spacing-chip-height-lg);
+  --spacing-chip-padding-x: var(--spacing-chip-padding-x);
+  /* SelectionChip */
+  --spacing-selection-height: var(--spacing-selection-height);
+  /* Dialog */
+  --spacing-dialog-padding: var(--spacing-dialog-padding);
+  /* Sidebar */
+  --spacing-sidebar-width: var(--spacing-sidebar-width);
+  /* Select */
+  --spacing-select-height: var(--spacing-select-height);
+
+  /* ── Shadows ── */
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
+
+  /* ── Component Font Sizes (Layer 3) ── */
+  --font-size-button-sm: var(--font-size-button-sm);
+  --font-size-button-md: var(--font-size-button-md);
+  --font-size-button-lg: var(--font-size-button-lg);
+  --font-size-card-title: var(--font-size-card-title);
+  --font-size-card-desc: var(--font-size-card-desc);
+  --font-size-input: var(--font-size-input);
+  --font-size-badge: var(--font-size-badge);
+  --font-size-chip: var(--font-size-chip);
+  --font-size-segment: var(--font-size-segment);
+  --font-size-selection: var(--font-size-selection);
+  --font-size-dialog-title: var(--font-size-dialog-title);
+  --font-size-dialog-desc: var(--font-size-dialog-desc);
+  --font-size-select: var(--font-size-select);
+  --font-size-label-comp: var(--font-size-label-comp);
+
+  /* ── Component Font Weights (Layer 3) ── */
+  --font-weight-button: var(--font-weight-button);
+  --font-weight-card-title: var(--font-weight-card-title);
+  --font-weight-badge: var(--font-weight-badge);
+  --font-weight-chip: var(--font-weight-chip);
+  --font-weight-segment: var(--font-weight-segment);
+  --font-weight-selection: var(--font-weight-selection);
+  --font-weight-dialog-title: var(--font-weight-dialog-title);
+  --font-weight-label-comp: var(--font-weight-label-comp);
 }
 
 /* ============================================

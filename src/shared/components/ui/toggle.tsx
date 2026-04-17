@@ -25,7 +25,7 @@ export function Toggle({
       onClick={() => onChange(!checked)}
       className={cn(
         "relative inline-flex shrink-0 cursor-pointer items-center",
-        "w-[var(--toggle-width)] h-[var(--toggle-height)]",
+        "w-toggle-width h-toggle-height",
         "rounded-full",
         "transition-colors duration-[var(--motion-fast)]",
         "active:scale-[0.95]",
@@ -34,12 +34,12 @@ export function Toggle({
       )}
       style={{
         backgroundColor: checked
-          ? "var(--toggle-bg-active)"
-          : "var(--toggle-bg)",
+          ? "var(--color-toggle-bg-active)"
+          : "var(--color-toggle-bg)",
       }}
     >
       <span
-        className="pointer-events-none inline-block w-[var(--toggle-knob-size)] h-[var(--toggle-knob-size)] rounded-full bg-[var(--toggle-knob)] transition-transform duration-[var(--motion-fast)]"
+        className="pointer-events-none inline-block w-toggle-knob-size h-toggle-knob-size rounded-full bg-toggle-knob transition-transform duration-[var(--motion-fast)]"
         style={{
           transform: checked ? "translateX(27px)" : "translateX(3px)",
         }}

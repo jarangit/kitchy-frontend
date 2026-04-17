@@ -7,10 +7,10 @@ export function Card({ className, children, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "bg-[var(--card-bg)]",
-        "border border-[var(--card-border)]",
-        "rounded-[var(--card-radius)]",
-        "p-[var(--card-padding)]",
+        "bg-card-bg",
+        "border border-card-border",
+        "rounded-card",
+        "p-card-padding",
         "transition-all duration-[var(--motion-fast)]",
         className,
       )}
@@ -41,7 +41,7 @@ export function CardTitle({
   return (
     <h3
       className={cn(
-        "text-[length:var(--card-title-font-size)] font-[var(--card-title-font-weight)] text-[var(--color-text-primary)]",
+        "text-card-title font-card-title text-text-primary",
         className,
       )}
       {...props}
@@ -59,7 +59,7 @@ export function CardDescription({
   return (
     <p
       className={cn(
-        "text-[length:var(--card-description-font-size)] text-[var(--color-text-secondary)] mt-1",
+        "text-card-desc text-text-secondary mt-1",
         className,
       )}
       {...props}

@@ -34,9 +34,9 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
   return (
     <div className="flex">
       {!hideSidebar && <Sidebar />}
-      <div className={cn("flex flex-col min-h-screen flex-grow transition-all duration-300", !hideSidebar && "ml-[var(--sidebar-width)]")}>
+      <div className={cn("flex flex-col min-h-screen flex-grow transition-all duration-300", !hideSidebar && "ml-sidebar-width")}>
         {!isOnline && (
-          <section className="w-full p-1 text-[var(--color-text-inverse)] text-center font-[var(--weight-semibold)] bg-[var(--color-danger)] text-label">
+          <section className="w-full p-1 text-text-inverse text-center font-[var(--weight-semibold)] bg-danger text-label">
             You are offline
           </section>
         )}

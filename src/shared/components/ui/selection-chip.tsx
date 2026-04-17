@@ -16,12 +16,12 @@ export function SelectionChip({
     <button
       type="button"
       className={cn(
-        "h-[var(--selection-height)] rounded-[var(--selection-radius)]",
-        "border text-[length:var(--selection-font-size)] font-[var(--selection-font-weight)]",
+        "h-selection-height rounded-selection",
+        "border text-selection font-selection",
         "transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
         active
-          ? "border-[var(--selection-active-border)] bg-[var(--selection-active-bg)] text-[var(--selection-active-text)]"
-          : "border-[var(--selection-border)] text-[var(--selection-text)] hover:border-[var(--selection-border-hover)]",
+          ? "border-selection-active-border bg-selection-active-bg text-selection-active-text"
+          : "border-selection-border text-selection-text hover:border-selection-border-hover",
         className,
       )}
       {...props}

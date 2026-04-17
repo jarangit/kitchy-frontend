@@ -10,9 +10,9 @@ interface ChipTabProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizeStyles: Record<ChipTabSize, string> = {
-  sm: "min-h-[var(--chip-height-sm)] px-[var(--chip-padding-x)] text-[length:var(--chip-font-size)]",
-  md: "min-h-[var(--chip-height-md)] px-5 text-[length:var(--chip-font-size)]",
-  lg: "min-h-[var(--chip-height-lg)] px-6 text-body",
+  sm: "min-h-chip-height-sm px-chip-padding-x text-chip",
+  md: "min-h-chip-height-md px-5 text-chip",
+  lg: "min-h-chip-height-lg px-6 text-body",
 };
 
 export function ChipTab({
@@ -27,13 +27,13 @@ export function ChipTab({
       type="button"
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap",
-        "rounded-[var(--chip-radius)]",
-        "font-[var(--chip-font-weight)]",
+        "rounded-chip",
+        "font-chip",
         "transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
         sizeStyles[size],
         active
-          ? "bg-[var(--chip-active-bg)] text-[var(--chip-active-text)]"
-          : "bg-[var(--chip-inactive-bg)] text-[var(--chip-inactive-text)] hover:bg-[var(--chip-inactive-bg-hover)]",
+          ? "bg-chip-active-bg text-chip-active-text"
+          : "bg-chip-inactive-bg text-chip-inactive-text hover:bg-chip-inactive-bg-hover",
         className,
       )}
       {...props}

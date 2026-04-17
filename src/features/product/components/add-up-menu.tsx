@@ -38,17 +38,17 @@ const AddUpMenuForm = ({ _onSubmit, defaultValues }: Props) => {
           id="name"
           type="text"
           {...register("name", { required: "Name is required" })}
-          className="border border-[var(--color-border)] p-3 w-full rounded-[var(--input-radius)] bg-[var(--input-bg)] text-[var(--input-text)]"
+          className="border border-border p-3 w-full rounded-input bg-input-bg text-input-text"
           placeholder="Enter menu name"
         />
         {errors.name && (
-          <span className="text-[var(--color-danger)] text-label">{errors.name.message}</span>
+          <span className="text-danger text-label">{errors.name.message}</span>
         )}
       </div>
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-[var(--button-primary-bg)] text-[var(--button-primary-text)] hover:bg-[var(--button-primary-bg-hover)] px-4 py-2 rounded-radius-xs h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+        className="bg-button-primary-bg text-button-primary-text hover:bg-button-primary-bg-hover px-4 py-2 rounded-radius-xs h-11 active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
       >
         {isSubmitting ? "Saving..." : "Save Menu"}
       </button>

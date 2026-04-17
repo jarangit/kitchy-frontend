@@ -40,10 +40,10 @@ const TabItem = ({
   return (
     <div
       className={cn(
-        "border border-[var(--color-border)] rounded-xl px-4 py-2 w-fit cursor-pointer",
+        "border border-border rounded-xl px-4 py-2 w-fit cursor-pointer",
         "transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
-        isActive && "bg-[var(--chip-active-bg)] text-[var(--chip-active-text)]",
-        bouncing && isCanAnimation && "bg-[var(--color-info-bg)] text-[var(--color-text-primary)]",
+        isActive && "bg-chip-active-bg text-chip-active-text",
+        bouncing && isCanAnimation && "bg-info-bg text-text-primary",
         className,
       )}
       onClick={onClick}

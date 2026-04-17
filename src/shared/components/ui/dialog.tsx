@@ -30,11 +30,11 @@ export function Dialog({ open, onClose, children, className }: DialogProps) {
         if (e.target === dialogRef.current) onClose();
       }}
       className={cn(
-        "backdrop:bg-[var(--dialog-overlay)]",
-        "bg-[var(--dialog-bg)]",
-        "border border-[var(--dialog-border)]",
-        "rounded-[var(--dialog-radius)]",
-        "p-[var(--dialog-padding)]",
+        "backdrop:bg-dialog-overlay",
+        "bg-dialog-bg",
+        "border border-dialog-border",
+        "rounded-dialog",
+        "p-dialog-padding",
         "w-full max-w-md m-auto",
         "max-h-[90vh] overflow-y-auto",
         "open:animate-in open:fade-in open:zoom-in-95",
@@ -68,7 +68,7 @@ export function DialogTitle({
   return (
     <h2
       className={cn(
-        "text-[length:var(--dialog-title-font-size)] font-[var(--dialog-title-font-weight)] text-[var(--color-text-primary)]",
+        "text-dialog-title font-dialog-title text-text-primary",
         className,
       )}
     >
@@ -87,7 +87,7 @@ export function DialogDescription({
   return (
     <p
       className={cn(
-        "text-[length:var(--dialog-description-font-size)] text-[var(--color-text-secondary)] mt-1",
+        "text-dialog-desc text-text-secondary mt-1",
         className,
       )}
     >

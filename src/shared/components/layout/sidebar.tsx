@@ -72,9 +72,9 @@ const Sidebar = () => {
   const itemClass =
     "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-radius-lg border border-transparent transition-all duration-[var(--motion-fast)] active:scale-[0.98]";
   const activeClass =
-    "border-[var(--sidebar-border)] bg-[var(--sidebar-active-bg)] text-[var(--sidebar-active-text)]";
+    "border-sidebar-border bg-sidebar-active-bg text-sidebar-active-text";
   const inactiveClass =
-    "text-[var(--sidebar-text)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--color-text-primary)]";
+    "text-sidebar-text hover:bg-sidebar-hover-bg hover:text-text-primary";
 
   const renderNavItem = (item: NavItem) => {
     const active = isActive(item.path, item.match);
@@ -88,7 +88,7 @@ const Sidebar = () => {
         className={cn(itemClass, active ? activeClass : inactiveClass)}
       >
         {item.icon}
-        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-radius-sm border border-[var(--color-border)] bg-[var(--color-surface)] px-2 py-1 text-[10px] font-[var(--weight-medium)] text-[var(--color-text-secondary)] opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
+        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-radius-sm border border-border bg-surface px-2 py-1 text-[10px] font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
           {item.name}
         </span>
       </Link>
@@ -96,7 +96,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 w-[var(--sidebar-width)] border-r border-[var(--sidebar-border)] bg-[var(--sidebar-bg)]">
+    <aside className="fixed inset-y-0 left-0 z-50 w-sidebar-width border-r border-sidebar-border bg-sidebar-bg">
       <div className="flex h-full flex-col justify-between py-5">
         <nav className="flex flex-col gap-3 px-3">{storeMenuList.map(renderNavItem)}</nav>
         {resolvedStoreId && (

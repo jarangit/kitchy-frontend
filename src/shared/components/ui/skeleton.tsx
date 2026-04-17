@@ -17,7 +17,7 @@ export function Skeleton({
     <div
       className={cn(
         "skeleton-shimmer",
-        circle ? "rounded-full" : "rounded-[var(--radius-md)]",
+        circle ? "rounded-full" : "rounded-radius-md",
         width,
         height,
         className,
@@ -31,8 +31,8 @@ export function SkeletonCard({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "bg-[var(--card-bg)] border border-[var(--card-border)]",
-        "rounded-[var(--card-radius)] p-[var(--card-padding)]",
+        "bg-card-bg border border-card-border",
+        "rounded-card p-card-padding",
         "space-y-3",
         className,
       )}

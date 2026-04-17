@@ -15,7 +15,7 @@ export default function GlobalModal() {
     <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
       <div className="fixed inset-0 bg-[var(--color-overlay)]" />
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="bg-[var(--dialog-bg)] p-6 rounded-radius-xs  max-w-[80vh] w-fit shadow-lg">
+        <Dialog.Panel className="bg-dialog-bg p-6 rounded-radius-xs  max-w-[80vh] w-fit shadow-lg">
           <Dialog.Title className="text-subtitle">{title}</Dialog.Title>
           {template === "DELETE" && (
             <DeleteModal content={content} onConfirm={onConfirm} />

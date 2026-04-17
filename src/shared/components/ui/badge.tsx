@@ -16,15 +16,15 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-[var(--badge-default-bg)] text-[var(--badge-default-text)]",
-  success: "bg-[var(--badge-success-bg)] text-[var(--badge-success-text)]",
-  danger: "bg-[var(--badge-danger-bg)] text-[var(--badge-danger-text)]",
-  warning: "bg-[var(--badge-warning-bg)] text-[var(--badge-warning-text)]",
-  info: "bg-[var(--badge-info-bg)] text-[var(--badge-info-text)]",
+  default: "bg-badge-default-bg text-badge-default-text",
+  success: "bg-badge-success-bg text-badge-success-text",
+  danger: "bg-badge-danger-bg text-badge-danger-text",
+  warning: "bg-badge-warning-bg text-badge-warning-text",
+  info: "bg-badge-info-bg text-badge-info-text",
 };
 
 const sizeStyles: Record<BadgeSize, string> = {
-  sm: "px-[var(--badge-padding-x)] py-[var(--badge-padding-y)] text-[length:var(--badge-font-size)]",
+  sm: "px-badge-padding-x py-badge-padding-y text-badge",
   md: "px-2.5 py-0.5 text-label min-h-7",
   lg: "px-3 py-1 text-subtitle font-[var(--weight-bold)] min-w-[60px] text-center",
 };
@@ -40,8 +40,8 @@ export function Badge({
     <span
       className={cn(
         "inline-flex items-center",
-        "rounded-[var(--badge-radius)]",
-        "font-[var(--badge-font-weight)]",
+        "rounded-badge",
+        "font-badge",
         variantStyles[variant],
         sizeStyles[size],
         className,

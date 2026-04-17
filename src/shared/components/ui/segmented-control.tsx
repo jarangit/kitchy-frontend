@@ -22,8 +22,8 @@ export function SegmentedControl<T extends string>({
   return (
     <div
       className={cn(
-        "inline-flex bg-[var(--segment-bg)] border border-[var(--segment-border)]",
-        "rounded-[var(--segment-radius)] p-1",
+        "inline-flex bg-segment-bg border border-segment-border",
+        "rounded-segment p-1",
         className,
       )}
     >
@@ -35,12 +35,12 @@ export function SegmentedControl<T extends string>({
             type="button"
             onClick={() => onChange(item.key)}
             className={cn(
-              "flex items-center justify-center rounded-[calc(var(--segment-radius)-4px)]",
-              "px-4 h-8 text-[length:var(--segment-font-size)] font-[var(--segment-font-weight)] whitespace-nowrap",
+              "flex items-center justify-center rounded-[calc(var(--radius-segment)-4px)]",
+              "px-4 h-8 text-segment font-segment whitespace-nowrap",
               "transition-all duration-[var(--motion-fast)] active:scale-[0.97]",
               isActive
-                ? "bg-[var(--segment-active-bg)] text-[var(--segment-active-text)]"
-                : "text-[var(--segment-inactive-text)] hover:text-[var(--segment-inactive-text-hover)]",
+                ? "bg-segment-active-bg text-segment-active-text"
+                : "text-segment-inactive-text hover:text-segment-inactive-text-hover",
             )}
           >
             {item.label}

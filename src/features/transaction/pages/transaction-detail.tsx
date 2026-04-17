@@ -77,7 +77,7 @@ function DetailSkeleton() {
   return (
     <div className="space-y-8">
       <Skeleton height="h-9" width="w-32" />
-      <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--card-radius)] p-[var(--card-padding)] space-y-6">
+      <div className="bg-card-bg border border-card-border rounded-card p-card-padding space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <Skeleton height="h-7" width="w-36" />
@@ -181,7 +181,7 @@ const TransactionDetailPage = () => {
       </Button>
 
       {/* Receipt card */}
-      <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--card-radius)] p-[var(--card-padding)] space-y-6">
+      <div className="bg-card-bg border border-card-border rounded-card p-card-padding space-y-6">
         {/* ── Header ──────────────────────────────── */}
         <div>
           <div className="flex items-center justify-between mb-1">
