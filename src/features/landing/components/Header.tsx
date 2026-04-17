@@ -4,51 +4,48 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--color-bg)]/80 backdrop-blur-xl border-b border-[var(--color-border)]">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-        {/* Logo */}
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-radius-md flex items-center justify-center">
-            <span className="text-[var(--color-text-inverse)] text-label font-[var(--weight-bold)]">K</span>
+          <div className="flex h-8 w-8 items-center justify-center rounded-radius-md border border-border bg-surface">
+            <span className="text-label font-[var(--weight-semibold)] text-text-primary">K</span>
           </div>
-          <span className="text-title text-[var(--color-text-primary)] tracking-tight">
+          <span className="text-title tracking-tight text-text-primary">
             Kitchy
           </span>
         </div>
 
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden items-center gap-8 md:flex">
           <a
             href="#features"
-            className="text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+            className="text-label text-text-secondary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
           >
             Features
           </a>
           <a
             href="#pricing"
-            className="text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+            className="text-label text-text-secondary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
           >
             Pricing
           </a>
           <a
             href="#contact"
-            className="text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98]"
+            className="text-label text-text-secondary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
           >
             Contact
           </a>
         </nav>
 
-        {/* CTA Buttons */}
         <div className="flex items-center gap-3">
           <button
             onClick={() => navigate("/login")}
-            className="text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-all duration-[var(--motion-fast)] active:scale-[0.98] px-4 py-2 h-11"
+            className="h-11 px-4 text-label text-text-secondary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
           >
             เข้าสู่ระบบ
           </button>
           <button
             onClick={() => navigate("/login")}
-            className="bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] text-label px-5 py-2.5 h-11 rounded-radius-full hover:opacity-90 transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98]"
+            className="h-11 rounded-radius-full bg-primary px-5 py-2.5 text-label text-text-inverse transition-colors duration-[var(--motion-fast)] hover:bg-primary-hover"
           >
             เริ่มต้นใช้งาน
           </button>

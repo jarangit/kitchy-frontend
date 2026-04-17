@@ -13,7 +13,7 @@ const variantStyles: Record<ButtonVariant, string> = {
   primary:
     "bg-button-primary-bg text-button-primary-text hover:bg-button-primary-bg-hover",
   secondary:
-    "bg-button-secondary-bg text-button-secondary-text hover:bg-button-secondary-bg-hover",
+    "bg-button-secondary-bg text-button-secondary-text border border-button-secondary-border hover:bg-button-secondary-bg-hover",
   danger:
     "bg-button-danger-bg text-button-danger-text hover:bg-button-danger-bg-hover",
   ghost:
@@ -43,9 +43,9 @@ export function Button({
         "font-button",
         "whitespace-nowrap",
         "transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-        "outline-none cursor-pointer",
+        "outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary/15 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         "disabled:opacity-50 disabled:cursor-not-allowed",
-        "active:scale-[0.98] shrink-0",
+        "shrink-0",
         variantStyles[variant],
         sizeStyles[size],
         className,

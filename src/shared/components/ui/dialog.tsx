@@ -37,7 +37,7 @@ export function Dialog({ open, onClose, children, className }: DialogProps) {
         "p-dialog-padding",
         "w-full max-w-md m-auto",
         "max-h-[90vh] overflow-y-auto",
-        "open:animate-in open:fade-in open:zoom-in-95",
+        "shadow-sm",
         className,
       )}
     >
@@ -54,7 +54,7 @@ export function DialogHeader({
   children: ReactNode;
 }) {
   return (
-    <div className={cn("mb-[var(--space-5)]", className)}>{children}</div>
+    <div className={cn("mb-5", className)}>{children}</div>
   );
 }
 
@@ -106,9 +106,9 @@ export function DialogFooter({
   return (
     <div
       className={cn(
-        "flex justify-end gap-[var(--space-4)] mt-[var(--space-6)]",
-        className,
-      )}
+          "mt-6 flex justify-end gap-4",
+          className,
+        )}
     >
       {children}
     </div>

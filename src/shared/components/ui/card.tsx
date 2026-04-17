@@ -11,7 +11,7 @@ export function Card({ className, children, ...props }: CardProps) {
         "border border-card-border",
         "rounded-card",
         "p-card-padding",
-        "transition-all duration-[var(--motion-fast)]",
+        "transition-colors duration-[var(--motion-fast)]",
         className,
       )}
       {...props}
@@ -27,7 +27,7 @@ export function CardHeader({
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("mb-[var(--space-4)]", className)} {...props}>
+    <div className={cn("mb-4", className)} {...props}>
       {children}
     </div>
   );
@@ -40,10 +40,10 @@ export function CardTitle({
 }: HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={cn(
-        "text-card-title font-card-title text-text-primary",
-        className,
-      )}
+        className={cn(
+          "text-card-title font-card-title text-text-primary tracking-tight",
+          className,
+        )}
       {...props}
     >
       {children}
@@ -58,10 +58,10 @@ export function CardDescription({
 }: HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-      className={cn(
-        "text-card-desc text-text-secondary mt-1",
-        className,
-      )}
+        className={cn(
+          "text-card-desc text-text-secondary mt-1 leading-6",
+          className,
+        )}
       {...props}
     >
       {children}

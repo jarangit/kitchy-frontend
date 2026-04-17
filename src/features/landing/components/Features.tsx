@@ -1,3 +1,5 @@
+import { Card, CardContent } from "@/shared/components/ui/card";
+
 interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
@@ -5,13 +7,17 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
-  <div className="group p-8 rounded-radius-xl bg-[var(--color-bg)] border border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:shadow-xl transition-all duration-300">
-    <div className="w-14 h-14 bg-[var(--color-success-bg)] rounded-radius-lg flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
-      {icon}
-    </div>
-    <h3 className="text-title text-[var(--color-text-primary)] mb-3">{title}</h3>
-    <p className="text-[var(--color-text-secondary)] leading-relaxed">{description}</p>
-  </div>
+  <Card className="h-full bg-bg transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+    <CardContent className="space-y-6">
+      <div className="flex h-14 w-14 items-center justify-center rounded-radius-lg bg-surface text-2xl">
+        {icon}
+      </div>
+      <div className="space-y-3">
+        <h3 className="text-title text-text-primary">{title}</h3>
+        <p className="text-body leading-7 text-text-secondary">{description}</p>
+      </div>
+    </CardContent>
+  </Card>
 );
 
 const Features = () => {
@@ -73,23 +79,21 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="py-24 px-6 bg-[var(--color-surface)]">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="text-[var(--color-primary)] text-label tracking-wide uppercase">
+    <section id="features" className="bg-surface px-6 py-24">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-16 text-center">
+          <span className="text-label uppercase tracking-wide text-text-secondary">
             Features
           </span>
-          <h2 className="text-4xl md:text-5xl font-[var(--weight-bold)] text-[var(--color-text-primary)] mt-4 mb-6">
+          <h2 className="mt-4 mb-6 text-display text-text-primary sm:text-[48px] sm:leading-[1.08]">
             ทำไมร้านอาหารต้องเลือก Kitchy
           </h2>
-          <p className="text-title text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-title text-text-secondary">
             ฟีเจอร์ครบครันที่ออกแบบมาเพื่อร้านอาหารโดยเฉพาะ
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}

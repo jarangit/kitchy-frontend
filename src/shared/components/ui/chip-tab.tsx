@@ -29,7 +29,7 @@ export function ChipTab({
         "inline-flex items-center justify-center whitespace-nowrap",
         "rounded-chip",
         "font-chip",
-        "transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
+        "transition-colors duration-[var(--motion-fast)]",
         sizeStyles[size],
         active
           ? "bg-chip-active-bg text-chip-active-text"

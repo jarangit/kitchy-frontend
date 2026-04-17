@@ -1,5 +1,6 @@
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,69 +31,61 @@ const LoginPage = () => {
   }, [auth?.user, navigate]);
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left panel - branding (hidden on mobile) */}
-      <div className="hidden lg:flex flex-col items-center justify-center flex-1 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] px-12">
-        {/* Logo square */}
-        <div className="w-20 h-20 rounded-radius-lg bg-[var(--color-bg)]/20 backdrop-blur-sm flex items-center justify-center mb-6">
-          <span className="text-4xl font-[var(--weight-semibold)] text-[var(--color-text-inverse)]">
+    <div className="min-h-screen bg-bg px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
+      <div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+        <section className="max-w-2xl space-y-6">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-radius-lg border border-border bg-surface text-title font-[var(--weight-semibold)] text-text-primary">
             K
-          </span>
-        </div>
-        <h1 className="text-display font-[var(--weight-semibold)] text-[var(--color-text-inverse)] mb-2">
-          Kitchy POS
-        </h1>
-        <p className="text-[var(--color-text-inverse)] opacity-80 text-center leading-relaxed">
-          ระบบจัดการร้านอาหาร
-          <br />
-          อัจฉริยะ
-        </p>
-      </div>
-
-      {/* Right panel - login form */}
-      <div className="flex-1 flex items-center justify-center p-6 bg-[var(--color-surface)]">
-        <div className="max-w-sm w-full bg-[var(--color-bg)] rounded-radius-lg p-8 shadow-sm border border-[var(--color-border)]">
-          <div className="mb-6">
-            <h2 className="text-heading text-[var(--color-text-primary)]">
-              Sign In
-            </h2>
-            <p className="text-label text-[var(--color-text-secondary)] mt-1">
-              Enter your credentials to access your account
+          </div>
+          <div className="space-y-4">
+            <p className="text-label text-text-secondary">Kitchy POS</p>
+            <h1 className="text-display text-text-primary">Calm operations for busy restaurant teams.</h1>
+            <p className="max-w-xl text-body text-text-secondary">
+              Sign in to manage stores, monitor service flow, and keep every station aligned from one quiet workspace.
             </p>
           </div>
+        </section>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLogin();
-            }}
-            className="space-y-4"
-          >
-            <Input
-              label="Email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        <Card className="mx-auto w-full max-w-md">
+          <CardContent className="space-y-8">
+            <div className="space-y-2">
+              <h2 className="text-heading text-text-primary">Sign In</h2>
+              <p className="text-body-sm leading-6 text-text-secondary">
+                Enter your credentials to access your account.
+              </p>
+            </div>
 
-            <Input
-              label="Password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleLogin();
+              }}
+              className="space-y-4"
+            >
+              <Input
+                label="Email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-            {error && (
-              <p className="text-label text-[var(--color-danger)]">{error}</p>
-            )}
+              <Input
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-            <Button type="submit" className="w-full">
-              Sign In
-            </Button>
-          </form>
-        </div>
+              {error && <p className="text-label text-danger">{error}</p>}
+
+              <Button type="submit" className="w-full">
+                Sign In
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

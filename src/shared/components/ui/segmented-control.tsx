@@ -37,7 +37,7 @@ export function SegmentedControl<T extends string>({
             className={cn(
               "flex items-center justify-center rounded-[calc(var(--radius-segment)-4px)]",
               "px-4 h-8 text-segment font-segment whitespace-nowrap",
-              "transition-all duration-[var(--motion-fast)] active:scale-[0.97]",
+              "transition-colors duration-[var(--motion-fast)]",
               isActive
                 ? "bg-segment-active-bg text-segment-active-text"
                 : "text-segment-inactive-text hover:text-segment-inactive-text-hover",

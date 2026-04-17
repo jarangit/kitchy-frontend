@@ -17,7 +17,7 @@ export function Select({
   return (
     <div>
       {label && (
-        <label className="block text-label-comp font-label-comp text-label-comp-text mb-[var(--space-1)]">
+        <label className="mb-1 block text-label-comp font-label-comp text-label-comp-text">
           {label}
         </label>
       )}
@@ -27,11 +27,11 @@ export function Select({
           "bg-select-bg",
           "border border-select-border",
           "rounded-select",
-          "px-[var(--space-3)]",
+          "px-3",
           "text-select-text text-select",
           "outline-none",
           "transition-colors duration-[var(--motion-fast)]",
-          "focus:border-select-border-focus focus:ring-2 focus:ring-select-border-focus/25",
+          "focus:border-select-border-focus focus:ring-2 focus:ring-select-border-focus/10",
           className,
         )}
         {...props}

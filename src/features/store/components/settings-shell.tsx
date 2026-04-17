@@ -25,19 +25,19 @@ export const SettingsShell = ({
         {onBack && (
           <button
             onClick={onBack}
-            className="inline-flex min-h-11 items-center gap-2 px-1 text-label text-[var(--color-text-secondary)] transition-all duration-[var(--motion-fast)] hover:text-[var(--color-text-primary)] active:scale-[0.98]"
+            className="inline-flex min-h-11 items-center gap-2 px-1 text-label text-text-secondary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
           >
             <LuArrowLeft size={16} />
             {backLabel ?? t("common.backToSettings")}
           </button>
         )}
 
-        <div className="space-y-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-7 sm:px-7 sm:py-8">
-          <h1 className="text-heading font-[var(--weight-semibold)] leading-tight text-[var(--color-text-primary)] sm:text-display">
+        <div className="space-y-3 rounded-radius-xl border border-border bg-surface px-6 py-7 sm:px-7 sm:py-8">
+          <h1 className="text-heading leading-tight text-text-primary sm:text-display">
             {title}
           </h1>
           {description && (
-            <p className="max-w-2xl text-body-sm leading-7 text-[var(--color-text-secondary)]">
+            <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
               {description}
             </p>
           )}
@@ -63,17 +63,17 @@ export const SettingsSectionCard = ({
   children,
 }: SettingsSectionCardProps) => {
   return (
-    <section className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-7 sm:px-7 sm:py-8">
+    <section className="rounded-radius-xl border border-border bg-surface px-6 py-7 sm:px-7 sm:py-8">
       {(title || description || action) && (
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-2">
             {title && (
-              <h2 className="text-subtitle text-[var(--color-text-primary)]">
+              <h2 className="text-subtitle text-text-primary">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="max-w-2xl text-sm leading-7 text-[var(--color-text-secondary)]">
+              <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
                 {description}
               </p>
             )}

@@ -18,7 +18,7 @@ export function SelectionChip({
       className={cn(
         "h-selection-height rounded-selection",
         "border text-selection font-selection",
-        "transition-all duration-[var(--motion-fast)] active:scale-[0.98]",
+        "transition-colors duration-[var(--motion-fast)]",
         active
           ? "border-selection-active-border bg-selection-active-bg text-selection-active-text"
           : "border-selection-border text-selection-text hover:border-selection-border-hover",

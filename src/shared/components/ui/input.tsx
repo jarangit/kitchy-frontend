@@ -15,7 +15,7 @@ export function Input({
   return (
     <div>
       {label && (
-        <label className="block text-label-comp font-label-comp text-label-comp-text mb-[var(--space-1)]">
+        <label className="mb-1 block text-label-comp font-label-comp text-label-comp-text">
           {label}
         </label>
       )}
@@ -31,14 +31,14 @@ export function Input({
           "placeholder:text-input-placeholder",
           "outline-none",
           "transition-colors duration-[var(--motion-fast)]",
-          "focus:border-input-border-focus focus:ring-2 focus:ring-input-border-focus/25",
+          "focus:border-input-border-focus focus:ring-2 focus:ring-input-border-focus/10",
           "disabled:opacity-50",
           className,
         )}
         {...props}
       />
       {error && (
-        <p className="text-xs text-danger mt-[var(--space-1)]">
+        <p className="mt-1 text-caption text-danger">
           {error}
         </p>
       )}

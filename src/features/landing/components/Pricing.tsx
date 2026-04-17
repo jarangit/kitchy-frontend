@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Button } from "@/shared/components/ui/button";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { SegmentedControl } from "@/shared/components/ui/segmented-control";
 import { cn } from "@/shared/utils/cn";
 
@@ -68,17 +70,16 @@ const PricingCard = ({
   plan: PlanDetails;
   isActive: boolean;
 }) => (
-  <div
+  <Card
     className={cn(
-      "relative p-8 rounded-radius-xl transition-all duration-300",
-      plan.highlight
-        ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] scale-105 shadow-2xl"
-        : "bg-[var(--color-bg)] border border-[var(--color-border)]",
-      isActive ? "opacity-100" : "opacity-100"
+      "relative h-full transition-colors duration-[var(--motion-fast)]",
+      plan.highlight ? "bg-text-primary text-text-inverse" : "bg-bg",
+      isActive ? "opacity-100" : "opacity-100",
     )}
   >
+    <CardContent className="flex h-full flex-col">
     {plan.highlight && (
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-[var(--color-text-inverse)] text-label px-4 py-1 rounded-radius-full">
+      <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-radius-full border border-border bg-surface px-4 py-1 text-label text-text-primary">
         แนะนำ
       </div>
     )}
@@ -87,7 +88,7 @@ const PricingCard = ({
       <h3
         className={cn(
           "text-title mb-2",
-          plan.highlight ? "text-[var(--color-text-inverse)]" : "text-[var(--color-text-primary)]"
+          plan.highlight ? "text-text-inverse" : "text-text-primary"
         )}
       >
         {plan.name}
@@ -95,7 +96,7 @@ const PricingCard = ({
       <p
         className={cn(
           "text-label",
-          plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"
+          plan.highlight ? "text-text-tertiary" : "text-text-secondary"
         )}
       >
         {plan.description}
@@ -105,8 +106,8 @@ const PricingCard = ({
     <div className="mb-8">
       <span
         className={cn(
-          "text-5xl font-[var(--weight-bold)]",
-          plan.highlight ? "text-[var(--color-text-inverse)]" : "text-[var(--color-text-primary)]"
+          "text-display",
+          plan.highlight ? "text-text-inverse" : "text-text-primary"
         )}
       >
         {plan.price === "ติดต่อ" ? "" : "฿"}
@@ -115,7 +116,7 @@ const PricingCard = ({
       <span
         className={cn(
           "text-label ml-2",
-          plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"
+          plan.highlight ? "text-text-tertiary" : "text-text-secondary"
         )}
       >
         {plan.period}
@@ -126,7 +127,10 @@ const PricingCard = ({
       {plan.features.map((feature, index) => (
         <li key={index} className="flex items-center gap-3">
           <svg
-            className="w-5 h-5 flex-shrink-0 text-[var(--color-primary)]"
+            className={cn(
+              "h-5 w-5 flex-shrink-0",
+              plan.highlight ? "text-text-inverse" : "text-primary",
+            )}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -139,7 +143,7 @@ const PricingCard = ({
             />
           </svg>
           <span
-            className={plan.highlight ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-secondary)]"}
+            className={plan.highlight ? "text-text-tertiary" : "text-text-secondary"}
           >
             {feature}
           </span>
@@ -147,40 +151,38 @@ const PricingCard = ({
       ))}
     </ul>
 
-    <button
-      className={cn(
-        "w-full py-4 rounded-radius-full font-[var(--weight-medium)] transition-all duration-[var(--motion-fast)] hover:scale-105 active:scale-[0.98] h-14",
-        plan.highlight
-          ? "bg-[var(--color-bg)] text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)]"
-          : "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:opacity-90"
-      )}
-    >
-      {plan.cta}
-    </button>
-  </div>
+    <div className="mt-auto">
+      <Button
+        variant={plan.highlight ? "secondary" : "primary"}
+        size="lg"
+        className="w-full"
+      >
+        {plan.cta}
+      </Button>
+    </div>
+    </CardContent>
+  </Card>
 );
 
 const Pricing = () => {
   const [activeTab, setActiveTab] = useState<PlanType>("pro");
 
   return (
-    <section id="pricing" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <span className="text-[var(--color-primary)] text-label tracking-wide uppercase">
+    <section id="pricing" className="px-6 py-24">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-16 text-center">
+          <span className="text-label uppercase tracking-wide text-text-secondary">
             Pricing
           </span>
-          <h2 className="text-4xl md:text-5xl font-[var(--weight-bold)] text-[var(--color-text-primary)] mt-4 mb-6">
+          <h2 className="mt-4 mb-6 text-display text-text-primary sm:text-[48px] sm:leading-[1.08]">
             แพ็กเกจที่เหมาะกับคุณ
           </h2>
-          <p className="text-title text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-title text-text-secondary">
             เลือกแพ็กเกจที่ตอบโจทย์ธุรกิจของคุณ ไม่มีค่าใช้จ่ายแอบแฝง
           </p>
         </div>
 
-        {/* Tab Selector */}
-        <div className="flex justify-center mb-12">
+        <div className="mb-12 flex justify-center">
           <SegmentedControl
             items={[
               { key: "free" as PlanType, label: "ฟรี" },
@@ -193,8 +195,7 @@ const Pricing = () => {
           />
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 items-start">
+        <div className="grid items-start gap-8 md:grid-cols-3">
           {(["free", "pro", "enterprise"] as PlanType[]).map((planKey) => (
             <PricingCard
               key={planKey}
@@ -204,13 +205,12 @@ const Pricing = () => {
           ))}
         </div>
 
-        {/* FAQ Link */}
-        <div className="text-center mt-12">
-          <p className="text-[var(--color-text-secondary)]">
+        <div className="mt-12 text-center">
+          <p className="text-text-secondary">
             มีคำถาม?{" "}
             <a
               href="#faq"
-              className="text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] font-[var(--weight-medium)] transition-all duration-[var(--motion-fast)]"
+              className="font-[var(--weight-medium)] text-primary transition-colors duration-[var(--motion-fast)] hover:text-primary-hover"
             >
               ดูคำถามที่พบบ่อย
             </a>

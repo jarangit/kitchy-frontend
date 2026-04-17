@@ -25,8 +25,8 @@ const variantStyles: Record<BadgeVariant, string> = {
 
 const sizeStyles: Record<BadgeSize, string> = {
   sm: "px-badge-padding-x py-badge-padding-y text-badge",
-  md: "px-2.5 py-0.5 text-label min-h-7",
-  lg: "px-3 py-1 text-subtitle font-[var(--weight-bold)] min-w-[60px] text-center",
+  md: "min-h-7 px-2.5 py-0.5 text-label",
+  lg: "min-w-[60px] px-3 py-1 text-label font-[var(--weight-semibold)] text-center",
 };
 
 export function Badge({

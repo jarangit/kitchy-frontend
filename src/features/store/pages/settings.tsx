@@ -3,6 +3,7 @@ import { LuBike, LuFileText, LuPackage, LuShapes, LuStore, LuSun, LuMoon, LuChev
 import { useTheme } from "@/shared/hooks/useTheme";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { ChipTab } from "@/shared/components/ui/chip-tab";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
@@ -61,21 +62,25 @@ const SettingsPage = () => {
             <Link
               key={item.path}
               to={`/store/${id}/settings/${item.path}`}
-              className="flex min-h-40 flex-col rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-border-hover)] active:scale-[0.98]"
+              className="block"
             >
-              <div className="mb-5 flex items-start justify-between gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-[var(--color-surface-hover)] text-[var(--color-text-secondary)]">
-                  {item.icon}
-                </div>
-                <LuChevronRight size={20} className="shrink-0 text-[var(--color-text-tertiary)]" />
-              </div>
+              <Card className="flex min-h-40 flex-col bg-bg transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                <CardContent className="flex h-full flex-col">
+                  <div className="mb-5 flex items-start justify-between gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-surface text-text-secondary">
+                      {item.icon}
+                    </div>
+                    <LuChevronRight size={20} className="shrink-0 text-text-tertiary" />
+                  </div>
 
-              <div className="flex-1">
-                <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{item.name}</div>
-                <div className="mt-1 text-label leading-6 text-[var(--color-text-secondary)]">
-                  {item.description}
-                </div>
-              </div>
+                  <div className="flex-1">
+                    <div className="text-subtitle text-text-primary">{item.name}</div>
+                    <div className="mt-1 text-body-sm leading-6 text-text-secondary">
+                      {item.description}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </Link>
           ))}
         </div>
@@ -83,51 +88,55 @@ const SettingsPage = () => {
 
       <SettingsSectionCard title={t("settings.display")}>
         <div className="space-y-4">
-          <div className="flex items-center justify-between rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5">
-            <div className="flex items-center gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-[var(--color-surface-hover)] text-[var(--color-text-secondary)]">
-                {isDark ? <LuMoon size={24} /> : <LuSun size={24} />}
-              </div>
-              <div>
-                <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{t("settings.theme.title")}</div>
-                <div className="mt-1 text-label leading-6 text-[var(--color-text-secondary)]">
-                  {isDark ? t("settings.theme.dark") : t("settings.theme.light")}
+          <Card className="bg-bg">
+            <CardContent className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-surface text-text-secondary">
+                  {isDark ? <LuMoon size={24} /> : <LuSun size={24} />}
+                </div>
+                <div>
+                  <div className="text-subtitle text-text-primary">{t("settings.theme.title")}</div>
+                  <div className="mt-1 text-body-sm leading-6 text-text-secondary">
+                    {isDark ? t("settings.theme.dark") : t("settings.theme.light")}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <Toggle
-              checked={isDark}
-              onChange={toggleTheme}
-              label={t("settings.theme.title")}
-            />
-          </div>
+              <Toggle
+                checked={isDark}
+                onChange={toggleTheme}
+                label={t("settings.theme.title")}
+              />
+            </CardContent>
+          </Card>
 
-          <div className="flex items-center justify-between rounded-radius-lg border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-5">
-            <div>
-              <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">{t("settings.language.title")}</div>
-              <div className="mt-1 text-label leading-6 text-[var(--color-text-secondary)]">
-                {t("settings.language.description")}
+          <Card className="bg-bg">
+            <CardContent className="flex items-center justify-between gap-4">
+              <div>
+                <div className="text-subtitle text-text-primary">{t("settings.language.title")}</div>
+                <div className="mt-1 text-body-sm leading-6 text-text-secondary">
+                  {t("settings.language.description")}
+                </div>
               </div>
-            </div>
 
-            <div className="flex gap-2">
-              <ChipTab
-                size="sm"
-                active={language === "th"}
-                onClick={() => setLanguage("th")}
-              >
-                {t("settings.language.th")}
-              </ChipTab>
-              <ChipTab
-                size="sm"
-                active={language === "en"}
-                onClick={() => setLanguage("en")}
-              >
-                {t("settings.language.en")}
-              </ChipTab>
-            </div>
-          </div>
+              <div className="flex gap-2">
+                <ChipTab
+                  size="sm"
+                  active={language === "th"}
+                  onClick={() => setLanguage("th")}
+                >
+                  {t("settings.language.th")}
+                </ChipTab>
+                <ChipTab
+                  size="sm"
+                  active={language === "en"}
+                  onClick={() => setLanguage("en")}
+                >
+                  {t("settings.language.en")}
+                </ChipTab>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </SettingsSectionCard>
     </SettingsShell>

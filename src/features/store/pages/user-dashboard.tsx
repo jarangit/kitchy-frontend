@@ -11,6 +11,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useAppDispatch } from "@/shared/hooks/hooks";
 import { clearCurrentStore, setCurrentStore } from "@/shared/store/slices/current-store-slice";
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuPlus, LuStore } from "react-icons/lu";
@@ -34,8 +35,8 @@ export default function UserDashboard() {
 
   if (storesLoading) {
     return (
-      <div className="min-h-screen bg-[var(--color-surface)] flex items-center justify-center">
-        <p className="text-[var(--color-text-secondary)]">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-bg">
+        <p className="text-body text-text-secondary">Loading...</p>
       </div>
     );
   }
@@ -43,25 +44,22 @@ export default function UserDashboard() {
   const hasStores = stores && stores.length > 0;
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface)]">
-      {/* Top bar */}
-      <header className="bg-[var(--color-bg)] border-b border-[var(--color-border)]">
-        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-          {/* Left: Logo + name */}
+    <div className="min-h-screen bg-bg">
+      <header className="border-b border-border bg-bg/95 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-radius-md bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-hover)] flex items-center justify-center">
-              <span className="text-subtitle text-[var(--color-text-inverse)]">
+            <div className="flex h-10 w-10 items-center justify-center rounded-radius-md border border-border bg-surface">
+              <span className="text-subtitle text-text-primary">
                 K
               </span>
             </div>
-            <span className="text-title text-[var(--color-text-primary)]">
+            <span className="text-title text-text-primary">
               Kitchy
             </span>
           </div>
 
-          {/* Right: User info + sign out */}
           <div className="flex items-center gap-3">
-            <span className="text-label text-[var(--color-text-secondary)] hidden sm:inline">
+            <span className="hidden text-label text-text-secondary sm:inline">
               {user?.email}
             </span>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
@@ -71,30 +69,28 @@ export default function UserDashboard() {
         </div>
       </header>
 
-      {/* Content area */}
-      <main className="max-w-4xl mx-auto px-6 py-10">
-        {/* Welcome section */}
-        <div className="mb-8">
-          <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
+      <main className="mx-auto max-w-5xl px-6 py-12">
+        <div className="mb-12 space-y-2">
+          <p className="text-label text-text-secondary">Workspace</p>
+          <h1 className="text-heading text-text-primary">
             Welcome back
           </h1>
-          <p className="text-[var(--color-text-secondary)] mt-1">
+          <p className="text-body text-text-secondary">
             {user?.email}
           </p>
         </div>
 
-        {/* Your Stores heading */}
-        <h2 className="text-subtitle text-[var(--color-text-primary)] mt-8 mb-4">
+        <h2 className="mb-4 text-subtitle text-text-primary">
           Your Stores
         </h2>
 
         {hasStores ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {/* Store cards */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {stores.map((item: any) => (
-              <div
+              <button
                 key={item.id}
-                className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-radius-lg p-5 cursor-pointer hover:border-[var(--color-border-hover)] hover:shadow-md active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
+                type="button"
+                className="cursor-pointer text-left"
                 onClick={() => {
                   dispatch(
                     setCurrentStore({
@@ -105,27 +101,41 @@ export default function UserDashboard() {
                   navigate(`/store/${item.id}`);
                 }}
               >
-                <div className="w-10 h-10 rounded-radius-md bg-[var(--color-success-bg)] flex items-center justify-center text-2xl">
-                  🏪
-                </div>
-                <p className="font-[var(--weight-medium)] mt-3 text-[var(--color-text-primary)]">
-                  {item.name}
-                </p>
-              </div>
+                <Card className="min-h-40 bg-surface transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                  <CardContent className="flex h-full flex-col justify-between">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-bg text-text-secondary">
+                      <LuStore size={22} />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-subtitle text-text-primary">{item.name}</p>
+                      <p className="text-body-sm leading-6 text-text-secondary">
+                        Open the store workspace and continue service.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </button>
             ))}
 
-            {/* Create new store card */}
-            <div
-              className="bg-[var(--color-bg)] border-2 border-dashed border-[var(--color-border)] rounded-radius-lg p-5 cursor-pointer hover:border-[var(--color-border-hover)] hover:shadow-md active:scale-[0.98] transition-all duration-[var(--motion-fast)] flex flex-col items-center justify-center gap-2"
+            <button
+              type="button"
+              className="cursor-pointer text-left"
               onClick={() => setIsCreate(true)}
             >
-              <div className="w-10 h-10 rounded-radius-md bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-secondary)]">
-                <LuPlus size={24} />
-              </div>
-              <p className="text-label text-[var(--color-text-secondary)]">
-                Create New Store
-              </p>
-            </div>
+              <Card className="flex min-h-40 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                <CardContent className="flex flex-col items-center gap-3 py-8">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-radius-full bg-surface text-text-secondary">
+                    <LuPlus size={24} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-subtitle text-text-primary">Create New Store</p>
+                    <p className="text-body-sm leading-6 text-text-secondary">
+                      Add another location or brand workspace.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </button>
           </div>
         ) : (
           <EmptyState

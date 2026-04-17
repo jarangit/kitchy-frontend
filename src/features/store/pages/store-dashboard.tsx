@@ -3,7 +3,7 @@ import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   LuChefHat,
@@ -51,7 +51,6 @@ const useLiveClock = () => {
 
 /* ── Sub-components ────────────────────────────────────── */
 
-/** Signal strength bars — matches reference mockup */
 const SignalBars = () => (
   <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
     <rect x="0" y="10" width="3" height="4" rx="0.75" fill="var(--color-warning)" />
@@ -61,22 +60,22 @@ const SignalBars = () => (
   </svg>
 );
 
-/** Page header — store name left, time/date status right */
 const PageHeader = ({ storeName, time, date }: {
   storeName: string;
   time: string;
   date: string;
 }) => (
-  <header className="w-full flex items-center justify-between py-6 px-2">
-    <span className="text-subtitle font-[var(--weight-semibold)] text-text-primary">
-      {storeName}
-    </span>
+  <header className="flex w-full items-center justify-between gap-4 py-2">
+    <div>
+      <p className="text-label text-text-secondary">Store overview</p>
+      <span className="text-subtitle text-text-primary">{storeName}</span>
+    </div>
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-1.5 text-body-sm text-text-tertiary">
         <span>{time}</span>
         <LuRefreshCw size={12} />
       </div>
-      <div className="flex items-center gap-2 rounded-radius-lg bg-surface px-3 py-1.5 shadow-soft">
+      <div className="flex items-center gap-2 rounded-radius-lg border border-border bg-surface px-3 py-1.5">
         <span className="text-body-sm font-[var(--weight-semibold)] text-text-primary">
           {time}
         </span>
@@ -87,54 +86,50 @@ const PageHeader = ({ storeName, time, date }: {
   </header>
 );
 
-/** Hero section — store name + primary CTA */
 const HeroSection = ({ storeName, storeId, posLabel, posSubtitle }: {
   storeName: string;
   storeId: string;
   posLabel: string;
   posSubtitle: string;
 }) => (
-  <div className="flex flex-col items-center gap-4 mb-16">
-    <h1 className="text-display font-[var(--weight-semibold)] text-text-primary text-center mb-4">
+  <section className="mb-16 flex flex-col items-center gap-5 text-center">
+    <p className="text-label text-text-secondary">Today</p>
+    <h1 className="text-display text-text-primary">
       {storeName}
     </h1>
-    <Link
-      to={`/store/${storeId}/pos`}
-      className="rounded-radius-2xl bg-primary px-24 py-4 text-center text-text-inverse transition-all duration-[var(--motion-fast)] hover:opacity-90 active:scale-[0.98]"
-    >
-      <span className="text-title font-[var(--weight-semibold)]">
-        {posLabel}
-      </span>
-    </Link>
-    <p className="text-body-sm text-text-tertiary">
+    <p className="max-w-xl text-body text-text-secondary">
       {posSubtitle}
     </p>
-  </div>
+    <Link
+      to={`/store/${storeId}/pos`}
+      className="inline-flex h-button-height-lg items-center justify-center rounded-radius-2xl bg-button-primary-bg px-12 text-button-lg font-button text-button-primary-text transition-colors duration-[var(--motion-fast)] hover:bg-button-primary-bg-hover"
+    >
+      {posLabel}
+    </Link>
+  </section>
 );
 
-/** Metric card — single stat with label */
 const MetricCard = ({ value, label }: {
-  value: React.ReactNode;
+  value: ReactNode;
   label: string;
 }) => (
-  <Card>
-    <CardContent className="text-center py-8">
-      <div className="flex items-baseline justify-center gap-1.5">
+  <Card className="bg-bg">
+    <CardContent className="py-8 text-center">
+      <p className="text-label text-text-secondary">{label}</p>
+      <div className="mt-3 flex items-baseline justify-center gap-1.5">
         {value}
       </div>
-      <p className="mt-2 text-body-sm text-text-tertiary">{label}</p>
     </CardContent>
   </Card>
 );
 
-/** Shortcut card — icon + label, lightweight */
 const ShortcutCard = ({ icon, label, to }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   to: string;
 }) => (
   <Link to={to}>
-    <Card className="hover:bg-card-bg-hover active:scale-[0.98]">
+    <Card className="transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
       <CardContent className="flex flex-col items-center gap-4 py-8">
         <div className="text-text-tertiary">
           {icon}
@@ -206,15 +201,12 @@ const StoreDashboardPage = () => {
   const storeName = storeFinOneQuery?.name ?? "";
 
   return (
-    <div className="flex flex-col items-center min-h-[calc(100vh-6rem)]">
-      {/* Header */}
-      <div className="w-full max-w-2xl">
+    <div className="mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-5xl flex-col">
+      <div className="w-full">
         <PageHeader storeName={storeName} time={timeString} date={dateString} />
       </div>
 
-      {/* Center content */}
-      <div className="flex flex-col items-center flex-1 justify-center w-full max-w-2xl px-4">
-        {/* Hero */}
+      <div className="flex flex-1 flex-col justify-center py-12">
         <HeroSection
           storeName={storeName}
           storeId={id ?? ""}
@@ -222,11 +214,10 @@ const StoreDashboardPage = () => {
           posSubtitle={t("dashboard.startReceivingOrders")}
         />
 
-        {/* Metrics */}
-        <div className="grid grid-cols-2 gap-4 w-full mb-16">
+        <section className="mb-16 grid w-full gap-4 md:grid-cols-2">
           <MetricCard
             value={
-              <span className="text-heading font-[var(--weight-semibold)] text-text-primary">
+              <span className="text-heading text-text-primary">
                 ฿ {formatCurrency(todayRevenue)}
               </span>
             }
@@ -235,7 +226,7 @@ const StoreDashboardPage = () => {
           <MetricCard
             value={
               <>
-                <span className="text-heading font-[var(--weight-semibold)] text-text-primary">
+                <span className="text-heading text-text-primary">
                   {todayOrderCount}
                 </span>
                 <span className="text-body-sm text-text-secondary ml-1.5">
@@ -245,14 +236,13 @@ const StoreDashboardPage = () => {
             }
             label={t("dashboard.today")}
           />
-        </div>
+        </section>
 
-        {/* Shortcuts */}
-        <section className="w-full mb-16">
-          <h2 className="text-subtitle font-[var(--weight-semibold)] text-text-primary mb-4">
+        <section className="w-full">
+          <h2 className="mb-4 text-subtitle text-text-primary">
             {t("dashboard.shortcuts")}
           </h2>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid gap-4 md:grid-cols-3">
             <ShortcutCard
               icon={<LuClipboardCheck size={28} />}
               label={t("dashboard.orders")}

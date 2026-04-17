@@ -50,7 +50,7 @@
 /* ── Typography Primitives ── */
 :root {
   /* Font families */
-  --font-sans: "Poppins", sans-serif;
+  --font-sans: "Inter", "Sarabun", sans-serif;
   --font-mono: ui-monospace, "JetBrains Mono", monospace;
 
   /* Font size scale */

@@ -29,7 +29,7 @@
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-button-ghost-text: var(--color-text-primary);
 
-  --radius-button: var(--radius-md);
+  --radius-button: var(--radius-lg);
   --spacing-button-height-sm: 36px;
   --spacing-button-height-md: 44px;
   --spacing-button-height-lg: 56px;
@@ -43,9 +43,9 @@
   /* Newsroom: white cards on warm gray bg, very subtle border */
   --color-card-bg: var(--color-surface);
   --color-card-bg-hover: var(--color-surface-hover);
-  --color-card-border: transparent;
+  --color-card-border: var(--color-border);
   --color-card-border-hover: var(--color-border);
-  --radius-card: var(--radius-lg);
+  --radius-card: var(--radius-xl);
   --spacing-card-padding: var(--space-6);
   --font-size-card-title: var(--text-body-size);
   --font-weight-card-title: var(--text-heading-weight);
@@ -140,13 +140,13 @@
   --font-size-dialog-desc: var(--text-body-sm-size);
 
   /* ── Sidebar ── */
-  --color-sidebar-bg: var(--color-surface);
+  --color-sidebar-bg: color-mix(in srgb, var(--color-bg) 88%, white);
   --color-sidebar-border: var(--color-border);
   --spacing-sidebar-width: 84px;
-  --color-sidebar-active-bg: var(--color-primary-bg);
+  --color-sidebar-active-bg: var(--color-surface);
   --color-sidebar-active-text: var(--color-text-primary);
   --color-sidebar-text: var(--color-text-secondary);
-  --color-sidebar-hover-bg: var(--color-surface-hover);
+  --color-sidebar-hover-bg: var(--color-surface);
 
   /* ── Select ── */
   --color-select-bg: var(--color-surface);

@@ -70,7 +70,7 @@ const Sidebar = () => {
   };
 
   const itemClass =
-    "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-radius-lg border border-transparent transition-all duration-[var(--motion-fast)] active:scale-[0.98]";
+    "group relative mx-auto flex h-14 w-14 items-center justify-center rounded-radius-xl border border-transparent transition-all duration-[var(--motion-fast)] active:scale-[0.98]";
   const activeClass =
     "border-sidebar-border bg-sidebar-active-bg text-sidebar-active-text";
   const inactiveClass =
@@ -88,7 +88,7 @@ const Sidebar = () => {
         className={cn(itemClass, active ? activeClass : inactiveClass)}
       >
         {item.icon}
-        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-2 -translate-y-1/2 whitespace-nowrap rounded-radius-sm border border-border bg-surface px-2 py-1 text-[10px] font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
+        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded-radius-md border border-border bg-surface px-3 py-2 text-caption font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
           {item.name}
         </span>
       </Link>
@@ -96,8 +96,8 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 w-sidebar-width border-r border-sidebar-border bg-sidebar-bg">
-      <div className="flex h-full flex-col justify-between py-5">
+    <aside className="fixed inset-y-0 left-0 z-50 w-sidebar-width border-r border-sidebar-border bg-sidebar-bg/95 backdrop-blur-xl">
+      <div className="flex h-full flex-col justify-between py-6">
         <nav className="flex flex-col gap-3 px-3">{storeMenuList.map(renderNavItem)}</nav>
         {resolvedStoreId && (
           <div className="px-3">

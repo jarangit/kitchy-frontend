@@ -32,15 +32,15 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
   }, [dispatch, routeStoreId, currentStoreId]);
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-bg text-text-primary">
       {!hideSidebar && <Sidebar />}
-      <div className={cn("flex flex-col min-h-screen flex-grow transition-all duration-300", !hideSidebar && "ml-sidebar-width")}>
+      <div className={cn("flex min-h-screen flex-grow flex-col transition-all duration-300", !hideSidebar && "ml-sidebar-width")}>
         {!isOnline && (
-          <section className="w-full p-1 text-text-inverse text-center font-[var(--weight-semibold)] bg-danger text-label">
+          <section className="w-full bg-danger-bg py-2 text-center text-label font-[var(--weight-medium)] text-danger">
             You are offline
           </section>
         )}
-        <main className={cn("flex-1 flex flex-col", !noPadding && "p-6")}>{children}</main>
+        <main className={cn("flex flex-1 flex-col", !noPadding && "px-6 py-8 lg:px-10 lg:py-10 xl:px-12 xl:py-12")}>{children}</main>
       </div>
     </div>
   );
