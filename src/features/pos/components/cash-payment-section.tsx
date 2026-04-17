@@ -21,7 +21,7 @@ const CashPaymentSection = ({
   ];
 
   return (
-    <div className="bg-surface rounded-md border border-border p-6 mt-6">
+    <div className="rounded-card border border-card-border bg-card-bg p-card-padding mt-6">
       <h3 className="mb-4 text-title text-text-primary">Cash Payment</h3>
       <div className="space-y-4">
         <Input

@@ -6,7 +6,7 @@ interface Props {
 
 const QrPaymentSection = ({ subtotal }: Props) => {
   return (
-    <div className="bg-surface rounded-md border border-border p-6 mt-6 text-center">
+    <div className="rounded-card border border-card-border bg-card-bg p-card-padding mt-6 text-center">
       <h3 className="mb-6 text-title text-text-primary">QR Code Payment</h3>
       <div className="w-52 h-52 mx-auto border border-border rounded-lg flex flex-col items-center justify-center gap-3 text-text-tertiary">
         <LuQrCode size={48} />

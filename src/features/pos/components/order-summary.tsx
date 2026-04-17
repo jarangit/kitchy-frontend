@@ -7,7 +7,7 @@ interface Props {
 
 const OrderSummary = ({ items, subtotal }: Props) => {
   return (
-    <div className="bg-surface rounded-md border border-border p-6">
+    <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
       <h3 className="mb-4 text-title text-text-primary">Order Summary</h3>
       <div className="space-y-3">
         {items.map((item) => (

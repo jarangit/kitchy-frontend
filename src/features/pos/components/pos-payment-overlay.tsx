@@ -118,7 +118,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
         onClose={handleClosePayment}
         className="!max-w-5xl w-[min(96vw,72rem)] max-h-[92vh] p-0 overflow-hidden"
       >
-        <div className="bg-surface border-b border-border px-6 py-4 flex items-center justify-between">
+        <div className="border-b border-card-border bg-card-bg px-6 py-4 flex items-center justify-between">
           <h2 className="text-heading text-text-primary">Payment</h2>
           <Button
             type="button"
@@ -145,7 +145,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
               <OrderSummary items={items} subtotal={subtotal} />
 
-              <div className="bg-surface rounded-md border border-border p-6">
+              <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
                 <h3 className="mb-3 text-title text-text-primary">
                   Order Info
                 </h3>

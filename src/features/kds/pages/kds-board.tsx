@@ -92,7 +92,7 @@ const KdsBoardPage = () => {
           <SkeletonCard className="min-h-[280px]" />
         </div>
       ) : activeStation == null ? (
-        <div className="min-h-[320px] rounded-md border border-border bg-surface p-6 text-center">
+        <div className="min-h-[320px] rounded-card border border-card-border bg-card-bg p-card-padding text-center">
           <p className="text-subtitle text-text-primary">
             No station found
           </p>
@@ -101,7 +101,7 @@ const KdsBoardPage = () => {
           </p>
         </div>
       ) : visibleCards.length === 0 ? (
-        <div className="rounded-md border border-border bg-surface p-6">
+        <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
           <EmptyState
             icon={<LuUtensilsCrossed size={28} />}
             title={activeTab === "PENDING" ? "No pending items" : "No ready items"}
