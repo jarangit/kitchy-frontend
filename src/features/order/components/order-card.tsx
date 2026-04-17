@@ -90,14 +90,14 @@ const OrderCard = ({
     >
       <div className="space-y-3">
         <div className="flex gap-2 items-center">
-          <div className="md:text-display font-[var(--weight-bold)]">#{orderNumber}</div>
+          <div className="md:text-display font-[var(--weight-semibold)]">#{orderNumber}</div>
           <div className="flex md:hidden items-center text-label text-[var(--color-text-secondary)]">
             <FaClock className="mr-1" />
             <ElapsedTime createdAt={createdAtStr} />
           </div>
         </div>
         {previousOrderNumber && (
-          <div className="font-[var(--weight-bold)] text-subtitle">
+          <div className="font-[var(--weight-semibold)] text-subtitle">
             Updated: #{previousOrderNumber} to{" "}
             <span className="underline">#{orderNumber}</span>
           </div>

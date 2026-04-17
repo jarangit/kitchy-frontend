@@ -34,7 +34,7 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
       <div className="space-y-6">
         <div>
           <div className="text-label text-[var(--color-text-secondary)]">Revenue</div>
-          <div className="mt-1 text-[28px] font-[var(--weight-bold)] text-[var(--color-text-primary)] leading-tight">
+          <div className="mt-1 text-[28px] font-[var(--weight-semibold)] text-[var(--color-text-primary)] leading-tight">
             {formatCurrency(day.revenue)}
           </div>
         </div>

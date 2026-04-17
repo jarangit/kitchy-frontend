@@ -185,7 +185,7 @@ const TransactionDetailPage = () => {
         {/* ── Header ──────────────────────────────── */}
         <div>
           <div className="flex items-center justify-between mb-1">
-            <h1 className="text-title font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+            <h1 className="text-title font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               {order.orderNumber}
             </h1>
             <Badge variant={toStatusBadgeVariant(order.status)}>
@@ -287,7 +287,7 @@ const TransactionDetailPage = () => {
             <span className="text-body font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               Total
             </span>
-            <span className="text-title font-[var(--weight-bold)] tabular-nums text-[var(--color-text-primary)]">
+            <span className="text-title font-[var(--weight-semibold)] tabular-nums text-[var(--color-text-primary)]">
               {formatCurrency(grandTotal)}
             </span>
           </div>

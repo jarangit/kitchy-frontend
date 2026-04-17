@@ -37,7 +37,7 @@ const PaymentSuccessDialog = ({ open, onClose, paymentResult }: Props) => {
               <p className="mb-1 text-label uppercase tracking-widest text-text-secondary">
                 Receipt
               </p>
-              <p className="font-mono font-[var(--weight-bold)] text-text-primary">
+              <p className="font-mono font-[var(--weight-semibold)] text-text-primary">
                 #{paymentResult.receiptId}
               </p>
             </div>
@@ -65,7 +65,7 @@ const PaymentSuccessDialog = ({ open, onClose, paymentResult }: Props) => {
             </div>
 
             <div className="border-t border-border pt-3 pb-3">
-              <div className="flex justify-between font-[var(--weight-bold)] text-text-primary">
+              <div className="flex justify-between font-[var(--weight-semibold)] text-text-primary">
                 <span>Total</span>
                 <span>฿{paymentResult.subtotal.toFixed(2)}</span>
               </div>

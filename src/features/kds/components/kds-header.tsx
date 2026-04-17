@@ -25,7 +25,7 @@ const KdsHeader = ({ storeId, stationName, isRefetching }: Props) => {
         </Button>
 
         <div>
-          <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+          <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             Kitchen Display System
           </h1>
           <p className="text-label text-[var(--color-text-secondary)]">

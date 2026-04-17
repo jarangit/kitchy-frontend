@@ -89,7 +89,7 @@ const TransactionCard = ({ order, onClick }: Props) => {
       >
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <span className="font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+            <span className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               {order.orderNumber}
             </span>
           </div>

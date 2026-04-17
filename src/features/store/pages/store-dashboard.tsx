@@ -149,7 +149,7 @@ const StoreDashboardPage = () => {
         </Link>
 
         <div>
-          <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+          <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             {storeFinOneQuery?.name}
           </h1>
           <p className="text-label text-[var(--color-text-secondary)]">{todayLabel}</p>
@@ -216,14 +216,14 @@ const StoreDashboardPage = () => {
         </h2>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+            <div className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               ฿ {formatCurrency(todayRevenue)}
             </div>
             <div className="mt-1 text-label text-[var(--color-text-secondary)]">Revenue</div>
           </div>
 
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+            <div className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               {todayOrderCount} Orders
             </div>
             <div className="mt-1 text-label text-[var(--color-text-secondary)]">Today</div>

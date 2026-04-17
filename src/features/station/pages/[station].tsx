@@ -31,7 +31,7 @@ const StationPage = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+      <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
         Station: {stationFinOneQuery.data?.name}
       </h1>
       <p className="text-[var(--color-text-secondary)]">Station ID: {stationFinOneQuery.data?.id}</p>

@@ -33,7 +33,7 @@ export const SettingsShell = ({
         )}
 
         <div className="space-y-3 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-6 py-7 sm:px-7 sm:py-8">
-          <h1 className="text-heading font-[var(--weight-bold)] leading-tight text-[var(--color-text-primary)] sm:text-display">
+          <h1 className="text-heading font-[var(--weight-semibold)] leading-tight text-[var(--color-text-primary)] sm:text-display">
             {title}
           </h1>
           {description && (

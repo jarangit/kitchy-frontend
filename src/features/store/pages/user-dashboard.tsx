@@ -75,7 +75,7 @@ export default function UserDashboard() {
       <main className="max-w-4xl mx-auto px-6 py-10">
         {/* Welcome section */}
         <div className="mb-8">
-          <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+          <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             Welcome back
           </h1>
           <p className="text-[var(--color-text-secondary)] mt-1">

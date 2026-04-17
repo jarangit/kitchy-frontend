@@ -70,7 +70,7 @@ const KdsOrderCard = ({
         <div className="min-w-0 flex-1">
           {card.productName && (
             <span
-              className="block max-w-full truncate text-heading font-[var(--weight-bold)] leading-tight text-[var(--color-text-primary)]"
+              className="block max-w-full truncate text-heading font-[var(--weight-semibold)] leading-tight text-[var(--color-text-primary)]"
               title={card.productName}
             >
               {card.productName}
@@ -82,7 +82,7 @@ const KdsOrderCard = ({
             </p>
           )}
         </div>
-        <span className="shrink-0 text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+        <span className="shrink-0 text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
           x{card.quantity}
         </span>
       </div>
@@ -95,7 +95,7 @@ const KdsOrderCard = ({
               #{queueNumber}
             </Badge>
           )}
-          <p className="font-mono text-subtitle font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+          <p className="font-mono text-subtitle font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             {card.orderNumber}
           </p>
         </div>

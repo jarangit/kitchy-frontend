@@ -66,11 +66,11 @@ export function StationCard({
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-3 bg-[var(--color-warning-bg)] rounded-radius-sm">
-              <div className="text-heading font-[var(--weight-bold)] text-[var(--color-warning)]">{activeOrders}</div>
+              <div className="text-heading font-[var(--weight-semibold)] text-[var(--color-warning)]">{activeOrders}</div>
               <div className="text-label text-[var(--color-text-secondary)]">Active Orders</div>
             </div>
             <div className="text-center p-3 bg-[var(--color-success-bg)] rounded-radius-sm">
-              <div className="text-heading font-[var(--weight-bold)] text-[var(--color-success)]">{completedToday}</div>
+              <div className="text-heading font-[var(--weight-semibold)] text-[var(--color-success)]">{completedToday}</div>
               <div className="text-label text-[var(--color-text-secondary)]">Completed Today</div>
             </div>
           </div>

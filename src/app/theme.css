@@ -139,6 +139,9 @@
   --spacing-6: var(--space-6);
   --spacing-7: var(--space-7);
   --spacing-8: var(--space-8);
+  --spacing-9: var(--space-9);
+  --spacing-10: var(--space-10);
+  --spacing-11: var(--space-11);
 
   /* ── Component Spacing (Layer 3) ── */
   /* Button */
@@ -178,6 +181,7 @@
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
+  --shadow-soft: var(--shadow-soft);
 
   /* ── Component Font Sizes (Layer 3) ── */
   --font-size-button-sm: var(--font-size-button-sm);

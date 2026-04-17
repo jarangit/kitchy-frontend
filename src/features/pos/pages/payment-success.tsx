@@ -54,7 +54,7 @@ const PaymentSuccessPage = () => {
         <LuCircleCheck size={72} />
       </div>
 
-      <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)] mb-1">
+      <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)] mb-1">
         Payment Successful!
       </h1>
       <p className="text-display text-[var(--color-text-primary)] mb-6">
@@ -68,7 +68,7 @@ const PaymentSuccessPage = () => {
           <p className="text-caption uppercase tracking-widest text-[var(--color-text-secondary)] mb-1">
             Receipt
           </p>
-          <p className="font-mono font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+          <p className="font-mono font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             #{receiptId}
           </p>
           <p className="text-label text-[var(--color-text-secondary)] mt-1">
@@ -101,7 +101,7 @@ const PaymentSuccessPage = () => {
 
         {/* Total */}
         <div className="border-t border-[var(--color-border)] pt-3 pb-3">
-          <div className="flex justify-between font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+          <div className="flex justify-between font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
             <span>Total</span>
             <span>฿{subtotal.toFixed(2)}</span>
           </div>

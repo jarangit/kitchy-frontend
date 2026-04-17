@@ -81,7 +81,7 @@ const ReportPage = () => {
             >
               <LuArrowLeft size={20} />
             </Link>
-            <h1 className="text-heading font-[var(--weight-bold)] text-[var(--color-text-primary)]">
+            <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
               Report
             </h1>
           </div>

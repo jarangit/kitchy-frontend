@@ -28,7 +28,7 @@ const TopProductsList = ({ products, title = "Top Products" }: Props) => {
             className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0"
           >
             <div className="flex items-center gap-3 min-w-0">
-              <span className="w-6 h-6 rounded-radius-full bg-[var(--color-primary)] text-[var(--color-text-inverse)] text-caption font-[var(--weight-bold)] flex items-center justify-center shrink-0">
+              <span className="w-6 h-6 rounded-radius-full bg-[var(--color-primary)] text-[var(--color-text-inverse)] text-caption font-[var(--weight-semibold)] flex items-center justify-center shrink-0">
                 {idx + 1}
               </span>
               <span className="text-body-sm font-[var(--weight-medium)] text-[var(--color-text-primary)] truncate">

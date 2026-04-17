@@ -21,7 +21,7 @@ export default function MyModal() {
         <div className="fixed inset-0 bg-[var(--color-overlay)]" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="bg-dialog-bg p-6 rounded-radius-xs shadow-xl w-full max-w-sm">
-            <Dialog.Title className="text-subtitle font-[var(--weight-bold)]">
+            <Dialog.Title className="text-subtitle font-[var(--weight-semibold)]">
               Confirm Delete
             </Dialog.Title>
             <p className="mt-2 text-text-secondary">

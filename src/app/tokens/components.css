@@ -7,6 +7,7 @@
      --radius-*  → rounded-*
      --font-size-*   → text-*
      --font-weight-* → font-*
+   Apple Newsroom DNA: white surfaces, near-invisible borders, calm.
    ============================================ */
 
 :root {
@@ -39,10 +40,11 @@
   --font-size-button-lg: var(--text-body-size);
 
   /* ── Card ── */
+  /* Newsroom: white cards on warm gray bg, very subtle border */
   --color-card-bg: var(--color-surface);
   --color-card-bg-hover: var(--color-surface-hover);
-  --color-card-border: var(--color-border);
-  --color-card-border-hover: var(--color-border-hover);
+  --color-card-border: transparent;
+  --color-card-border-hover: var(--color-border);
   --radius-card: var(--radius-lg);
   --spacing-card-padding: var(--space-6);
   --font-size-card-title: var(--text-body-size);
@@ -52,13 +54,13 @@
   /* ── Toggle ── */
   --color-toggle-bg: var(--color-border);
   --color-toggle-bg-active: var(--color-primary);
-  --color-toggle-knob: var(--color-bg);
+  --color-toggle-knob: var(--gray-0);
   --spacing-toggle-width: 52px;
   --spacing-toggle-height: 28px;
   --spacing-toggle-knob-size: 22px;
 
   /* ── Skeleton ── */
-  --color-skeleton-bg: var(--color-surface);
+  --color-skeleton-bg: var(--color-border);
   --color-skeleton-shimmer: var(--color-surface-hover);
 
   /* ── Input ── */
@@ -105,7 +107,7 @@
   --font-size-chip: var(--text-label-size);
 
   /* ── SegmentedControl ── */
-  --color-segment-bg: var(--color-bg);
+  --color-segment-bg: var(--color-surface);
   --color-segment-border: var(--color-border);
   --color-segment-active-bg: var(--color-primary);
   --color-segment-active-text: var(--color-text-inverse);
@@ -125,23 +127,23 @@
   --radius-selection: var(--radius-md);
   --spacing-selection-height: 48px;
   --font-size-selection: var(--text-label-size);
-  --font-weight-selection: var(--text-heading-weight);
+  --font-weight-selection: var(--weight-medium); /* 500 — calmer */
 
   /* ── Dialog ── */
   --color-dialog-bg: var(--color-surface);
-  --color-dialog-border: var(--color-border);
-  --radius-dialog: var(--radius-lg);
+  --color-dialog-border: transparent;          /* Newsroom: no visible border */
+  --radius-dialog: var(--radius-xl);           /* Slightly larger for premium feel */
   --spacing-dialog-padding: var(--space-6);
   --color-dialog-overlay: var(--color-overlay);
   --font-size-dialog-title: var(--text-subtitle-size);
-  --font-weight-dialog-title: var(--text-heading-weight);
+  --font-weight-dialog-title: var(--weight-semibold);
   --font-size-dialog-desc: var(--text-body-sm-size);
 
   /* ── Sidebar ── */
   --color-sidebar-bg: var(--color-surface);
   --color-sidebar-border: var(--color-border);
   --spacing-sidebar-width: 84px;
-  --color-sidebar-active-bg: var(--color-surface-hover);
+  --color-sidebar-active-bg: var(--color-primary-bg);
   --color-sidebar-active-text: var(--color-text-primary);
   --color-sidebar-text: var(--color-text-secondary);
   --color-sidebar-hover-bg: var(--color-surface-hover);
@@ -163,9 +165,11 @@
 
 /* ── Component Tokens: Dark Mode Overrides ── */
 [data-theme="dark"] {
-  --color-sidebar-active-bg: rgba(255, 255, 255, 0.12);
+  --color-card-border: var(--color-border);
+  --color-dialog-border: var(--color-border);
+  --color-sidebar-active-bg: rgba(245, 245, 247, 0.1);
   --color-button-secondary-bg: var(--color-surface);
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-dialog-bg: var(--color-surface);
-  --color-dialog-border: var(--color-border);
+  --color-skeleton-bg: var(--color-surface);
 }
