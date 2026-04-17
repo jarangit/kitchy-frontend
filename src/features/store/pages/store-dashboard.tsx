@@ -1,23 +1,25 @@
+import { Card, CardContent } from "@/shared/components/ui/card";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
-import { stationServiceApi } from "@/features/station/services/station";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
-  LuArrowLeft,
-  LuArrowRight,
   LuChefHat,
-  LuMonitor,
-  LuReceipt,
+  LuClipboardCheck,
+  LuRefreshCw,
   LuSettings,
-  LuShoppingCart,
 } from "react-icons/lu";
+
+/* ── Types ─────────────────────────────────────────────── */
 
 interface DashboardOrder {
   createdAt?: string;
   totalAmount?: number;
 }
+
+/* ── Helpers ───────────────────────────────────────────── */
 
 const formatCurrency = (value: number): string =>
   new Intl.NumberFormat("th-TH", {
@@ -27,10 +29,8 @@ const formatCurrency = (value: number): string =>
 
 const isSameCalendarDay = (dateValue: string | undefined, targetDate: Date): boolean => {
   if (!dateValue) return false;
-
   const date = new Date(dateValue);
   if (Number.isNaN(date.getTime())) return false;
-
   return (
     date.getFullYear() === targetDate.getFullYear() &&
     date.getMonth() === targetDate.getMonth() &&
@@ -38,41 +38,136 @@ const isSameCalendarDay = (dateValue: string | undefined, targetDate: Date): boo
   );
 };
 
+/* ── Hooks ─────────────────────────────────────────────── */
+
+const useLiveClock = () => {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+  return now;
+};
+
+/* ── Sub-components ────────────────────────────────────── */
+
+/** Signal strength bars — matches reference mockup */
+const SignalBars = () => (
+  <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
+    <rect x="0" y="10" width="3" height="4" rx="0.75" fill="var(--color-warning)" />
+    <rect x="5" y="7" width="3" height="7" rx="0.75" fill="var(--color-warning)" />
+    <rect x="10" y="3" width="3" height="11" rx="0.75" fill="var(--color-warning)" />
+    <rect x="15" y="0" width="3" height="14" rx="0.75" fill="var(--color-warning)" />
+  </svg>
+);
+
+/** Page header — store name left, time/date status right */
+const PageHeader = ({ storeName, time, date }: {
+  storeName: string;
+  time: string;
+  date: string;
+}) => (
+  <header className="w-full flex items-center justify-between py-6 px-2">
+    <span className="text-subtitle font-[var(--weight-semibold)] text-text-primary">
+      {storeName}
+    </span>
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1.5 text-body-sm text-text-tertiary">
+        <span>{time}</span>
+        <LuRefreshCw size={12} />
+      </div>
+      <div className="flex items-center gap-2 rounded-radius-lg bg-surface px-3 py-1.5 shadow-soft">
+        <span className="text-body-sm font-[var(--weight-semibold)] text-text-primary">
+          {time}
+        </span>
+        <span className="text-caption text-text-tertiary">{date}</span>
+        <SignalBars />
+      </div>
+    </div>
+  </header>
+);
+
+/** Hero section — store name + primary CTA */
+const HeroSection = ({ storeName, storeId, posLabel, posSubtitle }: {
+  storeName: string;
+  storeId: string;
+  posLabel: string;
+  posSubtitle: string;
+}) => (
+  <div className="flex flex-col items-center gap-4 mb-16">
+    <h1 className="text-display font-[var(--weight-semibold)] text-text-primary text-center mb-4">
+      {storeName}
+    </h1>
+    <Link
+      to={`/store/${storeId}/pos`}
+      className="rounded-radius-2xl bg-primary px-24 py-4 text-center text-text-inverse transition-all duration-[var(--motion-fast)] hover:opacity-90 active:scale-[0.98]"
+    >
+      <span className="text-title font-[var(--weight-semibold)]">
+        {posLabel}
+      </span>
+    </Link>
+    <p className="text-body-sm text-text-tertiary">
+      {posSubtitle}
+    </p>
+  </div>
+);
+
+/** Metric card — single stat with label */
+const MetricCard = ({ value, label }: {
+  value: React.ReactNode;
+  label: string;
+}) => (
+  <Card>
+    <CardContent className="text-center py-8">
+      <div className="flex items-baseline justify-center gap-1.5">
+        {value}
+      </div>
+      <p className="mt-2 text-body-sm text-text-tertiary">{label}</p>
+    </CardContent>
+  </Card>
+);
+
+/** Shortcut card — icon + label, lightweight */
+const ShortcutCard = ({ icon, label, to }: {
+  icon: React.ReactNode;
+  label: string;
+  to: string;
+}) => (
+  <Link to={to}>
+    <Card className="hover:bg-card-bg-hover active:scale-[0.98]">
+      <CardContent className="flex flex-col items-center gap-4 py-8">
+        <div className="text-text-tertiary">
+          {icon}
+        </div>
+        <span className="text-body-sm font-[var(--weight-medium)] text-text-secondary">
+          {label}
+        </span>
+      </CardContent>
+    </Card>
+  </Link>
+);
+
+/* ── Page ──────────────────────────────────────────────── */
+
 const StoreDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
     useStoreService({});
   const { ordersQuery } = useOrderService({});
-  const [stations, setStations] = useState<
-    { id: string; name: string; createdAt: string }[]
-  >([]);
+  const now = useLiveClock();
 
-  useEffect(() => {
-    const onGetStations = async (storeId: string) => {
-      try {
-        const response = await stationServiceApi.getByStoreId(storeId);
-        setStations(response?.data ?? []);
-      } catch (error) {
-        console.error("Error fetching stations:", error);
-        setStations([]);
-      }
-    };
+  const timeString = now.toLocaleTimeString("th-TH", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-    if (id) {
-      onGetStations(id);
-    }
-  }, [id]);
+  const dateString = now.toLocaleDateString("th-TH", {
+    day: "numeric",
+    month: "long",
+  });
 
   const today = new Date();
-  const todayLabel = useMemo(
-    () =>
-      today.toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "short",
-        day: "numeric",
-      }),
-    [today],
-  );
 
   const todayOrders = useMemo(
     () =>
@@ -88,23 +183,14 @@ const StoreDashboardPage = () => {
     0,
   );
 
+  /* Loading state */
   if (storeFinOneLoading) {
     return (
-      <div className="space-y-5">
-        <div className="space-y-2">
-          <SkeletonCard className="h-14" />
-        </div>
-        <SkeletonCard className="h-36" />
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <SkeletonCard className="h-24" />
-          <SkeletonCard className="h-24" />
-        </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <SkeletonCard className="h-24" />
-          <SkeletonCard className="h-24" />
-        </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-          <SkeletonCard className="h-28" />
+      <div className="flex flex-col items-center justify-center min-h-[60vh] gap-6">
+        <SkeletonCard className="h-12 w-64" />
+        <SkeletonCard className="h-16 w-80" />
+        <SkeletonCard className="h-12 w-48 rounded-radius-2xl" />
+        <div className="grid grid-cols-2 gap-4 w-full max-w-2xl">
           <SkeletonCard className="h-28" />
           <SkeletonCard className="h-28" />
         </div>
@@ -112,149 +198,79 @@ const StoreDashboardPage = () => {
     );
   }
 
+  /* Error state */
   if (storeFinOneQueryError) {
     return <div>Error: {storeFinOneQueryError}</div>;
   }
 
-  const quickActions = [
-    {
-      label: "Transactions",
-      description: "Order history",
-      icon: <LuReceipt size={20} />,
-      to: `/store/${id}/transactions`,
-    },
-    {
-      label: "KDS",
-      description: "Kitchen board",
-      icon: <LuChefHat size={20} />,
-      to: `/store/${id}/kds`,
-    },
-    {
-      label: "Settings",
-      description: "Manage store",
-      icon: <LuSettings size={20} />,
-      to: `/store/${id}/settings`,
-    },
-  ];
+  const storeName = storeFinOneQuery?.name ?? "";
 
   return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <Link
-          to="/dashboard"
-          className="min-h-11 px-2 inline-flex items-center gap-2 text-label text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] active:scale-[0.98] transition-all duration-[var(--motion-fast)]"
-        >
-          <LuArrowLeft size={16} />
-          Back to stores
-        </Link>
-
-        <div>
-          <h1 className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
-            {storeFinOneQuery?.name}
-          </h1>
-          <p className="text-label text-[var(--color-text-secondary)]">{todayLabel}</p>
-        </div>
+    <div className="flex flex-col items-center min-h-[calc(100vh-6rem)]">
+      {/* Header */}
+      <div className="w-full max-w-2xl">
+        <PageHeader storeName={storeName} time={timeString} date={dateString} />
       </div>
 
-      <Link
-        to={`/store/${id}/pos`}
-        className="block rounded-[var(--radius-lg)] border border-[var(--color-primary)] bg-[var(--color-primary)] p-8 text-[var(--color-text-inverse)] transition-all duration-[var(--motion-fast)] hover:opacity-95 active:scale-[0.99]"
-      >
-          <div className="flex items-center justify-between gap-5">
-            <div className="flex min-w-0 items-center gap-5">
-            <div className="flex h-12 w-12 items-center justify-center rounded-radius-full bg-[rgba(255,255,255,0.16)] text-[var(--color-text-inverse)] shrink-0">
-              <LuShoppingCart size={24} />
-            </div>
-            <div className="min-w-0 text-left">
-              <div className="text-heading">Open POS</div>
-              <div className="mt-1 text-label text-[rgba(255,255,255,0.78)]">
-                Start taking orders
-              </div>
-            </div>
-          </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-radius-full border border-[rgba(255,255,255,0.22)] bg-[rgba(255,255,255,0.08)] text-[var(--color-text-inverse)] shrink-0">
-            <LuArrowRight size={18} />
-          </div>
+      {/* Center content */}
+      <div className="flex flex-col items-center flex-1 justify-center w-full max-w-2xl px-4">
+        {/* Hero */}
+        <HeroSection
+          storeName={storeName}
+          storeId={id ?? ""}
+          posLabel={t("dashboard.openPos")}
+          posSubtitle={t("dashboard.startReceivingOrders")}
+        />
+
+        {/* Metrics */}
+        <div className="grid grid-cols-2 gap-4 w-full mb-16">
+          <MetricCard
+            value={
+              <span className="text-heading font-[var(--weight-semibold)] text-text-primary">
+                ฿ {formatCurrency(todayRevenue)}
+              </span>
+            }
+            label={t("dashboard.today")}
+          />
+          <MetricCard
+            value={
+              <>
+                <span className="text-heading font-[var(--weight-semibold)] text-text-primary">
+                  {todayOrderCount}
+                </span>
+                <span className="text-body-sm text-text-secondary ml-1.5">
+                  {t("dashboard.orders")}
+                </span>
+              </>
+            }
+            label={t("dashboard.today")}
+          />
         </div>
-      </Link>
 
-      <section className="space-y-4">
-        <h2 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
-          Status
-        </h2>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-radius-full bg-[var(--color-success-bg)] text-[var(--color-success)]">
-                <LuMonitor size={18} />
-              </div>
-              <div>
-                <div className="text-subtitle text-[var(--color-text-primary)]">
-                  POS Ready
-                </div>
-                <div className="text-label text-[var(--color-text-secondary)]">
-                  Ready to start shift
-                </div>
-              </div>
-            </div>
+        {/* Shortcuts */}
+        <section className="w-full mb-16">
+          <h2 className="text-subtitle font-[var(--weight-semibold)] text-text-primary mb-4">
+            {t("dashboard.shortcuts")}
+          </h2>
+          <div className="grid grid-cols-3 gap-4">
+            <ShortcutCard
+              icon={<LuClipboardCheck size={28} />}
+              label={t("dashboard.orders")}
+              to={`/store/${id}/transactions`}
+            />
+            <ShortcutCard
+              icon={<LuChefHat size={28} />}
+              label={t("dashboard.kds")}
+              to={`/store/${id}/kds`}
+            />
+            <ShortcutCard
+              icon={<LuSettings size={28} />}
+              label={t("dashboard.settings")}
+              to={`/store/${id}/settings`}
+            />
           </div>
-
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-subtitle text-[var(--color-text-primary)]">
-              {stations.length} {stations.length === 1 ? "Station" : "Stations"}
-            </div>
-            <div className="mt-1 text-label text-[var(--color-text-secondary)]">
-              Connected to this store
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
-          Today
-        </h2>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
-              ฿ {formatCurrency(todayRevenue)}
-            </div>
-            <div className="mt-1 text-label text-[var(--color-text-secondary)]">Revenue</div>
-          </div>
-
-          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6">
-            <div className="text-heading font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
-              {todayOrderCount} Orders
-            </div>
-            <div className="mt-1 text-label text-[var(--color-text-secondary)]">Today</div>
-          </div>
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-label font-[var(--weight-semibold)] text-[var(--color-text-secondary)] uppercase tracking-[0.04em]">
-          More
-        </h2>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-          {quickActions.map((action) => (
-            <Link
-              key={action.label}
-              to={action.to}
-              className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-all duration-[var(--motion-fast)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-surface-hover)] active:scale-[0.99]"
-            >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-radius-full bg-[var(--color-bg)] text-[var(--color-text-secondary)]">
-                {action.icon}
-              </div>
-              <div className="font-[var(--weight-semibold)] text-[var(--color-text-primary)]">
-                {action.label}
-              </div>
-              <div className="mt-1 text-label text-[var(--color-text-secondary)]">
-                {action.description}
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 };

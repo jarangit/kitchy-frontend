@@ -131,4 +131,15 @@ export const thMessages = {
   "pos.header.network.good": "อินเทอร์เน็ตเสถียร",
   "pos.header.network.fair": "อินเทอร์เน็ตปานกลาง",
   "pos.header.network.poor": "อินเทอร์เน็ตไม่เสถียร",
+
+  "dashboard.openPos": "เปิด POS",
+  "dashboard.startReceivingOrders": "เริ่มรับออร์เดอร์",
+  "dashboard.today": "วันนี้",
+  "dashboard.revenue": "รายได้",
+  "dashboard.revenueToday": "รายได้วันนี้",
+  "dashboard.ordersToday": "ออร์เดอร์วันนี้",
+  "dashboard.orders": "ออร์เดอร์",
+  "dashboard.kds": "KDS",
+  "dashboard.settings": "ตั้งค่า",
+  "dashboard.shortcuts": "ทางลัด",
 } as const;

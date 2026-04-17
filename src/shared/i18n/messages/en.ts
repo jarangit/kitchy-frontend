@@ -131,4 +131,15 @@ export const enMessages = {
   "pos.header.network.good": "Internet stable",
   "pos.header.network.fair": "Internet moderate",
   "pos.header.network.poor": "Internet unstable",
+
+  "dashboard.openPos": "Open POS",
+  "dashboard.startReceivingOrders": "Start receiving orders",
+  "dashboard.today": "Today",
+  "dashboard.revenue": "Revenue",
+  "dashboard.revenueToday": "Revenue today",
+  "dashboard.ordersToday": "orders today",
+  "dashboard.orders": "Orders",
+  "dashboard.kds": "KDS",
+  "dashboard.settings": "Settings",
+  "dashboard.shortcuts": "Shortcuts",
 } as const;
