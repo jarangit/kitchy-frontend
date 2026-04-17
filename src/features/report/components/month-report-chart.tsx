@@ -52,11 +52,11 @@ const CustomTooltip = ({ active, payload }: TooltipProps) => {
   const point = payload[0].payload;
 
   return (
-    <div className="rounded-md bg-text-primary px-3 py-2 text-center">
+    <div className="rounded-card bg-text-primary px-3 py-2 text-center">
       <div className="text-caption text-text-inverse/80">
         {format(parseISO(point.day.date), "MMM dd")}
       </div>
-      <div className="text-label font-[var(--weight-semibold)] text-text-inverse">
+      <div className="text-label font-semibold text-text-inverse">
         {formatCurrency(point.revenue)}
       </div>
     </div>
@@ -71,7 +71,7 @@ const ActiveDot = ({ cx, cy, payload }: DotProps) => {
       cx={cx}
       cy={cy}
       r={5}
-      fill="var(--color-text-primary)"
+      fill="var(--color-accent)"
       stroke="var(--color-bg)"
       strokeWidth={2}
     />
@@ -101,7 +101,7 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
 
   return (
     <div className="px-3 py-2 sm:px-4 sm:py-3">
-      <div className="mb-1 text-label font-[var(--weight-semibold)] text-text-primary">
+      <div className="mb-1 text-label font-semibold text-text-primary">
         Revenue Insights
       </div>
 
@@ -145,7 +145,7 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
             <Line
               type="monotone"
               dataKey="revenue"
-              stroke="var(--color-text-primary)"
+              stroke="var(--color-accent)"
               strokeWidth={2.5}
               dot={false}
               activeDot={<ActiveDot />}

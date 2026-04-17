@@ -1,4 +1,6 @@
 import { Badge } from "@/shared/components/ui/badge";
+import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
 import { LuCheck } from "react-icons/lu";
 
 interface OrderProduct {
@@ -21,15 +23,14 @@ interface Props {
   isLast?: boolean;
 }
 
-const getOrderTypeLabel = (type?: string) => {
-  if (!type) return "ออเดอร์";
-  if (type === "DINE_IN") return "ทานที่ร้าน";
-  if (type === "TOGO") return "กลับบ้าน";
-  if (type === "DELIVERY") return "เดลิเวอรี";
-  return type;
+const ORDER_TYPE_KEY: Record<string, MessageKey> = {
+  DINE_IN: "transaction.card.orderType.dineIn",
+  TOGO: "transaction.card.orderType.togo",
+  DELIVERY: "transaction.card.orderType.delivery",
 };
 
 const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
+  const { t } = useTranslation();
   const date = new Date(order.createdAt);
   const formattedTime = date.toLocaleTimeString("th-TH", {
     hour: "2-digit",
@@ -47,13 +48,18 @@ const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
     order.products?.reduce((sum, item) => sum + (item.quantity ?? 1), 0) ?? 0;
 
   const orderType = order.type ?? order.orderType;
-  const orderTypeLabel = getOrderTypeLabel(orderType);
+  const orderTypeLabel = orderType && ORDER_TYPE_KEY[orderType]
+    ? t(ORDER_TYPE_KEY[orderType])
+    : orderType ?? t("transaction.card.orderType.default");
 
   const productSummary =
     order.products
       ?.slice(0, 2)
-      .map((item) => `${item.name ?? "สินค้า"} x${item.quantity ?? 1}`)
-      .join("  |  ") ?? `${itemCount} รายการ`;
+      .map(
+        (item) =>
+          `${item.name ?? t("transaction.card.productFallback")} x${item.quantity ?? 1}`,
+      )
+      .join("  |  ") ?? t("transaction.card.itemCount", { count: itemCount });
 
   return (
     <button
@@ -66,18 +72,16 @@ const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
     >
       <div className="flex items-center justify-between gap-4">
         <div className="flex min-w-0 items-start gap-4">
-          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-success text-text-inverse">
+          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-success-bg text-success">
             <LuCheck size={18} />
           </span>
 
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <p className="text-heading font-[var(--weight-semibold)] text-text-primary">
+              <p className="text-heading font-semibold text-text-primary">
                 {order.orderNumber}
               </p>
-              <Badge variant="default" className="border border-card-border bg-surface text-text-secondary">
-                {orderTypeLabel}
-              </Badge>
+              <Badge variant="default">{orderTypeLabel}</Badge>
             </div>
             <p className="line-clamp-1 text-subtitle text-text-secondary">
               {productSummary}
@@ -86,7 +90,7 @@ const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
         </div>
 
         <div className="shrink-0 text-right">
-          <p className="text-title font-[var(--weight-semibold)] tabular-nums text-text-primary">
+          <p className="text-title font-semibold tabular-nums text-text-primary">
             ฿ {totalAmount.toLocaleString("th-TH", { maximumFractionDigits: 2 })}
           </p>
           <p className="text-subtitle text-text-tertiary">{formattedTime}</p>

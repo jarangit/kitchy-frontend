@@ -91,6 +91,8 @@
   --color-badge-danger-text: var(--color-danger);
   --color-badge-info-bg: var(--color-info-bg);
   --color-badge-info-text: var(--color-info);
+  --color-badge-accent-bg: var(--color-accent-bg);
+  --color-badge-accent-text: var(--color-accent-text);
 
   /* ── ChipTab ── */
   --color-chip-active-bg: var(--color-text-primary);
@@ -121,9 +123,9 @@
   --color-selection-border: var(--color-border);
   --color-selection-border-hover: var(--color-border-hover);
   --color-selection-text: var(--color-text-secondary);
-  --color-selection-active-border: var(--color-primary);
-  --color-selection-active-bg: var(--color-primary-bg);
-  --color-selection-active-text: var(--color-primary);
+  --color-selection-active-border: var(--color-accent);
+  --color-selection-active-bg: var(--color-accent-bg);
+  --color-selection-active-text: var(--color-accent-text);
   --radius-selection: var(--radius-lg);
   --spacing-selection-height: 48px;
   --font-size-selection: var(--text-label-size);

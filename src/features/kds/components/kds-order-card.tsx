@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { Badge, type BadgeVariant } from "@/shared/components/ui/badge";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
 
 interface Props {
@@ -20,6 +21,8 @@ const KdsOrderCard = ({
   prioritize = false,
   priorityTone = "normal",
 }: Props) => {
+  const { t } = useTranslation();
+
   const timeLabel = useMemo(() => {
     const createdAt = new Date(card.createdAt);
     return createdAt.toLocaleTimeString("th-TH", {
@@ -35,18 +38,18 @@ const KdsOrderCard = ({
 
   const urgency = useMemo<{ label: string; variant: BadgeVariant }>(() => {
     if (priorityTone === "due" || waitingMinutes >= 10) {
-      return { label: "DUE NOW", variant: "danger" };
+      return { label: t("kds.card.urgency.due"), variant: "danger" };
     }
     if (priorityTone === "next" || waitingMinutes >= 6) {
-      return { label: "SOON", variant: "warning" };
+      return { label: t("kds.card.urgency.soon"), variant: "warning" };
     }
-    return { label: "OK", variant: "success" };
-  }, [waitingMinutes, priorityTone]);
+    return { label: t("kds.card.urgency.ok"), variant: "success" };
+  }, [waitingMinutes, priorityTone, t]);
 
   const nextAction =
     card.status === "READY"
-      ? { label: "Back to Pending", status: "PENDING" as const }
-      : { label: "Mark Ready", status: "READY" as const };
+      ? { label: t("kds.card.backToPending"), status: "PENDING" as const }
+      : { label: t("kds.card.markReady"), status: "READY" as const };
 
   const orderInfoParts: string[] = [];
   if (card.orderType) {
@@ -70,7 +73,7 @@ const KdsOrderCard = ({
         <div className="min-w-0 flex-1">
           {card.productName && (
             <span
-              className="block max-w-full truncate text-heading font-[var(--weight-semibold)] leading-tight text-text-primary"
+              className="block max-w-full truncate text-heading font-semibold leading-tight text-text-primary tracking-tight"
               title={card.productName}
             >
               {card.productName}
@@ -78,11 +81,11 @@ const KdsOrderCard = ({
           )}
           {card.note && (
             <p className="mt-1 text-body-sm leading-5 text-text-tertiary">
-              Note: {card.note}
+              {t("kds.card.note", { note: card.note })}
             </p>
           )}
         </div>
-        <span className="shrink-0 text-heading font-[var(--weight-semibold)] text-text-primary">
+        <span className="shrink-0 text-heading font-semibold text-text-primary tabular-nums">
           x{card.quantity}
         </span>
       </div>
@@ -95,7 +98,7 @@ const KdsOrderCard = ({
               #{queueNumber}
             </Badge>
           )}
-          <p className="font-mono text-subtitle font-[var(--weight-semibold)] text-text-primary">
+          <p className="font-mono text-subtitle font-semibold text-text-primary tabular-nums">
             {card.orderNumber}
           </p>
         </div>
@@ -105,14 +108,14 @@ const KdsOrderCard = ({
           </p>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <p className="text-body font-[var(--weight-semibold)] text-text-primary">
+          <p className="text-body font-semibold text-text-primary tabular-nums">
             {timeLabel}
           </p>
-          <Badge variant="default" size="md" className="font-[var(--weight-semibold)]">
-            {waitingMinutes}m
+          <Badge variant="default" size="md">
+            {t("kds.card.waitingMinutes", { minutes: String(waitingMinutes) })}
           </Badge>
           {prioritize && (
-            <Badge variant={urgency.variant} size="md" className="font-[var(--weight-semibold)]">
+            <Badge variant={urgency.variant} size="md">
               {urgency.label}
             </Badge>
           )}
@@ -121,8 +124,8 @@ const KdsOrderCard = ({
 
       {/* ── Action button (sticky bottom) ── */}
       <div className="mt-5 border-t border-border pt-4">
-          <Button
-          className="h-12 w-full text-body font-[var(--weight-semibold)]"
+        <Button
+          className="h-12 w-full text-body"
           onClick={() => onMove(card, nextAction.status)}
           disabled={disabled}
         >

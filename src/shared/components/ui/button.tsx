@@ -43,7 +43,7 @@ export function Button({
         "font-button",
         "whitespace-nowrap",
         "transition-all duration-[var(--motion-fast)] ease-[var(--ease-standard)]",
-        "outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary/15 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+        "outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         "shrink-0",
         variantStyles[variant],

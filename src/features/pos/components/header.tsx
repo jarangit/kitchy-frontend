@@ -55,7 +55,7 @@ const NetworkQualityIcon = ({
           );
         })}
       </div>
-      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-sm border border-border bg-surface px-2.5 py-1.5 text-caption font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
+      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-surface px-2.5 py-1.5 text-caption font-medium text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
         {label}
       </span>
     </div>
@@ -106,12 +106,12 @@ const PosHeader = ({
       </div>
 
       <div className="flex items-center gap-3 sm:gap-4">
-        <div className="hidden items-center gap-2 rounded-md bg-surface px-3 py-1.5 sm:flex">
+        <div className="hidden items-center gap-3 rounded-chip bg-chip-inactive-bg border border-border px-3 py-1.5 sm:flex">
           <div className="text-right">
-            <div className="text-body font-[var(--weight-semibold)] text-text-primary">
+            <div className="text-body font-semibold tabular-nums text-text-primary">
               {formattedTime}
             </div>
-            <div className="text-label text-text-secondary">
+            <div className="text-caption text-text-secondary">
               {formattedDate}
             </div>
           </div>
@@ -136,7 +136,7 @@ const PosHeader = ({
               >
                 <LuShoppingCart size={20} className="text-text-primary" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-info-bg px-1 text-caption font-[var(--weight-semibold)] text-info">
+                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-caption font-semibold text-white tabular-nums">
                     {cartItemCount}
                   </span>
                 )}

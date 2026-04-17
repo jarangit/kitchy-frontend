@@ -6,11 +6,11 @@ import { Input } from "@/shared/components/ui/input";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 type Props = {
-  _onSubmit?: (data: StoreFormData) => void;
+  onSubmit?: (data: StoreFormData) => void;
   defaultValues?: StoreFormData;
 };
 
-const AddUpStoreForm = ({ _onSubmit, defaultValues }: Props) => {
+const AddUpStoreForm = ({ onSubmit, defaultValues }: Props) => {
   const { t } = useTranslation();
   const {
     register,
@@ -19,9 +19,9 @@ const AddUpStoreForm = ({ _onSubmit, defaultValues }: Props) => {
     reset,
   } = useForm<StoreFormData>();
 
-  const onSubmit = (data: StoreFormData) => {
-    if (_onSubmit) {
-      _onSubmit(data);
+  const handleFormSubmit = (data: StoreFormData) => {
+    if (onSubmit) {
+      onSubmit(data);
     }
   };
 
@@ -33,7 +33,7 @@ const AddUpStoreForm = ({ _onSubmit, defaultValues }: Props) => {
   }, [defaultValues]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
       <Input
         id="name"
         type="text"

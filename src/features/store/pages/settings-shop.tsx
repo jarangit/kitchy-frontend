@@ -43,7 +43,7 @@ const SettingsShopPage = () => {
           {storeFinOneQuery ? (
             <AddUpStoreForm
               defaultValues={{ name: storeFinOneQuery.name }}
-              _onSubmit={(data) =>
+              onSubmit={(data) =>
                 updateStore({
                   storeData: { name: data.name },
                 })

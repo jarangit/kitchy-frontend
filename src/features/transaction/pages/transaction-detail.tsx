@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { transactionServiceApi } from "@/features/transaction/services/transaction";
 import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
@@ -7,6 +7,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { PageHeader } from "@/shared/components/ui/page-header";
 import { Dialog, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
 import { Input } from "@/shared/components/ui/input";
 import {
@@ -14,7 +15,9 @@ import {
   formatStatusLabel,
   formatOrderTypeLabel,
 } from "@/shared/utils/status";
-import { LuArrowLeft, LuMinus, LuReceipt } from "react-icons/lu";
+import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
+import { LuMinus, LuReceipt } from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
 
 interface OrderItem {
@@ -50,11 +53,10 @@ const toFlowStatus = (status: string): "IN_PROGRESS" | "DONE" | "CANCELLED" => {
   return "IN_PROGRESS";
 };
 
-const getFlowStatusLabel = (status: string) => {
-  const flow = toFlowStatus(status);
-  if (flow === "IN_PROGRESS") return "กำลังทำ";
-  if (flow === "DONE") return "เสร็จแล้ว";
-  return "ยกเลิกแล้ว";
+const FLOW_LABEL_KEY: Record<"IN_PROGRESS" | "DONE" | "CANCELLED", MessageKey> = {
+  IN_PROGRESS: "transaction.detail.flow.inProgress",
+  DONE: "transaction.detail.flow.done",
+  CANCELLED: "transaction.detail.flow.cancelled",
 };
 
 function Section({
@@ -67,7 +69,7 @@ function Section({
   return (
     <div className="border-t border-border pt-5">
       {title && (
-        <h3 className="mb-4 text-caption font-[var(--weight-semibold)] uppercase tracking-wider text-text-tertiary">
+        <h3 className="mb-4 text-caption font-semibold uppercase tracking-wider text-text-tertiary">
           {title}
         </h3>
       )}
@@ -80,7 +82,7 @@ function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex justify-between items-baseline py-1.5">
       <span className="text-body-sm text-text-secondary">{label}</span>
-      <span className="max-w-[60%] truncate text-right text-body-sm font-[var(--weight-medium)] text-text-primary">
+      <span className="max-w-[60%] truncate text-right text-body-sm font-medium text-text-primary">
         {value}
       </span>
     </div>
@@ -109,7 +111,7 @@ function DetailSkeleton() {
 
 const TransactionDetailPage = () => {
   const { id: storeId, txId } = useParams<{ id: string; txId: string }>();
-  const navigate = useNavigate();
+  const { t } = useTranslation();
   const { updateTransaction, isUpdating } = useTransactionService();
 
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -122,8 +124,6 @@ const TransactionDetailPage = () => {
     enabled: !!txId,
     select: (res) => res.data,
   });
-
-  const goBack = () => navigate(`/store/${storeId}/transactions`);
 
   const items: OrderItem[] = order?.products ?? order?.items ?? [];
 
@@ -199,14 +199,14 @@ const TransactionDetailPage = () => {
   if (!order) {
     return (
       <div className="space-y-8">
-        <Button variant="ghost" size="sm" onClick={goBack}>
-          <LuArrowLeft size={16} />
-          Back
-        </Button>
+        <PageHeader
+          backTo={`/store/${storeId}/transactions`}
+          title={t("transaction.detail.notFound.title")}
+        />
         <EmptyState
           icon={<LuReceipt size={32} />}
-          title="Transaction not found"
-          description="This order may have been deleted or the link is invalid."
+          title={t("transaction.detail.notFound.title")}
+          description={t("transaction.detail.notFound.description")}
         />
       </div>
     );
@@ -226,30 +226,22 @@ const TransactionDetailPage = () => {
 
   return (
     <>
-      <div className="space-y-8">
-        <Button variant="ghost" size="sm" onClick={goBack}>
-          <LuArrowLeft size={16} />
-          Back
-        </Button>
+      <div className="space-y-6">
+        <PageHeader
+          backTo={`/store/${storeId}/transactions`}
+          title={order.orderNumber}
+          subtitle={`${formattedDate} · ${formattedTime}`}
+          action={
+            <Badge variant={toStatusBadgeVariant(order.status)}>
+              {formatStatusLabel(order.status)}
+            </Badge>
+          }
+        />
 
         <div className="space-y-6 rounded-card border border-card-border bg-card-bg p-card-padding">
-          <div>
-            <div className="mb-1 flex items-center justify-between">
-              <h1 className="text-title font-[var(--weight-semibold)] text-text-primary">
-                {order.orderNumber}
-              </h1>
-              <Badge variant={toStatusBadgeVariant(order.status)}>
-                {formatStatusLabel(order.status)}
-              </Badge>
-            </div>
-            <p className="text-label text-text-tertiary">
-              {formattedDate} · {formattedTime}
-            </p>
-          </div>
-
-          <Section title="สถานะออเดอร์">
+          <Section title={t("transaction.detail.section.status")}>
             <div className="mb-3 rounded-card border border-card-border bg-bg px-3 py-2 text-body-sm text-text-secondary">
-              {getFlowStatusLabel(order.status)}
+              {t(FLOW_LABEL_KEY[flowStatus])}
             </div>
             <div className="flex flex-wrap gap-2">
               <Button
@@ -258,14 +250,14 @@ const TransactionDetailPage = () => {
                 onClick={() => updateStatus("PREPARING")}
                 disabled={isUpdating || flowStatus === "CANCELLED" || flowStatus === "IN_PROGRESS"}
               >
-                กำลังทำ
+                {t("transaction.detail.action.preparing")}
               </Button>
               <Button
                 size="sm"
                 onClick={() => updateStatus("READY")}
                 disabled={isUpdating || flowStatus === "CANCELLED" || flowStatus === "DONE"}
               >
-                เสร็จแล้ว
+                {t("transaction.detail.action.ready")}
               </Button>
               <Button
                 size="sm"
@@ -273,7 +265,7 @@ const TransactionDetailPage = () => {
                 onClick={() => updateStatus("CANCELLED")}
                 disabled={isUpdating || flowStatus === "CANCELLED"}
               >
-                ยกเลิกรายการ
+                {t("transaction.detail.action.cancel")}
               </Button>
               <Button
                 size="sm"
@@ -281,24 +273,38 @@ const TransactionDetailPage = () => {
                 onClick={openEditDialog}
                 disabled={isUpdating || !canEditOrder}
               >
-                แก้ไขออเดอร์
+                {t("transaction.detail.action.edit")}
               </Button>
             </div>
           </Section>
 
-          <Section title="Order Info">
+          <Section title={t("transaction.detail.section.info")}>
             {order.type && (
-              <InfoRow label="Type" value={formatOrderTypeLabel(order.type)} />
+              <InfoRow
+                label={t("transaction.detail.info.type")}
+                value={formatOrderTypeLabel(order.type)}
+              />
             )}
-            {order.tableNumber && <InfoRow label="Table" value={order.tableNumber} />}
+            {order.tableNumber && (
+              <InfoRow
+                label={t("transaction.detail.info.table")}
+                value={order.tableNumber}
+              />
+            )}
             {order.customerName && (
-              <InfoRow label="Customer" value={order.customerName} />
+              <InfoRow
+                label={t("transaction.detail.info.customer")}
+                value={order.customerName}
+              />
             )}
             {order.deliveryPlatform && (
-              <InfoRow label="Platform" value={order.deliveryPlatform} />
+              <InfoRow
+                label={t("transaction.detail.info.platform")}
+                value={order.deliveryPlatform}
+              />
             )}
             <InfoRow
-              label="Order ID"
+              label={t("transaction.detail.info.orderId")}
               value={
                 <span className="font-mono text-caption">
                   #{order.id.length > 12 ? `${order.id.slice(0, 12)}...` : order.id}
@@ -308,7 +314,7 @@ const TransactionDetailPage = () => {
           </Section>
 
           {items.length > 0 && (
-            <Section title="Items">
+            <Section title={t("transaction.detail.section.items")}>
               <div className="space-y-0">
                 {items.map((item, index) => {
                   const name = getItemName(item);
@@ -330,11 +336,11 @@ const TransactionDetailPage = () => {
                         </p>
                         {item.note && (
                           <p className="mt-0.5 line-clamp-2 text-caption text-text-tertiary">
-                            Note: {item.note}
+                            {t("transaction.detail.items.note", { note: item.note })}
                           </p>
                         )}
                       </div>
-                      <span className="shrink-0 pt-px text-body-sm font-[var(--weight-medium)] tabular-nums text-text-primary">
+                      <span className="shrink-0 pt-px text-body-sm font-medium tabular-nums text-text-primary">
                         {formatCurrency(lineTotal)}
                       </span>
                     </div>
@@ -344,20 +350,20 @@ const TransactionDetailPage = () => {
             </Section>
           )}
 
-          <Section title="Summary">
+          <Section title={t("transaction.detail.section.summary")}>
             <div className="flex justify-between items-baseline py-2">
               <span className="text-body-sm text-text-secondary">
-                Subtotal ({itemCount} item{itemCount !== 1 ? "s" : ""})
+                {t("transaction.detail.summary.subtotal", { count: itemCount })}
               </span>
               <span className="text-body-sm tabular-nums text-text-primary">
                 {formatCurrency(grandTotal)}
               </span>
             </div>
             <div className="mt-3 flex justify-between items-baseline border-t border-border pt-4">
-              <span className="text-body font-[var(--weight-semibold)] text-text-primary">
-                Total
+              <span className="text-body font-semibold text-text-primary">
+                {t("transaction.detail.summary.total")}
               </span>
-              <span className="text-title font-[var(--weight-semibold)] tabular-nums text-text-primary">
+              <span className="text-title font-semibold tabular-nums text-text-primary">
                 {formatCurrency(grandTotal)}
               </span>
             </div>
@@ -367,22 +373,24 @@ const TransactionDetailPage = () => {
 
       <Dialog open={isEditOpen} onClose={() => setIsEditOpen(false)}>
         <DialogHeader>
-          <DialogTitle>แก้ไขออเดอร์</DialogTitle>
+          <DialogTitle>{t("transaction.detail.edit.title")}</DialogTitle>
           <DialogDescription>
-            เปลี่ยนโต๊ะ หรือปรับจำนวนสินค้าได้ หากต้องการลบสินค้าบางรายการให้ลดเหลือ 0
+            {t("transaction.detail.edit.description")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <Input
-            label="โต๊ะ"
+            label={t("transaction.detail.edit.table")}
             value={tableNumber}
             onChange={(e) => setTableNumber(e.target.value)}
-            placeholder="เช่น A12"
+            placeholder={t("transaction.detail.edit.tablePlaceholder")}
           />
 
           <div className="space-y-2">
-            <p className="text-label text-text-secondary">สินค้า</p>
+            <p className="text-label text-text-secondary">
+              {t("transaction.detail.edit.items")}
+            </p>
             {editableItems.map((item) => (
               <div
                 key={item.id}
@@ -436,7 +444,7 @@ const TransactionDetailPage = () => {
 
           {hasRemovedAllItems && (
             <p className="text-caption text-danger">
-              รายการสินค้าถูกลบทั้งหมดแล้ว หากต้องการยกเลิกออเดอร์ กรุณาใช้ปุ่ม "ยกเลิกรายการ"
+              {t("transaction.detail.edit.removedAll")}
             </p>
           )}
         </div>
@@ -447,13 +455,13 @@ const TransactionDetailPage = () => {
             onClick={() => setIsEditOpen(false)}
             disabled={isUpdating}
           >
-            ปิด
+            {t("transaction.detail.edit.close")}
           </Button>
           <Button
             onClick={saveOrderEdit}
             disabled={isUpdating || hasRemovedAllItems}
           >
-            บันทึกการแก้ไข
+            {t("transaction.detail.edit.save")}
           </Button>
         </DialogFooter>
       </Dialog>

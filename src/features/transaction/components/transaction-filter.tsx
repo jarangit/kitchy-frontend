@@ -1,19 +1,22 @@
 import { useState } from "react";
 import { SearchInput } from "@/shared/components/ui/search-input";
 import { ChipTab } from "@/shared/components/ui/chip-tab";
+import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
 
 interface Props {
   onFilterChange: (filter: { search: string; status: string }) => void;
 }
 
-const STATUS_OPTIONS = [
-  { value: "ALL", label: "ทั้งหมด" },
-  { value: "IN_PROGRESS", label: "กำลังทำ" },
-  { value: "DONE", label: "เสร็จแล้ว" },
-  { value: "CANCELLED", label: "ยกเลิก" },
-] as const;
+const STATUS_OPTIONS: ReadonlyArray<{ value: string; labelKey: MessageKey }> = [
+  { value: "ALL", labelKey: "transaction.filter.all" },
+  { value: "IN_PROGRESS", labelKey: "transaction.filter.inProgress" },
+  { value: "DONE", labelKey: "transaction.filter.done" },
+  { value: "CANCELLED", labelKey: "transaction.filter.cancelled" },
+];
 
 const TransactionFilter = ({ onFilterChange }: Props) => {
+  const { t } = useTranslation();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("ALL");
 
@@ -32,9 +35,9 @@ const TransactionFilter = ({ onFilterChange }: Props) => {
       <SearchInput
         value={search}
         onValueChange={handleSearchChange}
-        placeholder="ค้นหาเลขออเดอร์..."
+        placeholder={t("transaction.filter.searchPlaceholder")}
       />
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-wrap gap-2">
         {STATUS_OPTIONS.map((s) => (
           <ChipTab
             key={s.value}
@@ -42,7 +45,7 @@ const TransactionFilter = ({ onFilterChange }: Props) => {
             active={status === s.value}
             onClick={() => handleStatusChange(s.value)}
           >
-            {s.label}
+            {t(s.labelKey)}
           </ChipTab>
         ))}
       </div>

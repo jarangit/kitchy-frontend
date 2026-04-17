@@ -47,7 +47,7 @@ const MonthReportPanel = ({
       <div className="border-b border-border p-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
-            <h3 className="text-body font-[var(--weight-semibold)] text-text-primary">
+            <h3 className="text-body font-semibold text-text-primary">
               Monthly Report
             </h3>
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-label text-text-secondary">

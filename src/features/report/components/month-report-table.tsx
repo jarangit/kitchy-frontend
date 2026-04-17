@@ -80,7 +80,7 @@ const MonthReportTable = ({
           <table className="w-full min-w-[640px] border-collapse">
             <thead>
               <tr className="border-b border-border bg-bg">
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
+                <th className="px-5 py-3 text-left text-caption font-semibold uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
@@ -90,7 +90,7 @@ const MonthReportTable = ({
                     {renderSortIcon("date")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
+                <th className="px-5 py-3 text-left text-caption font-semibold uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
@@ -100,7 +100,7 @@ const MonthReportTable = ({
                     {renderSortIcon("revenue")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
+                <th className="px-5 py-3 text-left text-caption font-semibold uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
@@ -110,7 +110,7 @@ const MonthReportTable = ({
                     {renderSortIcon("orders")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
+                <th className="px-5 py-3 text-left text-caption font-semibold uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
@@ -120,7 +120,7 @@ const MonthReportTable = ({
                     {renderSortIcon("averageOrderValue")}
                   </button>
                 </th>
-                <th className="px-5 py-3 text-left text-caption font-[var(--weight-semibold)] uppercase tracking-wide text-text-tertiary">
+                <th className="px-5 py-3 text-left text-caption font-semibold uppercase tracking-wide text-text-tertiary">
                   <button
                     type="button"
                     className="inline-flex items-center gap-1 transition-colors duration-[var(--motion-fast)] hover:text-text-primary"

@@ -1,48 +1,33 @@
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import { LuBanknote, LuQrCode } from "react-icons/lu";
-import { cn } from "@/shared/utils/cn";
+import { SelectionChip } from "@/shared/components/ui/selection-chip";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   selected: PaymentMethod;
   onSelect: (method: PaymentMethod) => void;
 }
 
-const methods: { value: PaymentMethod; label: string; icon: React.ReactNode }[] = [
-  { value: "CASH", label: "Cash", icon: <LuBanknote size={28} /> },
-  { value: "QR", label: "QR Code", icon: <LuQrCode size={28} /> },
-];
-
 const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
+  const { t } = useTranslation();
+
+  const methods: { value: PaymentMethod; label: string; icon: React.ReactNode }[] = [
+    { value: "CASH", label: t("pos.payment.cash"), icon: <LuBanknote size={22} /> },
+    { value: "QR", label: t("pos.payment.qr"), icon: <LuQrCode size={22} /> },
+  ];
+
   return (
     <div className="grid grid-cols-2 gap-3">
       {methods.map((method) => (
-        <button
+        <SelectionChip
           key={method.value}
+          active={selected === method.value}
           onClick={() => onSelect(method.value)}
-          className={cn(
-            "flex min-h-28 flex-col items-center justify-center rounded-md border p-4 transition-all duration-[var(--motion-fast)] ",
-            selected === method.value
-              ? "border-primary bg-surface"
-              : "border-border hover:border-border-hover"
-          )}
+          className="h-auto flex-col gap-2 py-4"
         >
-          <div
-            className={cn(
-              "mb-2",
-              selected === method.value ? "text-text-primary" : "text-text-tertiary"
-            )}
-          >
-            {method.icon}
-          </div>
-          <span
-            className={cn(
-              "text-body font-[var(--weight-medium)]",
-              selected === method.value ? "text-text-primary" : "text-text-secondary"
-            )}
-          >
-            {method.label}
-          </span>
-        </button>
+          <span aria-hidden="true">{method.icon}</span>
+          <span>{method.label}</span>
+        </SelectionChip>
       ))}
     </div>
   );

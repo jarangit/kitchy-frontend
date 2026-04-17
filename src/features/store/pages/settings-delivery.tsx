@@ -133,7 +133,7 @@ const SettingsDeliveryPage = () => {
         title={t("settings.delivery.supportedApps")}
         description={t("settings.delivery.supportedAppsDescription")}
         action={
-          <div className="rounded-full bg-bg px-3.5 py-1.5 text-label font-[var(--weight-semibold)] text-text-primary">
+          <div className="rounded-full bg-bg px-3.5 py-1.5 text-label font-semibold text-text-primary">
             {enabledPlatforms.length}/{supportedPlatforms.length}
           </div>
         }
@@ -145,7 +145,7 @@ const SettingsDeliveryPage = () => {
               className="flex min-h-36 flex-col justify-between bg-bg px-5 py-4 sm:px-6 sm:py-5"
             >
               <div className="min-w-0 space-y-1.5">
-                <div className="font-[var(--weight-semibold)] text-text-primary">
+                <div className="font-semibold text-text-primary">
                   {platform}
                 </div>
                 <div className="text-label leading-6 text-text-secondary">

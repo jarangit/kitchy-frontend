@@ -11,6 +11,11 @@
   --color-primary: var(--color-primary);
   --color-primary-hover: var(--color-primary-hover);
   --color-primary-bg: var(--color-primary-bg);
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-bg: var(--color-accent-bg);
+  --color-accent-border: var(--color-accent-border);
+  --color-accent-text: var(--color-accent-text);
   --color-danger: var(--color-danger);
   --color-danger-hover: var(--color-danger-hover);
   --color-success: var(--color-success);
@@ -72,6 +77,8 @@
   --color-badge-danger-text: var(--color-badge-danger-text);
   --color-badge-info-bg: var(--color-badge-info-bg);
   --color-badge-info-text: var(--color-badge-info-text);
+  --color-badge-accent-bg: var(--color-badge-accent-bg);
+  --color-badge-accent-text: var(--color-badge-accent-text);
   /* ChipTab */
   --color-chip-active-bg: var(--color-chip-active-bg);
   --color-chip-active-text: var(--color-chip-active-text);

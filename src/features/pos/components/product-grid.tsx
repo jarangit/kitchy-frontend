@@ -1,6 +1,7 @@
 import { LuPackage } from "react-icons/lu";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { cn } from "@/shared/utils/cn";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Product {
   id: string;
@@ -14,7 +15,7 @@ interface Props {
   quantityByProductId: Record<string, number>;
 }
 
-/** Deterministic color from product name for the initial circle */
+/** Deterministic tonal swatch for the initial circle — keeps POS visually sortable */
 const nameColors = [
   "bg-success-bg text-success",
   "bg-info-bg text-info",
@@ -30,48 +31,66 @@ function getColorForName(name: string) {
   return nameColors[Math.abs(hash) % nameColors.length];
 }
 
+function formatPrice(value: number) {
+  return new Intl.NumberFormat("th-TH", {
+    style: "currency",
+    currency: "THB",
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
 const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
+  const { t } = useTranslation();
+
   if (products.length === 0) {
     return (
       <EmptyState
         icon={<LuPackage size={40} />}
-        title="No products found"
-        description="Try selecting a different category"
+        title={t("pos.grid.emptyTitle")}
+        description={t("pos.grid.emptyDescription")}
       />
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {products.map((product) => (
-        <button
-          key={product.id}
-          onClick={() => onAddToCart(product)}
-          className={cn(
-            "relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center rounded-md bg-bg p-6 transition-all duration-[var(--motion-fast)]  ",
-            (quantityByProductId[product.id] ?? 0) > 0
-              ? "border-2 border-primary"
-              : "border border-border hover:border-primary"
-          )}
-        >
-          {(quantityByProductId[product.id] ?? 0) > 0 && (
-            <span className="absolute top-2 right-2 inline-flex min-h-7 min-w-7 items-center justify-center rounded-full bg-primary px-1.5 text-label font-[var(--weight-semibold)] text-text-inverse tabular-nums">
-              {quantityByProductId[product.id]}
-            </span>
-          )}
-          <div
-            className={cn("mb-4 flex h-14 w-14 items-center justify-center rounded-full text-title", getColorForName(product.name))}
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      {products.map((product) => {
+        const quantity = quantityByProductId[product.id] ?? 0;
+        const isSelected = quantity > 0;
+
+        return (
+          <button
+            key={product.id}
+            onClick={() => onAddToCart(product)}
+            className={cn(
+              "relative flex min-h-[148px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
+              "border border-card-border",
+              "hover:border-border-hover hover:-translate-y-[1px]",
+              isSelected && "border-accent ring-1 ring-accent",
+            )}
           >
-            {product.name.charAt(0).toUpperCase()}
-          </div>
-          <span className="line-clamp-2 text-center text-body font-[var(--weight-medium)] leading-tight text-text-primary">
-            {product.name}
-          </span>
-          <span className="mt-2 text-subtitle text-success">
-            ฿{product.price.toFixed(2)}
-          </span>
-        </button>
-      ))}
+            {isSelected && (
+              <span className="absolute right-2 top-2 inline-flex min-h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1.5 text-caption font-semibold text-white tabular-nums">
+                {quantity}
+              </span>
+            )}
+            <div
+              className={cn(
+                "mb-4 flex h-14 w-14 items-center justify-center rounded-full text-title",
+                getColorForName(product.name),
+              )}
+            >
+              {product.name.charAt(0).toUpperCase()}
+            </div>
+            <span className="line-clamp-2 text-center text-body font-medium leading-tight text-text-primary">
+              {product.name}
+            </span>
+            <span className="mt-2 text-subtitle tabular-nums text-text-primary">
+              {formatPrice(product.price)}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 };

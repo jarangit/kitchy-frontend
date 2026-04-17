@@ -23,6 +23,38 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                'react-icons/fa',
+                'react-icons/fa6',
+                'react-icons/io',
+                'react-icons/io5',
+                'react-icons/go',
+                'react-icons/md',
+                'react-icons/bs',
+                'react-icons/ai',
+                'react-icons/hi',
+                'react-icons/hi2',
+                'react-icons/ri',
+                'react-icons/bi',
+                'react-icons/im',
+                'react-icons/gi',
+                'react-icons/si',
+                'react-icons/ti',
+                'react-icons/cg',
+                'react-icons/tb',
+                'react-icons/pi',
+              ],
+              message:
+                'Use Lucide icons via `react-icons/lu` only. See AGENTS.md for design guidelines.',
+            },
+          ],
+        },
+      ],
     },
   },
 )

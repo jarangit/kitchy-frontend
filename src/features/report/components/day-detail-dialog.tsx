@@ -34,23 +34,23 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
       <div className="space-y-6">
         <div>
           <div className="text-label text-text-secondary">Revenue</div>
-          <div className="mt-1 text-heading font-[var(--weight-semibold)] text-text-primary leading-tight">
+          <div className="mt-1 text-heading font-semibold text-text-primary leading-tight">
             {formatCurrency(day.revenue)}
           </div>
         </div>
 
         <div className="flex items-center gap-3 text-label text-text-secondary">
           <span>
-            Orders <span className="font-[var(--weight-semibold)] text-text-primary">{day.orders}</span>
+            Orders <span className="font-semibold text-text-primary">{day.orders}</span>
           </span>
           <span className="text-text-tertiary">|</span>
           <span>
-            Avg <span className="font-[var(--weight-semibold)] text-text-primary">{formatCurrency(avg)}</span>
+            Avg <span className="font-semibold text-text-primary">{formatCurrency(avg)}</span>
           </span>
         </div>
 
         <div>
-          <h4 className="text-label font-[var(--weight-semibold)] text-text-primary mb-3">
+          <h4 className="text-label font-semibold text-text-primary mb-3">
             Top products
           </h4>
           <div className="space-y-2.5">
@@ -76,7 +76,7 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
         </div>
 
         <div>
-          <h4 className="text-label font-[var(--weight-semibold)] text-text-primary mb-3">
+          <h4 className="text-label font-semibold text-text-primary mb-3">
             Payment
           </h4>
           <div className="space-y-2.5">

@@ -3,8 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
 import TransactionCard from "@/features/transaction/components/transaction-card";
 import TransactionFilter from "@/features/transaction/components/transaction-filter";
+import { PageHeader } from "@/shared/components/ui/page-header";
+import { StatCard } from "@/shared/components/ui/stat-card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import { LuReceipt } from "react-icons/lu";
 
 interface TransactionProduct {
@@ -36,6 +39,7 @@ const matchesStatusFilter = (status: string, filterStatus: string) => {
 const TransactionListPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { transactions, isLoading } = useTransactionService();
 
@@ -44,12 +48,12 @@ const TransactionListPage = () => {
   const filteredTransactions = useMemo(() => {
     if (!transactions) return [];
     return (transactions as TransactionListItem[]).filter((tx) => {
-        const matchSearch =
-          !filter.search ||
-          tx.orderNumber.toLowerCase().includes(filter.search.toLowerCase());
-        const matchStatus = matchesStatusFilter(tx.status, filter.status);
-        return matchSearch && matchStatus;
-      });
+      const matchSearch =
+        !filter.search ||
+        tx.orderNumber.toLowerCase().includes(filter.search.toLowerCase());
+      const matchStatus = matchesStatusFilter(tx.status, filter.status);
+      return matchSearch && matchStatus;
+    });
   }, [transactions, filter]);
 
   const allTransactions = transactions ?? [];
@@ -66,7 +70,7 @@ const TransactionListPage = () => {
   if (isLoading) {
     return (
       <div className="space-y-8">
-        <div className="h-8 w-48 skeleton-shimmer rounded-md" />
+        <div className="h-8 w-48 skeleton-shimmer rounded-card" />
         <div className="space-y-4">
           <SkeletonCard />
           <SkeletonCard />
@@ -78,34 +82,23 @@ const TransactionListPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-heading font-[var(--weight-semibold)] text-text-primary">
-          จัดการออเดอร์
-        </h1>
-        <p className="text-label text-text-tertiary">
-          อัปเดตสถานะ แก้ไขโต๊ะ และยกเลิกรายการได้ทันที
-        </p>
-      </div>
+      <PageHeader
+        title={t("transaction.title")}
+        subtitle={t("transaction.subtitle")}
+      />
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-card border border-card-border bg-card-bg px-4 py-3">
-          <p className="text-caption text-text-tertiary">กำลังทำ</p>
-          <p className="text-title font-[var(--weight-semibold)] tabular-nums text-text-primary">
-            {inProgressCount}
-          </p>
-        </div>
-        <div className="rounded-card border border-card-border bg-card-bg px-4 py-3">
-          <p className="text-caption text-text-tertiary">เสร็จแล้ว</p>
-          <p className="text-title font-[var(--weight-semibold)] tabular-nums text-text-primary">
-            {doneCount}
-          </p>
-        </div>
-        <div className="rounded-card border border-card-border bg-card-bg px-4 py-3">
-          <p className="text-caption text-text-tertiary">ยกเลิก</p>
-          <p className="text-title font-[var(--weight-semibold)] tabular-nums text-text-primary">
-            {cancelledCount}
-          </p>
-        </div>
+        <StatCard label={t("transaction.stat.inProgress")} value={inProgressCount} />
+        <StatCard
+          label={t("transaction.stat.done")}
+          value={doneCount}
+          tone="success"
+        />
+        <StatCard
+          label={t("transaction.stat.cancelled")}
+          value={cancelledCount}
+          tone="danger"
+        />
       </div>
 
       <TransactionFilter onFilterChange={setFilter} />
@@ -114,20 +107,18 @@ const TransactionListPage = () => {
         {filteredTransactions.length === 0 ? (
           <EmptyState
             icon={<LuReceipt size={32} />}
-            title="ไม่พบรายการออเดอร์"
-            description="ลองเปลี่ยนตัวกรองหรือค้นหาด้วยเลขออเดอร์"
+            title={t("transaction.empty.title")}
+            description={t("transaction.empty.description")}
           />
         ) : (
           filteredTransactions.map((tx, index) => (
-              <TransactionCard
-                key={tx.id}
-                order={tx}
-                isLast={index === filteredTransactions.length - 1}
-                onClick={() =>
-                  navigate(`/store/${id}/transactions/${tx.id}`)
-                }
-              />
-            ))
+            <TransactionCard
+              key={tx.id}
+              order={tx}
+              isLast={index === filteredTransactions.length - 1}
+              onClick={() => navigate(`/store/${id}/transactions/${tx.id}`)}
+            />
+          ))
         )}
       </div>
     </div>

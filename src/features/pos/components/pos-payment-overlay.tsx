@@ -12,6 +12,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Dialog } from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   open: boolean;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const PosPaymentOverlay = ({ open, onClose }: Props) => {
+  const { t } = useTranslation();
   const {
     items,
     subtotal,
@@ -100,7 +102,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
       setIsSuccessOpen(true);
     } catch (error) {
       console.error("Payment failed:", error);
-      setErrorMessage("Payment failed. Please try again.");
+      setErrorMessage(t("pos.payment.failed"));
     } finally {
       setIsProcessing(false);
     }
@@ -111,6 +113,8 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
     clearPaymentResult();
   };
 
+  const orderTypeLabel = t(`pos.orderType.${orderType.toLowerCase()}` as const);
+
   return (
     <>
       <Dialog
@@ -118,55 +122,75 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
         onClose={handleClosePayment}
         className="!max-w-5xl w-[min(96vw,72rem)] max-h-[92vh] p-0 overflow-hidden"
       >
-        <div className="border-b border-card-border bg-card-bg px-6 py-4 flex items-center justify-between">
-          <h2 className="text-heading text-text-primary">Payment</h2>
+        <div className="flex items-center justify-between border-b border-border bg-card-bg px-6 py-4">
+          <h2 className="text-heading text-text-primary">
+            {t("pos.payment.title")}
+          </h2>
           <Button
             type="button"
-            variant="secondary"
+            variant="ghost"
             size="icon"
             onClick={handleClosePayment}
-            className="h-12 w-12 bg-bg"
-            aria-label="Close payment"
+            aria-label={t("pos.payment.close")}
           >
             <LuX size={18} />
           </Button>
         </div>
 
         {items.length === 0 ? (
-          <div className="p-8 bg-bg">
+          <div className="p-8">
             <EmptyState
-              title="No items to pay for"
-              description="Your cart is empty. Add products first."
-              action={<Button onClick={handleClosePayment}>Back to POS</Button>}
+              title={t("pos.payment.emptyTitle")}
+              description={t("pos.payment.emptyDescription")}
+              action={
+                <Button onClick={handleClosePayment}>
+                  {t("pos.payment.backToPos")}
+                </Button>
+              }
             />
           </div>
         ) : (
-          <div className="bg-bg p-6 overflow-y-auto max-h-[calc(92vh-72px)]">
-            <div className="lg:grid lg:grid-cols-[1fr_320px] gap-6 space-y-6 lg:space-y-0">
+          <div className="overflow-y-auto max-h-[calc(92vh-72px)] p-6">
+            <div className="gap-6 space-y-6 lg:grid lg:grid-cols-[1fr_320px] lg:space-y-0">
               <OrderSummary items={items} subtotal={subtotal} />
 
               <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
                 <h3 className="mb-3 text-title text-text-primary">
-                  Order Info
+                  {t("pos.payment.orderInfo")}
                 </h3>
-                <div className="mb-4 space-y-1 text-base text-text-secondary">
-                  <p>
-                    Type: <span className="font-[var(--weight-semibold)] text-text-primary">{orderType}</span>
-                  </p>
+                <dl className="mb-5 space-y-2 text-body-sm">
+                  <div className="flex items-center justify-between">
+                    <dt className="text-text-secondary">
+                      {t("pos.payment.type")}
+                    </dt>
+                    <dd className="font-semibold text-text-primary">
+                      {orderTypeLabel}
+                    </dd>
+                  </div>
                   {orderType === "DINE_IN" && (
-                    <p>
-                      Table: <span className="font-[var(--weight-semibold)] text-text-primary">{tableNumber ?? "-"}</span>
-                    </p>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-text-secondary">
+                        {t("pos.payment.table")}
+                      </dt>
+                      <dd className="font-semibold text-text-primary">
+                        {tableNumber ?? "—"}
+                      </dd>
+                    </div>
                   )}
                   {orderType === "DELIVERY" && (
-                    <p>
-                      Platform: <span className="font-[var(--weight-semibold)] text-text-primary">{deliveryPlatform || "-"}</span>
-                    </p>
+                    <div className="flex items-center justify-between">
+                      <dt className="text-text-secondary">
+                        {t("pos.payment.platform")}
+                      </dt>
+                      <dd className="font-semibold text-text-primary">
+                        {deliveryPlatform || "—"}
+                      </dd>
+                    </div>
                   )}
-                </div>
+                </dl>
 
-                <h3 className="mb-4 text-title text-text-primary">
-                  Payment Method
+                <h3 className="mb-3 text-title text-text-primary">
+                  {t("pos.payment.method")}
                 </h3>
                 <PaymentMethodSelector
                   selected={paymentMethod}
@@ -184,41 +208,43 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               />
             )}
 
-            {paymentMethod === "QR" && (
-              <QrPaymentSection subtotal={subtotal} />
-            )}
+            {paymentMethod === "QR" && <QrPaymentSection subtotal={subtotal} />}
 
             {errorMessage && (
-              <p className="mt-4 text-base text-danger">{errorMessage}</p>
+              <p className="mt-4 text-body-sm text-danger">{errorMessage}</p>
             )}
 
             {orderType === "DINE_IN" && !tableNumber && (
-              <p className="mt-4 text-base text-danger">
-                Please select a table before payment.
+              <p className="mt-4 text-body-sm text-danger">
+                {t("pos.payment.selectTableFirst")}
               </p>
             )}
 
             {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
-              <p className="mt-4 text-base text-danger">
-                Please select delivery platform before payment.
+              <p className="mt-4 text-body-sm text-danger">
+                {t("pos.payment.selectPlatformFirst")}
               </p>
             )}
 
-            <div className="flex gap-3 mt-6">
+            <div className="mt-6 flex gap-3">
               <Button
                 variant="secondary"
                 onClick={handleClosePayment}
-                className="h-12 flex-1 text-base"
+                className="h-12 flex-1"
                 disabled={isProcessing}
               >
-                Cancel
+                {t("common.cancel")}
               </Button>
               <Button
                 onClick={handleConfirmPayment}
                 disabled={!canConfirm || isProcessing}
                 className="h-12 flex-1 text-subtitle"
               >
-                {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
+                {isProcessing
+                  ? t("pos.payment.processing")
+                  : t("pos.payment.payAmount", {
+                      amount: `฿${subtotal.toFixed(2)}`,
+                    })}
               </Button>
             </div>
           </div>

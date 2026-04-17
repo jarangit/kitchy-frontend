@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import TabItem from "./tab-item";
-import { HiOutlineViewGrid } from "react-icons/hi";
-import { LuShoppingBag } from "react-icons/lu";
-import { RiRestaurant2Fill } from "react-icons/ri";
-import { FaCheckCircle } from "react-icons/fa";
+import { LuLayoutGrid, LuShoppingBag, LuUtensils, LuCircleCheck } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 
 const toLegacyStatus = (status: string) => {
@@ -67,7 +64,7 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
       <TabItem
         title={`Pending`}
         count={orderCount.total}
-        icon={<HiOutlineViewGrid size={20} />}
+        icon={<LuLayoutGrid size={20} />}
         isActive={tabActive === "PENDING"}
         isCanAnimation={true}
         onClick={() => onClickTabItem("PENDING")}
@@ -75,7 +72,7 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
       <TabItem
         title={`Completed `}
         count={orderCount.completed}
-        icon={<FaCheckCircle size={20} className="text-success" />}
+        icon={<LuCircleCheck size={20} className="text-success" />}
         isActive={tabActive === "COMPLETED"}
         isCanAnimation={true}
         onClick={() => onClickTabItem("COMPLETED")}
@@ -90,7 +87,7 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
         <TabItem
           title={`DineI`}
           count={orderCount.dineIn}
-          icon={<RiRestaurant2Fill size={20} />}
+          icon={<LuUtensils size={20} />}
           isActive={tabActive === "DINE_IN"}
           onClick={() => onClickTabItem("DINE_IN")}
         />

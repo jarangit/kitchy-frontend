@@ -65,7 +65,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             "placeholder:text-input-placeholder",
             "outline-none",
             "transition-colors duration-[var(--motion-fast)]",
-            "focus:border-input-border-focus focus:ring-2 focus:ring-input-border-focus/10",
+            "focus:border-input-border-focus focus:ring-2 focus:ring-accent/25",
             "disabled:opacity-50",
             className,
           )}

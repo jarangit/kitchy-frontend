@@ -6,7 +6,8 @@ export type BadgeVariant =
   | "success"
   | "danger"
   | "warning"
-  | "info";
+  | "info"
+  | "accent";
 
 export type BadgeSize = "sm" | "md" | "lg";
 
@@ -21,6 +22,7 @@ const variantStyles: Record<BadgeVariant, string> = {
   danger: "bg-badge-danger-bg text-badge-danger-text",
   warning: "bg-badge-warning-bg text-badge-warning-text",
   info: "bg-badge-info-bg text-badge-info-text",
+  accent: "bg-badge-accent-bg text-badge-accent-text",
 };
 
 const sizeStyles: Record<BadgeSize, string> = {

@@ -63,10 +63,10 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
 
       <div className="space-y-4">
         <div>
-          <p className="mb-2 text-label uppercase tracking-wide text-text-tertiary">
+          <p className="mb-2 text-label uppercase tracking-[0.08em] text-text-tertiary">
             {t("pos.noteDialog.quickNotes")}
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {quickNotes.map((note) => {
               const isActive = draftNote
                 .split(",")
@@ -94,24 +94,23 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
           maxLength={120}
         />
 
-        <div className="flex gap-4">
-          <Button
-            variant="secondary"
-            className="flex-1"
-            onClick={handleClose}
-          >
-            {t("common.cancel")}
-          </Button>
+        <div className="flex items-center justify-between gap-3">
           <Button
             variant="ghost"
-            className="flex-1"
+            size="sm"
             onClick={() => setDraftNote("")}
+            disabled={!draftNote}
           >
             {t("pos.noteDialog.clearNote")}
           </Button>
-          <Button className="flex-1" onClick={handleSave}>
-            {t("pos.noteDialog.saveNote")}
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="secondary" onClick={handleClose}>
+              {t("common.cancel")}
+            </Button>
+            <Button onClick={handleSave}>
+              {t("pos.noteDialog.saveNote")}
+            </Button>
+          </div>
         </div>
       </div>
     </Dialog>

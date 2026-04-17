@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { format, subMonths } from "date-fns";
-import { Link, useParams } from "react-router-dom";
-import { LuArrowLeft } from "react-icons/lu";
+import { useParams } from "react-router-dom";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { PageHeader } from "@/shared/components/ui/page-header";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import { useReportData } from "@/features/report/hooks/useReportData";
 import type { DateRangePreset } from "@/features/report/types/report.dto";
 import type { ICalendarDay } from "@/features/report/types/report.model";
@@ -12,17 +13,6 @@ import MetricRow from "@/features/report/components/metric-row";
 import ReportContextCard from "@/features/report/components/report-context-card";
 import MonthReportPanel from "@/features/report/components/month-report-panel";
 import DayDetailDialog from "@/features/report/components/day-detail-dialog";
-
-function getSubtitle(preset: DateRangePreset): string {
-  switch (preset) {
-    case "today":
-      return format(new Date(), "MMM d");
-    case "week":
-      return "Last 7 Days";
-    case "month":
-      return format(new Date(), "MMMM yyyy");
-  }
-}
 
 function buildMonthOptions(count: number): { value: string; label: string }[] {
   return Array.from({ length: count }, (_, index) => {
@@ -34,62 +24,58 @@ function buildMonthOptions(count: number): { value: string; label: string }[] {
   });
 }
 
-function getRevenueLabel(preset: DateRangePreset): string {
-  switch (preset) {
-    case "today":
-      return "Revenue Today";
-    case "week":
-      return "Revenue (7 days)";
-    case "month":
-      return "Revenue (Month)";
-  }
-}
-
-function getTopProductsTitle(preset: DateRangePreset): string {
-  switch (preset) {
-    case "today":
-      return "Top Products";
-    case "week":
-      return "Top Products (7 days)";
-    case "month":
-      return "Top Products";
-  }
-}
-
 const ReportPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const [preset, setPreset] = useState<DateRangePreset>("today");
   const [selectedMonth, setSelectedMonth] = useState(format(new Date(), "yyyy-MM"));
   const [selectedDay, setSelectedDay] = useState<ICalendarDay | null>(null);
   const monthOptions = useMemo(() => buildMonthOptions(12), []);
   const { data, isLoading, error } = useReportData(preset, selectedMonth);
 
-  const subtitle =
-    preset === "month"
-      ? monthOptions.find((option) => option.value === selectedMonth)?.label ??
-        getSubtitle(preset)
-      : getSubtitle(preset);
+  const getSubtitle = (): string => {
+    switch (preset) {
+      case "today":
+        return t("report.subtitle.today", { date: format(new Date(), "MMM d") });
+      case "week":
+        return t("report.subtitle.week");
+      case "month": {
+        const monthLabel =
+          monthOptions.find((option) => option.value === selectedMonth)?.label ??
+          format(new Date(), "MMMM yyyy");
+        return t("report.subtitle.month", { month: monthLabel });
+      }
+    }
+  };
+
+  const getRevenueLabel = (): string => {
+    switch (preset) {
+      case "today":
+        return t("report.revenue.today");
+      case "week":
+        return t("report.revenue.week");
+      case "month":
+        return t("report.revenue.month");
+    }
+  };
+
+  const getTopProductsTitle = (): string => {
+    switch (preset) {
+      case "today":
+        return t("report.topProducts.today");
+      case "week":
+        return t("report.topProducts.week");
+      case "month":
+        return t("report.topProducts.month");
+    }
+  };
 
   if (error) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link
-              to={`/store/${id}`}
-              className="w-10 h-10 flex items-center justify-center rounded-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)]"
-            >
-              <LuArrowLeft size={20} />
-            </Link>
-            <h1 className="text-heading font-[var(--weight-semibold)] text-text-primary">
-              Report
-            </h1>
-          </div>
-        </div>
-        <div className="bg-danger-bg border border-border rounded-lg p-6 text-center">
-          <p className="text-danger">
-            Failed to load report data. Please try again.
-          </p>
+        <PageHeader backTo={`/store/${id}`} title={t("report.title")} />
+        <div className="rounded-card border border-card-border bg-danger-bg p-card-padding text-center">
+          <p className="text-danger">{t("report.error")}</p>
         </div>
       </div>
     );
@@ -97,36 +83,20 @@ const ReportPage = () => {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-          <div className="flex items-center gap-3 min-w-0">
-            <Link
-              to={`/store/${id}`}
-              className="w-10 h-10 flex items-center justify-center rounded-md text-text-secondary hover:bg-surface-hover transition-all duration-[var(--motion-fast)] shrink-0"
-            >
-              <LuArrowLeft size={20} />
-            </Link>
-            <div className="min-w-0">
-              <h1 className="text-2xl font-[var(--weight-semibold)] text-text-primary">
-                Report
-              </h1>
-              <p className="text-label text-text-secondary">
-                {subtitle}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-end">
-            <TimeSegmentControl
-              value={preset}
-              onChange={(nextPreset) => {
-                setPreset(nextPreset);
-                setSelectedDay(null);
-              }}
-            />
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        backTo={`/store/${id}`}
+        title={t("report.title")}
+        subtitle={getSubtitle()}
+        action={
+          <TimeSegmentControl
+            value={preset}
+            onChange={(nextPreset) => {
+              setPreset(nextPreset);
+              setSelectedDay(null);
+            }}
+          />
+        }
+      />
 
       {isLoading || !data ? (
         <div className="space-y-4">
@@ -141,7 +111,7 @@ const ReportPage = () => {
         <>
           <RevenueCard
             value={String(data.summary.totalRevenue)}
-            subtitle={getRevenueLabel(preset)}
+            subtitle={getRevenueLabel()}
           />
 
           <MetricRow
@@ -171,7 +141,7 @@ const ReportPage = () => {
             <ReportContextCard
               products={data.topProducts}
               paymentBreakdown={data.paymentBreakdown}
-              title={getTopProductsTitle(preset)}
+              title={getTopProductsTitle()}
             />
           )}
         </>

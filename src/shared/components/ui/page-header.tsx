@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuArrowLeft } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
 interface PageHeaderProps {
@@ -10,6 +11,8 @@ interface PageHeaderProps {
    * Use `true` to navigate -1 in history.
    */
   backTo?: string | true;
+  /** Optional custom label for the back button. Defaults to localized "Back". */
+  backLabel?: ReactNode;
   title: ReactNode;
   subtitle?: ReactNode;
   /** Right-aligned trailing content (buttons, filters, etc.) */
@@ -28,6 +31,7 @@ interface PageHeaderProps {
  */
 export function PageHeader({
   backTo,
+  backLabel,
   title,
   subtitle,
   action,
@@ -36,6 +40,7 @@ export function PageHeader({
   sticky = false,
 }: PageHeaderProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleBack = () => {
     if (backTo === true) {
@@ -57,13 +62,13 @@ export function PageHeader({
         {backTo !== undefined && (
           <Button variant="ghost" size="sm" onClick={handleBack}>
             <LuArrowLeft size={16} />
-            <span>ย้อนกลับ</span>
+            <span>{backLabel ?? t("common.back")}</span>
           </Button>
         )}
 
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0 space-y-1">
-            <h1 className="text-heading font-[var(--weight-semibold)] text-text-primary tracking-tight">
+            <h1 className="text-heading font-semibold text-text-primary tracking-tight">
               {title}
             </h1>
             {subtitle && (

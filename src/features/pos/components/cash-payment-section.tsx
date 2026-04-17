@@ -1,5 +1,6 @@
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   subtotal: number;
@@ -14,27 +15,37 @@ const CashPaymentSection = ({
   onReceivedAmountChange,
   change,
 }: Props) => {
+  const { t } = useTranslation();
   const quickAmounts = [
-    { label: `Exact ฿${subtotal.toLocaleString()}`, value: subtotal },
+    {
+      label: t("pos.payment.exactAmount", {
+        amount: `฿${subtotal.toLocaleString()}`,
+      }),
+      value: subtotal,
+    },
     { label: "฿500", value: 500 },
     { label: "฿1,000", value: 1000 },
   ];
 
   return (
-    <div className="rounded-card border border-card-border bg-card-bg p-card-padding mt-6">
-      <h3 className="mb-4 text-title text-text-primary">Cash Payment</h3>
+    <div className="mt-6 rounded-card border border-card-border bg-card-bg p-card-padding">
+      <h3 className="mb-4 text-title text-text-primary">
+        {t("pos.payment.cashTitle")}
+      </h3>
       <div className="space-y-4">
         <Input
-          label="Received Amount"
+          label={t("pos.payment.receivedAmount")}
           type="number"
           value={receivedAmount}
           onChange={(e) => onReceivedAmountChange(e.target.value)}
           placeholder="0.00"
-          className="text-title"
+          className="text-title tabular-nums"
         />
 
         <div>
-          <p className="mb-2 text-label text-text-secondary">Quick amounts:</p>
+          <p className="mb-2 text-label text-text-secondary">
+            {t("pos.payment.quickAmounts")}
+          </p>
           <div className="flex flex-wrap gap-2">
             {quickAmounts.map((amt) => (
               <Button
@@ -50,8 +61,8 @@ const CashPaymentSection = ({
         </div>
 
         {Number(receivedAmount) > 0 && (
-          <p className="text-heading text-success">
-            Change: ฿{change.toFixed(2)}
+          <p className="text-heading tabular-nums text-success">
+            {t("pos.payment.change", { amount: `฿${change.toFixed(2)}` })}
           </p>
         )}
       </div>

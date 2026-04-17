@@ -27,6 +27,13 @@
   --color-primary-hover: var(--gray-800); /* #2C2C2E */
   --color-primary-bg: rgba(29, 29, 31, 0.06);
 
+  /* Accent — warm coral pink, paired with dark primary */
+  --color-accent: #FF3B6F;
+  --color-accent-hover: #E62E5F;
+  --color-accent-bg: rgba(255, 59, 111, 0.10);
+  --color-accent-border: rgba(255, 59, 111, 0.32);
+  --color-accent-text: #C91F4D; /* AA-readable on white surfaces */
+
   /* Status */
   --color-success: #15803d;
   --color-success-bg: rgba(21, 128, 61, 0.1);
@@ -57,6 +64,13 @@
   --color-primary: #F5F5F7;
   --color-primary-hover: #E5E5EA;
   --color-primary-bg: rgba(245, 245, 247, 0.1);
+
+  /* Accent — brighter coral for dark surfaces */
+  --color-accent: #FF5C85;
+  --color-accent-hover: #FF7A9C;
+  --color-accent-bg: rgba(255, 92, 133, 0.16);
+  --color-accent-border: rgba(255, 92, 133, 0.40);
+  --color-accent-text: #FF7A9C;
 
   --color-success: #4ade80;
   --color-danger: #f87171;

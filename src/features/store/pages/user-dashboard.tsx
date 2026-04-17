@@ -49,12 +49,12 @@ export default function UserDashboard() {
       <header className="border-b border-border bg-bg/95 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-surface">
-              <span className="text-subtitle text-text-primary">
+            <div className="flex h-10 w-10 items-center justify-center rounded-card border border-card-border bg-surface">
+              <span className="text-subtitle font-semibold text-text-primary">
                 K
               </span>
             </div>
-            <span className="text-title text-text-primary">
+            <span className="text-title font-semibold text-text-primary tracking-tight">
               Kitchy
             </span>
           </div>
@@ -159,7 +159,7 @@ export default function UserDashboard() {
           </DialogDescription>
         </DialogHeader>
         <AddUpStoreForm
-          _onSubmit={(data) => {
+          onSubmit={(data) => {
             if (!userId) return;
             createStore({ userId: userId, name: data?.name });
             setIsCreate(false);

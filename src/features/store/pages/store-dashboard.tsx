@@ -1,5 +1,7 @@
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { StatCard } from "@/shared/components/ui/stat-card";
+import { IconTile } from "@/shared/components/ui/icon-tile";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -60,23 +62,29 @@ const SignalBars = () => (
   </svg>
 );
 
-const PageHeader = ({ storeName, time, date }: {
+const DashboardChrome = ({
+  overviewLabel,
+  storeName,
+  time,
+  date,
+}: {
+  overviewLabel: string;
   storeName: string;
   time: string;
   date: string;
 }) => (
   <header className="flex w-full items-center justify-between gap-4 py-2">
     <div>
-      <p className="text-label text-text-secondary">Store overview</p>
-      <span className="text-subtitle text-text-primary">{storeName}</span>
+      <p className="text-label text-text-tertiary">{overviewLabel}</p>
+      <span className="text-subtitle font-semibold text-text-primary">{storeName}</span>
     </div>
     <div className="flex items-center gap-3">
-      <div className="flex items-center gap-1.5 text-body-sm text-text-tertiary">
+      <div className="flex items-center gap-1.5 text-body-sm text-text-tertiary tabular-nums">
         <span>{time}</span>
         <LuRefreshCw size={12} />
       </div>
-      <div className="flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5">
-        <span className="text-body-sm font-[var(--weight-semibold)] text-text-primary">
+      <div className="flex items-center gap-2 rounded-chip border border-border bg-chip-inactive-bg px-3 py-1.5">
+        <span className="text-body-sm font-semibold text-text-primary tabular-nums">
           {time}
         </span>
         <span className="text-caption text-text-tertiary">{date}</span>
@@ -86,15 +94,22 @@ const PageHeader = ({ storeName, time, date }: {
   </header>
 );
 
-const HeroSection = ({ storeName, storeId, posLabel, posSubtitle }: {
+const HeroSection = ({
+  storeName,
+  storeId,
+  todayLabel,
+  posLabel,
+  posSubtitle,
+}: {
   storeName: string;
   storeId: string;
+  todayLabel: string;
   posLabel: string;
   posSubtitle: string;
 }) => (
   <section className="mb-16 flex flex-col items-center gap-5 text-center">
-    <p className="text-label text-text-secondary">Today</p>
-    <h1 className="text-display text-text-primary">
+    <p className="text-label text-text-tertiary uppercase tracking-[0.08em]">{todayLabel}</p>
+    <h1 className="text-display font-semibold text-text-primary tracking-tight">
       {storeName}
     </h1>
     <p className="max-w-xl text-body text-text-secondary">
@@ -102,28 +117,18 @@ const HeroSection = ({ storeName, storeId, posLabel, posSubtitle }: {
     </p>
     <Link
       to={`/store/${storeId}/pos`}
-      className="inline-flex h-button-height-lg items-center justify-center rounded-xl bg-button-primary-bg px-12 text-button-lg font-button text-button-primary-text transition-colors duration-[var(--motion-fast)] hover:bg-button-primary-bg-hover"
+      className="inline-flex h-button-height-lg items-center justify-center rounded-xl bg-button-primary-bg px-12 text-button-lg font-button text-button-primary-text transition-colors duration-[var(--motion-fast)] hover:bg-button-primary-bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
     >
       {posLabel}
     </Link>
   </section>
 );
 
-const MetricCard = ({ value, label }: {
-  value: ReactNode;
-  label: string;
-}) => (
-  <Card className="bg-bg">
-    <CardContent className="py-8 text-center">
-      <p className="text-label text-text-secondary">{label}</p>
-      <div className="mt-3 flex items-baseline justify-center gap-1.5">
-        {value}
-      </div>
-    </CardContent>
-  </Card>
-);
-
-const ShortcutCard = ({ icon, label, to }: {
+const ShortcutCard = ({
+  icon,
+  label,
+  to,
+}: {
   icon: ReactNode;
   label: string;
   to: string;
@@ -131,10 +136,10 @@ const ShortcutCard = ({ icon, label, to }: {
   <Link to={to}>
     <Card className="transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
       <CardContent className="flex flex-col items-center gap-4 py-8">
-        <div className="text-text-tertiary">
+        <IconTile size="lg" tone="neutral" shape="square">
           {icon}
-        </div>
-        <span className="text-body-sm font-[var(--weight-medium)] text-text-secondary">
+        </IconTile>
+        <span className="text-body-sm font-medium text-text-secondary">
           {label}
         </span>
       </CardContent>
@@ -203,43 +208,37 @@ const StoreDashboardPage = () => {
   return (
     <div className="mx-auto flex min-h-[calc(100vh-6rem)] w-full max-w-5xl flex-col">
       <div className="w-full">
-        <PageHeader storeName={storeName} time={timeString} date={dateString} />
+        <DashboardChrome
+          overviewLabel={t("dashboard.storeOverview")}
+          storeName={storeName}
+          time={timeString}
+          date={dateString}
+        />
       </div>
 
       <div className="flex flex-1 flex-col justify-center py-12">
         <HeroSection
           storeName={storeName}
           storeId={id ?? ""}
+          todayLabel={t("dashboard.today")}
           posLabel={t("dashboard.openPos")}
           posSubtitle={t("dashboard.startReceivingOrders")}
         />
 
         <section className="mb-16 grid w-full gap-4 md:grid-cols-2">
-          <MetricCard
-            value={
-              <span className="text-heading text-text-primary">
-                ฿ {formatCurrency(todayRevenue)}
-              </span>
-            }
-            label={t("dashboard.today")}
+          <StatCard
+            label={t("dashboard.todayRevenue")}
+            value={`฿ ${formatCurrency(todayRevenue)}`}
           />
-          <MetricCard
-            value={
-              <>
-                <span className="text-heading text-text-primary">
-                  {todayOrderCount}
-                </span>
-                <span className="text-body-sm text-text-secondary ml-1.5">
-                  {t("dashboard.orders")}
-                </span>
-              </>
-            }
-            label={t("dashboard.today")}
+          <StatCard
+            label={t("dashboard.todayOrders")}
+            value={todayOrderCount}
+            hint={t("dashboard.orders")}
           />
         </section>
 
         <section className="w-full">
-          <h2 className="mb-4 text-subtitle text-text-primary">
+          <h2 className="mb-4 text-subtitle font-semibold text-text-primary">
             {t("dashboard.shortcuts")}
           </h2>
           <div className="grid gap-4 md:grid-cols-3">

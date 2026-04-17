@@ -12,11 +12,7 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
 import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n/presets";
 
-const ORDER_TYPE_OPTIONS: { value: OrderType; label: string }[] = [
-  { value: "DINE_IN", label: "Dine In" },
-  { value: "TOGO", label: "To Go" },
-  { value: "DELIVERY", label: "Delivery" },
-];
+const ORDER_TYPE_VALUES: OrderType[] = ["DINE_IN", "TOGO", "DELIVERY"];
 
 const hasQuickNotes = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
@@ -44,6 +40,12 @@ interface Props {
   onDeliveryPlatformChange: (platform: string) => void;
 }
 
+const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+  <p className="mb-3 text-label uppercase tracking-[0.08em] text-text-tertiary">
+    {children}
+  </p>
+);
+
 const CartArea = ({
   items,
   subtotal,
@@ -59,7 +61,7 @@ const CartArea = ({
   onTableNumberChange,
   onDeliveryPlatformChange,
 }: Props) => {
-  const { language } = useTranslation();
+  const { t, language } = useTranslation();
   const defaultDeliveryPlatforms = useMemo(
     () => getDefaultDeliveryPlatforms(language),
     [language]
@@ -133,15 +135,13 @@ const CartArea = ({
   };
 
   return (
-    <div className="w-full flex flex-col h-full bg-bg">
+    <div className="flex h-full w-full flex-col bg-card-bg border-l border-border">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b border-border">
         <div className="flex items-center gap-3">
-          <h2 className="text-title text-text-primary">
-            Cart
-          </h2>
+          <h2 className="text-title text-text-primary">{t("pos.cart.title")}</h2>
           {totalItems > 0 && (
-            <span className="min-w-7 h-7 flex items-center justify-center rounded-full bg-success text-text-inverse text-label font-[var(--weight-semibold)] px-1.5">
+            <span className="inline-flex min-w-6 h-6 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-white tabular-nums">
               {totalItems}
             </span>
           )}
@@ -151,120 +151,115 @@ const CartArea = ({
             variant="ghost"
             size="sm"
             onClick={onClearCart}
-            className="h-11 px-3 text-label text-danger hover:text-danger-hover"
+            className="text-label text-danger hover:text-danger-hover"
           >
-            Clear All
+            {t("pos.cart.clearAll")}
           </Button>
         )}
       </div>
 
-      {/* Items */}
-      <div className="flex-1 overflow-y-auto px-6">
-        <div className="pt-5 pb-4 space-y-4 border-b border-border">
+      {/* Scroll region */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Order config */}
+        <div className="px-6 pt-5 pb-5 space-y-5 border-b border-border">
           <div>
-            <p className="mb-3 text-label uppercase tracking-wide text-text-tertiary">
-              Order Type
-            </p>
-            <div className="grid grid-cols-3 gap-3">
-              {ORDER_TYPE_OPTIONS.map((option) => (
-                  <SelectionChip
-                    key={option.value}
-                    active={orderType === option.value}
-                    onClick={() => handleOrderTypeChange(option.value)}
-                  >
-                    {option.label}
-                  </SelectionChip>
-                ))}
+            <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
+            <div className="grid grid-cols-3 gap-2">
+              {ORDER_TYPE_VALUES.map((value) => (
+                <SelectionChip
+                  key={value}
+                  active={orderType === value}
+                  onClick={() => handleOrderTypeChange(value)}
+                >
+                  {t(`pos.orderType.${value.toLowerCase()}` as const)}
+                </SelectionChip>
+              ))}
             </div>
           </div>
 
           {orderType === "DINE_IN" && (
-            <div>
-              <div className="flex items-center justify-between">
-                <p className="text-body font-[var(--weight-semibold)] text-text-primary">
-                  Table: {tableNumber ?? "Not selected"}
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <SectionLabel>{t("pos.cart.table")}</SectionLabel>
+                <p className="text-body font-semibold text-text-primary truncate">
+                  {tableNumber ?? t("pos.cart.tableNotSelected")}
                 </p>
-                <div className="flex items-center gap-2">
-                  {tableNumber && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => onTableNumberChange(null)}
-                      className="h-11 px-3 text-text-secondary hover:text-text-primary"
-                    >
-                      Clear
-                    </Button>
-                  )}
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                {tableNumber && (
                   <Button
+                    type="button"
+                    variant="ghost"
                     size="sm"
-                    variant="secondary"
-                    className="h-11 px-4 text-label"
-                    onClick={() => setIsTableDialogOpen(true)}
+                    onClick={() => onTableNumberChange(null)}
                   >
-                    Select Table
+                    {t("common.clear")}
                   </Button>
-                </div>
+                )}
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => setIsTableDialogOpen(true)}
+                >
+                  {t("pos.cart.selectTable")}
+                </Button>
               </div>
             </div>
           )}
 
           {orderType === "DELIVERY" && (
-        <div className="space-y-5">
-              <div>
-                <p className="mb-3 text-body font-[var(--weight-semibold)] text-text-primary">
-                  Delivery Platform
-                </p>
-                <div className="grid grid-cols-2 gap-3">
-                  {deliveryPlatforms.map((platform) => (
-                      <SelectionChip
-                        key={platform}
-                        active={deliveryPlatform === platform}
-                        onClick={() => onDeliveryPlatformChange(platform)}
-                        className="text-base"
-                      >
-                        {platform}
-                      </SelectionChip>
-                    ))}
-                </div>
+            <div>
+              <SectionLabel>{t("pos.cart.deliveryPlatform")}</SectionLabel>
+              <div className="grid grid-cols-2 gap-2">
+                {deliveryPlatforms.map((platform) => (
+                  <SelectionChip
+                    key={platform}
+                    active={deliveryPlatform === platform}
+                    onClick={() => onDeliveryPlatformChange(platform)}
+                  >
+                    {platform}
+                  </SelectionChip>
+                ))}
               </div>
-
             </div>
           )}
         </div>
 
-        <div className="pt-4">
-        {items.length === 0 ? (
-          <EmptyState
-            icon={<LuShoppingCart size={32} />}
-            title="Cart is empty"
-            description="Tap a product to add it"
-            className="py-8"
-          />
-        ) : (
-          items.map((item) => (
-            <CartItem
-              key={item.productId}
-              item={item}
-              onUpdateQuantity={onUpdateQuantity}
-              onRemove={onRemoveItem}
-              onEditNote={() => setActiveNoteItem(item)}
+        {/* Items */}
+        <div className="px-6 pt-4 pb-2">
+          {items.length === 0 ? (
+            <EmptyState
+              icon={<LuShoppingCart size={32} />}
+              title={t("pos.cart.emptyTitle")}
+              description={t("pos.cart.emptyDescription")}
+              className="py-10"
             />
-          ))
-        )}
+          ) : (
+            <div className="divide-y divide-border">
+              {items.map((item) => (
+                <CartItem
+                  key={item.productId}
+                  item={item}
+                  onUpdateQuantity={onUpdateQuantity}
+                  onRemove={onRemoveItem}
+                  onEditNote={() => setActiveNoteItem(item)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Summary + Pay Button */}
-      <div className="px-6 pb-6 space-y-4">
+      {/* Summary + Pay */}
+      <div className="px-6 pb-6 pt-4 space-y-4 border-t border-border bg-card-bg">
         {items.length > 0 && <CartSummary subtotal={subtotal} />}
         <Button
           onClick={onPay}
           disabled={items.length === 0}
           size="lg"
-          className="w-full h-14 text-subtitle"
+          className="w-full h-14 text-subtitle tabular-nums"
         >
-          Pay ฿{subtotal.toFixed(2)}
+          {t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })}
         </Button>
       </div>
 

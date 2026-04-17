@@ -87,6 +87,12 @@ const Sidebar = () => {
         title={item.name}
         className={cn(itemClass, active ? activeClass : inactiveClass)}
       >
+        {active && (
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-1/2 h-6 w-0.5 -translate-x-[calc(0.75rem+1px)] -translate-y-1/2 rounded-full bg-accent"
+          />
+        )}
         {item.icon}
         <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded-md border border-border bg-surface px-3 py-2 text-caption font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
           {item.name}

@@ -51,7 +51,7 @@ export function StatCard({
         <p className="text-caption text-text-tertiary">{label}</p>
         <p
           className={cn(
-            "text-title font-[var(--weight-semibold)] tabular-nums",
+            "text-title font-semibold tabular-nums",
             toneText[tone],
           )}
         >

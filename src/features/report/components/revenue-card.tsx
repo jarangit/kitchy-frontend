@@ -16,7 +16,7 @@ const RevenueCard = ({ value, subtitle }: Props) => {
 
   return (
     <Card className="text-center">
-      <div className="text-heading  font-[var(--weight-semibold)] text-text-primary leading-tight break-words">
+      <div className="text-heading  font-semibold text-text-primary leading-tight break-words">
         ฿{formatCurrency(numericValue)}
       </div>
       <div className="text-label text-text-secondary mt-1">

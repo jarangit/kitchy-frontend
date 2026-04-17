@@ -4,9 +4,10 @@ import { useKds } from "@/features/kds/hooks/useKds";
 import KdsHeader from "@/features/kds/components/kds-header";
 import KdsOrderCard from "@/features/kds/components/kds-order-card";
 import { useStationService } from "@/features/station/hooks/useStation";
-import { Button } from "@/shared/components/ui/button";
+import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import { LuUtensilsCrossed } from "react-icons/lu";
 
 const DUE_NOW_MINUTES = 10;
@@ -18,6 +19,7 @@ const getWaitingMinutes = (createdAt: string) => {
 
 const KdsBoardPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
   const { stationsQuery } = useStationService({});
   const activeStation = stationsQuery?.[0];
   const [activeTab, setActiveTab] = useState<"PENDING" | "READY">("PENDING");
@@ -66,23 +68,21 @@ const KdsBoardPage = () => {
         isRefetching={isRefetching}
       />
 
-      <div className="flex items-center gap-3">
-        <Button
-          variant={activeTab === "PENDING" ? "primary" : "secondary"}
-          size="sm"
+      <div className="flex items-center gap-2">
+        <ChipTab
+          size="md"
+          active={activeTab === "PENDING"}
           onClick={() => setActiveTab("PENDING")}
-          className="h-11 px-5"
         >
-          Pending ({pendingCards.length})
-        </Button>
-        <Button
-          variant={activeTab === "READY" ? "primary" : "secondary"}
-          size="sm"
+          {t("kds.tab.pending")} {t("kds.tab.countSuffix", { count: String(pendingCards.length) })}
+        </ChipTab>
+        <ChipTab
+          size="md"
+          active={activeTab === "READY"}
           onClick={() => setActiveTab("READY")}
-          className="h-11 px-5"
         >
-          Ready ({readyCards.length})
-        </Button>
+          {t("kds.tab.ready")} {t("kds.tab.countSuffix", { count: String(readyCards.length) })}
+        </ChipTab>
       </div>
 
       {isLoading ? (
@@ -92,28 +92,27 @@ const KdsBoardPage = () => {
           <SkeletonCard className="min-h-[280px]" />
         </div>
       ) : activeStation == null ? (
-        <div className="min-h-[320px] rounded-card border border-card-border bg-card-bg p-card-padding text-center">
-          <p className="text-subtitle text-text-primary">
-            No station found
-          </p>
-          <p className="mt-2 text-body-sm text-text-secondary">
-            Please create a station to use KDS in single-station mode.
-          </p>
+        <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+          <EmptyState
+            icon={<LuUtensilsCrossed size={28} />}
+            title={t("kds.empty.noStationTitle")}
+            description={t("kds.empty.noStationDescription")}
+          />
         </div>
       ) : visibleCards.length === 0 ? (
         <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
           <EmptyState
             icon={<LuUtensilsCrossed size={28} />}
-            title={activeTab === "PENDING" ? "No pending items" : "No ready items"}
-            description="Items will appear automatically"
+            title={activeTab === "PENDING" ? t("kds.empty.pendingTitle") : t("kds.empty.readyTitle")}
+            description={t("kds.empty.description")}
           />
         </div>
       ) : activeTab === "PENDING" ? (
         <div className="space-y-8">
           {dueNow.length > 0 && (
             <section className="space-y-4">
-              <span className="inline-flex min-h-8 items-center rounded-full bg-danger-bg px-3 text-label font-[var(--weight-semibold)] text-danger">
-                DUE NOW ({dueNow.length})
+              <span className="inline-flex min-h-8 items-center rounded-full bg-danger-bg px-3 text-label font-semibold text-danger tracking-[0.08em] uppercase">
+                {t("kds.priority.dueNow", { count: String(dueNow.length) })}
               </span>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {dueNow.map((card, index) => (
@@ -134,8 +133,8 @@ const KdsBoardPage = () => {
 
           {next.length > 0 && (
             <section className="space-y-4">
-              <span className="inline-flex min-h-8 items-center rounded-full bg-warning-bg px-3 text-label font-[var(--weight-semibold)] text-warning">
-                NEXT ({next.length})
+              <span className="inline-flex min-h-8 items-center rounded-full bg-warning-bg px-3 text-label font-semibold text-warning tracking-[0.08em] uppercase">
+                {t("kds.priority.next", { count: String(next.length) })}
               </span>
               <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
                 {next.map((card, index) => (
