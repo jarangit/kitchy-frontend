@@ -1,176 +1,98 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/shared/components/ui/badge";
-import { Skeleton } from "@/shared/components/ui/skeleton";
-import {
-  toStatusBadgeVariant,
-  toStatusBorderClass,
-  formatStatusLabel,
-} from "@/shared/utils/status";
-import { transactionServiceApi } from "@/features/transaction/services/transaction";
-import { LuChevronDown, LuChevronUp, LuExternalLink } from "react-icons/lu";
-import { cn } from "@/shared/utils/cn";
+import { LuCheck } from "react-icons/lu";
 
-interface OrderItem {
-  id?: string;
-  productId?: string;
+interface OrderProduct {
   name?: string;
   quantity?: number;
   price?: number;
-  note?: string;
-  product?: { name?: string; price?: number };
 }
 
 interface Props {
   order: {
     id: string;
     orderNumber: string;
-    status: string;
+    type?: string;
+    orderType?: string;
     createdAt: string;
     totalAmount?: number;
-    products?: { name?: string; quantity?: number; price?: number }[];
+    products?: OrderProduct[];
   };
   onClick: () => void;
+  isLast?: boolean;
 }
 
-const TransactionCard = ({ order, onClick }: Props) => {
-  const [expanded, setExpanded] = useState(false);
+const getOrderTypeLabel = (type?: string) => {
+  if (!type) return "ออเดอร์";
+  if (type === "DINE_IN") return "ทานที่ร้าน";
+  if (type === "TOGO") return "กลับบ้าน";
+  if (type === "DELIVERY") return "เดลิเวอรี";
+  return type;
+};
 
-  // Lazy-fetch order detail only when expanded
-  const { data: orderDetail, isLoading: isLoadingDetail } = useQuery({
-    queryKey: ["transaction-detail", order.id],
-    queryFn: () => transactionServiceApi.getById(order.id),
-    enabled: expanded,
-    select: (res) => res.data,
-    staleTime: 5 * 60 * 1000, // cache 5 min
-  });
-
+const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
   const date = new Date(order.createdAt);
-  const formattedDate = date.toLocaleDateString("th-TH", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
   const formattedTime = date.toLocaleTimeString("th-TH", {
     hour: "2-digit",
     minute: "2-digit",
   });
 
-  const itemCount = order.products?.length ?? 0;
-
   const totalAmount =
     order.totalAmount ??
-    order.products?.reduce(
+    (order.products?.reduce(
       (sum, item) => sum + (item.price ?? 0) * (item.quantity ?? 1),
       0
-    );
+    ) ?? 0);
 
-  const items: OrderItem[] = orderDetail?.products ?? orderDetail?.items ?? [];
+  const itemCount =
+    order.products?.reduce((sum, item) => sum + (item.quantity ?? 1), 0) ?? 0;
 
-  const getItemName = (item: OrderItem) =>
-    item.name || item.product?.name || `Product #${item.productId ?? "?"}`;
+  const orderType = order.type ?? order.orderType;
+  const orderTypeLabel = getOrderTypeLabel(orderType);
 
-  const getItemPrice = (item: OrderItem) =>
-    item.price ?? item.product?.price ?? 0;
-
-  const handleToggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setExpanded((prev) => !prev);
-  };
+  const productSummary =
+    order.products
+      ?.slice(0, 2)
+      .map((item) => `${item.name ?? "สินค้า"} x${item.quantity ?? 1}`)
+      .join("  |  ") ?? `${itemCount} รายการ`;
 
   return (
-    <div
-      className={cn("w-full bg-bg rounded-md border border-border border-l-4", toStatusBorderClass(order.status), "hover:border-border-hover transition-all duration-[var(--motion-fast)] text-left overflow-hidden")}
+    <button
+      type="button"
+      onClick={onClick}
+      className={[
+        "w-full px-6 py-4 text-left transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover",
+        !isLast ? "border-b border-card-border" : "",
+      ].join(" ")}
     >
-      {/* Header row — clickable to expand */}
-      <button
-        onClick={handleToggle}
-        className="w-full p-4  transition-transform duration-[var(--motion-fast)] text-left"
-      >
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <span className="font-[var(--weight-semibold)] text-text-primary">
-              {order.orderNumber}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant={toStatusBadgeVariant(order.status)}>
-              {formatStatusLabel(order.status)}
-            </Badge>
-            {expanded ? (
-              <LuChevronUp size={18} className="text-text-tertiary" />
-            ) : (
-              <LuChevronDown size={18} className="text-text-tertiary" />
-            )}
-          </div>
-        </div>
-        <div className="flex items-center justify-between text-label text-text-secondary">
-          <span>
-            {formattedDate} {formattedTime}
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex min-w-0 items-start gap-4">
+          <span className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-success text-text-inverse">
+            <LuCheck size={18} />
           </span>
-          <div className="flex items-center gap-3">
-            <span>
-              {itemCount} item{itemCount !== 1 ? "s" : ""}
-            </span>
-            {totalAmount != null && totalAmount > 0 && (
-              <span className="font-[var(--weight-medium)] tabular-nums text-text-primary">
-                ฿{totalAmount.toFixed(2)}
-              </span>
-            )}
+
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <p className="text-heading font-[var(--weight-semibold)] text-text-primary">
+                {order.orderNumber}
+              </p>
+              <Badge variant="default" className="border border-card-border bg-surface text-text-secondary">
+                {orderTypeLabel}
+              </Badge>
+            </div>
+            <p className="line-clamp-1 text-subtitle text-text-secondary">
+              {productSummary}
+            </p>
           </div>
         </div>
-      </button>
 
-      {/* Expanded items section */}
-      {expanded && (
-        <div className="px-4 pb-4 border-t border-border">
-          {isLoadingDetail ? (
-            <div className="pt-3 space-y-2">
-              <Skeleton height="h-4" width="w-3/4" />
-              <Skeleton height="h-4" width="w-1/2" />
-              <Skeleton height="h-4" width="w-2/3" />
-            </div>
-          ) : items.length > 0 ? (
-            <div className="pt-3 space-y-2">
-              {items.map((item, index) => (
-                <div
-                  key={item.id || item.productId || index}
-                  className="flex justify-between gap-3 text-body-sm"
-                >
-                  <div className="min-w-0 flex-1">
-                    <span className="text-text-secondary">
-                      <span className="tabular-nums">{item.quantity ?? 1}x</span>{" "}
-                      <span className="line-clamp-1">{getItemName(item)}</span>
-                    </span>
-                    {item.note && (
-                      <p className="text-caption text-text-tertiary mt-0.5 line-clamp-1">
-                        {item.note}
-                      </p>
-                    )}
-                  </div>
-                  <span className="font-[var(--weight-medium)] tabular-nums text-text-primary shrink-0">
-                    ฿{(getItemPrice(item) * (item.quantity ?? 1)).toFixed(2)}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="pt-3 text-body-sm text-text-tertiary">
-              No items found
-            </p>
-          )}
-
-          {/* View detail link */}
-          <button
-            onClick={onClick}
-            className="mt-3 flex items-center gap-1.5 text-label text-primary hover:underline  transition-transform"
-          >
-            <LuExternalLink size={14} />
-            View full detail
-          </button>
+        <div className="shrink-0 text-right">
+          <p className="text-title font-[var(--weight-semibold)] tabular-nums text-text-primary">
+            ฿ {totalAmount.toLocaleString("th-TH", { maximumFractionDigits: 2 })}
+          </p>
+          <p className="text-subtitle text-text-tertiary">{formattedTime}</p>
         </div>
-      )}
-    </div>
+      </div>
+    </button>
   );
 };
 

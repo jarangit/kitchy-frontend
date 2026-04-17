@@ -6,6 +6,13 @@ interface Props {
   onFilterChange: (filter: { search: string; status: string }) => void;
 }
 
+const STATUS_OPTIONS = [
+  { value: "ALL", label: "ทั้งหมด" },
+  { value: "IN_PROGRESS", label: "กำลังทำ" },
+  { value: "DONE", label: "เสร็จแล้ว" },
+  { value: "CANCELLED", label: "ยกเลิก" },
+] as const;
+
 const TransactionFilter = ({ onFilterChange }: Props) => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("ALL");
@@ -25,15 +32,10 @@ const TransactionFilter = ({ onFilterChange }: Props) => {
       <SearchInput
         value={search}
         onValueChange={handleSearchChange}
-        placeholder="Search order number..."
+        placeholder="ค้นหาเลขออเดอร์..."
       />
       <div className="flex gap-2 flex-wrap">
-        {[
-          { value: "ALL", label: "All" },
-          { value: "NEW", label: "New" },
-          { value: "PREPARING", label: "Preparing" },
-          { value: "READY", label: "Ready" },
-        ].map((s) => (
+        {STATUS_OPTIONS.map((s) => (
           <ChipTab
             key={s.value}
             size="sm"

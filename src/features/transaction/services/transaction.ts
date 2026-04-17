@@ -10,4 +10,9 @@ export const transactionServiceApi = {
     const response = await axiosClient.get(`/orders/${id}`);
     return response.data;
   },
+
+  update: async (id: string, payload: unknown) => {
+    const response = await axiosClient.patch(`/orders/${id}`, payload);
+    return response.data;
+  },
 };
