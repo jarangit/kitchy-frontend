@@ -17,11 +17,11 @@ import { LuPlus } from "react-icons/lu";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 type Props = {
-  _onSubmit?: (data: ProductFormData) => void;
+  onSubmit?: (data: ProductFormData) => void;
   defaultValues?: ProductFormData;
 };
 
-const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
+const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
   const { t } = useTranslation();
   const [optionStation, setOptionStation] = useState<
     { value: string; label: string }[]
@@ -48,8 +48,8 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
   });
 
   const onSubmit = (data: ProductFormData) => {
-    if (_onSubmit) {
-      _onSubmit(data);
+    if (onSubmitProp) {
+      onSubmitProp(data);
     }
 
     // Reset form and close dialog after successful submission
@@ -93,7 +93,6 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
     <>
       <Button
         variant="primary"
-        className="absolute top-4 right-4"
         onClick={() => setIsCreateDialogOpen(true)}
       >
         <LuPlus className="w-4 h-4" />
@@ -158,9 +157,9 @@ const AddUpProductForm = ({ _onSubmit, defaultValues }: Props) => {
               render={({ field }) => (
                 <Select
                   id="product-category"
-                  label="Category"
+                  label={t("settings.products.category")}
                   options={optionCategory}
-                  placeholder="Select a category (optional)"
+                  placeholder={t("settings.products.categoryPlaceholder")}
                   value={field.value || ""}
                   onChange={(e) => field.onChange(e.target.value || undefined)}
                   onBlur={field.onBlur}

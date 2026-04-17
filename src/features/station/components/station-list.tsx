@@ -55,14 +55,16 @@ const StationListTemplate = () => {
       <SettingsSectionCard
         title={t("settings.categories.stationsTitle")}
         description={t("settings.categories.stationsDescription")}
+        action={
+          <AddUpStationForm
+            _onSubmit={onSubmitStation}
+            defaultValues={
+              stationSelected ? { name: stationSelected?.name } : undefined
+            }
+          />
+        }
       >
-        <AddUpStationForm
-          _onSubmit={onSubmitStation}
-          defaultValues={
-            stationSelected ? { name: stationSelected?.name } : undefined
-          }
-        />
-        <div className="mt-6">
+        <div>
           {stationsQuery && stationsQuery?.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {stationsQuery.map((item: { id: string; name: string; color: string; activeOrders: number }) => (
@@ -86,7 +88,9 @@ const StationListTemplate = () => {
               ))}
             </div>
           ) : (
-            <div>{t("settings.categories.noStations")}</div>
+            <div className="text-body-sm text-text-secondary">
+              {t("settings.categories.noStations")}
+            </div>
           )}
         </div>
       </SettingsSectionCard>

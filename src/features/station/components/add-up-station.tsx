@@ -62,10 +62,10 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
     <>
       <Button
         variant="primary"
-        className="absolute top-4 right-4"
+        size="sm"
         onClick={() => setIsCreateDialogOpen(true)}
       >
-        <LuPlus className="w-4 h-4" />
+        <LuPlus className="h-4 w-4" />
         {t("settings.categories.addStation")}
       </Button>
 

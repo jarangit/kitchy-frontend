@@ -11,6 +11,8 @@ interface SegmentedControlProps<T extends string> {
   value: T;
   onChange: (value: T) => void;
   className?: string;
+  /** When true, fills container width and items share space equally. */
+  fullWidth?: boolean;
 }
 
 export function SegmentedControl<T extends string>({
@@ -18,12 +20,13 @@ export function SegmentedControl<T extends string>({
   value,
   onChange,
   className,
+  fullWidth = false,
 }: SegmentedControlProps<T>) {
   return (
     <div
       className={cn(
-        "inline-flex bg-segment-bg border border-segment-border",
-        "rounded-segment p-1",
+        "bg-segment-bg border border-segment-border rounded-segment p-1",
+        fullWidth ? "flex w-full" : "inline-flex",
         className,
       )}
     >
@@ -38,6 +41,7 @@ export function SegmentedControl<T extends string>({
               "flex items-center justify-center rounded-sm",
               "px-4 h-8 text-segment font-segment whitespace-nowrap",
               "transition-colors duration-[var(--motion-fast)]",
+              fullWidth && "flex-1",
               isActive
                 ? "bg-segment-active-bg text-segment-active-text"
                 : "text-segment-inactive-text hover:text-segment-inactive-text-hover",

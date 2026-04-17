@@ -66,7 +66,7 @@ const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
     >
       <div className="flex items-center justify-between gap-4">
         <div className="flex min-w-0 items-start gap-4">
-          <span className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-success text-text-inverse">
+          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-success text-text-inverse">
             <LuCheck size={18} />
           </span>
 

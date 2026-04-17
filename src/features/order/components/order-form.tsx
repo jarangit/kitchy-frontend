@@ -1,10 +1,11 @@
-// TODO: add tab selector for togo order but wait in store or not
 // TODO: design for edit mode
 import type React from "react";
 import { useEffect, useState } from "react";
 import { NumericKeypad } from "@/shared/components/numbericKeypad";
 import { Input } from "@/shared/components/ui/input";
-import TabItem from "@/shared/components/tab-item";
+import { Label } from "@/shared/components/ui/label";
+import { SegmentedControl } from "@/shared/components/ui/segmented-control";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import type { IOrderItem } from "@/features/order/types/order.model";
 
 interface OrderFormProps {
@@ -23,20 +24,23 @@ interface OrderFormProps {
   }) => void;
 }
 
+type WaitingKey = "here" | "waiting";
+
 export function OrderForm({
   label,
   _onSubmit,
   orderType,
   initValue,
 }: OrderFormProps) {
+  const { t } = useTranslation();
   const [number, setNumber] = useState("");
   const [isWaitingInStore, setIsWaitingInStore] = useState(false);
 
   const handleSubmit = () => {
     _onSubmit({
-      orderType: orderType,
+      orderType,
       orderNumber: number,
-      isWaitingInStore: isWaitingInStore,
+      isWaitingInStore,
     });
     setNumber("");
     setIsWaitingInStore(false);
@@ -45,10 +49,6 @@ export function OrderForm({
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     handleSubmit();
-  };
-
-  const onTapToggleIsWaiting = (value: boolean) => {
-    setIsWaitingInStore(value);
   };
 
   const onInitValue = () => {
@@ -60,61 +60,44 @@ export function OrderForm({
       setIsWaitingInStore(false);
     }
   };
+
   useEffect(() => {
     onInitValue();
   }, [initValue]);
 
+  const dineInItems = [
+    { key: "here" as const, label: t("order.form.table") },
+    { key: "waiting" as const, label: t("order.form.waitingTogo") },
+  ];
+  const togoItems = [
+    { key: "here" as const, label: t("order.form.pickup") },
+    { key: "waiting" as const, label: t("order.form.waitingPickup") },
+  ];
+  const items = orderType === "DINE_IN" ? dineInItems : togoItems;
+  const waitingValue: WaitingKey = isWaitingInStore ? "waiting" : "here";
+
   return (
     <form
       onSubmit={handleFormSubmit}
-      className=" bg-bg p-6 rounded-sm lg:min-w-[300px]"
+      className="rounded-card border border-card-border bg-card-bg p-card-padding lg:min-w-[300px]"
     >
       <div className="flex flex-col space-y-4">
-        <label htmlFor="orderNumber" className="text-title">
-          {label}
-        </label>
+        <Label htmlFor="orderNumber">{label}</Label>
         <Input
+          id="orderNumber"
           value={number}
-          placeholder="Enter number"
+          placeholder={t("order.form.orderNumberPlaceholder")}
           onChange={(e) => setNumber(e.target.value)}
           keyboardToggle
         />
-        {/* waiting */}
-        {orderType == "DINE_IN" ? (
-          <>
-            <div className="border flex items-center border-border rounded-sm overflow-hidden cursor-pointer">
-              <TabItem
-                title={"Table"}
-                className="w-full rounded-sm !p-3"
-                active={!isWaitingInStore}
-                onClick={() => onTapToggleIsWaiting(false)}
-              />
-              <TabItem
-                title={"@ToGo"}
-                className="w-full rounded-sm !p-3"
-                active={isWaitingInStore}
-                onClick={() => onTapToggleIsWaiting(true)}
-              />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="border flex items-center border-border rounded-sm overflow-hidden cursor-pointer">
-              <TabItem
-                title={"Pickup"}
-                className="w-full rounded-sm !p-3"
-                active={!isWaitingInStore}
-                onClick={() => onTapToggleIsWaiting(false)}
-              />
-              <TabItem
-                title={"@Waiting"}
-                className="w-full rounded-sm !p-3"
-                active={isWaitingInStore}
-                onClick={() => onTapToggleIsWaiting(true)}
-              />
-            </div>
-          </>
-        )}
+
+        <SegmentedControl
+          items={items}
+          value={waitingValue}
+          onChange={(v) => setIsWaitingInStore(v === "waiting")}
+          fullWidth
+        />
+
         <div className="flex flex-col space-y-4">
           <NumericKeypad
             value={number}
