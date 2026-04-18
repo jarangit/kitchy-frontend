@@ -191,6 +191,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/* Control Panel section router — must come AFTER specific legacy routes */}
+        <Route
+          path="/store/:id/settings/:section"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <SettingsPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
 
         {/* Station */}
         <Route

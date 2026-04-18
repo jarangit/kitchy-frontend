@@ -1,0 +1,44 @@
+import type { ReactNode } from "react";
+import {
+  SettingsNavSidebar,
+  SettingsNavChips,
+} from "@/features/store/components/settings-nav";
+
+interface Props {
+  storeId: string;
+  children: ReactNode;
+}
+
+/**
+ * Settings Control Panel shell.
+ *
+ * UX principles:
+ *   - No redundant page title — section header inside content owns the "where am I" moment.
+ *   - Flat sidebar — defers to content, just a nav surface.
+ *   - Reading-width cap on content (~680px) — rows don't stretch awkwardly on wide screens.
+ *   - Sidebar sticky with its own scroll so nav context is always reachable.
+ *
+ * Desktop (md+): 240px nav + max-w content column (justify-start).
+ * Mobile: horizontal chip rail on top + content below.
+ */
+export function SettingsLayout({ storeId, children }: Props) {
+  return (
+    <div className="w-full">
+      {/* Mobile: chip rail */}
+      <div className="md:hidden mb-6">
+        <SettingsNavChips storeId={storeId} />
+      </div>
+
+      <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10 lg:gap-12">
+        {/* Desktop: flat sidebar */}
+        <aside className="hidden md:block md:w-[240px] md:shrink-0">
+          <div className="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto">
+            <SettingsNavSidebar storeId={storeId} />
+          </div>
+        </aside>
+
+        <main className="min-w-0 flex-1 md:max-w-[680px]">{children}</main>
+      </div>
+    </div>
+  );
+}

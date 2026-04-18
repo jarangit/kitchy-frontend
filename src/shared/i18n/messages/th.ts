@@ -29,6 +29,92 @@ export const thMessages = {
   "settings.menu.quickNotes.name": "โน้ตด่วน",
   "settings.menu.quickNotes.description": "จัดการ shortcut ของโน้ตใน POS",
 
+  // ── Control Panel (new) ──
+  "settings.cp.title": "ตั้งค่าร้าน",
+  "settings.cp.section.store": "ร้านของคุณ",
+  "settings.cp.section.payments": "รับเงิน",
+  "settings.cp.section.sales": "การขาย",
+  "settings.cp.section.kitchen": "ครัว",
+  "settings.cp.section.devices": "อุปกรณ์",
+  "settings.cp.section.safety": "กันพลาด",
+  "settings.cp.section.system": "ระบบ",
+  "settings.cp.section.display": "การแสดงผล",
+
+  // Section descriptions (shown under the section header inside the content panel)
+  "settings.cp.section.store.description": "ข้อมูลร้านพื้นฐานและช่องทางติดต่อ",
+  "settings.cp.section.payments.description": "เปิด/ปิดช่องทางที่ลูกค้าใช้จ่ายเงินที่ร้าน",
+  "settings.cp.section.sales.description": "ฟีเจอร์ที่จะเปิดใช้ในหน้าขายและออเดอร์",
+  "settings.cp.section.kitchen.description": "จัดการครัว สเตชัน หมวดหมู่ และสินค้า",
+  "settings.cp.section.devices.description": "อุปกรณ์ที่เชื่อมต่อกับร้าน",
+  "settings.cp.section.safety.description": "ตั้งค่าการยืนยันก่อนทำสิ่งที่แก้ไม่ได้",
+  "settings.cp.section.system.description": "การแสดงผล ปุ่มลัดประจำวัน และการจัดการร้าน",
+
+  "settings.cp.sales.more": "ช่องทางอื่น",
+
+  // Store section
+  "settings.cp.store.name.label": "ชื่อร้าน",
+  "settings.cp.store.name.placeholder": "ใส่ชื่อร้าน",
+  "settings.cp.store.promptpay.label": "PromptPay",
+  "settings.cp.store.promptpay.placeholder": "081-xxx-xxxx",
+  "settings.cp.store.hours.label": "เวลาเปิด–ปิด",
+  "settings.cp.store.hours.placeholder": "08:00 - 18:00",
+  "settings.cp.store.empty": "ยังไม่ได้ตั้งค่า",
+
+  // Payments
+  "settings.cp.payments.description": "ช่องทางที่ลูกค้าใช้จ่ายเงินที่ร้าน",
+  "settings.cp.payments.cash": "เงินสด",
+  "settings.cp.payments.qr": "โอน – QR หน้าร้าน",
+  "settings.cp.payments.qr.hint": "แตะเพื่อใส่เบอร์ PromptPay",
+  "settings.cp.payments.bank": "โอน – บัญชีแม่ค้า",
+  "settings.cp.payments.bank.hint": "แตะเพื่อใส่เลขบัญชี",
+  "settings.cp.payments.truemoney": "TrueMoney",
+  "settings.cp.payments.add": "เพิ่มช่องทาง",
+
+  // Sales
+  "settings.cp.sales.description": "ฟีเจอร์ที่จะเปิดใช้ในหน้าขาย",
+  "settings.cp.sales.useTable": "ใช้โต๊ะ",
+  "settings.cp.sales.useQueue": "ใช้เลขคิว",
+  "settings.cp.sales.useNote": "เปิดโน้ต",
+  "settings.cp.sales.useOptions": "ตัวเลือกเสริม",
+  "settings.cp.sales.default.label": "ค่าเริ่มต้นออเดอร์",
+  "settings.cp.sales.default.dineIn": "ทานที่ร้าน",
+  "settings.cp.sales.default.togo": "กลับบ้าน",
+
+  // Kitchen
+  "settings.cp.kitchen.description": "จัดการครัว/สเตชันของร้าน",
+  "settings.cp.kitchen.manage": "ไปที่สเตชัน",
+  "settings.cp.kitchen.categories": "ไปที่หมวดหมู่",
+  "settings.cp.kitchen.products": "ไปที่สินค้า",
+
+  // Devices
+  "settings.cp.devices.description": "เครื่องที่เชื่อมกับร้าน",
+  "settings.cp.devices.online": "ออนไลน์",
+  "settings.cp.devices.offline": "ออฟไลน์",
+  "settings.cp.devices.add": "เพิ่มเครื่อง",
+  "settings.cp.devices.empty": "ยังไม่มีอุปกรณ์",
+
+  // Safety
+  "settings.cp.safety.description": "ยืนยันก่อนทำสิ่งที่แก้ไม่ได้",
+  "settings.cp.safety.confirmDelete": "ยืนยันก่อนลบออเดอร์",
+  "settings.cp.safety.confirmRefund": "ยืนยันก่อนคืนเงิน",
+
+  // System
+  "settings.cp.system.description": "ปุ่มลัดสำหรับจัดการร้านประจำวัน",
+  "settings.cp.system.title": "ปุ่มลัดประจำวัน",
+  "settings.cp.system.newDay": "เริ่มวันใหม่",
+  "settings.cp.system.newDay.hint": "ปิดยอดเมื่อวานและเริ่มต้นใหม่",
+  "settings.cp.system.pause": "ปิดรับออเดอร์ชั่วคราว",
+  "settings.cp.system.pause.hint": "หยุดรับออเดอร์ใหม่จนกว่าจะเปิดอีก",
+  "settings.cp.system.clear": "ล้างออเดอร์ค้าง",
+  "settings.cp.system.clear.hint": "ล้างออเดอร์ที่ค้างในระบบ",
+  "settings.cp.system.confirm": "ยืนยัน",
+  "settings.cp.system.done": "เสร็จเรียบร้อย",
+
+  // Common row
+  "settings.cp.row.edit": "แก้ไข",
+  "settings.cp.row.save": "บันทึก",
+  "settings.cp.row.cancel": "ยกเลิก",
+
   "settings.shop.title": "ตั้งค่าร้าน",
   "settings.shop.description": "อัปเดตข้อมูลร้านและจัดการรายการสำคัญของร้าน",
   "settings.shop.storeName": "ชื่อร้าน",

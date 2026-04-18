@@ -29,6 +29,92 @@ export const enMessages = {
   "settings.menu.quickNotes.name": "Quick Notes",
   "settings.menu.quickNotes.description": "Manage note shortcuts available in POS",
 
+  // ── Control Panel (new) ──
+  "settings.cp.title": "Settings",
+  "settings.cp.section.store": "Your Store",
+  "settings.cp.section.payments": "Payments",
+  "settings.cp.section.sales": "Sales",
+  "settings.cp.section.kitchen": "Kitchen",
+  "settings.cp.section.devices": "Devices",
+  "settings.cp.section.safety": "Safety",
+  "settings.cp.section.system": "System",
+  "settings.cp.section.display": "Display",
+
+  // Section descriptions (shown under the section header inside the content panel)
+  "settings.cp.section.store.description": "Basic store info and contact details",
+  "settings.cp.section.payments.description": "Enable or disable the channels customers use to pay",
+  "settings.cp.section.sales.description": "Features available on the sales screen and order flow",
+  "settings.cp.section.kitchen.description": "Manage the kitchen, stations, categories, and products",
+  "settings.cp.section.devices.description": "Devices connected to this store",
+  "settings.cp.section.safety.description": "Confirm before actions that cannot be undone",
+  "settings.cp.section.system.description": "Display, daily shortcuts, and store management",
+
+  "settings.cp.sales.more": "Other channels",
+
+  // Store section
+  "settings.cp.store.name.label": "Store name",
+  "settings.cp.store.name.placeholder": "Enter store name",
+  "settings.cp.store.promptpay.label": "PromptPay",
+  "settings.cp.store.promptpay.placeholder": "081-xxx-xxxx",
+  "settings.cp.store.hours.label": "Opening hours",
+  "settings.cp.store.hours.placeholder": "08:00 - 18:00",
+  "settings.cp.store.empty": "Not set",
+
+  // Payments
+  "settings.cp.payments.description": "Channels customers can use to pay",
+  "settings.cp.payments.cash": "Cash",
+  "settings.cp.payments.qr": "Transfer – QR at counter",
+  "settings.cp.payments.qr.hint": "Tap to enter PromptPay number",
+  "settings.cp.payments.bank": "Transfer – bank account",
+  "settings.cp.payments.bank.hint": "Tap to enter account number",
+  "settings.cp.payments.truemoney": "TrueMoney",
+  "settings.cp.payments.add": "Add channel",
+
+  // Sales
+  "settings.cp.sales.description": "Features to enable on the sales screen",
+  "settings.cp.sales.useTable": "Use tables",
+  "settings.cp.sales.useQueue": "Use queue numbers",
+  "settings.cp.sales.useNote": "Enable notes",
+  "settings.cp.sales.useOptions": "Add-on options",
+  "settings.cp.sales.default.label": "Default order type",
+  "settings.cp.sales.default.dineIn": "Dine-in",
+  "settings.cp.sales.default.togo": "To go",
+
+  // Kitchen
+  "settings.cp.kitchen.description": "Manage kitchen and stations",
+  "settings.cp.kitchen.manage": "Go to stations",
+  "settings.cp.kitchen.categories": "Go to categories",
+  "settings.cp.kitchen.products": "Go to products",
+
+  // Devices
+  "settings.cp.devices.description": "Devices connected to this store",
+  "settings.cp.devices.online": "Online",
+  "settings.cp.devices.offline": "Offline",
+  "settings.cp.devices.add": "Add device",
+  "settings.cp.devices.empty": "No devices yet",
+
+  // Safety
+  "settings.cp.safety.description": "Confirm before irreversible actions",
+  "settings.cp.safety.confirmDelete": "Confirm before deleting an order",
+  "settings.cp.safety.confirmRefund": "Confirm before issuing a refund",
+
+  // System
+  "settings.cp.system.description": "Quick actions for daily store operations",
+  "settings.cp.system.title": "Daily actions",
+  "settings.cp.system.newDay": "Start a new day",
+  "settings.cp.system.newDay.hint": "Close yesterday and start fresh",
+  "settings.cp.system.pause": "Pause new orders",
+  "settings.cp.system.pause.hint": "Stop accepting new orders until resumed",
+  "settings.cp.system.clear": "Clear stale orders",
+  "settings.cp.system.clear.hint": "Clear orders still open in the system",
+  "settings.cp.system.confirm": "Confirm",
+  "settings.cp.system.done": "Done",
+
+  // Common row
+  "settings.cp.row.edit": "Edit",
+  "settings.cp.row.save": "Save",
+  "settings.cp.row.cancel": "Cancel",
+
   "settings.shop.title": "Shop Settings",
   "settings.shop.description": "Update your store identity and manage high-impact store actions.",
   "settings.shop.storeName": "Store Name",
