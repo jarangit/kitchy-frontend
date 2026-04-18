@@ -12,6 +12,7 @@ export interface CreateProductRequest {
   price: number;
   cost?: number;
   isActive: boolean;
+  isBestSeller?: boolean;
   imageUrl?: string;
 }
 

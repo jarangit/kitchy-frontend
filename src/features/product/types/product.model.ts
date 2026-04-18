@@ -2,6 +2,7 @@ export interface IMenu {
   id: string;
   name: string;
   isActive: boolean;
+  isBestSeller?: boolean;
   price?: number;
   cost?: number;
   imageUrl?: string;
@@ -24,6 +25,7 @@ export interface ProductFormData {
   price: number;
   cost?: number;
   isActive: boolean;
+  isBestSeller?: boolean;
   imageUrl?: string;
 }
 

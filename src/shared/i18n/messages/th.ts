@@ -4,6 +4,7 @@ export const thMessages = {
   "common.cancel": "ยกเลิก",
   "common.save": "บันทึก",
   "common.clear": "ล้าง",
+  "common.close": "ปิด",
 
   "settings.title": "การตั้งค่า",
   "settings.description": "จัดการสินค้า หมวดหมู่ แอปเดลิเวอรี และการตั้งค่าการแสดงผลของร้านนี้",
@@ -155,6 +156,8 @@ export const thMessages = {
   "settings.products.costOptional": "ไม่บังคับ",
   "settings.products.isActive": "เปิดขาย",
   "settings.products.isActiveDescription": "พร้อมขายผ่านหน้า POS",
+  "settings.products.isBestSeller": "สินค้าขายดี",
+  "settings.products.isBestSellerDescription": "ปักหมุดให้ลูกค้าเห็นเด่นบน POS",
   "settings.products.image": "รูปภาพสินค้า",
   "settings.products.imageHint": "รองรับ PNG หรือ JPG ขนาดไม่เกิน 2MB",
   "settings.products.imageUpload": "อัปโหลดรูปภาพ",

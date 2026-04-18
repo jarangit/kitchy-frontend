@@ -27,10 +27,12 @@ const SECTIONS: {
   label: MessageKey;
   icon: ReactNode;
 }[] = [
-  { id: "store", label: "settings.cp.section.store", icon: <LuStore size={20} /> },
-  { id: "payments", label: "settings.cp.section.payments", icon: <LuCreditCard size={20} /> },
-  { id: "sales", label: "settings.cp.section.sales", icon: <LuShoppingCart size={20} /> },
+  // Ordered by frequency of use (most-used first) so the default landing
+  // lands on what store owners touch the most: the menu (kitchen).
   { id: "kitchen", label: "settings.cp.section.kitchen", icon: <LuChefHat size={20} /> },
+  { id: "sales", label: "settings.cp.section.sales", icon: <LuShoppingCart size={20} /> },
+  { id: "payments", label: "settings.cp.section.payments", icon: <LuCreditCard size={20} /> },
+  { id: "store", label: "settings.cp.section.store", icon: <LuStore size={20} /> },
   { id: "devices", label: "settings.cp.section.devices", icon: <LuMonitor size={20} /> },
   { id: "safety", label: "settings.cp.section.safety", icon: <LuShieldCheck size={20} /> },
   { id: "system", label: "settings.cp.section.system", icon: <LuSettings size={20} /> },

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { LuArrowLeft } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { SettingsFrame } from "./settings-frame";
 
 interface SettingsShellProps {
   title: string;
@@ -21,35 +22,37 @@ export const SettingsShell = ({
   const { t } = useTranslation();
 
   return (
-    <div className="w-full space-y-8 lg:space-y-10">
-      <div className="space-y-5">
-        {onBack && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={onBack}
-            className="px-1 text-text-secondary hover:text-text-primary"
-          >
-            <LuArrowLeft size={16} />
-            {backLabel ?? t("common.backToSettings")}
-          </Button>
-        )}
-
-        <div className="space-y-3 rounded-card border border-card-border bg-card-bg p-card-padding">
-          <h1 className="text-heading leading-tight text-text-primary sm:text-display">
-            {title}
-          </h1>
-          {description && (
-            <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
-              {description}
-            </p>
+    <SettingsFrame>
+      <div className="w-full space-y-8 lg:space-y-10">
+        <div className="space-y-5">
+          {onBack && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="px-1 text-text-secondary hover:text-text-primary"
+            >
+              <LuArrowLeft size={16} />
+              {backLabel ?? t("common.backToSettings")}
+            </Button>
           )}
-        </div>
-      </div>
 
-      <div className="space-y-6 lg:space-y-7">{children}</div>
-    </div>
+          <div className="space-y-3 rounded-card border border-card-border bg-card-bg p-card-padding">
+            <h1 className="text-heading leading-tight text-text-primary sm:text-display">
+              {title}
+            </h1>
+            {description && (
+              <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
+                {description}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-6 lg:space-y-7">{children}</div>
+      </div>
+    </SettingsFrame>
   );
 };
 

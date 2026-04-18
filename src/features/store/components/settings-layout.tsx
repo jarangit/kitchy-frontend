@@ -29,15 +29,16 @@ export function SettingsLayout({ storeId, children }: Props) {
         <SettingsNavChips storeId={storeId} />
       </div>
 
-      <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10 lg:gap-12">
-        {/* Desktop: flat sidebar */}
-        <aside className="hidden md:block md:w-[240px] md:shrink-0">
-          <div className="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto">
+      <div className="flex flex-col gap-6 md:flex-row md:gap-10 lg:gap-12">
+        {/* Desktop: flat sidebar — stretches with row so the inner sticky
+            element can travel the full scroll height of the content column. */}
+        <aside className="hidden md:block md:w-[240px] md:shrink-0 md:self-stretch">
+          <div className="sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto">
             <SettingsNavSidebar storeId={storeId} />
           </div>
         </aside>
 
-        <main className="min-w-0 flex-1 md:max-w-[680px]">{children}</main>
+        <main className="min-w-0 flex-1 md:max-w-[880px] lg:max-w-[960px]">{children}</main>
       </div>
     </div>
   );

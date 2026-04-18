@@ -4,6 +4,7 @@ export const enMessages = {
   "common.cancel": "Cancel",
   "common.save": "Save",
   "common.clear": "Clear",
+  "common.close": "Close",
 
   "settings.title": "Settings",
   "settings.description": "Manage products, categories, delivery apps, and display preferences for this store.",
@@ -155,6 +156,8 @@ export const enMessages = {
   "settings.products.costOptional": "Optional",
   "settings.products.isActive": "Active",
   "settings.products.isActiveDescription": "Available for sale on POS",
+  "settings.products.isBestSeller": "Best seller",
+  "settings.products.isBestSellerDescription": "Highlight this item on POS",
   "settings.products.image": "Product Image",
   "settings.products.imageHint": "PNG or JPG, up to 2MB",
   "settings.products.imageUpload": "Upload image",

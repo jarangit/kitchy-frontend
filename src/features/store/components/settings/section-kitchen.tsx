@@ -21,9 +21,9 @@ export function SectionKitchen() {
       <SettingGroup>
         <SettingRow
           variant="link"
-          icon={<LuShapes size={18} />}
-          label={t("settings.cp.kitchen.manage")}
-          onClick={() => navigate(`/store/${id}/settings/stations`)}
+          icon={<LuPackage size={18} />}
+          label={t("settings.cp.kitchen.products")}
+          onClick={() => navigate(`/store/${id}/settings/products`)}
         />
         <SettingRow
           variant="link"
@@ -33,9 +33,9 @@ export function SectionKitchen() {
         />
         <SettingRow
           variant="link"
-          icon={<LuPackage size={18} />}
-          label={t("settings.cp.kitchen.products")}
-          onClick={() => navigate(`/store/${id}/settings/products`)}
+          icon={<LuShapes size={18} />}
+          label={t("settings.cp.kitchen.manage")}
+          onClick={() => navigate(`/store/${id}/settings/stations`)}
         />
       </SettingGroup>
     </div>

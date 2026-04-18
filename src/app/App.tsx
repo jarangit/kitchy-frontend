@@ -120,14 +120,12 @@ function App() {
           }
         />
 
-        {/* Settings */}
+        {/* Settings — full-screen shell (no global Layout) */}
         <Route
           path="/store/:id/settings"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsPage />
-              </Layout>
+              <SettingsPage />
             </ProtectedRoute>
           }
         />
@@ -135,9 +133,7 @@ function App() {
           path="/store/:id/settings/products"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsProductsPage />
-              </Layout>
+              <SettingsProductsPage />
             </ProtectedRoute>
           }
         />
@@ -145,9 +141,7 @@ function App() {
           path="/store/:id/settings/stations"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsStationsPage />
-              </Layout>
+              <SettingsStationsPage />
             </ProtectedRoute>
           }
         />
@@ -155,9 +149,7 @@ function App() {
           path="/store/:id/settings/categories"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsCategoriesPage />
-              </Layout>
+              <SettingsCategoriesPage />
             </ProtectedRoute>
           }
         />
@@ -165,9 +157,7 @@ function App() {
           path="/store/:id/settings/shop"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsShopPage />
-              </Layout>
+              <SettingsShopPage />
             </ProtectedRoute>
           }
         />
@@ -175,9 +165,7 @@ function App() {
           path="/store/:id/settings/delivery"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsDeliveryPage />
-              </Layout>
+              <SettingsDeliveryPage />
             </ProtectedRoute>
           }
         />
@@ -185,9 +173,7 @@ function App() {
           path="/store/:id/settings/quick-notes"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsQuickNotesPage />
-              </Layout>
+              <SettingsQuickNotesPage />
             </ProtectedRoute>
           }
         />
@@ -196,9 +182,7 @@ function App() {
           path="/store/:id/settings/:section"
           element={
             <ProtectedRoute>
-              <Layout>
-                <SettingsPage />
-              </Layout>
+              <SettingsPage />
             </ProtectedRoute>
           }
         />

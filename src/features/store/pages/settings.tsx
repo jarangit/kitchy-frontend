@@ -1,4 +1,5 @@
 import { Navigate, useParams } from "react-router-dom";
+import { SettingsFrame } from "@/features/store/components/settings-frame";
 import { SettingsLayout } from "@/features/store/components/settings-layout";
 import { SectionStore } from "@/features/store/components/settings/section-store";
 import { SectionPayments } from "@/features/store/components/settings/section-payments";
@@ -18,7 +19,7 @@ const SECTIONS: Record<string, () => JSX.Element> = {
   system: SectionSystem,
 };
 
-const DEFAULT_SECTION = "store";
+const DEFAULT_SECTION = "kitchen";
 
 const SettingsPage = () => {
   const { id, section } = useParams<{ id: string; section?: string }>();
@@ -35,9 +36,11 @@ const SettingsPage = () => {
   }
 
   return (
-    <SettingsLayout storeId={id}>
-      <Section />
-    </SettingsLayout>
+    <SettingsFrame>
+      <SettingsLayout storeId={id}>
+        <Section />
+      </SettingsLayout>
+    </SettingsFrame>
   );
 };
 

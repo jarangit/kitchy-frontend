@@ -44,6 +44,7 @@ const emptyDefaults: ProductFormData = {
   price: 0,
   cost: undefined,
   isActive: true,
+  isBestSeller: false,
   imageUrl: undefined,
 };
 
@@ -98,6 +99,7 @@ const AddUpProductForm = ({
           ? undefined
           : Number(data.cost),
       isActive: data.isActive ?? true,
+      isBestSeller: data.isBestSeller ?? false,
       imageUrl: data.imageUrl || undefined,
     };
 
@@ -356,6 +358,28 @@ const AddUpProductForm = ({
                   checked={field.value ?? true}
                   onChange={(v) => field.onChange(v)}
                   label={t("settings.products.isActive")}
+                />
+              </div>
+            )}
+          />
+
+          <Controller
+            name="isBestSeller"
+            control={control}
+            render={({ field }) => (
+              <div className="flex items-center justify-between rounded-[var(--radius-md)] border border-border bg-surface-muted/40 px-4 py-3">
+                <div className="flex flex-col">
+                  <span className="text-body font-[var(--weight-medium)] text-text-primary">
+                    {t("settings.products.isBestSeller")}
+                  </span>
+                  <span className="text-label text-text-secondary">
+                    {t("settings.products.isBestSellerDescription")}
+                  </span>
+                </div>
+                <Toggle
+                  checked={field.value ?? false}
+                  onChange={(v) => field.onChange(v)}
+                  label={t("settings.products.isBestSeller")}
                 />
               </div>
             )}
