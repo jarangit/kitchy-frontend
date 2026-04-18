@@ -4,6 +4,7 @@ import loadingReducer from "./slices/loading-slice";
 import soundReducer from "./slices/notice-slice";
 import orderReducer from "./slices/order-slice";
 import currentStoreReducer from "./slices/current-store-slice";
+import currentStationReducer from "./slices/current-station-slice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     sound: soundReducer,
     orders: orderReducer,
     currentStore: currentStoreReducer,
+    currentStation: currentStationReducer,
   },
 });
 

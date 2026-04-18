@@ -5,6 +5,11 @@ import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
 import { setCurrentStoreId } from "@/shared/store/slices/current-store-slice";
+import {
+  clearCurrentStation,
+  setCurrentStation,
+} from "@/shared/store/slices/current-station-slice";
+import { useStationService } from "@/features/station/hooks/useStation";
 import { cn } from "@/shared/utils/cn";
 
 type Props = {
@@ -18,6 +23,10 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
   const dispatch = useAppDispatch();
   const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
+  const currentStationId = useAppSelector(
+    (state) => state.currentStation.stationId
+  );
+  const { stationsQuery } = useStationService({});
 
   const routeStoreId = storeId ?? id;
 
@@ -28,8 +37,26 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
   useEffect(() => {
     if (routeStoreId && currentStoreId !== routeStoreId) {
       dispatch(setCurrentStoreId(routeStoreId));
+      // store เปลี่ยน → reset current station ก่อน แล้วให้ effect ด้านล่าง set ใหม่
+      dispatch(clearCurrentStation());
     }
   }, [dispatch, routeStoreId, currentStoreId]);
+
+  useEffect(() => {
+    const stations = (stationsQuery ?? []) as Array<{
+      id: string;
+      name: string;
+    }>;
+    if (stations.length === 0) return;
+
+    const stillValid = stations.some((s) => s.id === currentStationId);
+    if (!currentStationId || !stillValid) {
+      const first = stations[0];
+      dispatch(
+        setCurrentStation({ stationId: first.id, stationName: first.name })
+      );
+    }
+  }, [dispatch, stationsQuery, currentStationId]);
 
   return (
     <div className="flex min-h-screen bg-bg text-text-primary">

@@ -3,6 +3,8 @@ export interface IMenu {
   name: string;
   isActive: boolean;
   price?: number;
+  cost?: number;
+  imageUrl?: string;
   categoryId?: string;
   categoryName?: string;
   stationId?: string;
@@ -19,6 +21,10 @@ export interface ProductFormData {
   name: string;
   stationId: string;
   categoryId?: string;
+  price: number;
+  cost?: number;
+  isActive: boolean;
+  imageUrl?: string;
 }
 
 export interface MenuFormData {

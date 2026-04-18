@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import type { ProductFormData } from "@/features/product/types/product.model";
 import {
@@ -11,9 +11,10 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Select } from "@/shared/components/ui/select";
-import { useStationService } from "@/features/station/hooks/useStation";
+import { Toggle } from "@/shared/components/ui/toggle";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
-import { LuPlus } from "react-icons/lu";
+import { useAppSelector } from "@/shared/hooks/hooks";
+import { LuPlus, LuImage, LuTrash2 } from "react-icons/lu";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 type Props = {
@@ -21,17 +22,29 @@ type Props = {
   defaultValues?: ProductFormData;
 };
 
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
+
+const fileToDataUrl = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+
 const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
   const { t } = useTranslation();
-  const [optionStation, setOptionStation] = useState<
-    { value: string; label: string }[]
-  >([]);
   const [optionCategory, setOptionCategory] = useState<
     { value: string; label: string }[]
   >([]);
-  const { stationsQuery } = useStationService({});
   const { categoriesQuery } = useCategoryService();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const stationId = useAppSelector(
+    (state) => state.currentStation.stationId
+  );
 
   const {
     register,
@@ -39,34 +52,47 @@ const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
     control,
     formState: { errors, isSubmitting },
     reset,
+    setValue,
+    watch,
   } = useForm<ProductFormData>({
     defaultValues: {
       name: "",
-      stationId: "",
+      stationId: stationId ?? "",
+      categoryId: undefined,
+      price: 0,
+      cost: undefined,
+      isActive: true,
+      imageUrl: undefined,
       ...defaultValues,
     },
   });
 
+  const imageUrl = watch("imageUrl");
+
   const onSubmit = (data: ProductFormData) => {
+    if (!stationId) {
+      return;
+    }
+
+    const payload: ProductFormData = {
+      ...data,
+      stationId,
+      price: Number(data.price) || 0,
+      cost:
+        data.cost === undefined || data.cost === null || Number.isNaN(Number(data.cost))
+          ? undefined
+          : Number(data.cost),
+      isActive: data.isActive ?? true,
+      imageUrl: data.imageUrl || undefined,
+    };
+
     if (onSubmitProp) {
-      onSubmitProp(data);
+      onSubmitProp(payload);
     }
 
-    // Reset form and close dialog after successful submission
     reset();
+    setImageError(null);
     setIsCreateDialogOpen(false);
-  };
-
-  const onCreateOptionStation = () => {
-    if (stationsQuery && stationsQuery.length > 0) {
-      const options = stationsQuery.map(
-        (station: { id: string; name: string }) => ({
-          value: station.id,
-          label: station.name,
-        })
-      );
-      setOptionStation(options);
-    }
   };
 
   const onCreateOptionCategory = () => {
@@ -81,13 +107,51 @@ const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
     }
   };
 
+  const handleImagePick = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow reselecting same file
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setImageError(t("settings.products.imageInvalidType"));
+      return;
+    }
+    if (file.size > MAX_IMAGE_SIZE) {
+      setImageError(t("settings.products.imageTooLarge"));
+      return;
+    }
+
+    try {
+      const dataUrl = await fileToDataUrl(file);
+      setValue("imageUrl", dataUrl, { shouldDirty: true });
+      setImageError(null);
+    } catch {
+      setImageError(t("settings.products.imageInvalidType"));
+    }
+  };
+
+  const handleImageRemove = () => {
+    setValue("imageUrl", undefined, { shouldDirty: true });
+    setImageError(null);
+  };
+
   useEffect(() => {
     if (defaultValues) {
-      reset(defaultValues);
+      reset({
+        ...defaultValues,
+        stationId: defaultValues.stationId || stationId || "",
+      });
     }
-    onCreateOptionStation();
     onCreateOptionCategory();
-  }, [defaultValues, reset, stationsQuery, categoriesQuery]);
+  }, [defaultValues, reset, categoriesQuery, stationId]);
+
+  useEffect(() => {
+    if (stationId) {
+      setValue("stationId", stationId);
+    }
+  }, [stationId, setValue]);
 
   return (
     <>
@@ -101,7 +165,10 @@ const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
 
       <Dialog
         open={isCreateDialogOpen}
-        onClose={() => setIsCreateDialogOpen(false)}
+        onClose={() => {
+          setIsCreateDialogOpen(false);
+          setImageError(null);
+        }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <DialogHeader>
@@ -112,6 +179,77 @@ const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
           </DialogHeader>
 
           <div className="space-y-4">
+            {/* Image uploader */}
+            <Controller
+              name="imageUrl"
+              control={control}
+              render={() => (
+                <div className="space-y-2">
+                  <label className="text-label font-[var(--weight-medium)] text-text-primary">
+                    {t("settings.products.image")}
+                  </label>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImagePick}
+                  />
+
+                  {imageUrl ? (
+                    <div className="flex items-center gap-4 rounded-[var(--radius-md)] border border-border bg-surface-muted/40 p-3">
+                      <img
+                        src={imageUrl}
+                        alt="Product preview"
+                        className="h-20 w-20 rounded-[var(--radius-sm)] object-cover"
+                      />
+                      <div className="flex flex-1 flex-col gap-2">
+                        <span className="text-label text-text-secondary">
+                          {t("settings.products.imageHint")}
+                        </span>
+                        <div className="flex gap-2">
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => fileInputRef.current?.click()}
+                          >
+                            {t("settings.products.imageReplace")}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={handleImageRemove}
+                          >
+                            <LuTrash2 className="w-4 h-4" />
+                            {t("settings.products.imageRemove")}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex w-full flex-col items-center justify-center gap-2 rounded-[var(--radius-md)] border border-dashed border-border bg-surface-muted/40 px-4 py-8 text-text-secondary transition-colors hover:bg-surface-muted/70 hover:text-text-primary"
+                    >
+                      <LuImage className="h-8 w-8" />
+                      <span className="text-body font-[var(--weight-medium)]">
+                        {t("settings.products.imageUpload")}
+                      </span>
+                      <span className="text-label">
+                        {t("settings.products.imageHint")}
+                      </span>
+                    </button>
+                  )}
+
+                  {imageError && (
+                    <p className="text-danger text-label">{imageError}</p>
+                  )}
+                </div>
+              )}
+            />
+
             <Input
               id="product-name"
               label={t("settings.products.productName")}
@@ -126,30 +264,42 @@ const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
               })}
             />
 
-            <Controller
-              name="stationId"
-              control={control}
-              rules={{ required: t("settings.products.stationRequired") }}
-              render={({ field }) => (
-                <div>
-                  <Select
-                    id="product-station"
-                    label={t("settings.products.station")}
-                    options={optionStation}
-                    placeholder={t("settings.products.stationPlaceholder")}
-                    value={field.value}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                  />
-                  {errors.stationId && (
-                    <p className="text-danger text-label mt-1">
-                      {errors.stationId.message}
-                    </p>
-                  )}
-                </div>
-              )}
-            />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Input
+                id="product-price"
+                type="number"
+                step="0.01"
+                min="0"
+                label={t("settings.products.price")}
+                placeholder={t("settings.products.pricePlaceholder")}
+                error={errors.price?.message}
+                {...register("price", {
+                  required: t("settings.products.priceRequired"),
+                  valueAsNumber: true,
+                  min: {
+                    value: 0,
+                    message: t("settings.products.priceMin"),
+                  },
+                })}
+              />
+
+              <Input
+                id="product-cost"
+                type="number"
+                step="0.01"
+                min="0"
+                label={`${t("settings.products.cost")} (${t("settings.products.costOptional")})`}
+                placeholder={t("settings.products.costPlaceholder")}
+                error={errors.cost?.message}
+                {...register("cost", {
+                  valueAsNumber: true,
+                  min: {
+                    value: 0,
+                    message: t("settings.products.costMin"),
+                  },
+                })}
+              />
+            </div>
 
             <Controller
               name="categoryId"
@@ -167,17 +317,48 @@ const AddUpProductForm = ({ onSubmit: onSubmitProp, defaultValues }: Props) => {
                 />
               )}
             />
+
+            <Controller
+              name="isActive"
+              control={control}
+              render={({ field }) => (
+                <div className="flex items-center justify-between rounded-[var(--radius-md)] border border-border bg-surface-muted/40 px-4 py-3">
+                  <div className="flex flex-col">
+                    <span className="text-body font-[var(--weight-medium)] text-text-primary">
+                      {t("settings.products.isActive")}
+                    </span>
+                    <span className="text-label text-text-secondary">
+                      {t("settings.products.isActiveDescription")}
+                    </span>
+                  </div>
+                  <Toggle
+                    checked={field.value ?? true}
+                    onChange={(v) => field.onChange(v)}
+                    label={t("settings.products.isActive")}
+                  />
+                </div>
+              )}
+            />
+
+            {!stationId && (
+              <p className="text-danger text-label">
+                {t("settings.products.stationMissing")}
+              </p>
+            )}
           </div>
 
           <DialogFooter>
             <Button
               type="button"
               variant="secondary"
-              onClick={() => setIsCreateDialogOpen(false)}
+              onClick={() => {
+                setIsCreateDialogOpen(false);
+                setImageError(null);
+              }}
             >
               {t("common.cancel")}
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting || !stationId}>
               {isSubmitting ? t("settings.products.creating") : t("settings.products.create")}
             </Button>
           </DialogFooter>
