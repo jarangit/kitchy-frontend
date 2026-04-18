@@ -136,7 +136,7 @@ const PosHeader = ({
               >
                 <LuShoppingCart size={20} className="text-text-primary" />
                 {cartItemCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-caption font-semibold text-white tabular-nums">
+                  <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1 text-caption font-semibold text-on-accent tabular-nums">
                     {cartItemCount}
                   </span>
                 )}

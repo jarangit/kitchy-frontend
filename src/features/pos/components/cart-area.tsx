@@ -141,7 +141,7 @@ const CartArea = ({
         <div className="flex items-center gap-3">
           <h2 className="text-title text-text-primary">{t("pos.cart.title")}</h2>
           {totalItems > 0 && (
-            <span className="inline-flex min-w-6 h-6 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-white tabular-nums">
+            <span className="inline-flex min-w-6 h-6 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent tabular-nums">
               {totalItems}
             </span>
           )}

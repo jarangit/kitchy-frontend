@@ -48,40 +48,47 @@
 
 /* ── Semantic Colors: Dark Mode ── */
 [data-theme="dark"] {
-  --color-bg: #1D1D1F;
-  --color-surface: #2C2C2E;
-  --color-surface-hover: #3A3A3C;
+  /* Surfaces — 3-tier depth: sidebar < bg < surface < surface-hover */
+  --color-bg: #141416;
+  --color-surface: #1F1F21;
+  --color-surface-hover: #2A2A2C;
   --color-overlay: rgba(0, 0, 0, 0.65);
 
   --color-text-primary: #F5F5F7;
   --color-text-secondary: #AEAEB2;
   --color-text-tertiary: #86868B;
-  --color-text-inverse: #1D1D1F;
+  /* Text on primary surfaces (button-primary, chip-active, etc.) stays light
+     because dark-mode primary is a mid-gray, not near-white. */
+  --color-text-inverse: #F5F5F7;
 
   --color-border: #48484A;
   --color-border-hover: #636366;
 
-  --color-primary: #F5F5F7;
-  --color-primary-hover: #E5E5EA;
-  --color-primary-bg: rgba(245, 245, 247, 0.1);
+  /* Primary — mid-gray in dark mode (not near-white) so active states
+     don't read as jarring white blocks on dark bg. */
+  --color-primary: #3A3A3C;
+  --color-primary-hover: #48484A;
+  --color-primary-bg: rgba(58, 58, 60, 0.32);
 
   /* Accent — brighter coral for dark surfaces */
   --color-accent: #FF5C85;
   --color-accent-hover: #FF7A9C;
-  --color-accent-bg: rgba(255, 92, 133, 0.16);
+  --color-accent-bg: rgba(255, 92, 133, 0.24);
   --color-accent-border: rgba(255, 92, 133, 0.40);
-  --color-accent-text: #FF7A9C;
+  --color-accent-text: #FFB3C6;
 
-  --color-success: #4ade80;
-  --color-danger: #f87171;
-  --color-danger-hover: #ef4444;
-  --color-warning: #fbbf24;
-  --color-info: #60a5fa;
+  /* Status — mid-500 shades: saturated enough to not wash out to white
+     on dark surfaces, bright enough to read on alpha-tinted backgrounds. */
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
 
-  --color-success-bg: rgba(74, 222, 128, 0.14);
-  --color-danger-bg: rgba(248, 113, 113, 0.14);
-  --color-warning-bg: rgba(251, 191, 36, 0.14);
-  --color-info-bg: rgba(96, 165, 250, 0.14);
+  --color-success-bg: rgba(34, 197, 94, 0.22);
+  --color-danger-bg: rgba(239, 68, 68, 0.22);
+  --color-warning-bg: rgba(245, 158, 11, 0.22);
+  --color-info-bg: rgba(59, 130, 246, 0.22);
 }
 
 /* ── Semantic Typography ── */

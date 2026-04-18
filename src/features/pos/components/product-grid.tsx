@@ -70,7 +70,7 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
             )}
           >
             {isSelected && (
-              <span className="absolute right-2 top-2 inline-flex min-h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1.5 text-caption font-semibold text-white tabular-nums">
+              <span className="absolute right-2 top-2 inline-flex min-h-6 min-w-6 items-center justify-center rounded-full bg-accent px-1.5 text-caption font-semibold text-on-accent tabular-nums">
                 {quantity}
               </span>
             )}

@@ -95,7 +95,7 @@
   --color-badge-accent-text: var(--color-accent-text);
 
   /* ── ChipTab ── */
-  --color-chip-active-bg: var(--color-text-primary);
+  --color-chip-active-bg: var(--color-primary);
   --color-chip-active-text: var(--color-text-inverse);
   --color-chip-inactive-bg: var(--color-surface);
   --color-chip-inactive-text: var(--color-text-secondary);
@@ -141,6 +141,11 @@
   --font-weight-dialog-title: var(--weight-semibold);
   --font-size-dialog-desc: var(--text-body-sm-size);
 
+  /* ── Accent surface text ── */
+  /* Text color used on top of --color-accent backgrounds (badges, pills).
+     Accent is dark-coral in both themes, so white is readable in both. */
+  --color-on-accent: #FFFFFF;
+
   /* ── Sidebar ── */
   --color-sidebar-bg: color-mix(in srgb, var(--color-bg) 88%, white);
   --color-sidebar-border: var(--color-border);
@@ -169,9 +174,25 @@
 [data-theme="dark"] {
   --color-card-border: var(--color-border);
   --color-dialog-border: var(--color-border);
-  --color-sidebar-active-bg: rgba(245, 245, 247, 0.1);
+  --color-sidebar-bg: #0F0F11;
+  --color-sidebar-active-bg: var(--color-surface-hover);
   --color-button-secondary-bg: var(--color-surface);
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-dialog-bg: var(--color-surface);
-  --color-skeleton-bg: var(--color-surface);
+  --color-skeleton-bg: var(--color-surface-hover);
+  /* Toggle knob becomes surface-hover so it stays visible against both
+     the track (border gray) and the active fill (mid-gray primary). */
+  --color-toggle-knob: #F5F5F7;
+  /* Badge default needs to stand out from both bg (#141416) and
+     surface (#1F1F21); use border gray for a visible pill. */
+  --color-badge-default-bg: #3A3A3C;
+  --color-badge-default-text: var(--color-text-primary);
+  /* Badge text on alpha-tinted status backgrounds: use lighter, saturated
+     tones (status-300) so the text reads as clearly "colored" (warm/green/red/blue)
+     rather than washing out to near-white against the dark page. */
+  --color-badge-success-text: #86efac;
+  --color-badge-danger-text: #fca5a5;
+  --color-badge-warning-text: #fcd34d;
+  --color-badge-info-text: #93c5fd;
+  --color-badge-accent-text: #FFB3C6;
 }
