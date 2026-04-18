@@ -1,17 +1,22 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { format, formatDistanceToNow, parseISO } from "date-fns";
+import { LuReceipt } from "react-icons/lu";
 import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
-import TransactionCard, {
-  type FlowStatus,
-} from "@/features/transaction/components/transaction-card";
+import { type FlowStatus } from "@/features/transaction/components/transaction-card";
 import TransactionFilter, {
   type TransactionFilterStatus,
 } from "@/features/transaction/components/transaction-filter";
 import { PageHeader } from "@/shared/components/ui/page-header";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { Badge } from "@/shared/components/ui/badge";
+import {
+  DataTable,
+  DataTableColumnHeader,
+  type DataTableColumn,
+  type SortingState,
+} from "@/shared/components/ui/data-table";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { LuReceipt } from "react-icons/lu";
 
 interface TransactionProduct {
   name?: string;
@@ -44,25 +49,25 @@ const matchesStatusFilter = (
   return getFlowStatus(status) === filterStatus;
 };
 
-type TimelineBucket = "today" | "yesterday" | "earlier";
+const formatCurrency = (value: number) =>
+  `฿${new Intl.NumberFormat("th-TH", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value)}`;
 
-const startOfDay = (date: Date) =>
-  new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
-
-const getBucket = (createdAt: string, now: Date): TimelineBucket => {
-  const today = startOfDay(now);
-  const yesterday = today - 86400000;
-  const ts = startOfDay(new Date(createdAt));
-  if (ts === today) return "today";
-  if (ts === yesterday) return "yesterday";
-  return "earlier";
-};
-
-const BUCKET_ORDER: TimelineBucket[] = ["today", "yesterday", "earlier"];
-const BUCKET_LABEL_KEY: Record<TimelineBucket, `transaction.list.timeline.${TimelineBucket}`> = {
-  today: "transaction.list.timeline.today",
-  yesterday: "transaction.list.timeline.yesterday",
-  earlier: "transaction.list.timeline.earlier",
+const flowVariant = (
+  flow: FlowStatus,
+): "default" | "success" | "warning" | "danger" => {
+  switch (flow) {
+    case "DONE":
+      return "success";
+    case "IN_PROGRESS":
+      return "warning";
+    case "CANCELLED":
+      return "danger";
+    default:
+      return "default";
+  }
 };
 
 const TransactionListPage = () => {
@@ -70,14 +75,16 @@ const TransactionListPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { transactions, isLoading, updateTransaction, isUpdating } =
-    useTransactionService();
+  const { transactions, isLoading } = useTransactionService();
 
   const [filter, setFilter] = useState<{
     search: string;
     status: TransactionFilterStatus;
   }>({ search: "", status: "ALL" });
-  const [pendingId, setPendingId] = useState<string | null>(null);
+
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "createdAt", desc: true },
+  ]);
 
   const allTransactions = useMemo(
     () => (transactions as TransactionListItem[] | undefined) ?? [],
@@ -112,52 +119,114 @@ const TransactionListPage = () => {
     });
   }, [allTransactions, filter]);
 
-  const grouped = useMemo(() => {
-    const now = new Date();
-    const map: Record<TimelineBucket, TransactionListItem[]> = {
-      today: [],
-      yesterday: [],
-      earlier: [],
-    };
-    for (const tx of filteredTransactions) {
-      map[getBucket(tx.createdAt, now)].push(tx);
-    }
-    for (const key of BUCKET_ORDER) {
-      map[key].sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      );
-    }
-    return map;
-  }, [filteredTransactions]);
-
-  const handleQuickAction = async (
-    tx: TransactionListItem,
-    action: "READY" | "CANCELLED",
-  ) => {
-    setPendingId(tx.id);
-    try {
-      await updateTransaction({
-        id: tx.id,
-        payload: { status: action },
-      });
-    } finally {
-      setPendingId(null);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="space-y-8">
-        <div className="h-8 w-48 skeleton-shimmer rounded-card" />
-        <div className="space-y-4">
-          <SkeletonCard />
-          <SkeletonCard />
-          <SkeletonCard />
-        </div>
-      </div>
-    );
-  }
+  const columns: DataTableColumn<TransactionListItem>[] = useMemo(
+    () => [
+      {
+        id: "orderNumber",
+        accessorFn: (tx) => tx.orderNumber,
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("transaction.list.col.orderNumber")}
+          />
+        ),
+        cell: ({ row }) => (
+          <span className="text-body font-[var(--weight-medium)] text-text-primary">
+            #{row.original.orderNumber}
+          </span>
+        ),
+      },
+      {
+        id: "status",
+        accessorFn: (tx) => getFlowStatus(tx.status),
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("transaction.list.col.status")}
+          />
+        ),
+        cell: ({ row }) => {
+          const flow = getFlowStatus(row.original.status);
+          return (
+            <Badge variant={flowVariant(flow)}>
+              {t(
+                flow === "DONE"
+                  ? "transaction.filter.done"
+                  : flow === "IN_PROGRESS"
+                    ? "transaction.filter.inProgress"
+                    : "transaction.filter.cancelled",
+              )}
+            </Badge>
+          );
+        },
+      },
+      {
+        id: "createdAt",
+        accessorFn: (tx) => new Date(tx.createdAt).getTime(),
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("transaction.list.col.createdAt")}
+          />
+        ),
+        meta: { hideBelow: "sm" },
+        cell: ({ row }) => {
+          const date = parseISO(row.original.createdAt);
+          return (
+            <div className="flex flex-col">
+              <span className="text-body-sm text-text-primary">
+                {formatDistanceToNow(date, { addSuffix: true })}
+              </span>
+              <span className="text-label text-text-tertiary">
+                {format(date, "d MMM yyyy, HH:mm")}
+              </span>
+            </div>
+          );
+        },
+      },
+      {
+        id: "items",
+        header: () => <span>{t("transaction.list.col.items")}</span>,
+        enableSorting: false,
+        meta: { hideBelow: "md" },
+        cell: ({ row }) => {
+          const items = row.original.products ?? [];
+          const totalQty = items.reduce((sum, p) => sum + (p.quantity ?? 0), 0);
+          const first = items[0]?.name;
+          return (
+            <span className="text-body-sm text-text-secondary">
+              {first
+                ? items.length > 1
+                  ? `${first} +${items.length - 1}`
+                  : first
+                : "—"}
+              {totalQty > 0 && (
+                <span className="ml-1 text-text-tertiary">×{totalQty}</span>
+              )}
+            </span>
+          );
+        },
+      },
+      {
+        id: "total",
+        accessorFn: (tx) => tx.totalAmount ?? 0,
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("transaction.list.col.total")}
+            align="right"
+          />
+        ),
+        meta: { align: "right", className: "tabular-nums w-32" },
+        cell: ({ row }) => (
+          <span className="text-body font-[var(--weight-medium)] text-text-primary">
+            {formatCurrency(row.original.totalAmount ?? 0)}
+          </span>
+        ),
+      },
+    ],
+    [t],
+  );
 
   const hasAny = filteredTransactions.length > 0;
 
@@ -170,7 +239,7 @@ const TransactionListPage = () => {
 
       <TransactionFilter counts={counts} onFilterChange={setFilter} />
 
-      {!hasAny ? (
+      {!isLoading && !hasAny ? (
         <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
           <EmptyState
             icon={<LuReceipt size={32} />}
@@ -179,41 +248,18 @@ const TransactionListPage = () => {
           />
         </div>
       ) : (
-        <div className="space-y-6">
-          {BUCKET_ORDER.filter((bucket) => grouped[bucket].length > 0).map(
-            (bucket) => {
-              const items = grouped[bucket];
-              return (
-                <section key={bucket} className="space-y-2">
-                  <h2 className="px-1 text-caption font-semibold uppercase tracking-wider text-text-tertiary">
-                    {t(BUCKET_LABEL_KEY[bucket])}
-                  </h2>
-                  <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
-                    {items.map((tx, index) => {
-                      const flowStatus = getFlowStatus(tx.status);
-                      return (
-                        <TransactionCard
-                          key={tx.id}
-                          order={tx}
-                          flowStatus={flowStatus}
-                          isLast={index === items.length - 1}
-                          isPending={pendingId === tx.id && isUpdating}
-                          onClick={() =>
-                            navigate(`/store/${id}/transactions/${tx.id}`)
-                          }
-                          onQuickAction={
-                            flowStatus === "IN_PROGRESS"
-                              ? (action) => handleQuickAction(tx, action)
-                              : undefined
-                          }
-                        />
-                      );
-                    })}
-                  </div>
-                </section>
-              );
-            },
-          )}
+        <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
+          <DataTable<TransactionListItem>
+            data={filteredTransactions}
+            columns={columns}
+            sorting={sorting}
+            onSortingChange={setSorting}
+            onRowClick={(row) =>
+              navigate(`/store/${id}/transactions/${row.id}`)
+            }
+            getRowId={(row) => row.id}
+            isLoading={isLoading}
+          />
         </div>
       )}
     </div>

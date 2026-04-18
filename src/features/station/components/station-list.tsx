@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AddUpStationForm from "@/features/station/components/add-up-station";
 import { useStationService } from "@/features/station/hooks/useStation";
-import { StationCard } from "@/features/station/components/station-card";
+import {
+  StationTable,
+  type StationRow,
+} from "@/features/station/components/station-table";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { SettingsSectionCard } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { SortingState } from "@/shared/components/ui/data-table";
 
 const StationListTemplate = () => {
   const { t } = useTranslation();
@@ -13,6 +17,9 @@ const StationListTemplate = () => {
     name: string;
     id: string;
   }>();
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "name", desc: false },
+  ]);
   const {
     stationsQuery,
     createMutation,
@@ -20,22 +27,47 @@ const StationListTemplate = () => {
     stationsQueryIsLoading,
     deleteMutation,
   } = useStationService({});
+
   const onSubmitStation = (data: { name: string; color?: string }) => {
-    if (!storeId) {
-      return;
-    }
+    if (!storeId) return;
 
     if (stationSelected) {
       updateMutation.mutate({
-      stationId: stationSelected.id,
+        stationId: stationSelected.id,
         stationData: { ...data },
       });
       setStationSelected(undefined);
       return;
     }
-    createMutation.mutate({
-      ...data,
-    });
+    createMutation.mutate({ ...data });
+  };
+
+  const rows: StationRow[] = useMemo(
+    () =>
+      (stationsQuery ?? []).map(
+        (s: {
+          id: string;
+          name: string;
+          color: string;
+          activeOrders?: number;
+        }) => ({
+          id: s.id,
+          name: s.name,
+          color: s.color,
+          activeOrders: s.activeOrders ?? 0,
+        }),
+      ),
+    [stationsQuery],
+  );
+
+  const handleEdit = (id: string) => {
+    const station = rows.find((s) => s.id === id);
+    if (!station) return;
+    setStationSelected({ id: station.id, name: station.name });
+  };
+
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate(id);
   };
 
   if (!storeId) {
@@ -44,10 +76,6 @@ const StationListTemplate = () => {
         {t("settings.categories.missingStore")}
       </div>
     );
-  }
-
-  if (stationsQueryIsLoading) {
-    return <div>{t("settings.categories.loading")}</div>;
   }
 
   return (
@@ -64,35 +92,19 @@ const StationListTemplate = () => {
           />
         }
       >
-        <div>
-          {stationsQuery && stationsQuery?.length > 0 ? (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-              {stationsQuery.map((item: { id: string; name: string; color: string; activeOrders: number }) => (
-                <div key={item.id}>
-                  <StationCard
-                    id={item.id}
-                    name={item.name}
-                    color={item.color}
-                    activeOrders={item.activeOrders}
-                    completedToday={0}
-                    displaySettings={{
-                      cardColor: "",
-                      textSize: "large",
-                      soundEnabled: false,
-                    }}
-                    onDelete={(stationId: string) => {
-                      deleteMutation.mutate(stationId);
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-body-sm text-text-secondary">
+        <StationTable
+          stations={rows}
+          sorting={sorting}
+          onSortingChange={setSorting}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          isLoading={stationsQueryIsLoading}
+          emptyState={
+            <span className="text-body-sm text-text-secondary">
               {t("settings.categories.noStations")}
-            </div>
-          )}
-        </div>
+            </span>
+          }
+        />
       </SettingsSectionCard>
     </div>
   );

@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/shared/components/ui/card";
+import { Card } from "@/shared/components/ui/card";
 import { Button } from "@/shared/components/ui/button";
-import { Badge } from "@/shared/components/ui/badge";
-import { LuPencil, LuTrash2 } from "react-icons/lu";
+import { Toggle } from "@/shared/components/ui/toggle";
+import { LuImage, LuPencil, LuTrash2 } from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
@@ -10,10 +10,14 @@ interface ProductCardProps {
   name: string;
   isActive: boolean;
   price?: number;
+  cost?: number;
+  imageUrl?: string;
   categoryName?: string;
   stationName?: string;
+  isToggling?: boolean;
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
+  onToggleActive?: (id: string, next: boolean) => void;
   className?: string;
 }
 
@@ -30,42 +34,87 @@ export function ProductCard({
   name,
   isActive,
   price,
+  imageUrl,
   categoryName,
   stationName,
+  isToggling = false,
   onEdit,
   onDelete,
+  onToggleActive,
   className = "",
 }: ProductCardProps) {
   const { t } = useTranslation();
   const hasActions = Boolean(onEdit || onDelete);
 
   return (
-    <Card className={cn("flex flex-col", !isActive && "opacity-70", className)}>
-      <CardContent className="flex flex-1 flex-col gap-4 p-card-padding">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <h3 className="text-subtitle text-text-primary truncate">{name}</h3>
-            <p className="text-body-sm text-text-secondary mt-1 truncate">
-              {categoryName ?? t("settings.products.noCategory")}
-              {stationName ? ` · ${stationName}` : ""}
-            </p>
+    <Card
+      className={cn(
+        "flex flex-col overflow-hidden p-0",
+        !isActive && "opacity-80",
+        className,
+      )}
+    >
+      {/* Thumbnail 16:9 */}
+      <div
+        className={cn(
+          "relative w-full aspect-video bg-surface-muted overflow-hidden",
+          !isActive && "grayscale",
+        )}
+      >
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-text-tertiary">
+            <LuImage size={32} />
           </div>
-          <Badge variant={isActive ? "success" : "default"}>
-            {isActive
-              ? t("settings.products.active")
-              : t("settings.products.inactive")}
-          </Badge>
+        )}
+      </div>
+
+      {/* Body */}
+      <div className="flex flex-1 flex-col gap-3 p-card-padding">
+        <div className="min-w-0 flex-1">
+          <h3 className="text-subtitle text-text-primary truncate">{name}</h3>
+          <p className="text-body-sm text-text-secondary mt-1 truncate">
+            {categoryName ?? t("settings.products.noCategory")}
+            {stationName ? ` · ${stationName}` : ""}
+          </p>
         </div>
 
-        <div className="mt-auto flex items-end justify-between gap-3">
-          <span
-            className={cn(
-              "text-title tabular-nums",
-              price == null ? "text-text-tertiary text-body-sm" : "text-text-primary",
-            )}
-          >
-            {price == null ? t("settings.products.noPrice") : formatPrice(price)}
-          </span>
+        <span
+          className={cn(
+            "text-title tabular-nums",
+            price == null
+              ? "text-text-tertiary text-body-sm"
+              : "text-text-primary",
+          )}
+        >
+          {price == null ? t("settings.products.noPrice") : formatPrice(price)}
+        </span>
+
+        {/* Footer: Toggle + Actions */}
+        <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
+          {onToggleActive ? (
+            <Toggle
+              checked={isActive}
+              onChange={(next) => onToggleActive(id, next)}
+              disabled={isToggling}
+              label={
+                isActive
+                  ? t("settings.products.active")
+                  : t("settings.products.inactive")
+              }
+            />
+          ) : (
+            <span className="text-label text-text-secondary">
+              {isActive
+                ? t("settings.products.active")
+                : t("settings.products.inactive")}
+            </span>
+          )}
 
           {hasActions && (
             <div className="flex items-center gap-1">
@@ -92,7 +141,7 @@ export function ProductCard({
             </div>
           )}
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }

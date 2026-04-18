@@ -77,7 +77,36 @@ export function useProductService(selectedCategoryId?: string) {
       productId: string;
       data: UpdateProductRequest;
     }) => productApiService.updateProduct(productId, data),
-    onSuccess: () => {
+    onMutate: async ({ productId, data }) => {
+      await queryClient.cancelQueries({ queryKey: ["products", storeId] });
+      const previous = queryClient.getQueryData(["products", storeId]);
+
+      // raw cached response shape: { data: { data: IMenu[] } }
+      queryClient.setQueryData(["products", storeId], (old: unknown) => {
+        if (!old || typeof old !== "object") return old;
+        const response = old as {
+          data?: { data?: IMenu[] | unknown };
+        };
+        const list = response.data?.data;
+        if (!Array.isArray(list)) return old;
+
+        const nextList = (list as IMenu[]).map((p) =>
+          p.id === productId ? { ...p, ...data } : p
+        );
+        return {
+          ...response,
+          data: { ...response.data, data: nextList },
+        };
+      });
+
+      return { previous };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.previous !== undefined) {
+        queryClient.setQueryData(["products", storeId], ctx.previous);
+      }
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ["products", storeId],
       });

@@ -1,45 +1,99 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LuShapes } from "react-icons/lu";
+import { LuPlus, LuShapes } from "react-icons/lu";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
-import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
+import AddUpCategoryForm, {
+  type CategoryFormData,
+  type CategoryFormMode,
+} from "@/features/category/components/add-up-category";
+import { CategoryTable } from "@/features/category/components/category-table";
+import {
+  SettingsSectionCard,
+  SettingsShell,
+} from "@/features/store/components/settings-shell";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
-import { Card } from "@/shared/components/ui/card";
-import { Toggle } from "@/shared/components/ui/toggle";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { SortingState } from "@/shared/components/ui/data-table";
+import type { CategoryModel } from "@/features/category/types/category.model";
 
 const SettingsCategoriesPage = () => {
   const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const resolvedStoreId = id ?? storeId;
-  const { categoriesQuery, categoriesQueryLoading, createCategoryMutation } =
-    useCategoryService();
-  const [categoryName, setCategoryName] = useState("");
-  const [sortOrder, setSortOrder] = useState("0");
-  const [isActive, setIsActive] = useState(true);
+  const {
+    categoriesQuery,
+    categoriesQueryLoading,
+    createCategoryMutation,
+    updateCategoryMutation,
+    deleteCategoryMutation,
+  } = useCategoryService();
 
-  const handleCreateCategory = () => {
-    const name = categoryName.trim();
-    if (!name) return;
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formMode, setFormMode] = useState<CategoryFormMode>("create");
+  const [editingCategory, setEditingCategory] = useState<CategoryModel | null>(
+    null,
+  );
+  const [sorting, setSorting] = useState<SortingState>([
+    { id: "sortOrder", desc: false },
+  ]);
 
-    createCategoryMutation.mutate(
-      {
-        name,
-        isActive,
-        sortOrder: Number(sortOrder) || 0,
-      },
-      {
-        onSuccess: () => {
-          setCategoryName("");
-          setSortOrder("0");
-          setIsActive(true);
-        },
-      }
-    );
+  const openCreate = () => {
+    setEditingCategory(null);
+    setFormMode("create");
+    setIsFormOpen(true);
   };
+
+  const openEdit = (id: string) => {
+    const category = categoriesQuery.find((c) => c.id === id);
+    if (!category) return;
+    setEditingCategory(category);
+    setFormMode("edit");
+    setIsFormOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsFormOpen(false);
+    setEditingCategory(null);
+  };
+
+  const handleSubmit = (data: CategoryFormData) => {
+    if (formMode === "edit" && editingCategory) {
+      updateCategoryMutation.mutate(
+        { categoryId: editingCategory.id, data },
+        { onSuccess: () => handleClose() },
+      );
+      return;
+    }
+    createCategoryMutation.mutate(data, {
+      onSuccess: () => handleClose(),
+    });
+  };
+
+  const handleToggleActive = (id: string, next: boolean) => {
+    updateCategoryMutation.mutate({ categoryId: id, data: { isActive: next } });
+  };
+
+  const handleDelete = (id: string) => {
+    deleteCategoryMutation.mutate(id);
+  };
+
+  const togglingId =
+    updateCategoryMutation.isPending && updateCategoryMutation.variables
+      ? updateCategoryMutation.variables.categoryId
+      : null;
+
+  const editingDefaults: CategoryFormData | undefined = editingCategory
+    ? {
+        name: editingCategory.name,
+        sortOrder: editingCategory.sortOrder,
+        isActive: editingCategory.isActive,
+      }
+    : undefined;
+
+  const isSubmitting =
+    createCategoryMutation.isPending || updateCategoryMutation.isPending;
 
   return (
     <SettingsShell
@@ -50,85 +104,41 @@ const SettingsCategoriesPage = () => {
       <SettingsSectionCard
         title={t("settings.categories.featureTitle")}
         description={t("settings.categories.featureDescription")}
+        action={
+          <Button onClick={openCreate}>
+            <LuPlus className="h-4 w-4" />
+            {t("settings.categories.addCategory")}
+          </Button>
+        }
       >
-        <div className="space-y-6">
-          <Card className="bg-bg p-5 sm:p-6">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <Input
-                label="Category Name"
-                value={categoryName}
-                onChange={(e) => setCategoryName(e.target.value)}
-                placeholder="e.g., Beverages"
-              />
-
-              <Input
-                label="Sort Order"
-                type="number"
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-                placeholder="0"
-              />
-            </div>
-
-            <div className="mt-4 flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <span className="text-label text-text-secondary">
-                  Active
-                </span>
-                <Toggle
-                  checked={isActive}
-                  onChange={(checked) => setIsActive(checked)}
-                  label="Toggle active"
-                />
-              </div>
-
-              <Button
-                onClick={handleCreateCategory}
-                disabled={
-                  categoryName.trim().length === 0 || createCategoryMutation.isPending
-                }
-                className="h-11"
-              >
-                {createCategoryMutation.isPending ? "Creating..." : "Create Category"}
-              </Button>
-            </div>
-          </Card>
-
-          {categoriesQueryLoading ? (
-            <div className="text-label text-text-secondary">
-              {t("settings.categories.loading")}
-            </div>
-          ) : categoriesQuery.length > 0 ? (
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-              {categoriesQuery.map((category) => (
-                <Card
-                  key={category.id}
-                  className="bg-bg px-5 py-4"
-                >
-                  <div className="font-[var(--weight-semibold)] text-text-primary">
-                    {category.name}
-                  </div>
-                  <div className="mt-1 text-label text-text-secondary">
-                    Sort: {category.sortOrder}
-                  </div>
-                  <div className="mt-1 text-label text-text-secondary">
-                    {category.isActive ? "Active" : "Inactive"}
-                  </div>
-                  <div className="mt-1 text-label text-text-secondary">
-                    ID: {category.id}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              icon={<LuShapes size={32} />}
-              title={t("settings.categories.emptyTitle")}
-              description={t("settings.categories.emptyDescription")}
-            />
-          )}
-        </div>
+        {categoriesQuery.length === 0 && !categoriesQueryLoading ? (
+          <EmptyState
+            icon={<LuShapes size={32} />}
+            title={t("settings.categories.emptyTitle")}
+            description={t("settings.categories.emptyDescription")}
+          />
+        ) : (
+          <CategoryTable
+            categories={categoriesQuery}
+            sorting={sorting}
+            onSortingChange={setSorting}
+            togglingId={togglingId}
+            onEdit={openEdit}
+            onDelete={handleDelete}
+            onToggleActive={handleToggleActive}
+            isLoading={categoriesQueryLoading}
+          />
+        )}
       </SettingsSectionCard>
+
+      <AddUpCategoryForm
+        open={isFormOpen}
+        onClose={handleClose}
+        mode={formMode}
+        defaultValues={editingDefaults}
+        onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+      />
     </SettingsShell>
   );
 };

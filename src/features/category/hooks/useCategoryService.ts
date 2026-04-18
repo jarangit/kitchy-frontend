@@ -4,6 +4,7 @@ import { categoryServiceApi } from "@/features/category/services/category";
 import type {
   CreateCategoryRequestDto,
   ICategoryDto,
+  UpdateCategoryRequestDto,
 } from "@/features/category/types/category.dto";
 import type { CategoryModel } from "@/features/category/types/category.model";
 
@@ -48,9 +49,31 @@ export const useCategoryService = () => {
     },
   });
 
+  const updateCategoryMutation = useMutation({
+    mutationFn: ({
+      categoryId,
+      data,
+    }: {
+      categoryId: string;
+      data: UpdateCategoryRequestDto;
+    }) => categoryServiceApi.update(categoryId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories", storeId] });
+    },
+  });
+
+  const deleteCategoryMutation = useMutation({
+    mutationFn: (categoryId: string) => categoryServiceApi.delete(categoryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories", storeId] });
+    },
+  });
+
   return {
     categoriesQuery: categoriesQuery.data ?? [],
     categoriesQueryLoading: categoriesQuery.isLoading,
     createCategoryMutation,
+    updateCategoryMutation,
+    deleteCategoryMutation,
   };
 };

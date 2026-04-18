@@ -14,6 +14,12 @@ export interface CreateCategoryRequestDto {
   sortOrder?: number;
 }
 
+export interface UpdateCategoryRequestDto {
+  name?: string;
+  isActive?: boolean;
+  sortOrder?: number;
+}
+
 export interface ApiResponseDto<T> {
   success: boolean;
   message: string;
