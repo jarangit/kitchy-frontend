@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { useLoading } from "@/shared/hooks/useLoading";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
 interface NumericKeypadProps {
@@ -20,6 +21,7 @@ export function NumericKeypad({
 }: NumericKeypadProps) {
   const [numberValue, setNumberValue] = useState("");
   const {isLoading}= useLoading()
+  const { t } = useTranslation();
 
   const handleKeyPress = (key: string) => {
     if (key === "backspace") {
@@ -80,9 +82,10 @@ export function NumericKeypad({
           onSubmit(), onChange("");
         }}
         className="w-full text-title font-[var(--weight-bold)] py-4 px-8 h-auto"
-        disabled={isLoading}
+        loading={isLoading}
+        loadingText={t("common.adding")}
       >
-        {isLoading ? "Adding..." : "Add Order"}
+        Add Order
       </Button>
     </div>
   );

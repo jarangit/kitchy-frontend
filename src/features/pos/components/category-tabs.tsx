@@ -1,4 +1,4 @@
-import { ChipTab } from "@/shared/components/ui/chip-tab";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 
 interface Props {
   categories: { id: string; name: string }[];
@@ -8,25 +8,19 @@ interface Props {
 
 const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
   return (
-    <div className="flex gap-3 overflow-x-auto pb-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      <ChipTab
-        size="lg"
-        active={selected === "ALL"}
-        onClick={() => onSelect("ALL")}
+    <Tabs value={selected} onChange={onSelect} variant="chip" size="lg">
+      <TabList
+        scrollable
+        className="pb-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] gap-3"
       >
-        All
-      </ChipTab>
-      {categories.map((cat) => (
-        <ChipTab
-          key={cat.id}
-          size="lg"
-          active={selected === cat.id}
-          onClick={() => onSelect(cat.id)}
-        >
-          {cat.name}
-        </ChipTab>
-      ))}
-    </div>
+        <Tab value="ALL">All</Tab>
+        {categories.map((cat) => (
+          <Tab key={cat.id} value={cat.id}>
+            {cat.name}
+          </Tab>
+        ))}
+      </TabList>
+    </Tabs>
   );
 };
 

@@ -1,5 +1,5 @@
 import type { DateRangePreset } from "@/features/report/types/report.dto";
-import { SegmentedControl } from "@/shared/components/ui/segmented-control";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
@@ -16,12 +16,20 @@ const TimeSegmentControl = ({ value, onChange }: Props) => {
   ];
 
   return (
-    <SegmentedControl
-      items={segments}
+    <Tabs
       value={value}
-      onChange={onChange}
+      onChange={(v) => onChange(v as DateRangePreset)}
+      variant="segmented"
       className="w-full sm:w-auto overflow-x-auto rounded-full"
-    />
+    >
+      <TabList>
+        {segments.map((s) => (
+          <Tab key={s.key} value={s.key}>
+            {s.label}
+          </Tab>
+        ))}
+      </TabList>
+    </Tabs>
   );
 };
 

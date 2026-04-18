@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SearchInput } from "@/shared/components/ui/search-input";
-import { SegmentedControl } from "@/shared/components/ui/segmented-control";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 
@@ -74,12 +74,19 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
         onValueChange={handleSearchChange}
         placeholder={t("transaction.filter.searchPlaceholder")}
       />
-      <SegmentedControl
-        fullWidth
-        items={items}
+      <Tabs
         value={status}
-        onChange={handleStatusChange}
-      />
+        onChange={(v) => handleStatusChange(v as TransactionFilterStatus)}
+        variant="segmented"
+      >
+        <TabList fullWidth>
+          {items.map((item) => (
+            <Tab key={item.key} value={item.key}>
+              {item.label}
+            </Tab>
+          ))}
+        </TabList>
+      </Tabs>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes } from "react";
+import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/shared/utils/cn";
 
 type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
@@ -7,6 +8,9 @@ type ButtonSize = "sm" | "md" | "lg" | "icon";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  loading?: boolean;
+  /** Optional text shown in place of children when loading. */
+  loadingText?: string;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -32,9 +36,13 @@ export function Button({
   size = "md",
   className,
   disabled,
+  loading = false,
+  loadingText,
   children,
   ...props
 }: ButtonProps) {
+  const isDisabled = disabled || loading;
+
   return (
     <button
       className={cn(
@@ -50,10 +58,12 @@ export function Button({
         sizeStyles[size],
         className,
       )}
-      disabled={disabled}
+      disabled={isDisabled}
+      aria-busy={loading || undefined}
       {...props}
     >
-      {children}
+      {loading && <Spinner size="sm" aria-hidden />}
+      {loading && loadingText !== undefined ? loadingText : children}
     </button>
   );
 }

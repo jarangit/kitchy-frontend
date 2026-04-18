@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Button } from "@/shared/components/ui/button";
+import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useLoading } from "@/shared/hooks/useLoading";
 
 interface RoleCardProps {
@@ -30,7 +31,7 @@ export default function RoleCard({
       </div>
       <p className="text-subtitle mt-1 mb-4">
         {isLoading ? (
-          "Loading"
+          <Skeleton height="h-6" width="w-24" />
         ) : (
           <>
             {orderCount} Order{orderCount !== 1 ? "s" : ""}

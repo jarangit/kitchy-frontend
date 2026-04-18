@@ -3,7 +3,7 @@ import { LuChartBar, LuList } from "react-icons/lu";
 import type { ICalendarDay } from "@/features/report/types/report.model";
 import { Card } from "@/shared/components/ui/card";
 import { Select } from "@/shared/components/ui/select";
-import { SegmentedControl } from "@/shared/components/ui/segmented-control";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import MonthReportTable from "@/features/report/components/month-report-table";
 import MonthReportChart from "@/features/report/components/month-report-chart";
 
@@ -69,12 +69,20 @@ const MonthReportPanel = ({
               />
             </div>
 
-            <SegmentedControl
-              items={viewOptions}
+            <Tabs
               value={viewMode}
-              onChange={setViewMode}
+              onChange={(v) => setViewMode(v as MonthViewMode)}
+              variant="segmented"
               className="shrink-0 self-end sm:self-auto"
-            />
+            >
+              <TabList>
+                {viewOptions.map((opt) => (
+                  <Tab key={opt.key} value={opt.key}>
+                    {opt.label}
+                  </Tab>
+                ))}
+              </TabList>
+            </Tabs>
           </div>
         </div>
       </div>

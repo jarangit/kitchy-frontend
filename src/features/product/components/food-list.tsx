@@ -10,7 +10,7 @@ import type { SortingState } from "@/shared/components/ui/data-table";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { SearchInput } from "@/shared/components/ui/search-input";
-import { SegmentedControl } from "@/shared/components/ui/segmented-control";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { SettingsSectionCard } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -191,11 +191,19 @@ const ProductListTemplate = () => {
                   onValueChange={setSearch}
                   placeholder={t("settings.products.searchPlaceholder")}
                 />
-                <SegmentedControl<StatusFilter>
-                  items={statusItems}
+                <Tabs
                   value={statusFilter}
-                  onChange={setStatusFilter}
-                />
+                  onChange={(v) => setStatusFilter(v as StatusFilter)}
+                  variant="segmented"
+                >
+                  <TabList>
+                    {statusItems.map((item) => (
+                      <Tab key={item.key} value={item.key}>
+                        {item.label}
+                      </Tab>
+                    ))}
+                  </TabList>
+                </Tabs>
               </div>
 
               {/* Category chips */}

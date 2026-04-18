@@ -4,7 +4,7 @@ import { useKds } from "@/features/kds/hooks/useKds";
 import KdsHeader from "@/features/kds/components/kds-header";
 import KdsOrderCard from "@/features/kds/components/kds-order-card";
 import { useStationService } from "@/features/station/hooks/useStation";
-import { ChipTab } from "@/shared/components/ui/chip-tab";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -68,22 +68,21 @@ const KdsBoardPage = () => {
         isRefetching={isRefetching}
       />
 
-      <div className="flex items-center gap-2">
-        <ChipTab
-          size="md"
-          active={activeTab === "PENDING"}
-          onClick={() => setActiveTab("PENDING")}
-        >
-          {t("kds.tab.pending")} {t("kds.tab.countSuffix", { count: String(pendingCards.length) })}
-        </ChipTab>
-        <ChipTab
-          size="md"
-          active={activeTab === "READY"}
-          onClick={() => setActiveTab("READY")}
-        >
-          {t("kds.tab.ready")} {t("kds.tab.countSuffix", { count: String(readyCards.length) })}
-        </ChipTab>
-      </div>
+      <Tabs
+        value={activeTab}
+        onChange={(v) => setActiveTab(v as "PENDING" | "READY")}
+        variant="chip"
+        size="md"
+      >
+        <TabList>
+          <Tab value="PENDING" count={pendingCards.length}>
+            {t("kds.tab.pending")}
+          </Tab>
+          <Tab value="READY" count={readyCards.length}>
+            {t("kds.tab.ready")}
+          </Tab>
+        </TabList>
+      </Tabs>
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">

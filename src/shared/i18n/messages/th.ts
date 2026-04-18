@@ -295,6 +295,12 @@ export const thMessages = {
   "common.delete": "ลบ",
   "common.edit": "แก้ไข",
   "common.loading": "กำลังโหลด...",
+  "common.loadingLong": "กำลังโหลด กรุณารอสักครู่...",
+  "common.adding": "กำลังเพิ่ม...",
+  "common.saving": "กำลังบันทึก...",
+  "common.retry": "ลองอีกครั้ง",
+  "common.error.title": "เกิดข้อผิดพลาด",
+  "common.error.description": "กรุณาลองใหม่อีกครั้ง",
   "common.confirm": "ยืนยัน",
 
   "order.tab.pending": "กำลังทำ",

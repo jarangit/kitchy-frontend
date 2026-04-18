@@ -295,6 +295,12 @@ export const enMessages = {
   "common.delete": "Delete",
   "common.edit": "Edit",
   "common.loading": "Loading...",
+  "common.loadingLong": "Loading, please wait...",
+  "common.adding": "Adding...",
+  "common.saving": "Saving...",
+  "common.retry": "Retry",
+  "common.error.title": "Something went wrong",
+  "common.error.description": "Please try again.",
   "common.confirm": "Confirm",
 
   "order.tab.pending": "In progress",

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { NumericKeypad } from "@/shared/components/numbericKeypad";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
-import { SegmentedControl } from "@/shared/components/ui/segmented-control";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { IOrderItem } from "@/features/order/types/order.model";
 
@@ -91,12 +91,19 @@ export function OrderForm({
           keyboardToggle
         />
 
-        <SegmentedControl
-          items={items}
+        <Tabs
           value={waitingValue}
           onChange={(v) => setIsWaitingInStore(v === "waiting")}
-          fullWidth
-        />
+          variant="segmented"
+        >
+          <TabList fullWidth>
+            {items.map((item) => (
+              <Tab key={item.key} value={item.key}>
+                {item.label}
+              </Tab>
+            ))}
+          </TabList>
+        </Tabs>
 
         <div className="flex flex-col space-y-4">
           <NumericKeypad

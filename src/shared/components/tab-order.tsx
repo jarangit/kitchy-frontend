@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import TabItem from "./tab-item";
 import { LuLayoutGrid, LuShoppingBag, LuUtensils, LuCircleCheck } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
+import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 
 const toLegacyStatus = (status: string) => {
   if (status === "NEW" || status === "PREPARING") return "PENDING";
@@ -14,12 +14,14 @@ const normalizeType = (type: string) => {
   return type;
 };
 
+type OrderTab = "PENDING" | "TOGO" | "DINE_IN" | "COMPLETED";
+
 type Props = {
-  _onClickTabItem: (type: "PENDING" | "TOGO" | "DINE_IN" | "COMPLETED") => void;
+  _onClickTabItem: (type: OrderTab) => void;
 };
 const TabOrder = ({ _onClickTabItem }: Props) => {
   const orders = useAppSelector((state) => state.orders.orders);
-  const [tabActive, setTabActive] = useState("PENDING");
+  const [tabActive, setTabActive] = useState<OrderTab>("PENDING");
   const [orderCount, setOrderCount] = useState({
     total: 0,
     togo: 0,
@@ -27,15 +29,15 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
     completed: 0,
   });
 
-  const onClickTabItem = (
-    type: "PENDING" | "TOGO" | "DINE_IN" | "COMPLETED"
-  ) => {
-    setTabActive(type);
-    _onClickTabItem(type);
+  const handleChange = (value: string) => {
+    const next = value as OrderTab;
+    setTabActive(next);
+    _onClickTabItem(next);
   };
+
   useEffect(() => {
     setTabActive("PENDING");
-    onClickTabItem("PENDING");
+    _onClickTabItem("PENDING");
   }, []);
 
   useEffect(() => {
@@ -60,38 +62,40 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
   }, [orders]);
 
   return (
-    <div className="flex gap-2 flex-wrap">
-      <TabItem
-        title={`Pending`}
-        count={orderCount.total}
-        icon={<LuLayoutGrid size={20} />}
-        isActive={tabActive === "PENDING"}
-        isCanAnimation={true}
-        onClick={() => onClickTabItem("PENDING")}
-      />
-      <TabItem
-        title={`Completed `}
-        count={orderCount.completed}
-        icon={<LuCircleCheck size={20} className="text-success" />}
-        isActive={tabActive === "COMPLETED"}
-        isCanAnimation={true}
-        onClick={() => onClickTabItem("COMPLETED")}
-      />
-      <TabItem
-        title={`ToGo`}
-        count={orderCount.togo}
-        icon={<LuShoppingBag size={20} />}
-        isActive={tabActive === "TOGO"}
-        onClick={() => onClickTabItem("TOGO")}
-      />
-        <TabItem
-          title={`DineI`}
-          count={orderCount.dineIn}
+    <Tabs value={tabActive} onChange={handleChange} variant="chip" size="sm">
+      <TabList>
+        <Tab
+          value="PENDING"
+          icon={<LuLayoutGrid size={20} />}
+          count={orderCount.total}
+          animateOnCountIncrease
+        >
+          Pending
+        </Tab>
+        <Tab
+          value="COMPLETED"
+          icon={<LuCircleCheck size={20} className="text-success" />}
+          count={orderCount.completed}
+          animateOnCountIncrease
+        >
+          Completed
+        </Tab>
+        <Tab
+          value="TOGO"
+          icon={<LuShoppingBag size={20} />}
+          count={orderCount.togo}
+        >
+          ToGo
+        </Tab>
+        <Tab
+          value="DINE_IN"
           icon={<LuUtensils size={20} />}
-          isActive={tabActive === "DINE_IN"}
-          onClick={() => onClickTabItem("DINE_IN")}
-        />
-    </div>
+          count={orderCount.dineIn}
+        >
+          DineI
+        </Tab>
+      </TabList>
+    </Tabs>
   );
 };
 
