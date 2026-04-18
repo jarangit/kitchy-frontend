@@ -10,6 +10,8 @@ import {
 } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { cn } from "@/shared/utils/cn";
+import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
+import { NavBadge } from "@/shared/components/ui/nav-badge";
 
 type NavMatch = "exact" | "prefix";
 
@@ -18,6 +20,8 @@ interface NavItem {
   path: string;
   icon: ReactNode;
   match?: NavMatch;
+  badgeCount?: number;
+  badgeAriaLabel?: string;
 }
 
 const Sidebar = () => {
@@ -26,6 +30,8 @@ const Sidebar = () => {
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
 
   const resolvedStoreId = id ?? (currentStoreId ? String(currentStoreId) : undefined);
+
+  const { count: pendingOrdersCount } = usePendingOrdersCount();
 
   const storeMenuList: NavItem[] = resolvedStoreId
     ? [
@@ -52,6 +58,11 @@ const Sidebar = () => {
           path: `/store/${resolvedStoreId}/kds`,
           icon: <LuChefHat size={22} />,
           match: "prefix",
+          badgeCount: pendingOrdersCount,
+          badgeAriaLabel:
+            pendingOrdersCount > 0
+              ? `${pendingOrdersCount} ออเดอร์ค้าง`
+              : undefined,
         },
         {
           name: "Report",
@@ -78,13 +89,16 @@ const Sidebar = () => {
 
   const renderNavItem = (item: NavItem) => {
     const active = isActive(item.path, item.match);
+    const badgeCount = item.badgeCount ?? 0;
+    const itemTitle =
+      badgeCount > 0 ? `${item.name} (${badgeCount})` : item.name;
 
     return (
       <Link
         to={item.path}
         key={item.name}
-        aria-label={item.name}
-        title={item.name}
+        aria-label={itemTitle}
+        title={itemTitle}
         className={cn(itemClass, active ? activeClass : inactiveClass)}
       >
         {active && (
@@ -94,6 +108,9 @@ const Sidebar = () => {
           />
         )}
         {item.icon}
+        {badgeCount > 0 && (
+          <NavBadge count={badgeCount} aria-label={item.badgeAriaLabel} />
+        )}
         <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded-md border border-border bg-surface px-3 py-2 text-caption font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
           {item.name}
         </span>
