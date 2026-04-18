@@ -8,7 +8,13 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { PageHeader } from "@/shared/components/ui/page-header";
-import { Dialog, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+import {
+  Dialog,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/dialog";
 import { Input } from "@/shared/components/ui/input";
 import {
   toStatusBadgeVariant,
@@ -16,8 +22,7 @@ import {
   formatOrderTypeLabel,
 } from "@/shared/utils/status";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import type { MessageKey } from "@/shared/i18n/messages";
-import { LuMinus, LuReceipt } from "react-icons/lu";
+import { LuMinus, LuPlus, LuReceipt } from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
 
 interface OrderItem {
@@ -37,6 +42,8 @@ interface EditableItem {
   quantity: number;
 }
 
+type FlowStatus = "IN_PROGRESS" | "DONE" | "CANCELLED";
+
 const DONE_STATUSES = ["READY", "COMPLETED"];
 
 const getItemName = (item: OrderItem) =>
@@ -47,44 +54,33 @@ const getItemPrice = (item: OrderItem) =>
 
 const formatCurrency = (amount: number) => `฿${amount.toFixed(2)}`;
 
-const toFlowStatus = (status: string): "IN_PROGRESS" | "DONE" | "CANCELLED" => {
+const toFlowStatus = (status: string): FlowStatus => {
   if (status === "CANCELLED") return "CANCELLED";
   if (DONE_STATUSES.includes(status)) return "DONE";
   return "IN_PROGRESS";
 };
 
-const FLOW_LABEL_KEY: Record<"IN_PROGRESS" | "DONE" | "CANCELLED", MessageKey> = {
-  IN_PROGRESS: "transaction.detail.flow.inProgress",
-  DONE: "transaction.detail.flow.done",
-  CANCELLED: "transaction.detail.flow.cancelled",
+const DOT_CLASS: Record<FlowStatus, string> = {
+  IN_PROGRESS: "bg-accent",
+  DONE: "bg-success",
+  CANCELLED: "bg-border",
 };
 
-function Section({
-  title,
-  children,
+function InfoCell({
+  label,
+  value,
 }: {
-  title?: string;
-  children: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
 }) {
   return (
-    <div className="border-t border-border pt-5">
-      {title && (
-        <h3 className="mb-4 text-caption font-semibold uppercase tracking-wider text-text-tertiary">
-          {title}
-        </h3>
-      )}
-      {children}
-    </div>
-  );
-}
-
-function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="flex justify-between items-baseline py-1.5">
-      <span className="text-body-sm text-text-secondary">{label}</span>
-      <span className="max-w-[60%] truncate text-right text-body-sm font-medium text-text-primary">
+    <div className="min-w-0">
+      <p className="text-caption uppercase tracking-wider text-text-tertiary">
+        {label}
+      </p>
+      <p className="mt-1 truncate text-body-sm font-medium text-text-primary">
         {value}
-      </span>
+      </p>
     </div>
   );
 }
@@ -118,7 +114,11 @@ const TransactionDetailPage = () => {
   const [tableNumber, setTableNumber] = useState("");
   const [editableItems, setEditableItems] = useState<EditableItem[]>([]);
 
-  const { data: order, isLoading, refetch } = useQuery({
+  const {
+    data: order,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["transaction", txId],
     queryFn: () => transactionServiceApi.getById(txId as string),
     enabled: !!txId,
@@ -129,21 +129,23 @@ const TransactionDetailPage = () => {
 
   const itemCount = items.reduce(
     (sum: number, item: OrderItem) => sum + (item.quantity ?? 1),
-    0
+    0,
   );
 
   const grandTotal = items.reduce(
     (sum: number, item: OrderItem) =>
       sum + getItemPrice(item) * (item.quantity ?? 1),
-    0
+    0,
   );
 
   const canEditOrder = order && order.status !== "CANCELLED";
-  const flowStatus = order ? toFlowStatus(order.status) : "IN_PROGRESS";
+  const flowStatus: FlowStatus = order
+    ? toFlowStatus(order.status)
+    : "IN_PROGRESS";
 
   const hasRemovedAllItems = useMemo(
     () => editableItems.every((item) => item.quantity <= 0),
-    [editableItems]
+    [editableItems],
   );
 
   const openEditDialog = () => {
@@ -155,7 +157,7 @@ const TransactionDetailPage = () => {
         productId: item.productId ?? item.id ?? `item-${index}`,
         name: getItemName(item),
         quantity: item.quantity ?? 1,
-      }))
+      })),
     );
     setIsEditOpen(true);
   };
@@ -224,6 +226,22 @@ const TransactionDetailPage = () => {
     minute: "2-digit",
   });
 
+  const stateCopy =
+    flowStatus === "IN_PROGRESS"
+      ? {
+          title: t("transaction.detail.state.inProgress"),
+          hint: t("transaction.detail.state.inProgressHint"),
+        }
+      : flowStatus === "DONE"
+        ? {
+            title: t("transaction.detail.state.done", { time: formattedTime }),
+            hint: null,
+          }
+        : {
+            title: t("transaction.detail.state.cancelled"),
+            hint: null,
+          };
+
   return (
     <>
       <div className="space-y-6">
@@ -238,136 +256,182 @@ const TransactionDetailPage = () => {
           }
         />
 
-        <div className="space-y-6 rounded-card border border-card-border bg-card-bg p-card-padding">
-          <Section title={t("transaction.detail.section.status")}>
-            <div className="mb-3 rounded-card border border-card-border bg-bg px-3 py-2 text-body-sm text-text-secondary">
-              {t(FLOW_LABEL_KEY[flowStatus])}
+        {/* Card 1: Hero action + order info */}
+        <div className="space-y-5 rounded-card border border-card-border bg-card-bg p-card-padding">
+          <div className="flex items-start gap-3">
+            <span
+              className={cn(
+                "mt-[7px] inline-block h-2 w-2 shrink-0 rounded-full",
+                DOT_CLASS[flowStatus],
+                flowStatus === "IN_PROGRESS" && "animate-pulse",
+              )}
+              aria-hidden
+            />
+            <div className="min-w-0 flex-1">
+              <p className="text-body font-semibold text-text-primary">
+                {stateCopy.title}
+              </p>
+              {stateCopy.hint && (
+                <p className="mt-1 text-body-sm text-text-secondary">
+                  {stateCopy.hint}
+                </p>
+              )}
             </div>
+          </div>
+
+          {flowStatus !== "CANCELLED" && (
             <div className="flex flex-wrap gap-2">
+              {flowStatus === "IN_PROGRESS" && (
+                <Button
+                  onClick={() => updateStatus("READY")}
+                  disabled={isUpdating}
+                >
+                  {t("transaction.detail.nextAction.markReady")}
+                </Button>
+              )}
+              {flowStatus === "DONE" && (
+                <Button
+                  variant="secondary"
+                  onClick={() => updateStatus("PREPARING")}
+                  disabled={isUpdating}
+                >
+                  {t("transaction.detail.nextAction.revert")}
+                </Button>
+              )}
               <Button
-                size="sm"
-                variant="secondary"
-                onClick={() => updateStatus("PREPARING")}
-                disabled={isUpdating || flowStatus === "CANCELLED" || flowStatus === "IN_PROGRESS"}
-              >
-                {t("transaction.detail.action.preparing")}
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => updateStatus("READY")}
-                disabled={isUpdating || flowStatus === "CANCELLED" || flowStatus === "DONE"}
-              >
-                {t("transaction.detail.action.ready")}
-              </Button>
-              <Button
-                size="sm"
-                variant="danger"
-                onClick={() => updateStatus("CANCELLED")}
-                disabled={isUpdating || flowStatus === "CANCELLED"}
-              >
-                {t("transaction.detail.action.cancel")}
-              </Button>
-              <Button
-                size="sm"
-                variant="secondary"
+                variant="ghost"
                 onClick={openEditDialog}
                 disabled={isUpdating || !canEditOrder}
               >
                 {t("transaction.detail.action.edit")}
               </Button>
+              <Button
+                variant="ghost"
+                onClick={() => updateStatus("CANCELLED")}
+                disabled={isUpdating}
+                className="text-danger hover:text-danger"
+              >
+                {t("transaction.detail.action.cancel")}
+              </Button>
             </div>
-          </Section>
+          )}
 
-          <Section title={t("transaction.detail.section.info")}>
+          <div className="grid grid-cols-2 gap-4 border-t border-border pt-5 sm:grid-cols-3">
             {order.type && (
-              <InfoRow
+              <InfoCell
                 label={t("transaction.detail.info.type")}
                 value={formatOrderTypeLabel(order.type)}
               />
             )}
             {order.tableNumber && (
-              <InfoRow
+              <InfoCell
                 label={t("transaction.detail.info.table")}
                 value={order.tableNumber}
               />
             )}
             {order.customerName && (
-              <InfoRow
+              <InfoCell
                 label={t("transaction.detail.info.customer")}
                 value={order.customerName}
               />
             )}
             {order.deliveryPlatform && (
-              <InfoRow
+              <InfoCell
                 label={t("transaction.detail.info.platform")}
                 value={order.deliveryPlatform}
               />
             )}
-            <InfoRow
+            <InfoCell
               label={t("transaction.detail.info.orderId")}
               value={
                 <span className="font-mono text-caption">
-                  #{order.id.length > 12 ? `${order.id.slice(0, 12)}...` : order.id}
+                  #
+                  {order.id.length > 12
+                    ? `${order.id.slice(0, 12)}...`
+                    : order.id}
                 </span>
               }
             />
-          </Section>
+          </div>
+        </div>
 
-          {items.length > 0 && (
-            <Section title={t("transaction.detail.section.items")}>
-              <div className="space-y-0">
-                {items.map((item, index) => {
-                  const name = getItemName(item);
-                  const qty = item.quantity ?? 1;
-                  const lineTotal = getItemPrice(item) * qty;
+        {/* Card 2: Items */}
+        {items.length > 0 && (
+          <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-caption font-semibold uppercase tracking-wider text-text-tertiary">
+                {t("transaction.detail.section.items")}
+              </h3>
+              <Badge variant="default">
+                {t("transaction.detail.items.badge", { count: itemCount })}
+              </Badge>
+            </div>
+            <div className="space-y-0">
+              {items.map((item, index) => {
+                const name = getItemName(item);
+                const qty = item.quantity ?? 1;
+                const unitPrice = getItemPrice(item);
+                const lineTotal = unitPrice * qty;
 
-                  return (
-                    <div
-                      key={item.id || item.productId || index}
-                      className={cn(
-                        "flex justify-between gap-4 py-3",
-                        index < items.length - 1 && "border-b border-border"
-                      )}
-                    >
-                      <div className="min-w-0 flex-1">
-                        <p className="text-body-sm text-text-primary">
-                          <span className="tabular-nums text-text-secondary">{qty}x</span>{" "}
-                          {name}
+                return (
+                  <div
+                    key={item.id || item.productId || index}
+                    className={cn(
+                      "flex justify-between gap-4 py-3",
+                      index < items.length - 1 && "border-b border-border",
+                    )}
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="text-body-sm text-text-primary">
+                        <span className="tabular-nums text-text-secondary">
+                          {qty}x
+                        </span>{" "}
+                        {name}
+                      </p>
+                      {item.note && (
+                        <p className="mt-0.5 line-clamp-2 text-caption text-text-tertiary">
+                          {t("transaction.detail.items.note", {
+                            note: item.note,
+                          })}
                         </p>
-                        {item.note && (
-                          <p className="mt-0.5 line-clamp-2 text-caption text-text-tertiary">
-                            {t("transaction.detail.items.note", { note: item.note })}
-                          </p>
-                        )}
-                      </div>
-                      <span className="shrink-0 pt-px text-body-sm font-medium tabular-nums text-text-primary">
-                        {formatCurrency(lineTotal)}
-                      </span>
+                      )}
                     </div>
-                  );
-                })}
-              </div>
-            </Section>
-          )}
+                    <div className="shrink-0 text-right">
+                      <p className="text-body-sm font-medium tabular-nums text-text-primary">
+                        {formatCurrency(lineTotal)}
+                      </p>
+                      <p className="text-caption tabular-nums text-text-tertiary">
+                        {t("transaction.detail.items.unitPrice", {
+                          price: unitPrice.toFixed(2),
+                          qty,
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
-          <Section title={t("transaction.detail.section.summary")}>
-            <div className="flex justify-between items-baseline py-2">
-              <span className="text-body-sm text-text-secondary">
-                {t("transaction.detail.summary.subtotal", { count: itemCount })}
-              </span>
-              <span className="text-body-sm tabular-nums text-text-primary">
-                {formatCurrency(grandTotal)}
-              </span>
-            </div>
-            <div className="mt-3 flex justify-between items-baseline border-t border-border pt-4">
-              <span className="text-body font-semibold text-text-primary">
-                {t("transaction.detail.summary.total")}
-              </span>
-              <span className="text-title font-semibold tabular-nums text-text-primary">
-                {formatCurrency(grandTotal)}
-              </span>
-            </div>
-          </Section>
+        {/* Card 3: Summary */}
+        <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+          <div className="flex justify-between items-baseline py-1">
+            <span className="text-body-sm text-text-secondary">
+              {t("transaction.detail.summary.subtotal", { count: itemCount })}
+            </span>
+            <span className="text-body-sm tabular-nums text-text-primary">
+              {formatCurrency(grandTotal)}
+            </span>
+          </div>
+          <div className="mt-3 flex justify-between items-baseline border-t border-border pt-4">
+            <span className="text-body font-semibold text-text-primary">
+              {t("transaction.detail.summary.total")}
+            </span>
+            <span className="text-title font-semibold tabular-nums text-text-primary">
+              {formatCurrency(grandTotal)}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -394,49 +458,48 @@ const TransactionDetailPage = () => {
             {editableItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between gap-2 rounded-card border border-card-border px-3 py-2"
+                className="flex items-center justify-between gap-3 rounded-card border border-card-border px-3 py-2"
               >
                 <p className="min-w-0 flex-1 truncate text-body-sm text-text-primary">
                   {item.name}
                 </p>
-                <div className="inline-flex items-center gap-1">
-                  <Button
+                <div className="inline-flex items-center gap-1 rounded-chip bg-chip-inactive-bg p-1">
+                  <button
                     type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
+                    aria-label={t("transaction.detail.edit.decrease")}
                     onClick={() =>
                       setEditableItems((prev) =>
                         prev.map((it) =>
                           it.id === item.id
                             ? { ...it, quantity: Math.max(0, it.quantity - 1) }
-                            : it
-                        )
+                            : it,
+                        ),
                       )
                     }
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={item.quantity <= 0}
                   >
                     <LuMinus size={14} />
-                  </Button>
+                  </button>
                   <span className="min-w-6 text-center text-label tabular-nums text-text-primary">
                     {item.quantity}
                   </span>
-                  <Button
+                  <button
                     type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8"
+                    aria-label={t("transaction.detail.edit.increase")}
                     onClick={() =>
                       setEditableItems((prev) =>
                         prev.map((it) =>
                           it.id === item.id
                             ? { ...it, quantity: it.quantity + 1 }
-                            : it
-                        )
+                            : it,
+                        ),
                       )
                     }
+                    className="inline-flex h-7 w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary"
                   >
-                    +
-                  </Button>
+                    <LuPlus size={14} />
+                  </button>
                 </div>
               </div>
             ))}

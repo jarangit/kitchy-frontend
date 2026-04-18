@@ -1,7 +1,10 @@
 import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
-import { LuCheck } from "react-icons/lu";
+import { cn } from "@/shared/utils/cn";
+
+export type FlowStatus = "IN_PROGRESS" | "DONE" | "CANCELLED";
 
 interface OrderProduct {
   name?: string;
@@ -19,8 +22,11 @@ interface Props {
     totalAmount?: number;
     products?: OrderProduct[];
   };
+  flowStatus: FlowStatus;
   onClick: () => void;
+  onQuickAction?: (action: "READY" | "CANCELLED") => void;
   isLast?: boolean;
+  isPending?: boolean;
 }
 
 const ORDER_TYPE_KEY: Record<string, MessageKey> = {
@@ -29,7 +35,20 @@ const ORDER_TYPE_KEY: Record<string, MessageKey> = {
   DELIVERY: "transaction.card.orderType.delivery",
 };
 
-const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
+const DOT_CLASS: Record<FlowStatus, string> = {
+  IN_PROGRESS: "bg-accent",
+  DONE: "bg-success",
+  CANCELLED: "bg-border",
+};
+
+const TransactionCard = ({
+  order,
+  flowStatus,
+  onClick,
+  onQuickAction,
+  isLast = false,
+  isPending = false,
+}: Props) => {
   const { t } = useTranslation();
   const date = new Date(order.createdAt);
   const formattedTime = date.toLocaleTimeString("th-TH", {
@@ -41,62 +60,107 @@ const TransactionCard = ({ order, onClick, isLast = false }: Props) => {
     order.totalAmount ??
     (order.products?.reduce(
       (sum, item) => sum + (item.price ?? 0) * (item.quantity ?? 1),
-      0
+      0,
     ) ?? 0);
 
   const itemCount =
     order.products?.reduce((sum, item) => sum + (item.quantity ?? 1), 0) ?? 0;
+  const productCount = order.products?.length ?? 0;
 
   const orderType = order.type ?? order.orderType;
-  const orderTypeLabel = orderType && ORDER_TYPE_KEY[orderType]
-    ? t(ORDER_TYPE_KEY[orderType])
-    : orderType ?? t("transaction.card.orderType.default");
+  const orderTypeLabel =
+    orderType && ORDER_TYPE_KEY[orderType]
+      ? t(ORDER_TYPE_KEY[orderType])
+      : orderType ?? t("transaction.card.orderType.default");
 
-  const productSummary =
-    order.products
-      ?.slice(0, 2)
-      .map(
-        (item) =>
-          `${item.name ?? t("transaction.card.productFallback")} x${item.quantity ?? 1}`,
-      )
-      .join("  |  ") ?? t("transaction.card.itemCount", { count: itemCount });
+  const summaryLine =
+    productCount > 0
+      ? t("transaction.list.itemsSuffix", {
+          items: itemCount,
+          products: productCount,
+        })
+      : t("transaction.card.itemCount", { count: itemCount });
+
+  const handleQuickAction = (
+    e: React.MouseEvent,
+    action: "READY" | "CANCELLED",
+  ) => {
+    e.stopPropagation();
+    onQuickAction?.(action);
+  };
 
   return (
-    <button
-      type="button"
+    <div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
-      className={[
-        "w-full px-6 py-4 text-left transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover",
-        !isLast ? "border-b border-card-border" : "",
-      ].join(" ")}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      className={cn(
+        "w-full px-5 py-4 text-left transition-colors duration-[var(--motion-fast)]",
+        "hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+        "cursor-pointer",
+        !isLast && "border-b border-card-border",
+      )}
     >
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex min-w-0 items-start gap-4">
-          <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-success-bg text-success">
-            <LuCheck size={18} />
-          </span>
-
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <p className="text-heading font-semibold text-text-primary">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          <span
+            className={cn(
+              "mt-[7px] inline-block h-2 w-2 shrink-0 rounded-full",
+              DOT_CLASS[flowStatus],
+              flowStatus === "IN_PROGRESS" && "animate-pulse",
+            )}
+            aria-hidden
+          />
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-body font-semibold text-text-primary">
                 {order.orderNumber}
               </p>
               <Badge variant="default">{orderTypeLabel}</Badge>
             </div>
-            <p className="line-clamp-1 text-subtitle text-text-secondary">
-              {productSummary}
+            <p className="mt-0.5 line-clamp-1 text-caption text-text-tertiary">
+              {summaryLine}
             </p>
           </div>
         </div>
 
         <div className="shrink-0 text-right">
           <p className="text-title font-semibold tabular-nums text-text-primary">
-            ฿ {totalAmount.toLocaleString("th-TH", { maximumFractionDigits: 2 })}
+            ฿{totalAmount.toLocaleString("th-TH", { maximumFractionDigits: 2 })}
           </p>
-          <p className="text-subtitle text-text-tertiary">{formattedTime}</p>
+          <p className="text-caption text-text-tertiary tabular-nums">
+            {formattedTime}
+          </p>
         </div>
       </div>
-    </button>
+
+      {flowStatus === "IN_PROGRESS" && onQuickAction && (
+        <div className="mt-3 flex gap-2 pl-5">
+          <Button
+            size="sm"
+            onClick={(e) => handleQuickAction(e, "READY")}
+            disabled={isPending}
+          >
+            {t("transaction.list.quickAction.markReady")}
+          </Button>
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={(e) => handleQuickAction(e, "CANCELLED")}
+            disabled={isPending}
+            className="text-danger hover:text-danger"
+          >
+            {t("transaction.list.quickAction.cancel")}
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 

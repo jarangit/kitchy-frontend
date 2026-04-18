@@ -1,34 +1,71 @@
 import { useState } from "react";
 import { SearchInput } from "@/shared/components/ui/search-input";
-import { ChipTab } from "@/shared/components/ui/chip-tab";
+import { SegmentedControl } from "@/shared/components/ui/segmented-control";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 
-interface Props {
-  onFilterChange: (filter: { search: string; status: string }) => void;
+export type TransactionFilterStatus =
+  | "ALL"
+  | "IN_PROGRESS"
+  | "DONE"
+  | "CANCELLED";
+
+export interface TransactionFilterCounts {
+  all: number;
+  inProgress: number;
+  done: number;
+  cancelled: number;
 }
 
-const STATUS_OPTIONS: ReadonlyArray<{ value: string; labelKey: MessageKey }> = [
-  { value: "ALL", labelKey: "transaction.filter.all" },
-  { value: "IN_PROGRESS", labelKey: "transaction.filter.inProgress" },
-  { value: "DONE", labelKey: "transaction.filter.done" },
-  { value: "CANCELLED", labelKey: "transaction.filter.cancelled" },
+interface Props {
+  counts: TransactionFilterCounts;
+  onFilterChange: (filter: {
+    search: string;
+    status: TransactionFilterStatus;
+  }) => void;
+}
+
+const STATUS_OPTIONS: ReadonlyArray<{
+  value: TransactionFilterStatus;
+  labelKey: MessageKey;
+  countKey: keyof TransactionFilterCounts;
+}> = [
+  { value: "ALL", labelKey: "transaction.filter.all", countKey: "all" },
+  {
+    value: "IN_PROGRESS",
+    labelKey: "transaction.filter.inProgress",
+    countKey: "inProgress",
+  },
+  { value: "DONE", labelKey: "transaction.filter.done", countKey: "done" },
+  {
+    value: "CANCELLED",
+    labelKey: "transaction.filter.cancelled",
+    countKey: "cancelled",
+  },
 ];
 
-const TransactionFilter = ({ onFilterChange }: Props) => {
+const TransactionFilter = ({ counts, onFilterChange }: Props) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("ALL");
+  const [status, setStatus] = useState<TransactionFilterStatus>("ALL");
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
     onFilterChange({ search: value, status });
   };
 
-  const handleStatusChange = (value: string) => {
+  const handleStatusChange = (value: TransactionFilterStatus) => {
     setStatus(value);
     onFilterChange({ search, status: value });
   };
+
+  const items = STATUS_OPTIONS.map((s) => ({
+    key: s.value,
+    label: t("transaction.list.countSummary", {
+      label: t(s.labelKey),
+      count: counts[s.countKey],
+    }),
+  }));
 
   return (
     <div className="space-y-3">
@@ -37,18 +74,12 @@ const TransactionFilter = ({ onFilterChange }: Props) => {
         onValueChange={handleSearchChange}
         placeholder={t("transaction.filter.searchPlaceholder")}
       />
-      <div className="flex flex-wrap gap-2">
-        {STATUS_OPTIONS.map((s) => (
-          <ChipTab
-            key={s.value}
-            size="sm"
-            active={status === s.value}
-            onClick={() => handleStatusChange(s.value)}
-          >
-            {t(s.labelKey)}
-          </ChipTab>
-        ))}
-      </div>
+      <SegmentedControl
+        fullWidth
+        items={items}
+        value={status}
+        onChange={handleStatusChange}
+      />
     </div>
   );
 };

@@ -1,10 +1,13 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
-import TransactionCard from "@/features/transaction/components/transaction-card";
-import TransactionFilter from "@/features/transaction/components/transaction-filter";
+import TransactionCard, {
+  type FlowStatus,
+} from "@/features/transaction/components/transaction-card";
+import TransactionFilter, {
+  type TransactionFilterStatus,
+} from "@/features/transaction/components/transaction-filter";
 import { PageHeader } from "@/shared/components/ui/page-header";
-import { StatCard } from "@/shared/components/ui/stat-card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -25,15 +28,41 @@ interface TransactionListItem {
   products?: TransactionProduct[];
 }
 
-const IN_PROGRESS_STATUSES = ["NEW", "PREPARING", "PENDING", "COOKING"];
 const DONE_STATUSES = ["READY", "COMPLETED"];
 
-const matchesStatusFilter = (status: string, filterStatus: string) => {
+const getFlowStatus = (status: string): FlowStatus => {
+  if (status === "CANCELLED") return "CANCELLED";
+  if (DONE_STATUSES.includes(status)) return "DONE";
+  return "IN_PROGRESS";
+};
+
+const matchesStatusFilter = (
+  status: string,
+  filterStatus: TransactionFilterStatus,
+) => {
   if (filterStatus === "ALL") return true;
-  if (filterStatus === "IN_PROGRESS") return IN_PROGRESS_STATUSES.includes(status);
-  if (filterStatus === "DONE") return DONE_STATUSES.includes(status);
-  if (filterStatus === "CANCELLED") return status === "CANCELLED";
-  return status === filterStatus;
+  return getFlowStatus(status) === filterStatus;
+};
+
+type TimelineBucket = "today" | "yesterday" | "earlier";
+
+const startOfDay = (date: Date) =>
+  new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+
+const getBucket = (createdAt: string, now: Date): TimelineBucket => {
+  const today = startOfDay(now);
+  const yesterday = today - 86400000;
+  const ts = startOfDay(new Date(createdAt));
+  if (ts === today) return "today";
+  if (ts === yesterday) return "yesterday";
+  return "earlier";
+};
+
+const BUCKET_ORDER: TimelineBucket[] = ["today", "yesterday", "earlier"];
+const BUCKET_LABEL_KEY: Record<TimelineBucket, `transaction.list.timeline.${TimelineBucket}`> = {
+  today: "transaction.list.timeline.today",
+  yesterday: "transaction.list.timeline.yesterday",
+  earlier: "transaction.list.timeline.earlier",
 };
 
 const TransactionListPage = () => {
@@ -41,31 +70,81 @@ const TransactionListPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { transactions, isLoading } = useTransactionService();
+  const { transactions, isLoading, updateTransaction, isUpdating } =
+    useTransactionService();
 
-  const [filter, setFilter] = useState({ search: "", status: "ALL" });
+  const [filter, setFilter] = useState<{
+    search: string;
+    status: TransactionFilterStatus;
+  }>({ search: "", status: "ALL" });
+  const [pendingId, setPendingId] = useState<string | null>(null);
+
+  const allTransactions = useMemo(
+    () => (transactions as TransactionListItem[] | undefined) ?? [],
+    [transactions],
+  );
+
+  const counts = useMemo(() => {
+    let inProgress = 0;
+    let done = 0;
+    let cancelled = 0;
+    for (const tx of allTransactions) {
+      const flow = getFlowStatus(tx.status);
+      if (flow === "IN_PROGRESS") inProgress++;
+      else if (flow === "DONE") done++;
+      else cancelled++;
+    }
+    return {
+      all: allTransactions.length,
+      inProgress,
+      done,
+      cancelled,
+    };
+  }, [allTransactions]);
 
   const filteredTransactions = useMemo(() => {
-    if (!transactions) return [];
-    return (transactions as TransactionListItem[]).filter((tx) => {
+    return allTransactions.filter((tx) => {
       const matchSearch =
         !filter.search ||
         tx.orderNumber.toLowerCase().includes(filter.search.toLowerCase());
       const matchStatus = matchesStatusFilter(tx.status, filter.status);
       return matchSearch && matchStatus;
     });
-  }, [transactions, filter]);
+  }, [allTransactions, filter]);
 
-  const allTransactions = transactions ?? [];
-  const inProgressCount = allTransactions.filter((tx: { status: string }) =>
-    IN_PROGRESS_STATUSES.includes(tx.status)
-  ).length;
-  const doneCount = allTransactions.filter((tx: { status: string }) =>
-    DONE_STATUSES.includes(tx.status)
-  ).length;
-  const cancelledCount = allTransactions.filter(
-    (tx: { status: string }) => tx.status === "CANCELLED"
-  ).length;
+  const grouped = useMemo(() => {
+    const now = new Date();
+    const map: Record<TimelineBucket, TransactionListItem[]> = {
+      today: [],
+      yesterday: [],
+      earlier: [],
+    };
+    for (const tx of filteredTransactions) {
+      map[getBucket(tx.createdAt, now)].push(tx);
+    }
+    for (const key of BUCKET_ORDER) {
+      map[key].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
+    }
+    return map;
+  }, [filteredTransactions]);
+
+  const handleQuickAction = async (
+    tx: TransactionListItem,
+    action: "READY" | "CANCELLED",
+  ) => {
+    setPendingId(tx.id);
+    try {
+      await updateTransaction({
+        id: tx.id,
+        payload: { status: action },
+      });
+    } finally {
+      setPendingId(null);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -80,6 +159,8 @@ const TransactionListPage = () => {
     );
   }
 
+  const hasAny = filteredTransactions.length > 0;
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -87,40 +168,54 @@ const TransactionListPage = () => {
         subtitle={t("transaction.subtitle")}
       />
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <StatCard label={t("transaction.stat.inProgress")} value={inProgressCount} />
-        <StatCard
-          label={t("transaction.stat.done")}
-          value={doneCount}
-          tone="success"
-        />
-        <StatCard
-          label={t("transaction.stat.cancelled")}
-          value={cancelledCount}
-          tone="danger"
-        />
-      </div>
+      <TransactionFilter counts={counts} onFilterChange={setFilter} />
 
-      <TransactionFilter onFilterChange={setFilter} />
-
-      <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
-        {filteredTransactions.length === 0 ? (
+      {!hasAny ? (
+        <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
           <EmptyState
             icon={<LuReceipt size={32} />}
             title={t("transaction.empty.title")}
             description={t("transaction.empty.description")}
           />
-        ) : (
-          filteredTransactions.map((tx, index) => (
-            <TransactionCard
-              key={tx.id}
-              order={tx}
-              isLast={index === filteredTransactions.length - 1}
-              onClick={() => navigate(`/store/${id}/transactions/${tx.id}`)}
-            />
-          ))
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {BUCKET_ORDER.filter((bucket) => grouped[bucket].length > 0).map(
+            (bucket) => {
+              const items = grouped[bucket];
+              return (
+                <section key={bucket} className="space-y-2">
+                  <h2 className="px-1 text-caption font-semibold uppercase tracking-wider text-text-tertiary">
+                    {t(BUCKET_LABEL_KEY[bucket])}
+                  </h2>
+                  <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
+                    {items.map((tx, index) => {
+                      const flowStatus = getFlowStatus(tx.status);
+                      return (
+                        <TransactionCard
+                          key={tx.id}
+                          order={tx}
+                          flowStatus={flowStatus}
+                          isLast={index === items.length - 1}
+                          isPending={pendingId === tx.id && isUpdating}
+                          onClick={() =>
+                            navigate(`/store/${id}/transactions/${tx.id}`)
+                          }
+                          onQuickAction={
+                            flowStatus === "IN_PROGRESS"
+                              ? (action) => handleQuickAction(tx, action)
+                              : undefined
+                          }
+                        />
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            },
+          )}
+        </div>
+      )}
     </div>
   );
 };
