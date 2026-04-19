@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
 import type { ICartItem, OrderType, PaymentMethod } from "@/features/pos/types/pos.model";
+import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
 
 // --- Cart State ---
 interface CartState {
@@ -117,21 +118,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const setOrderType = useCallback((type: OrderType) => {
     setOrderTypeState(type);
 
-    if (type === "TOGO") {
-      setTableNumberState(null);
-      setCustomerNameState("");
-      setDeliveryPlatformState("");
-      return;
-    }
-
-    if (type === "DINE_IN") {
-      setCustomerNameState("");
-      setDeliveryPlatformState("");
-      return;
-    }
-
-    setTableNumberState(null);
-    setCustomerNameState("");
+    // Delegate field-reset rules to the OrderTypeStrategy so POS and cart
+    // stay consistent with KDS / receipt expectations.
+    const patch = getOrderTypeStrategy(type).stateOnSwitch();
+    if ("tableNumber" in patch) setTableNumberState(patch.tableNumber ?? null);
+    if ("customerName" in patch) setCustomerNameState(patch.customerName ?? "");
+    if ("deliveryPlatform" in patch)
+      setDeliveryPlatformState(patch.deliveryPlatform ?? "");
   }, []);
 
   const setTableNumber = useCallback((value: string | null) => {

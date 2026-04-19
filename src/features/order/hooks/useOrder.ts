@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { orderApiService } from "@/features/order/services/order";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAppSelector } from "@/shared/hooks/hooks";
+import { appBus } from "@/shared/events/app-events";
 import type { ICreateOrder } from "@/features/order/types/order.dto";
 import { AxiosError } from "axios";
 
@@ -24,7 +25,6 @@ export function useOrderService({
   stationId?: string;
   orderId?: string;
 }) {
-  const queryClient = useQueryClient();
   const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   // READ
@@ -81,10 +81,13 @@ export function useOrderService({
         data.customerName,
         data.deliveryPlatform
       ),
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: ["orders", storeId],
-      }),
+    onSuccess: (response) => {
+      const created = unwrapApiData<{ id?: string }>(response);
+      appBus.emit("order:created", {
+        orderId: created?.id ?? "",
+        storeId,
+      });
+    },
   });
 
   // UPDATE
@@ -92,18 +95,19 @@ export function useOrderService({
     mutationFn: ({ orderId, orderData }: { orderId: string; orderData: any }) =>
       orderApiService.update(orderId, orderData),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["orders", storeId] });
-      queryClient.invalidateQueries({ queryKey: ["order", variables.orderId] });
+      appBus.emit("order:updated", {
+        orderId: variables.orderId,
+        storeId,
+      });
     },
   });
 
   // DELETE
   const deleteMutation = useMutation({
     mutationFn: (orderId: string) => orderApiService.delete(orderId),
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: ["orders", storeId],
-      }),
+    onSuccess: (_, orderId) => {
+      appBus.emit("order:deleted", { orderId, storeId });
+    },
   });
 
   return {

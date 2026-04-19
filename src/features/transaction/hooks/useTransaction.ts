@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { transactionServiceApi } from "@/features/transaction/services/transaction";
 import { useAppSelector } from "@/shared/hooks/hooks";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { appBus } from "@/shared/events/app-events";
 
 export function useTransactionService() {
-  const queryClient = useQueryClient();
   const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   const transactionsQuery = useQuery({
@@ -18,10 +18,10 @@ export function useTransactionService() {
     mutationFn: ({ id, payload }: { id: string; payload: unknown }) =>
       transactionServiceApi.update(id, payload),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["transactions", storeId] });
-      queryClient.invalidateQueries({ queryKey: ["transaction", variables.id] });
-      queryClient.invalidateQueries({ queryKey: ["transaction-detail", variables.id] });
-      queryClient.invalidateQueries({ queryKey: ["orders", storeId] });
+      appBus.emit("transaction:updated", {
+        transactionId: variables.id,
+        storeId,
+      });
     },
   });
 
@@ -41,7 +41,6 @@ export function useTransactionService() {
  * instead of wiring useQuery + service directly.
  */
 export function useTransactionDetail(transactionId?: string) {
-  const queryClient = useQueryClient();
   const storeId =
     useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
@@ -56,12 +55,10 @@ export function useTransactionDetail(transactionId?: string) {
     mutationFn: ({ id, payload }: { id: string; payload: unknown }) =>
       transactionServiceApi.update(id, payload),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["transactions", storeId] });
-      queryClient.invalidateQueries({ queryKey: ["transaction", variables.id] });
-      queryClient.invalidateQueries({
-        queryKey: ["transaction-detail", variables.id],
+      appBus.emit("transaction:updated", {
+        transactionId: variables.id,
+        storeId,
       });
-      queryClient.invalidateQueries({ queryKey: ["orders", storeId] });
     },
   });
 

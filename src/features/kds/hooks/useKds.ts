@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { orderApiService } from "@/features/order/services/order";
+import { unwrapPayload } from "@/shared/services/unwrap-payload";
+import { appBus } from "@/shared/events/app-events";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
 
@@ -16,26 +18,6 @@ const toKdsStatus = (backendStatus: string): KdsStatus => {
  */
 const toBackendStatus = (kdsStatus: KdsStatus): "pending" | "complete" => {
   return kdsStatus === "READY" ? "complete" : "pending";
-};
-
-/**
- * Unwrap the Axios / API wrapper to get the raw array.
- * Backend returns the array directly, but Axios wraps it in `response.data`,
- * and our service layer may further wrap via `ApiResponse.data`.
- */
-const unwrapPayload = (payload: unknown): IOrderStationItemDto[] => {
-  if (Array.isArray(payload)) return payload;
-
-  if (payload && typeof payload === "object") {
-    const obj = payload as Record<string, unknown>;
-    if (Array.isArray(obj.data)) return obj.data;
-    if (obj.data && typeof obj.data === "object") {
-      const nested = obj.data as Record<string, unknown>;
-      if (Array.isArray(nested.data)) return nested.data;
-    }
-  }
-
-  return [];
 };
 
 /**
@@ -83,7 +65,7 @@ export const useKds = (stationId?: string) => {
   });
 
   const cards = useMemo<KdsCard[]>(() => {
-    return mapToCards(unwrapPayload(query.data));
+    return mapToCards(unwrapPayload<IOrderStationItemDto>(query.data));
   }, [query.data]);
 
   const updateStatus = async (card: KdsCard, status: KdsStatus) => {
@@ -93,6 +75,13 @@ export const useKds = (stationId?: string) => {
       status: toBackendStatus(status),
       stationId,
       orderItemId: card.orderItemId,
+    });
+
+    appBus.emit("order:statusChanged", {
+      orderStationItemId: card.orderStationItemId,
+      from: card.status,
+      to: status,
+      stationId,
     });
 
     await query.refetch();

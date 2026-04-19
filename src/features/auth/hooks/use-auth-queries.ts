@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { userServiceApi } from "@/features/auth/services/user";
+import { appBus } from "@/shared/events/app-events";
+import { authChannel } from "@/features/auth/events/auth-channel";
 import type { IUser } from "@/features/auth/types/auth.model";
 
 const TOKEN_KEY = "token";
@@ -27,6 +29,8 @@ export const useMeQuery = () => {
 /**
  * Login mutation. On success, persists the token and triggers
  * a refetch of `["me"]` so AuthProvider resolves the new user.
+ * Also broadcasts to sibling tabs via BroadcastChannel and fires
+ * an in-app `auth:login` event for cache observers.
  */
 export const useLoginMutation = () => {
   const queryClient = useQueryClient();
@@ -40,6 +44,8 @@ export const useLoginMutation = () => {
       if (data?.access_token) {
         localStorage.setItem(TOKEN_KEY, data.access_token);
         queryClient.invalidateQueries({ queryKey: ["me"] });
+        appBus.emit("auth:login", {});
+        authChannel.broadcastLogin();
       }
     },
   });
@@ -47,11 +53,13 @@ export const useLoginMutation = () => {
 
 /**
  * Clears the auth token and every cached query so no stale
- * user data lingers after logout.
+ * user data lingers after logout. Notifies sibling tabs too.
  */
 export const clearAuthState = (queryClient: {
   clear: () => void;
 }) => {
   localStorage.removeItem(TOKEN_KEY);
   queryClient.clear();
+  appBus.emit("auth:logout", {});
+  authChannel.broadcastLogout();
 };

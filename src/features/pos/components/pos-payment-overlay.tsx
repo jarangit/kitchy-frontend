@@ -13,6 +13,9 @@ import { Dialog } from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
+import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
+import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
 
 interface Props {
   open: boolean;
@@ -41,19 +44,29 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
 
+  const paymentStrategy = getPaymentStrategy(paymentMethod);
+  const orderTypeStrategy = getOrderTypeStrategy(orderType);
+
   const change = useMemo(
     () =>
-      paymentMethod === "CASH" && receivedAmount
-        ? Math.max(0, Number(receivedAmount) - subtotal)
-        : 0,
-    [paymentMethod, receivedAmount, subtotal]
+      paymentStrategy.calcChange({
+        total: subtotal,
+        received: receivedAmount ? Number(receivedAmount) : undefined,
+      }),
+    [paymentStrategy, receivedAmount, subtotal]
   );
 
   const canConfirm =
     items.length > 0 &&
-    (paymentMethod !== "CASH" || Number(receivedAmount) >= subtotal) &&
-    (orderType !== "DINE_IN" || !!tableNumber) &&
-    (orderType !== "DELIVERY" || deliveryPlatform.trim().length > 0);
+    paymentStrategy.canConfirm({
+      total: subtotal,
+      received: receivedAmount ? Number(receivedAmount) : undefined,
+    }) &&
+    orderTypeStrategy.isValid({
+      tableNumber,
+      customerName,
+      deliveryPlatform,
+    });
 
   const handleClosePayment = () => {
     if (isProcessing) return;
@@ -113,7 +126,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
     clearPaymentResult();
   };
 
-  const orderTypeLabel = t(`pos.orderType.${orderType.toLowerCase()}` as const);
+  const orderTypeLabel = t(orderTypeStrategy.labelKey as MessageKey);
 
   return (
     <>

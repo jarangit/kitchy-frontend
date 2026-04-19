@@ -453,6 +453,8 @@ export const thMessages = {
   "kds.card.urgency.ok": "ปกติ",
   "kds.card.markReady": "ทำเสร็จแล้ว",
   "kds.card.backToPending": "กลับไปกำลังทำ",
+  "kds.status.pending": "กำลังทำ",
+  "kds.status.ready": "พร้อมเสิร์ฟ",
 
   "report.title": "รายงาน",
   "report.subtitle.today": "{date}",

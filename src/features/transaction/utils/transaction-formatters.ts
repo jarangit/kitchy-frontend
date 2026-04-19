@@ -26,8 +26,3 @@ export const toFlowStatus = (status: string): FlowStatus => {
   return "IN_PROGRESS";
 };
 
-export const FLOW_DOT_CLASS: Record<FlowStatus, string> = {
-  IN_PROGRESS: "bg-accent",
-  DONE: "bg-success",
-  CANCELLED: "bg-border",
-};

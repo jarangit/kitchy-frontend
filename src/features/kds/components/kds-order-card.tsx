@@ -2,7 +2,10 @@ import { useMemo } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { Badge, type BadgeVariant } from "@/shared/components/ui/badge";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
 import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
+import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
+import { getKdsStatusStrategy } from "@/features/kds/strategies/kds-status-strategy";
 
 interface Props {
   card: KdsCard;
@@ -46,24 +49,23 @@ const KdsOrderCard = ({
     return { label: t("kds.card.urgency.ok"), variant: "success" };
   }, [waitingMinutes, priorityTone, t]);
 
-  const nextAction =
-    card.status === "READY"
-      ? { label: t("kds.card.backToPending"), status: "PENDING" as const }
-      : { label: t("kds.card.markReady"), status: "READY" as const };
+  const kdsStatusStrategy = getKdsStatusStrategy(card.status);
+  const nextAction = {
+    label: t(kdsStatusStrategy.nextActionKey as MessageKey),
+    status: kdsStatusStrategy.next,
+  };
 
   const orderInfoParts: string[] = [];
   if (card.orderType) {
-    let part = card.orderType.replace("_", " ");
-    if (card.orderType === "DINE_IN" && card.tableNumber) {
-      part += ` • ${card.tableNumber}`;
-    }
-    if (card.orderType === "DELIVERY" && card.customerName) {
-      part += ` • ${card.customerName}`;
-    }
-    if (card.orderType === "DELIVERY" && card.deliveryPlatform) {
-      part += ` (${card.deliveryPlatform})`;
-    }
-    orderInfoParts.push(part);
+    const typeStrategy = getOrderTypeStrategy(card.orderType);
+    const typeLabel = t(typeStrategy.labelKey as MessageKey);
+    const secondary = typeStrategy.secondaryLine({
+      orderType: card.orderType,
+      tableNumber: card.tableNumber,
+      customerName: card.customerName,
+      deliveryPlatform: card.deliveryPlatform,
+    });
+    orderInfoParts.push(secondary ? `${typeLabel} • ${secondary}` : typeLabel);
   }
 
   return (

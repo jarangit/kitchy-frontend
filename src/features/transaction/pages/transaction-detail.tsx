@@ -19,12 +19,12 @@ import {
   formatOrderTypeLabel,
 } from "@/shared/utils/status";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
 import { LuMinus, LuPlus, LuReceipt } from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
 import { InfoCell } from "@/features/transaction/components/info-cell";
 import { DetailSkeleton } from "@/features/transaction/components/detail-skeleton";
 import {
-  FLOW_DOT_CLASS,
   formatCurrency,
   getItemName,
   getItemPrice,
@@ -32,6 +32,10 @@ import {
   type FlowStatus,
   type TransactionOrderItem,
 } from "@/features/transaction/utils/transaction-formatters";
+import {
+  getFlowStatusStrategy,
+  type FlowAction,
+} from "@/features/transaction/strategies/flow-status-strategy";
 
 interface EditableItem {
   id: string;
@@ -157,21 +161,65 @@ const TransactionDetailPage = () => {
     minute: "2-digit",
   });
 
-  const stateCopy =
-    flowStatus === "IN_PROGRESS"
-      ? {
-          title: t("transaction.detail.state.inProgress"),
-          hint: t("transaction.detail.state.inProgressHint"),
-        }
-      : flowStatus === "DONE"
-        ? {
-            title: t("transaction.detail.state.done", { time: formattedTime }),
-            hint: null,
-          }
-        : {
-            title: t("transaction.detail.state.cancelled"),
-            hint: null,
-          };
+  const flowStrategy = getFlowStatusStrategy(flowStatus);
+  const stateCopy = {
+    title:
+      flowStatus === "DONE"
+        ? t(flowStrategy.titleKey as MessageKey, { time: formattedTime })
+        : t(flowStrategy.titleKey as MessageKey),
+    hint: flowStrategy.hintKey
+      ? t(flowStrategy.hintKey as MessageKey)
+      : null,
+  };
+
+  const renderFlowAction = (action: FlowAction) => {
+    switch (action) {
+      case "markReady":
+        return (
+          <Button
+            key={action}
+            onClick={() => updateStatus("READY")}
+            disabled={isUpdating}
+          >
+            {t("transaction.detail.nextAction.markReady")}
+          </Button>
+        );
+      case "revert":
+        return (
+          <Button
+            key={action}
+            variant="secondary"
+            onClick={() => updateStatus("PREPARING")}
+            disabled={isUpdating}
+          >
+            {t("transaction.detail.nextAction.revert")}
+          </Button>
+        );
+      case "edit":
+        return (
+          <Button
+            key={action}
+            variant="ghost"
+            onClick={openEditDialog}
+            disabled={isUpdating || !canEditOrder}
+          >
+            {t("transaction.detail.action.edit")}
+          </Button>
+        );
+      case "cancel":
+        return (
+          <Button
+            key={action}
+            variant="ghost"
+            onClick={() => updateStatus("CANCELLED")}
+            disabled={isUpdating}
+            className="text-danger hover:text-danger"
+          >
+            {t("transaction.detail.action.cancel")}
+          </Button>
+        );
+    }
+  };
 
   return (
     <>
@@ -193,8 +241,8 @@ const TransactionDetailPage = () => {
             <span
               className={cn(
                 "mt-[7px] inline-block h-2 w-2 shrink-0 rounded-full",
-                FLOW_DOT_CLASS[flowStatus],
-                flowStatus === "IN_PROGRESS" && "animate-pulse",
+                flowStrategy.dotClass,
+                flowStrategy.dotPulsing && "animate-pulse",
               )}
               aria-hidden
             />
@@ -210,40 +258,9 @@ const TransactionDetailPage = () => {
             </div>
           </div>
 
-          {flowStatus !== "CANCELLED" && (
+          {flowStrategy.actions.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {flowStatus === "IN_PROGRESS" && (
-                <Button
-                  onClick={() => updateStatus("READY")}
-                  disabled={isUpdating}
-                >
-                  {t("transaction.detail.nextAction.markReady")}
-                </Button>
-              )}
-              {flowStatus === "DONE" && (
-                <Button
-                  variant="secondary"
-                  onClick={() => updateStatus("PREPARING")}
-                  disabled={isUpdating}
-                >
-                  {t("transaction.detail.nextAction.revert")}
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                onClick={openEditDialog}
-                disabled={isUpdating || !canEditOrder}
-              >
-                {t("transaction.detail.action.edit")}
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => updateStatus("CANCELLED")}
-                disabled={isUpdating}
-                className="text-danger hover:text-danger"
-              >
-                {t("transaction.detail.action.cancel")}
-              </Button>
+              {flowStrategy.actions.map(renderFlowAction)}
             </div>
           )}
 

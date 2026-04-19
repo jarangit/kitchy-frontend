@@ -1,8 +1,10 @@
 import { LuQrCode } from "react-icons/lu";
-import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import type { PaymentResult } from "@/features/pos/context/cartContext";
 import { Card } from "@/shared/components/ui/card";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
+import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
+import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
 
 interface Props {
   paymentResult: PaymentResult;
@@ -31,10 +33,9 @@ const PaymentReceipt = ({
     deliveryPlatform,
   } = paymentResult;
 
-  const methodLabel: Record<PaymentMethod, string> = {
-    CASH: t("pos.payment.cash"),
-    QR: t("pos.payment.qr"),
-  };
+  const paymentStrategy = getPaymentStrategy(paymentMethod);
+  const orderTypeStrategy = getOrderTypeStrategy(orderType);
+  const methodLabel = t(paymentStrategy.receiptLabelKey as MessageKey);
 
   return (
     <Card className={className}>
@@ -83,7 +84,7 @@ const PaymentReceipt = ({
             <div className="flex justify-between text-text-secondary">
               <span>{t("pos.receipt.orderType")}</span>
               <span className="text-text-primary">
-                {t(`pos.orderType.${orderType.toLowerCase()}` as const)}
+                {t(orderTypeStrategy.labelKey as MessageKey)}
               </span>
             </div>
             {orderType === "DINE_IN" && tableNumber && (
@@ -108,9 +109,9 @@ const PaymentReceipt = ({
         )}
         <div className="flex justify-between text-text-secondary">
           <span>{t("pos.receipt.paymentMethod")}</span>
-          <span className="text-text-primary">{methodLabel[paymentMethod]}</span>
+          <span className="text-text-primary">{methodLabel}</span>
         </div>
-        {paymentMethod === "CASH" && (
+        {paymentStrategy.requiresReceived && (
           <>
             <div className="flex justify-between text-text-secondary">
               <span>{t("pos.receipt.cashReceived")}</span>

@@ -453,6 +453,8 @@ export const enMessages = {
   "kds.card.urgency.ok": "OK",
   "kds.card.markReady": "Mark Ready",
   "kds.card.backToPending": "Back to Pending",
+  "kds.status.pending": "Pending",
+  "kds.status.ready": "Ready",
 
   "report.title": "Report",
   "report.subtitle.today": "{date}",

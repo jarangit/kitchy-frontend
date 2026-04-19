@@ -12,6 +12,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
+import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
 
 const PaymentPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,14 +27,13 @@ const PaymentPage = () => {
 
   const { createMutation, ordersQuery } = useOrderService({});
 
-  const change =
-    paymentMethod === "CASH" && receivedAmount
-      ? Math.max(0, Number(receivedAmount) - subtotal)
-      : 0;
-
-  const canConfirm =
-    items.length > 0 &&
-    (paymentMethod !== "CASH" || Number(receivedAmount) >= subtotal);
+  const strategy = getPaymentStrategy(paymentMethod);
+  const paymentCtx = {
+    total: subtotal,
+    received: receivedAmount ? Number(receivedAmount) : undefined,
+  };
+  const change = strategy.calcChange(paymentCtx);
+  const canConfirm = items.length > 0 && strategy.canConfirm(paymentCtx);
 
   const handleConfirmPayment = async () => {
     if (!canConfirm) return;

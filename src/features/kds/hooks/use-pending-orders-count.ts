@@ -2,26 +2,8 @@ import { useMemo } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { orderApiService } from "@/features/order/services/order";
+import { unwrapPayload } from "@/shared/services/unwrap-payload";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
-
-/**
- * Unwrap Axios + API wrapper to the raw array.
- * Mirrors the logic in useKds so the query cache key shape matches.
- */
-const unwrapPayload = (payload: unknown): IOrderStationItemDto[] => {
-  if (Array.isArray(payload)) return payload;
-
-  if (payload && typeof payload === "object") {
-    const obj = payload as Record<string, unknown>;
-    if (Array.isArray(obj.data)) return obj.data;
-    if (obj.data && typeof obj.data === "object") {
-      const nested = obj.data as Record<string, unknown>;
-      if (Array.isArray(nested.data)) return nested.data;
-    }
-  }
-
-  return [];
-};
 
 /**
  * Returns the total number of PENDING order-station-items across every
@@ -55,7 +37,7 @@ export const usePendingOrdersCount = () => {
   const count = useMemo(() => {
     let total = 0;
     for (const result of results) {
-      const items = unwrapPayload(result.data);
+      const items = unwrapPayload<IOrderStationItemDto>(result.data);
       for (const item of items) {
         if (item.status !== "complete") total += 1;
       }
