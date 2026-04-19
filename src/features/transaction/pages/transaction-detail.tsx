@@ -1,11 +1,8 @@
 import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { transactionServiceApi } from "@/features/transaction/services/transaction";
-import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
+import { useTransactionDetail } from "@/features/transaction/hooks/useTransaction";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { PageHeader } from "@/shared/components/ui/page-header";
 import {
@@ -24,16 +21,17 @@ import {
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { LuMinus, LuPlus, LuReceipt } from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
-
-interface OrderItem {
-  id?: string;
-  productId?: string;
-  name?: string;
-  quantity?: number;
-  price?: number;
-  note?: string;
-  product?: { name?: string; price?: number };
-}
+import { InfoCell } from "@/features/transaction/components/info-cell";
+import { DetailSkeleton } from "@/features/transaction/components/detail-skeleton";
+import {
+  FLOW_DOT_CLASS,
+  formatCurrency,
+  getItemName,
+  getItemPrice,
+  toFlowStatus,
+  type FlowStatus,
+  type TransactionOrderItem,
+} from "@/features/transaction/utils/transaction-formatters";
 
 interface EditableItem {
   id: string;
@@ -42,98 +40,31 @@ interface EditableItem {
   quantity: number;
 }
 
-type FlowStatus = "IN_PROGRESS" | "DONE" | "CANCELLED";
-
-const DONE_STATUSES = ["READY", "COMPLETED"];
-
-const getItemName = (item: OrderItem) =>
-  item.name || item.product?.name || `Product #${item.productId ?? "?"}`;
-
-const getItemPrice = (item: OrderItem) =>
-  item.price ?? item.product?.price ?? 0;
-
-const formatCurrency = (amount: number) => `฿${amount.toFixed(2)}`;
-
-const toFlowStatus = (status: string): FlowStatus => {
-  if (status === "CANCELLED") return "CANCELLED";
-  if (DONE_STATUSES.includes(status)) return "DONE";
-  return "IN_PROGRESS";
-};
-
-const DOT_CLASS: Record<FlowStatus, string> = {
-  IN_PROGRESS: "bg-accent",
-  DONE: "bg-success",
-  CANCELLED: "bg-border",
-};
-
-function InfoCell({
-  label,
-  value,
-}: {
-  label: string;
-  value: React.ReactNode;
-}) {
-  return (
-    <div className="min-w-0">
-      <p className="text-caption uppercase tracking-wider text-text-tertiary">
-        {label}
-      </p>
-      <p className="mt-1 truncate text-body-sm font-medium text-text-primary">
-        {value}
-      </p>
-    </div>
-  );
-}
-
-function DetailSkeleton() {
-  return (
-    <div className="space-y-8">
-      <Skeleton height="h-9" width="w-32" />
-      <div className="space-y-6 rounded-card border border-card-border bg-card-bg p-card-padding">
-        <div className="flex items-center justify-between">
-          <Skeleton height="h-7" width="w-36" />
-          <Skeleton height="h-6" width="w-20" />
-        </div>
-        <Skeleton height="h-4" width="w-48" />
-        <div className="space-y-2 border-t border-border pt-6">
-          <Skeleton height="h-4" width="w-full" />
-          <Skeleton height="h-4" width="w-3/4" />
-          <Skeleton height="h-4" width="w-1/2" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 const TransactionDetailPage = () => {
   const { id: storeId, txId } = useParams<{ id: string; txId: string }>();
   const { t } = useTranslation();
-  const { updateTransaction, isUpdating } = useTransactionService();
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [tableNumber, setTableNumber] = useState("");
   const [editableItems, setEditableItems] = useState<EditableItem[]>([]);
 
   const {
-    data: order,
+    transaction: order,
     isLoading,
     refetch,
-  } = useQuery({
-    queryKey: ["transaction", txId],
-    queryFn: () => transactionServiceApi.getById(txId as string),
-    enabled: !!txId,
-    select: (res) => res.data,
-  });
+    updateTransaction,
+    isUpdating,
+  } = useTransactionDetail(txId);
 
-  const items: OrderItem[] = order?.products ?? order?.items ?? [];
+  const items: TransactionOrderItem[] = order?.products ?? order?.items ?? [];
 
   const itemCount = items.reduce(
-    (sum: number, item: OrderItem) => sum + (item.quantity ?? 1),
+    (sum: number, item: TransactionOrderItem) => sum + (item.quantity ?? 1),
     0,
   );
 
   const grandTotal = items.reduce(
-    (sum: number, item: OrderItem) =>
+    (sum: number, item: TransactionOrderItem) =>
       sum + getItemPrice(item) * (item.quantity ?? 1),
     0,
   );
@@ -262,7 +193,7 @@ const TransactionDetailPage = () => {
             <span
               className={cn(
                 "mt-[7px] inline-block h-2 w-2 shrink-0 rounded-full",
-                DOT_CLASS[flowStatus],
+                FLOW_DOT_CLASS[flowStatus],
                 flowStatus === "IN_PROGRESS" && "animate-pulse",
               )}
               aria-hidden

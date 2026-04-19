@@ -34,3 +34,43 @@ export function useTransactionService() {
     isUpdating: updateMutation.isPending,
   };
 }
+
+/**
+ * Fetches a single transaction (order) by id, and exposes its
+ * associated mutations. Use this on the transaction detail page
+ * instead of wiring useQuery + service directly.
+ */
+export function useTransactionDetail(transactionId?: string) {
+  const queryClient = useQueryClient();
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+
+  const detailQuery = useQuery({
+    queryKey: ["transaction", transactionId],
+    queryFn: () => transactionServiceApi.getById(transactionId as string),
+    enabled: !!transactionId,
+    select: (res) => res.data,
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, payload }: { id: string; payload: unknown }) =>
+      transactionServiceApi.update(id, payload),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["transactions", storeId] });
+      queryClient.invalidateQueries({ queryKey: ["transaction", variables.id] });
+      queryClient.invalidateQueries({
+        queryKey: ["transaction-detail", variables.id],
+      });
+      queryClient.invalidateQueries({ queryKey: ["orders", storeId] });
+    },
+  });
+
+  return {
+    transaction: detailQuery.data,
+    isLoading: detailQuery.isLoading,
+    error: detailQuery.error,
+    refetch: detailQuery.refetch,
+    updateTransaction: updateMutation.mutateAsync,
+    isUpdating: updateMutation.isPending,
+  };
+}

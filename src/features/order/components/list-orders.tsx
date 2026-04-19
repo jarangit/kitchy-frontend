@@ -1,19 +1,19 @@
 import OrderCard from "./order-card";
-import { orderApiService } from "@/features/order/services/order";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
 import { closeModal, openModal } from "@/shared/store/slices/modal-slice";
-import { useLoading } from "@/shared/hooks/useLoading";
 import TabOrder from "@/shared/components/tab-order";
 import {
   setSelectedType,
   setSelectedStatus,
 } from "@/shared/store/slices/order-slice";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { IOrderItem } from "@/features/order/types/order.model";
-import type {
-  IUpdateOrder,
-  OrderStatus,
-} from "@/features/order/types/order.dto";
+import type { IUpdateOrder } from "@/features/order/types/order.dto";
+import { useOrderService } from "@/features/order/hooks/useOrder";
+import {
+  normalizeType,
+  normalizeStatus,
+} from "@/features/order/utils/order-normalizer";
 import EditModal from "@/shared/components/modals/edit-modal";
 import { Badge } from "@/shared/components/ui/badge";
 import { EmptyState } from "@/shared/components/ui/empty-state";
@@ -33,43 +33,40 @@ export const ListOrders = ({
   sort = "ASC",
 }: Props) => {
   const { t } = useTranslation();
-  const { isLoading } = useLoading();
   const dispatch = useAppDispatch();
   const [isHaveDineInWithToGoOrder, setIsHaveDineInWithToGoOrder] =
     useState(false);
 
-  const orders = useAppSelector((state) => state.orders.orders);
+  const {
+    ordersQuery: orders,
+    isLoading,
+    deleteMutation,
+    updateMutation,
+  } = useOrderService({});
   const selectedType = useAppSelector((state) => state.orders.selectedType);
   const selectedStatus = useAppSelector((state) => state.orders.selectedStatus);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const normalizeType = (type: string) => {
-    if (type === "DINEIN") return "DINE_IN";
-    return type;
-  };
+  const filteredOrders = useMemo(() => {
+    const list = (orders as IOrderItem[]).filter((order) => {
+      const normalizedType = normalizeType(order.type);
+      const normalizedStatus = normalizeStatus(order.status);
+      const typeMatch =
+        selectedType === "ALL" ? true : normalizedType === selectedType;
+      const statusMatch =
+        selectedStatus === "ALL" ? true : normalizedStatus === selectedStatus;
+      return typeMatch && statusMatch;
+    });
 
-  const normalizeStatus = (status: string): OrderStatus => {
-    if (status === "NEW" || status === "PREPARING") return "PENDING";
-    if (status === "READY") return "COMPLETED";
-    return status as OrderStatus;
-  };
+    if (selectedStatus === "COMPLETED" || sort === "DESC") {
+      return [...list].sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+      );
+    }
 
-  let filteredOrders = orders.filter((order) => {
-    const normalizedType = normalizeType(order.type);
-    const normalizedStatus = normalizeStatus(order.status);
-    const typeMatch =
-      selectedType === "ALL" ? true : normalizedType === selectedType;
-    const statusMatch =
-      selectedStatus === "ALL" ? true : normalizedStatus === selectedStatus;
-    return typeMatch && statusMatch;
-  });
-
-  if (selectedStatus === "COMPLETED" || sort == "DESC") {
-    filteredOrders = [...filteredOrders].sort(
-      (a, b) =>
-        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
-    );
-  }
+    return list;
+  }, [orders, selectedType, selectedStatus, sort]);
 
   const handleDelete = async (id: string) => {
     dispatch(
@@ -84,7 +81,7 @@ export const ListOrders = ({
 
   const onDeleteOrder = async (id: string) => {
     try {
-      await orderApiService.delete(id);
+      await deleteMutation.mutateAsync(id);
     } catch (error) {
       console.error(error);
     }
@@ -108,7 +105,7 @@ export const ListOrders = ({
 
   const handleUpdateOrderStatus = async (data: IUpdateOrder) => {
     try {
-      await orderApiService.update(data.id, data);
+      await updateMutation.mutateAsync({ orderId: data.id, orderData: data });
     } catch {
       dispatch(
         openModal({
@@ -134,7 +131,7 @@ export const ListOrders = ({
 
   const onUpdate = async (data: IUpdateOrder) => {
     try {
-      await orderApiService.update(data.id, data);
+      await updateMutation.mutateAsync({ orderId: data.id, orderData: data });
     } catch {
       dispatch(
         openModal({
@@ -149,7 +146,7 @@ export const ListOrders = ({
   };
 
   useEffect(() => {
-    const found = orders.some(
+    const found = (orders as IOrderItem[]).some(
       (order) => (order as unknown as IOrderItem).isWaitingInStore,
     );
     setIsHaveDineInWithToGoOrder(found);

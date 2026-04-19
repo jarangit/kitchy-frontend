@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { LuLayoutGrid, LuShoppingBag, LuUtensils, LuCircleCheck } from "react-icons/lu";
-import { useAppSelector } from "@/shared/hooks/hooks";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
-
-const toLegacyStatus = (status: string) => {
-  if (status === "NEW" || status === "PREPARING") return "PENDING";
-  if (status === "READY") return "COMPLETED";
-  return status;
-};
-
-const normalizeType = (type: string) => {
-  if (type === "DINEIN") return "DINE_IN";
-  return type;
-};
+import { useOrderService } from "@/features/order/hooks/useOrder";
+import {
+  normalizeType,
+  normalizeStatus,
+} from "@/features/order/utils/order-normalizer";
+import type { IOrderItem } from "@/features/order/types/order.model";
 
 type OrderTab = "PENDING" | "TOGO" | "DINE_IN" | "COMPLETED";
 
@@ -20,14 +14,9 @@ type Props = {
   _onClickTabItem: (type: OrderTab) => void;
 };
 const TabOrder = ({ _onClickTabItem }: Props) => {
-  const orders = useAppSelector((state) => state.orders.orders);
+  const { ordersQuery } = useOrderService({});
+  const orders = ordersQuery as IOrderItem[];
   const [tabActive, setTabActive] = useState<OrderTab>("PENDING");
-  const [orderCount, setOrderCount] = useState({
-    total: 0,
-    togo: 0,
-    dineIn: 0,
-    completed: 0,
-  });
 
   const handleChange = (value: string) => {
     const next = value as OrderTab;
@@ -38,27 +27,28 @@ const TabOrder = ({ _onClickTabItem }: Props) => {
   useEffect(() => {
     setTabActive("PENDING");
     _onClickTabItem("PENDING");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    const total = orders.filter((i) => toLegacyStatus(i.status) === "PENDING").length;
+  const orderCount = useMemo(() => {
+    const total = orders.filter(
+      (i) => normalizeStatus(i.status) === "PENDING",
+    ).length;
     const togo = orders.filter(
-      (i) => normalizeType(i.type) === "TOGO" && toLegacyStatus(i.status) === "PENDING"
+      (i) =>
+        normalizeType(i.type) === "TOGO" &&
+        normalizeStatus(i.status) === "PENDING",
     ).length;
     const dineIn = orders.filter(
       (i) =>
-        normalizeType(i.type) === "DINE_IN" && toLegacyStatus(i.status) === "PENDING"
+        normalizeType(i.type) === "DINE_IN" &&
+        normalizeStatus(i.status) === "PENDING",
     ).length;
     const completed = orders.filter(
-      (i) => toLegacyStatus(i.status) === "COMPLETED"
+      (i) => normalizeStatus(i.status) === "COMPLETED",
     ).length;
 
-    setOrderCount({
-      total,
-      togo,
-      dineIn,
-      completed,
-    });
+    return { total, togo, dineIn, completed };
   }, [orders]);
 
   return (
