@@ -14,6 +14,12 @@ import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n
 
 const ORDER_TYPE_VALUES: OrderType[] = ["DINE_IN", "TOGO", "DELIVERY"];
 
+const ORDER_TYPE_LABEL_KEYS = {
+  DINE_IN: "pos.orderType.dine_in",
+  TOGO: "pos.orderType.togo",
+  DELIVERY: "pos.orderType.delivery",
+} as const;
+
 const hasQuickNotes = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 };
@@ -171,7 +177,7 @@ const CartArea = ({
                   active={orderType === value}
                   onClick={() => handleOrderTypeChange(value)}
                 >
-                  {t(`pos.orderType.${value.toLowerCase()}` as const)}
+                  {t(ORDER_TYPE_LABEL_KEYS[value])}
                 </SelectionChip>
               ))}
             </div>

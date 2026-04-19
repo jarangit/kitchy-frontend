@@ -31,7 +31,7 @@ const hideBelowClass: Record<ResponsiveBreakpoint, string> = {
   xl: "hidden xl:table-cell",
 };
 
-function getMeta<TData>(
+function getMeta(
   col: { columnDef: { meta?: unknown } } | undefined,
 ): DataTableColumnMeta {
   if (!col) return {};
