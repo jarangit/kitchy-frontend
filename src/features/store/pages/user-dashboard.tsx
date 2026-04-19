@@ -1,19 +1,11 @@
-import AddUpStoreForm from "@/features/store/components/add-up-store";
 import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import {
-  Dialog,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/shared/components/ui/dialog";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useAppDispatch } from "@/shared/hooks/hooks";
 import { clearCurrentStore, setCurrentStore } from "@/shared/store/slices/current-store-slice";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import type { IStore } from "@/features/store/types/store.model";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuPlus, LuStore } from "react-icons/lu";
 
@@ -22,16 +14,17 @@ export default function UserDashboard() {
   const { user } = auth || {};
   const userId = auth?.user?.id ? String(auth.user.id) : undefined;
 
-  const { stores, storesLoading, createStore } =
-    useStoreService({ userId });
+  const { stores, storesLoading } = useStoreService({ userId });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const [isCreate, setIsCreate] = useState(false);
 
   const handleLogout = () => {
     dispatch(clearCurrentStore());
     auth?.logout();
+  };
+
+  const handleCreateStore = () => {
+    navigate("/onboarding");
   };
 
   if (storesLoading) {
@@ -121,7 +114,7 @@ export default function UserDashboard() {
             <button
               type="button"
               className="cursor-pointer text-left"
-              onClick={() => setIsCreate(true)}
+              onClick={handleCreateStore}
             >
               <Card className="flex min-h-40 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
                 <CardContent className="flex flex-col items-center gap-3 py-8">
@@ -144,28 +137,11 @@ export default function UserDashboard() {
             title="No stores yet"
             description="Create your first store to get started"
             action={
-              <Button onClick={() => setIsCreate(true)}>Create Store</Button>
+              <Button onClick={handleCreateStore}>Create Store</Button>
             }
           />
         )}
       </main>
-
-      {/* Create store dialog */}
-      <Dialog open={isCreate} onClose={() => setIsCreate(false)}>
-        <DialogHeader>
-          <DialogTitle>Create New Store</DialogTitle>
-          <DialogDescription>
-            Give your store a name to get started.
-          </DialogDescription>
-        </DialogHeader>
-        <AddUpStoreForm
-          onSubmit={(data) => {
-            if (!userId) return;
-            createStore({ userId: userId, name: data?.name });
-            setIsCreate(false);
-          }}
-        />
-      </Dialog>
     </div>
   );
 }

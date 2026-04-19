@@ -535,4 +535,53 @@ export const enMessages = {
   "transaction.list.quickAction.cancel": "Cancel",
   "transaction.list.countSummary": "{label} · {count}",
   "transaction.list.itemsSuffix": "{items} items · {products} lines",
+
+  // ── Onboarding wizard ──
+  "onboarding.common.back": "Back",
+  "onboarding.common.skip": "Skip",
+  "onboarding.common.next": "Next",
+  "onboarding.common.done": "Done",
+  "onboarding.progress.step": "Step {current} of {total}",
+
+  "onboarding.autoStationName": "Kitchen",
+
+  "onboarding.welcome.title": "Welcome to Kitchy 👋",
+  "onboarding.welcome.subtitle": "We'll get you selling in 2 minutes",
+  "onboarding.welcome.cta": "Let's start",
+
+  "onboarding.store.title": "Set up your store",
+  "onboarding.store.subtitle": "Just 2 things to get started",
+  "onboarding.store.nameLabel": "Store name",
+  "onboarding.store.namePlaceholder": "e.g. Tuk's Kitchen",
+  "onboarding.store.promptpayLabel": "PromptPay number (optional)",
+  "onboarding.store.promptpayPlaceholder": "081-234-5678",
+  "onboarding.store.promptpayHint": "For receiving transfers from customers",
+  "onboarding.store.submitError": "Failed to create store. Please try again.",
+
+  "onboarding.menu.title": "Add your first menu item",
+  "onboarding.menu.subtitle": "Try a bestseller from your shop",
+  "onboarding.menu.nameLabel": "Item name",
+  "onboarding.menu.namePlaceholder": "e.g. Pad Kra Pao Chicken",
+  "onboarding.menu.priceLabel": "Price (฿)",
+  "onboarding.menu.pricePlaceholder": "60",
+  "onboarding.menu.addMore": "+ Add another item",
+  "onboarding.menu.remove": "Remove",
+  "onboarding.menu.minOneRequired": "Add at least one item to continue",
+  "onboarding.menu.submitError": "Failed to save menus. Please try again.",
+
+  "onboarding.shopType.title": "How does your shop run?",
+  "onboarding.shopType.subtitle": "Pick one — helps us tune the POS layout",
+  "onboarding.shopType.dineIn": "Dine-in tables",
+  "onboarding.shopType.togo": "Takeaway only",
+  "onboarding.shopType.delivery": "Delivery",
+
+  "onboarding.pos.coach.tapProduct": "Tap this item to add it to the bill",
+  "onboarding.pos.coach.tapPay": "Tap to take payment",
+  "onboarding.pos.coach.skip": "Skip tour",
+
+  "onboarding.success.title": "You sold! 🎉",
+  "onboarding.success.subtitle": "Your shop's first order is done",
+  "onboarding.success.amount": "Total: ฿{amount}",
+  "onboarding.success.sellMore": "Keep selling",
+  "onboarding.success.viewReport": "View report",
 } as const;

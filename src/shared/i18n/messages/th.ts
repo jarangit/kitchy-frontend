@@ -535,4 +535,53 @@ export const thMessages = {
   "transaction.list.quickAction.cancel": "ยกเลิก",
   "transaction.list.countSummary": "{label} · {count}",
   "transaction.list.itemsSuffix": "{items} ชิ้น · {products} รายการ",
+
+  // ── Onboarding wizard ──
+  "onboarding.common.back": "ย้อนกลับ",
+  "onboarding.common.skip": "ข้าม",
+  "onboarding.common.next": "ถัดไป",
+  "onboarding.common.done": "เสร็จแล้ว",
+  "onboarding.progress.step": "ขั้นที่ {current} จาก {total}",
+
+  "onboarding.autoStationName": "ครัว",
+
+  "onboarding.welcome.title": "ยินดีต้อนรับสู่ Kitchy 👋",
+  "onboarding.welcome.subtitle": "เราจะช่วยให้คุณเริ่มขายได้ใน 2 นาที",
+  "onboarding.welcome.cta": "เริ่มเลย",
+
+  "onboarding.store.title": "ตั้งค่าร้านของคุณ",
+  "onboarding.store.subtitle": "แค่ 2 อย่าง เริ่มได้เลย",
+  "onboarding.store.nameLabel": "ชื่อร้าน",
+  "onboarding.store.namePlaceholder": "เช่น ร้านข้าวแม่ตุ๊ก",
+  "onboarding.store.promptpayLabel": "เบอร์ PromptPay (ไม่บังคับ)",
+  "onboarding.store.promptpayPlaceholder": "081-234-5678",
+  "onboarding.store.promptpayHint": "สำหรับรับเงินโอนจากลูกค้า",
+  "onboarding.store.submitError": "สร้างร้านไม่สำเร็จ ลองอีกครั้ง",
+
+  "onboarding.menu.title": "เพิ่มเมนูแรกของคุณ",
+  "onboarding.menu.subtitle": "ลองใส่เมนูขายดีของร้าน",
+  "onboarding.menu.nameLabel": "ชื่อเมนู",
+  "onboarding.menu.namePlaceholder": "เช่น ข้าวกะเพราไก่",
+  "onboarding.menu.priceLabel": "ราคา (฿)",
+  "onboarding.menu.pricePlaceholder": "60",
+  "onboarding.menu.addMore": "+ เพิ่มเมนูอีก",
+  "onboarding.menu.remove": "ลบ",
+  "onboarding.menu.minOneRequired": "ใส่อย่างน้อย 1 เมนูเพื่อไปต่อ",
+  "onboarding.menu.submitError": "บันทึกเมนูไม่สำเร็จ ลองอีกครั้ง",
+
+  "onboarding.shopType.title": "ร้านคุณใช้แบบไหน?",
+  "onboarding.shopType.subtitle": "เลือก 1 อย่าง — ช่วยเราจัดหน้าจอให้",
+  "onboarding.shopType.dineIn": "มีโต๊ะนั่งทาน",
+  "onboarding.shopType.togo": "กลับบ้านอย่างเดียว",
+  "onboarding.shopType.delivery": "เดลิเวอรี่",
+
+  "onboarding.pos.coach.tapProduct": "แตะเมนูนี้เพื่อเพิ่มลงบิล",
+  "onboarding.pos.coach.tapPay": "กดเพื่อรับเงินจากลูกค้า",
+  "onboarding.pos.coach.skip": "ข้ามคำแนะนำ",
+
+  "onboarding.success.title": "ขายได้แล้ว! 🎉",
+  "onboarding.success.subtitle": "บิลแรกของร้านคุณสำเร็จ",
+  "onboarding.success.amount": "ยอด: ฿{amount}",
+  "onboarding.success.sellMore": "ขายต่อเลย",
+  "onboarding.success.viewReport": "ดูรายงาน",
 } as const;

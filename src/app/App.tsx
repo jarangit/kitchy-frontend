@@ -30,6 +30,9 @@ import SettingsCategoriesPage from "@/features/category/pages/settings-categorie
 // Station
 import StationPage from "@/features/station/pages/[station]";
 
+// Onboarding
+import OnboardingWizardPage from "@/features/onboarding/pages/onboarding-wizard";
+
 // Layout
 import Layout from "@/shared/components/layout/layout";
 
@@ -47,6 +50,16 @@ function App() {
           element={
             <ProtectedRoute>
               <UserDashboardPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Onboarding wizard (first-run flow) */}
+        <Route
+          path="/onboarding"
+          element={
+            <ProtectedRoute>
+              <OnboardingWizardPage />
             </ProtectedRoute>
           }
         />

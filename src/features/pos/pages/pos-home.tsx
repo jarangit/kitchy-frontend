@@ -9,6 +9,7 @@ import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
 import PosPaymentOverlay from "@/features/pos/components/pos-payment-overlay";
+import { PosCoachOverlay } from "@/features/onboarding/components/pos-coach-overlay";
 import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { LuX } from "react-icons/lu";
@@ -182,6 +183,11 @@ const PosHomePage = () => {
       <PosPaymentOverlay
         open={isPaymentOpen}
         onClose={() => setIsPaymentOpen(false)}
+      />
+
+      <PosCoachOverlay
+        cartItemCount={cart.totalItems}
+        subtotal={cart.subtotal}
       />
     </div>
   );

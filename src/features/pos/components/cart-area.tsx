@@ -257,6 +257,7 @@ const CartArea = ({
           onClick={onPay}
           disabled={items.length === 0}
           size="lg"
+          data-onboarding-target="pay-button"
           className="w-full h-14 text-subtitle tabular-nums"
         >
           {t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })}

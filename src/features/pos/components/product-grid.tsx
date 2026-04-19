@@ -62,6 +62,7 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
           <button
             key={product.id}
             onClick={() => onAddToCart(product)}
+            data-onboarding-target={`product-card-${product.id}`}
             className={cn(
               "relative flex min-h-[148px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
               "border border-card-border",
