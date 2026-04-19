@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "@/features/auth/pages/login";
+import RegisterPage from "@/features/auth/pages/register";
 import UserDashboardPage from "@/features/store/pages/user-dashboard";
 import StoreDashboardPage from "@/features/store/pages/store-dashboard";
 import { AuthProvider } from "@/features/auth/context/authContext";
@@ -43,6 +44,7 @@ function App() {
         {/* Public */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
         {/* User Dashboard (store selection) */}
         <Route

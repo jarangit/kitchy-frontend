@@ -1,12 +1,15 @@
 // src/contexts/AuthContext.tsx
 import { useQueryClient } from "@tanstack/react-query";
 import type { IAuthContext } from "@/features/auth/types/auth.model";
+import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
 import { createContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { PropsWithChildren } from "react";
 import {
   clearAuthState,
   useLoginMutation,
+  useRegisterMutation,
+  useGoogleLoginMutation,
   useMeQuery,
 } from "@/features/auth/hooks/use-auth-queries";
 import { authChannel } from "@/features/auth/events/auth-channel";
@@ -19,6 +22,8 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
 
   const meQuery = useMeQuery();
   const loginMutation = useLoginMutation();
+  const registerMutation = useRegisterMutation();
+  const googleLoginMutation = useGoogleLoginMutation();
 
   // Cross-tab auth sync: when another tab logs out, drop our caches and
   // redirect here too; when another tab logs in, refetch ["me"] so we
@@ -40,6 +45,24 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
       // `useMeQuery` is enabled as soon as the token lands in localStorage,
       // and `onSuccess` inside the mutation invalidates ["me"] so the
       // provider picks up the fresh user automatically.
+      // Dashboard decides whether to send the user to /onboarding.
+      navigate("/dashboard");
+    }
+  };
+
+  const register = async (payload: IRegisterRequest) => {
+    const data = await registerMutation.mutateAsync(payload);
+    if (data?.access_token) {
+      // New users have zero stores by definition → wizard takes over.
+      navigate("/onboarding");
+    }
+  };
+
+  const googleLogin = async (idToken: string) => {
+    const data = await googleLoginMutation.mutateAsync({ idToken });
+    if (data?.access_token) {
+      // Could be a new or returning user; /dashboard decides the next hop
+      // (empty stores → redirect to /onboarding via UserDashboard logic).
       navigate("/dashboard");
     }
   };
@@ -51,8 +74,14 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
 
   const value: IAuthContext = {
     user: meQuery.data ?? null,
-    loading: meQuery.isLoading || loginMutation.isPending,
+    loading:
+      meQuery.isLoading ||
+      loginMutation.isPending ||
+      registerMutation.isPending ||
+      googleLoginMutation.isPending,
     login,
+    register,
+    googleLogin,
     logout,
   };
 

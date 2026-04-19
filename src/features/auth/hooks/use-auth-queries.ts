@@ -1,13 +1,29 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { userServiceApi } from "@/features/auth/services/user";
 import { appBus } from "@/shared/events/app-events";
 import { authChannel } from "@/features/auth/events/auth-channel";
 import type { IUser } from "@/features/auth/types/auth.model";
+import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
 
 const TOKEN_KEY = "token";
 
 const hasToken = () =>
   typeof window !== "undefined" && !!localStorage.getItem(TOKEN_KEY);
+
+/**
+ * Shared post-auth side-effects: persist token, refresh me, broadcast.
+ * Keeps login / register / googleLogin consistent.
+ */
+function persistTokenAndNotify(
+  accessToken: string | undefined,
+  queryClient: QueryClient
+) {
+  if (!accessToken) return;
+  localStorage.setItem(TOKEN_KEY, accessToken);
+  queryClient.invalidateQueries({ queryKey: ["me"] });
+  appBus.emit("auth:login", {});
+  authChannel.broadcastLogin();
+}
 
 /**
  * Query the current authenticated user.
@@ -41,12 +57,46 @@ export const useLoginMutation = () => {
       return data as { access_token?: string };
     },
     onSuccess: (data) => {
-      if (data?.access_token) {
-        localStorage.setItem(TOKEN_KEY, data.access_token);
-        queryClient.invalidateQueries({ queryKey: ["me"] });
-        appBus.emit("auth:login", {});
-        authChannel.broadcastLogin();
-      }
+      persistTokenAndNotify(data?.access_token, queryClient);
+    },
+  });
+};
+
+/**
+ * Register mutation. Backend returns the same shape as /login
+ * (`{ access_token }`), so the user lands fully authenticated and
+ * the downstream flow can drop them straight into /onboarding.
+ */
+export const useRegisterMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (vars: IRegisterRequest) => {
+      const { data } = await userServiceApi.register(vars);
+      return data as { access_token?: string };
+    },
+    onSuccess: (data) => {
+      persistTokenAndNotify(data?.access_token, queryClient);
+    },
+  });
+};
+
+/**
+ * Google sign-in mutation. Takes a Google ID token from the
+ * frontend SDK, sends to the backend to exchange for our own
+ * access_token. Works for both sign-up and sign-in — backend
+ * decides whether to create or attach to an existing user.
+ */
+export const useGoogleLoginMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (vars: { idToken: string }) => {
+      const { data } = await userServiceApi.googleLogin(vars.idToken);
+      return data as { access_token?: string };
+    },
+    onSuccess: (data) => {
+      persistTokenAndNotify(data?.access_token, queryClient);
     },
   });
 };

@@ -1,4 +1,5 @@
 import axiosClient from "@/shared/services/axios-client";
+import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
 
 export const userServiceApi = {
   //  login
@@ -7,6 +8,14 @@ export const userServiceApi = {
       email,
       password,
     });
+    return response.data;
+  },
+  register: async (payload: IRegisterRequest) => {
+    const response = await axiosClient.post("/users/register", payload);
+    return response.data;
+  },
+  googleLogin: async (idToken: string) => {
+    const response = await axiosClient.post("/users/google-login", { idToken });
     return response.data;
   },
   getBydId: async (id: number) => {
