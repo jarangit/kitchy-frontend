@@ -1,4 +1,5 @@
 import { Button } from "@/shared/components/ui/button";
+import { Badge } from "@/shared/components/ui/badge";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
@@ -8,6 +9,7 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import type { IStore } from "@/features/store/types/store.model";
 import { useNavigate } from "react-router-dom";
 import { LuPlus, LuStore } from "react-icons/lu";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 export default function UserDashboard() {
   const auth = useAuth();
@@ -17,6 +19,7 @@ export default function UserDashboard() {
   const { stores, storesLoading } = useStoreService({ userId });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     dispatch(clearCurrentStore());
@@ -30,56 +33,70 @@ export default function UserDashboard() {
   if (storesLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-bg">
-        <p className="text-body text-text-secondary">Loading...</p>
+        <p className="text-body-sm text-text-tertiary">
+          {t("store.dashboard.loading")}
+        </p>
       </div>
     );
   }
 
   const hasStores = stores && stores.length > 0;
+  const isMultiStoreLocked = hasStores;
 
   return (
     <div className="min-h-screen bg-bg">
-      <header className="border-b border-border bg-bg/95 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-card border border-card-border bg-surface">
-              <span className="text-subtitle font-semibold text-text-primary">
+      <header className="sticky top-0 z-10 border-b border-border/60 bg-bg/95 backdrop-blur-xl">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 px-6">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface">
+              <span className="text-label font-semibold text-text-primary">
                 K
               </span>
             </div>
-            <span className="text-title font-semibold text-text-primary tracking-tight">
+            <span className="text-body font-medium text-text-primary tracking-tight">
               Kitchy
+            </span>
+            <span className="hidden h-4 w-px bg-border sm:inline-block" />
+            <span className="hidden text-caption text-text-tertiary sm:inline">
+              {t("store.dashboard.header.breadcrumb")}
             </span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="hidden text-label text-text-secondary sm:inline">
+            <span className="hidden text-caption text-text-tertiary md:inline">
               {user?.email}
             </span>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
-              Sign Out
+              {t("store.dashboard.header.signOut")}
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-6 py-12">
-        <div className="mb-12 space-y-2">
-          <p className="text-label text-text-secondary">Workspace</p>
-          <h1 className="text-heading text-text-primary">
-            Welcome back
+      <main className="mx-auto max-w-6xl px-6 pt-20 pb-24">
+        <div className="mb-20 space-y-3">
+          <p className="text-label text-text-secondary">
+            {t("store.dashboard.welcome.eyebrow")}
+          </p>
+          <h1 className="text-display text-text-primary">
+            {t("store.dashboard.welcome.title")}
           </h1>
-          <p className="text-body text-text-secondary">
+          <p className="text-body-sm text-text-tertiary">
             {user?.email}
           </p>
         </div>
 
-        <h2 className="mb-4 text-subtitle text-text-primary">
-          Your Stores
-        </h2>
+        <div className="mb-8 space-y-2">
+          <h2 className="text-heading text-text-primary">
+            {t("store.dashboard.section.title")}
+          </h2>
+          <p className="text-body-sm text-text-tertiary">
+            {t("store.dashboard.section.description")}
+          </p>
+        </div>
 
         {hasStores ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {stores.map((item: IStore) => (
               <button
                 key={item.id}
@@ -95,15 +112,15 @@ export default function UserDashboard() {
                   navigate(`/store/${item.id}`);
                 }}
               >
-                <Card className="min-h-40 bg-surface transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                <Card className="min-h-44 bg-surface transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
                   <CardContent className="flex h-full flex-col justify-between">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-bg text-text-secondary">
-                      <LuStore size={22} />
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-bg text-text-tertiary">
+                      <LuStore size={18} />
                     </div>
                     <div className="space-y-1">
                       <p className="text-subtitle text-text-primary">{item.name}</p>
-                      <p className="text-body-sm leading-6 text-text-secondary">
-                        Open the store workspace and continue service.
+                      <p className="text-body-sm leading-6 text-text-tertiary">
+                        {t("store.dashboard.card.open")}
                       </p>
                     </div>
                   </CardContent>
@@ -111,33 +128,61 @@ export default function UserDashboard() {
               </button>
             ))}
 
-            <button
-              type="button"
-              className="cursor-pointer text-left"
-              onClick={handleCreateStore}
-            >
-              <Card className="flex min-h-40 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
-                <CardContent className="flex flex-col items-center gap-3 py-8">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-surface text-text-secondary">
-                    <LuPlus size={24} />
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-subtitle text-text-primary">Create New Store</p>
-                    <p className="text-body-sm leading-6 text-text-secondary">
-                      Add another location or brand workspace.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            </button>
+            {isMultiStoreLocked ? (
+              <div
+                role="group"
+                aria-disabled="true"
+                className="text-left"
+              >
+                <Card className="flex min-h-44 items-center justify-center border-dashed border-border/60 bg-bg text-center">
+                  <CardContent className="flex flex-col items-center gap-3 py-8">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
+                      <LuPlus size={18} />
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+                      <p className="text-body text-text-secondary">
+                        {t("store.dashboard.create.locked.title")}
+                      </p>
+                      <Badge variant="default" size="sm">
+                        {t("store.dashboard.create.locked.badge")}
+                      </Badge>
+                      <p className="max-w-[220px] text-caption leading-5 text-text-tertiary">
+                        {t("store.dashboard.create.locked.hint")}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className="cursor-pointer text-left"
+                onClick={handleCreateStore}
+              >
+                <Card className="flex min-h-44 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                  <CardContent className="flex flex-col items-center gap-3 py-8">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
+                      <LuPlus size={18} />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-body text-text-secondary">
+                        {t("store.dashboard.create.locked.title")}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </button>
+            )}
           </div>
         ) : (
           <EmptyState
             icon={<LuStore size={48} />}
-            title="No stores yet"
-            description="Create your first store to get started"
+            title={t("store.dashboard.empty.title")}
+            description={t("store.dashboard.empty.description")}
             action={
-              <Button onClick={handleCreateStore}>Create Store</Button>
+              <Button onClick={handleCreateStore}>
+                {t("store.dashboard.empty.action")}
+              </Button>
             }
           />
         )}

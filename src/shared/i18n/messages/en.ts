@@ -584,4 +584,23 @@ export const enMessages = {
   "onboarding.success.amount": "Total: ฿{amount}",
   "onboarding.success.sellMore": "Keep selling",
   "onboarding.success.viewReport": "View report",
+
+  "store.dashboard.header.breadcrumb": "Workspaces",
+  "store.dashboard.header.signOut": "Sign Out",
+  "store.dashboard.welcome.eyebrow": "Workspace",
+  "store.dashboard.welcome.title": "Welcome back",
+  "store.dashboard.section.title": "Your Stores",
+  "store.dashboard.section.description": "Select a workspace to continue.",
+  "store.dashboard.card.open": "Open workspace",
+  "store.dashboard.create.locked.title": "Add a workspace",
+  "store.dashboard.create.locked.badge": "Coming soon",
+  "store.dashboard.create.locked.hint": "Multi-store will be available in an upcoming plan.",
+  "store.dashboard.empty.title": "No stores yet",
+  "store.dashboard.empty.description": "Create your first workspace to begin.",
+  "store.dashboard.empty.action": "Create Store",
+  "store.dashboard.loading": "Loading...",
+
+  "settings.stations.addLocked.label": "Add Station",
+  "settings.stations.addLocked.badge": "Coming soon",
+  "settings.stations.addLocked.hint": "Creating custom stations will be available in an upcoming plan.",
 } as const;

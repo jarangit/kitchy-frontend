@@ -584,4 +584,23 @@ export const thMessages = {
   "onboarding.success.amount": "ยอด: ฿{amount}",
   "onboarding.success.sellMore": "ขายต่อเลย",
   "onboarding.success.viewReport": "ดูรายงาน",
+
+  "store.dashboard.header.breadcrumb": "ร้านค้า",
+  "store.dashboard.header.signOut": "ออกจากระบบ",
+  "store.dashboard.welcome.eyebrow": "พื้นที่ทำงาน",
+  "store.dashboard.welcome.title": "ยินดีต้อนรับกลับมา",
+  "store.dashboard.section.title": "ร้านของคุณ",
+  "store.dashboard.section.description": "เลือกร้านเพื่อเริ่มใช้งาน",
+  "store.dashboard.card.open": "เปิดร้าน",
+  "store.dashboard.create.locked.title": "เพิ่มร้าน",
+  "store.dashboard.create.locked.badge": "เร็วๆ นี้",
+  "store.dashboard.create.locked.hint": "ระบบหลายร้านจะเปิดใช้งานในแพ็กเกจถัดไป",
+  "store.dashboard.empty.title": "ยังไม่มีร้าน",
+  "store.dashboard.empty.description": "สร้างร้านแรกเพื่อเริ่มต้น",
+  "store.dashboard.empty.action": "สร้างร้าน",
+  "store.dashboard.loading": "กำลังโหลด...",
+
+  "settings.stations.addLocked.label": "เพิ่มสถานี",
+  "settings.stations.addLocked.badge": "เร็วๆ นี้",
+  "settings.stations.addLocked.hint": "การสร้างสถานีเองจะเปิดใช้งานในแพ็กเกจถัดไป",
 } as const;
