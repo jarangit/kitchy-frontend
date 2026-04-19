@@ -1,3 +1,4 @@
+import { type ComponentType } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { SettingsFrame } from "@/features/store/components/settings-frame";
 import { SettingsLayout } from "@/features/store/components/settings-layout";
@@ -9,7 +10,7 @@ import { SectionDevices } from "@/features/store/components/settings/section-dev
 import { SectionSafety } from "@/features/store/components/settings/section-safety";
 import { SectionSystem } from "@/features/store/components/settings/section-system";
 
-const SECTIONS: Record<string, () => JSX.Element> = {
+const SECTIONS: Record<string, ComponentType> = {
   store: SectionStore,
   payments: SectionPayments,
   sales: SectionSales,
