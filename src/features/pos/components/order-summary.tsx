@@ -1,4 +1,5 @@
 import type { ICartItem } from "@/features/pos/types/pos.model";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   items: ICartItem[];
@@ -6,9 +7,13 @@ interface Props {
 }
 
 const OrderSummary = ({ items, subtotal }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
-      <h3 className="mb-4 text-title text-text-primary">Order Summary</h3>
+      <h3 className="mb-4 text-title text-text-primary">
+        {t("pos.payment.orderSummary")}
+      </h3>
       <div className="space-y-3">
         {items.map((item) => (
           <div
@@ -21,7 +26,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
               </span>
               {item.note && (
                 <p className="mt-1 text-label leading-5 text-text-tertiary">
-                  Note: {item.note}
+                  {t("pos.receipt.note", { note: item.note })}
                 </p>
               )}
             </div>
@@ -30,7 +35,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
         ))}
       </div>
       <div className="mt-4 flex justify-between border-t border-border pt-4 text-title">
-        <span>Total</span>
+        <span>{t("pos.receipt.total")}</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>
     </div>

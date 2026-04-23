@@ -32,32 +32,27 @@ const NetworkQualityIcon = ({
         : t("pos.header.network.poor");
 
   return (
-    <div className="group relative">
-      <div
-        className="flex h-12 w-12 items-end justify-center gap-0.5 rounded-sm bg-bg px-2 py-2.5"
-        title={label}
-        aria-label={label}
-        tabIndex={0}
-      >
-        {[1, 2, 3].map((bar) => {
-          const heightClass = bar === 1 ? "h-2" : bar === 2 ? "h-3" : "h-4";
-          const isActive = bar <= activeBars;
+    <div
+      className="inline-flex h-4 shrink-0 items-end justify-center gap-0.5"
+      title={label}
+      aria-label={label}
+      tabIndex={0}
+    >
+      {[1, 2, 3].map((bar) => {
+        const heightClass = bar === 1 ? "h-2" : bar === 2 ? "h-3" : "h-4";
+        const isActive = bar <= activeBars;
 
-          return (
-            <span
-              key={bar}
-              className={cn(
-                "w-1 rounded-xs",
-                heightClass,
-                isActive ? levelColorClass : "bg-border",
-              )}
-            />
-          );
-        })}
-      </div>
-      <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-surface px-2.5 py-1.5 text-caption font-medium text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100">
-        {label}
-      </span>
+        return (
+          <span
+            key={bar}
+            className={cn(
+              "w-1 rounded-xs",
+              heightClass,
+              isActive ? levelColorClass : "bg-border",
+            )}
+          />
+        );
+      })}
     </div>
   );
 };
@@ -87,7 +82,6 @@ const PosHeader = ({
   const formattedTime = currentTime.toLocaleTimeString("th-TH", {
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
   });
 
   const formattedDate = currentTime.toLocaleDateString("th-TH", {
@@ -99,19 +93,20 @@ const PosHeader = ({
 
   return (
     <div className="flex items-center justify-between border-b border-border bg-bg px-5 py-5 sm:px-8">
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <h1 className="truncate text-heading text-text-primary">
           {shopName}
         </h1>
       </div>
 
-      <div className="flex items-center gap-3 sm:gap-4">
-        <div className="hidden items-center gap-3 rounded-chip bg-chip-inactive-bg border border-border px-3 py-1.5 sm:flex">
-          <div className="text-right">
-            <div className="text-body font-semibold tabular-nums text-text-primary">
+      <div className="flex shrink-0 items-center gap-3 sm:gap-4">
+        <div className="hidden h-12 shrink-0 grid-cols-[1rem_auto_1rem] items-center gap-3 overflow-hidden rounded-chip bg-chip-inactive-bg border border-border px-4 sm:grid">
+          <span className="h-4 w-4" aria-hidden />
+          <div className="text-center">
+            <div className="text-body font-semibold leading-tight tabular-nums text-text-primary">
               {formattedTime}
             </div>
-            <div className="text-caption text-text-secondary">
+            <div className="text-caption leading-tight text-text-secondary">
               {formattedDate}
             </div>
           </div>

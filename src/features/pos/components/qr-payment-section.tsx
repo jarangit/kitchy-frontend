@@ -1,15 +1,17 @@
 import { LuQrCode } from "react-icons/lu";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { cn } from "@/shared/utils/cn";
 
 interface Props {
   subtotal: number;
+  className?: string;
 }
 
-const QrPaymentSection = ({ subtotal }: Props) => {
+const QrPaymentSection = ({ subtotal, className }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="mt-6 rounded-card border border-card-border bg-card-bg p-card-padding text-center">
+    <div className={cn("mt-6 rounded-card border border-card-border bg-card-bg p-card-padding text-center", className)}>
       <h3 className="mb-6 text-title text-text-primary">
         {t("pos.payment.qrTitle")}
       </h3>

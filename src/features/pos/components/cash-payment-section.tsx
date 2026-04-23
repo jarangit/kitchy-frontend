@@ -1,12 +1,14 @@
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { cn } from "@/shared/utils/cn";
 
 interface Props {
   subtotal: number;
   receivedAmount: string;
   onReceivedAmountChange: (value: string) => void;
   change: number;
+  className?: string;
 }
 
 const CashPaymentSection = ({
@@ -14,6 +16,7 @@ const CashPaymentSection = ({
   receivedAmount,
   onReceivedAmountChange,
   change,
+  className,
 }: Props) => {
   const { t } = useTranslation();
   const quickAmounts = [
@@ -28,7 +31,7 @@ const CashPaymentSection = ({
   ];
 
   return (
-    <div className="mt-6 rounded-card border border-card-border bg-card-bg p-card-padding">
+    <div className={cn("mt-6 rounded-card border border-card-border bg-card-bg p-card-padding", className)}>
       <h3 className="mb-4 text-title text-text-primary">
         {t("pos.payment.cashTitle")}
       </h3>

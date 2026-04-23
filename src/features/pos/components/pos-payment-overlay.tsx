@@ -133,12 +133,24 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
       <Dialog
         open={open}
         onClose={handleClosePayment}
-        className="!max-w-5xl w-[min(96vw,72rem)] max-h-[92vh] p-0 overflow-hidden"
+        className="!max-w-6xl w-[min(96vw,76rem)] max-h-[92vh] p-0 overflow-hidden"
       >
-        <div className="flex items-center justify-between border-b border-border bg-card-bg px-6 py-4">
-          <h2 className="text-heading text-text-primary">
-            {t("pos.payment.title")}
-          </h2>
+        <div className="flex items-center justify-between gap-4 border-b border-border bg-card-bg px-6 py-4">
+          <div>
+            <h2 className="text-title text-text-primary">
+              {t("pos.payment.title")}
+            </h2>
+          </div>
+          {items.length > 0 && (
+            <div className="ml-auto rounded-chip bg-chip-inactive-bg px-4 py-2 text-right">
+              <p className="text-caption text-text-secondary">
+                {t("pos.receipt.total")}
+              </p>
+              <p className="text-title font-semibold tabular-nums text-text-primary">
+                ฿{subtotal.toFixed(2)}
+              </p>
+            </div>
+          )}
           <Button
             type="button"
             variant="ghost"
@@ -163,83 +175,98 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             />
           </div>
         ) : (
-          <div className="overflow-y-auto max-h-[calc(92vh-72px)] p-6">
-            <div className="gap-6 space-y-6 lg:grid lg:grid-cols-[1fr_320px] lg:space-y-0">
-              <OrderSummary items={items} subtotal={subtotal} />
+          <div className="flex max-h-[calc(92vh-73px)] flex-col">
+            <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_380px]">
+              <div className="min-h-0 overflow-y-auto border-border p-6 lg:border-r">
+                <OrderSummary items={items} subtotal={subtotal} />
+              </div>
 
-              <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
-                <h3 className="mb-3 text-title text-text-primary">
-                  {t("pos.payment.orderInfo")}
-                </h3>
-                <dl className="mb-5 space-y-2 text-body-sm">
-                  <div className="flex items-center justify-between">
-                    <dt className="text-text-secondary">
-                      {t("pos.payment.type")}
-                    </dt>
-                    <dd className="font-semibold text-text-primary">
-                      {orderTypeLabel}
-                    </dd>
+              <div className="min-h-0 overflow-y-auto bg-bg p-6">
+                <div className="space-y-5">
+                  <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
+                    <h3 className="mb-3 text-subtitle text-text-primary">
+                      {t("pos.payment.orderInfo")}
+                    </h3>
+                    <dl className="space-y-2 text-body-sm">
+                      <div className="flex items-center justify-between">
+                        <dt className="text-text-secondary">
+                          {t("pos.payment.type")}
+                        </dt>
+                        <dd className="font-semibold text-text-primary">
+                          {orderTypeLabel}
+                        </dd>
+                      </div>
+                      {orderType === "DINE_IN" && (
+                        <div className="flex items-center justify-between">
+                          <dt className="text-text-secondary">
+                            {t("pos.payment.table")}
+                          </dt>
+                          <dd className="font-semibold text-text-primary">
+                            {tableNumber ?? "—"}
+                          </dd>
+                        </div>
+                      )}
+                      {orderType === "DELIVERY" && (
+                        <div className="flex items-center justify-between">
+                          <dt className="text-text-secondary">
+                            {t("pos.payment.platform")}
+                          </dt>
+                          <dd className="font-semibold text-text-primary">
+                            {deliveryPlatform || "—"}
+                          </dd>
+                        </div>
+                      )}
+                    </dl>
+                  </section>
+
+                  <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
+                    <h3 className="mb-3 text-subtitle text-text-primary">
+                      {t("pos.payment.method")}
+                    </h3>
+                    <PaymentMethodSelector
+                      selected={paymentMethod}
+                      onSelect={setPaymentMethod}
+                    />
+                  </section>
+
+                  {paymentMethod === "CASH" && (
+                    <CashPaymentSection
+                      subtotal={subtotal}
+                      receivedAmount={receivedAmount}
+                      onReceivedAmountChange={setReceivedAmount}
+                      change={change}
+                      className="mt-0"
+                    />
+                  )}
+
+                  {paymentMethod === "QR" && (
+                    <QrPaymentSection subtotal={subtotal} className="mt-0" />
+                  )}
+
+                  <div className="space-y-2">
+                    {errorMessage && (
+                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
+                        {errorMessage}
+                      </p>
+                    )}
+
+                    {orderType === "DINE_IN" && !tableNumber && (
+                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
+                        {t("pos.payment.selectTableFirst")}
+                      </p>
+                    )}
+
+                    {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
+                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
+                        {t("pos.payment.selectPlatformFirst")}
+                      </p>
+                    )}
                   </div>
-                  {orderType === "DINE_IN" && (
-                    <div className="flex items-center justify-between">
-                      <dt className="text-text-secondary">
-                        {t("pos.payment.table")}
-                      </dt>
-                      <dd className="font-semibold text-text-primary">
-                        {tableNumber ?? "—"}
-                      </dd>
-                    </div>
-                  )}
-                  {orderType === "DELIVERY" && (
-                    <div className="flex items-center justify-between">
-                      <dt className="text-text-secondary">
-                        {t("pos.payment.platform")}
-                      </dt>
-                      <dd className="font-semibold text-text-primary">
-                        {deliveryPlatform || "—"}
-                      </dd>
-                    </div>
-                  )}
-                </dl>
-
-                <h3 className="mb-3 text-title text-text-primary">
-                  {t("pos.payment.method")}
-                </h3>
-                <PaymentMethodSelector
-                  selected={paymentMethod}
-                  onSelect={setPaymentMethod}
-                />
+                </div>
               </div>
             </div>
 
-            {paymentMethod === "CASH" && (
-              <CashPaymentSection
-                subtotal={subtotal}
-                receivedAmount={receivedAmount}
-                onReceivedAmountChange={setReceivedAmount}
-                change={change}
-              />
-            )}
-
-            {paymentMethod === "QR" && <QrPaymentSection subtotal={subtotal} />}
-
-            {errorMessage && (
-              <p className="mt-4 text-body-sm text-danger">{errorMessage}</p>
-            )}
-
-            {orderType === "DINE_IN" && !tableNumber && (
-              <p className="mt-4 text-body-sm text-danger">
-                {t("pos.payment.selectTableFirst")}
-              </p>
-            )}
-
-            {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
-              <p className="mt-4 text-body-sm text-danger">
-                {t("pos.payment.selectPlatformFirst")}
-              </p>
-            )}
-
-            <div className="mt-6 flex gap-3">
+            <div className="flex shrink-0 gap-3 border-t border-border bg-card-bg p-4">
               <Button
                 variant="secondary"
                 onClick={handleClosePayment}
@@ -251,7 +278,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               <Button
                 onClick={handleConfirmPayment}
                 disabled={!canConfirm || isProcessing}
-                className="h-12 flex-1 text-subtitle"
+                className="h-12 flex-[2] text-subtitle"
               >
                 {isProcessing
                   ? t("pos.payment.processing")

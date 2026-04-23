@@ -332,6 +332,7 @@ export const enMessages = {
   "pos.payment.emptyTitle": "Cart is empty",
   "pos.payment.emptyDescription": "Go back to POS to add items",
   "pos.payment.backToPos": "Back to POS",
+  "pos.payment.orderSummary": "Order Summary",
   "pos.payment.orderInfo": "Order Info",
   "pos.payment.type": "Type",
   "pos.payment.table": "Table",

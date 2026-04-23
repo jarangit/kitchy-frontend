@@ -332,6 +332,7 @@ export const thMessages = {
   "pos.payment.emptyTitle": "ตะกร้าว่าง",
   "pos.payment.emptyDescription": "กลับไปที่ POS เพื่อเพิ่มสินค้า",
   "pos.payment.backToPos": "กลับไป POS",
+  "pos.payment.orderSummary": "สรุปรายการ",
   "pos.payment.orderInfo": "ข้อมูลออเดอร์",
   "pos.payment.type": "ประเภท",
   "pos.payment.table": "โต๊ะ",
