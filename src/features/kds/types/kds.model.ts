@@ -22,5 +22,6 @@ export interface KdsCard {
   tableNumber?: string;
   customerName?: string;
   deliveryPlatform?: string;
+  deliveryOrderNumber?: string;
   createdAt: string;
 }

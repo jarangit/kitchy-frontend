@@ -64,6 +64,7 @@ const KdsOrderCard = ({
       tableNumber: card.tableNumber,
       customerName: card.customerName,
       deliveryPlatform: card.deliveryPlatform,
+      deliveryOrderNumber: card.deliveryOrderNumber,
     });
     orderInfoParts.push(secondary ? `${typeLabel} • ${secondary}` : typeLabel);
   }
@@ -107,6 +108,13 @@ const KdsOrderCard = ({
         {orderInfoParts.length > 0 && (
           <p className="mt-0.5 text-label text-text-secondary">
             {orderInfoParts.join(" ")}
+          </p>
+        )}
+        {card.orderType === "DELIVERY" && card.deliveryOrderNumber && (
+          <p className="mt-1 font-mono text-label font-semibold text-accent-text tabular-nums">
+            {t("kds.card.deliveryOrderNumber", {
+              orderNumber: card.deliveryOrderNumber,
+            })}
           </p>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-3">

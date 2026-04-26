@@ -19,10 +19,12 @@ interface CartState {
   tableNumber: string | null;
   customerName: string;
   deliveryPlatform: string;
+  deliveryOrderNumber: string;
   setOrderType: (type: OrderType) => void;
   setTableNumber: (tableNumber: string | null) => void;
   setCustomerName: (name: string) => void;
   setDeliveryPlatform: (platform: string) => void;
+  setDeliveryOrderNumber: (orderNumber: string) => void;
 }
 
 // --- Payment Result (persisted after successful payment) ---
@@ -37,6 +39,7 @@ export interface PaymentResult {
   tableNumber: string | null;
   customerName: string;
   deliveryPlatform: string;
+  deliveryOrderNumber: string;
 }
 
 interface CartContextValue extends CartState {
@@ -71,6 +74,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [tableNumber, setTableNumberState] = useState<string | null>(null);
   const [customerName, setCustomerNameState] = useState("");
   const [deliveryPlatform, setDeliveryPlatformState] = useState("");
+  const [deliveryOrderNumber, setDeliveryOrderNumberState] = useState("");
 
   const addItem = useCallback(
     (product: { id: string; name: string; price: number }) => {
@@ -129,6 +133,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => {
     setItems([]);
+    setDeliveryOrderNumberState("");
   }, []);
 
   const setOrderType = useCallback((type: OrderType) => {
@@ -141,6 +146,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if ("customerName" in patch) setCustomerNameState(patch.customerName ?? "");
     if ("deliveryPlatform" in patch)
       setDeliveryPlatformState(patch.deliveryPlatform ?? "");
+    if ("deliveryOrderNumber" in patch)
+      setDeliveryOrderNumberState(patch.deliveryOrderNumber ?? "");
   }, []);
 
   const setTableNumber = useCallback((value: string | null) => {
@@ -153,6 +160,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const setDeliveryPlatform = useCallback((value: string) => {
     setDeliveryPlatformState(value);
+  }, []);
+
+  const setDeliveryOrderNumber = useCallback((value: string) => {
+    setDeliveryOrderNumberState(value);
   }, []);
 
   const subtotal = useMemo(
@@ -186,10 +197,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     tableNumber,
     customerName,
     deliveryPlatform,
+    deliveryOrderNumber,
     setOrderType,
     setTableNumber,
     setCustomerName,
     setDeliveryPlatform,
+    setDeliveryOrderNumber,
     paymentResult,
     setPaymentResult,
     clearPaymentResult,

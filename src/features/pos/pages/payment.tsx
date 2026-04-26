@@ -63,6 +63,7 @@ const PaymentPage = () => {
         tableNumber: null,
         customerName: "",
         deliveryPlatform: "",
+        deliveryOrderNumber: "",
       });
 
       clearCart();

@@ -31,6 +31,7 @@ const PaymentReceipt = ({
     tableNumber,
     customerName,
     deliveryPlatform,
+    deliveryOrderNumber,
   } = paymentResult;
 
   const paymentStrategy = getPaymentStrategy(paymentMethod);
@@ -103,6 +104,12 @@ const PaymentReceipt = ({
               <div className="flex justify-between text-text-secondary">
                 <span>{t("pos.receipt.platform")}</span>
                 <span className="text-text-primary">{deliveryPlatform}</span>
+              </div>
+            )}
+            {orderType === "DELIVERY" && deliveryOrderNumber && (
+              <div className="flex justify-between text-text-secondary">
+                <span>{t("pos.receipt.deliveryOrderNumber")}</span>
+                <span className="text-text-primary">{deliveryOrderNumber}</span>
               </div>
             )}
           </>

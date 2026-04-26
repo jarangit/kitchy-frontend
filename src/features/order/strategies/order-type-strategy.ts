@@ -21,6 +21,7 @@ export interface OrderTypeStateSlice {
   tableNumber: string | null;
   customerName: string;
   deliveryPlatform: string;
+  deliveryOrderNumber: string;
 }
 
 /**
@@ -33,6 +34,7 @@ export interface OrderTypeInfoSource {
   tableNumber?: string | null;
   customerName?: string | null;
   deliveryPlatform?: string | null;
+  deliveryOrderNumber?: string | null;
 }
 
 export interface OrderTypeStrategy {
@@ -68,6 +70,7 @@ const dineInStrategy: OrderTypeStrategy = {
   stateOnSwitch: () => ({
     customerName: "",
     deliveryPlatform: "",
+    deliveryOrderNumber: "",
   }),
   isValid: (slice) => !!slice.tableNumber,
   secondaryLine: (source) =>
@@ -82,6 +85,7 @@ const togoStrategy: OrderTypeStrategy = {
     tableNumber: null,
     customerName: "",
     deliveryPlatform: "",
+    deliveryOrderNumber: "",
   }),
   isValid: () => true,
   secondaryLine: (source) => source.customerName?.trim() || null,

@@ -21,6 +21,7 @@ export interface ICreateOrder {
   tableNumber?: string;
   customerName?: string;
   deliveryPlatform?: string;
+  deliveryOrderNumber?: string;
   products: { productId: string; quantity: number; note?: string }[];
   isWaitingInStore?: boolean;
 }

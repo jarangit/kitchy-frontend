@@ -124,9 +124,11 @@ const PosHomePage = () => {
             orderType={cart.orderType}
             tableNumber={cart.tableNumber}
             deliveryPlatform={cart.deliveryPlatform}
+            deliveryOrderNumber={cart.deliveryOrderNumber}
             onOrderTypeChange={cart.setOrderType}
             onTableNumberChange={cart.setTableNumber}
             onDeliveryPlatformChange={cart.setDeliveryPlatform}
+            onDeliveryOrderNumberChange={cart.setDeliveryOrderNumber}
           />
         </div>
       </div>
@@ -171,9 +173,11 @@ const PosHomePage = () => {
                 orderType={cart.orderType}
                 tableNumber={cart.tableNumber}
                 deliveryPlatform={cart.deliveryPlatform}
+                deliveryOrderNumber={cart.deliveryOrderNumber}
                 onOrderTypeChange={cart.setOrderType}
                 onTableNumberChange={cart.setTableNumber}
                 onDeliveryPlatformChange={cart.setDeliveryPlatform}
+                onDeliveryOrderNumberChange={cart.setDeliveryOrderNumber}
               />
             </div>
           </div>

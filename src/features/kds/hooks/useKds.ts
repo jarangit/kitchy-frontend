@@ -43,6 +43,7 @@ const mapToCards = (items: IOrderStationItemDto[]): KdsCard[] => {
       tableNumber: oi.order?.tableNumber,
       customerName: oi.order?.customerName,
       deliveryPlatform: oi.order?.deliveryPlatform,
+      deliveryOrderNumber: oi.order?.deliveryOrderNumber,
       createdAt: oi.order?.createdAt ?? new Date().toISOString(),
     });
   }

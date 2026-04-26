@@ -35,6 +35,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
     tableNumber,
     customerName,
     deliveryPlatform,
+    deliveryOrderNumber,
   } = useCartContext();
   const { createMutation, ordersQuery } = useOrderService({});
 
@@ -66,6 +67,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
       tableNumber,
       customerName,
       deliveryPlatform,
+      deliveryOrderNumber,
     });
 
   const handleClosePayment = () => {
@@ -90,6 +92,8 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
           orderType === "DELIVERY" ? customerName.trim() : undefined,
         deliveryPlatform:
           orderType === "DELIVERY" ? deliveryPlatform.trim() : undefined,
+        deliveryOrderNumber:
+          orderType === "DELIVERY" ? deliveryOrderNumber.trim() : undefined,
         products: items.map((item) => ({
           productId: item.productId,
           quantity: item.quantity,
@@ -108,6 +112,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
         tableNumber,
         customerName,
         deliveryPlatform,
+        deliveryOrderNumber,
       });
 
       clearCart();
@@ -207,14 +212,26 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                         </div>
                       )}
                       {orderType === "DELIVERY" && (
-                        <div className="flex items-center justify-between">
-                          <dt className="text-text-secondary">
-                            {t("pos.payment.platform")}
-                          </dt>
-                          <dd className="font-semibold text-text-primary">
-                            {deliveryPlatform || "—"}
-                          </dd>
-                        </div>
+                        <>
+                          <div className="flex items-center justify-between">
+                            <dt className="text-text-secondary">
+                              {t("pos.payment.platform")}
+                            </dt>
+                            <dd className="font-semibold text-text-primary">
+                              {deliveryPlatform || "—"}
+                            </dd>
+                          </div>
+                          {deliveryOrderNumber.trim().length > 0 && (
+                            <div className="flex items-center justify-between">
+                              <dt className="text-text-secondary">
+                                {t("pos.payment.deliveryOrderNumber")}
+                              </dt>
+                              <dd className="font-semibold text-text-primary">
+                                {deliveryOrderNumber.trim()}
+                              </dd>
+                            </div>
+                          )}
+                        </>
                       )}
                     </dl>
                   </section>

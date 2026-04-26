@@ -24,7 +24,8 @@ export const orderApiService = {
     orderType: OrderType,
     tableNumber?: string,
     customerName?: string,
-    deliveryPlatform?: string
+    deliveryPlatform?: string,
+    deliveryOrderNumber?: string
   ) => {
     return await axiosClient.post(`/orders`, {
       storeId,
@@ -34,6 +35,7 @@ export const orderApiService = {
       tableNumber,
       customerName,
       deliveryPlatform,
+      deliveryOrderNumber,
     });
   },
   update: async (orderId: string, orderData: any) => {

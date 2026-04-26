@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ICartItem } from "@/features/pos/types/pos.model";
 import type { OrderType } from "@/features/pos/types/pos.model";
-import { LuShoppingCart } from "react-icons/lu";
+import { LuKeyboard, LuShoppingCart } from "react-icons/lu";
 import CartItem from "./cart-item";
 import CartSummary from "./cart-summary";
 import TablePickerDialog from "./table-picker-dialog";
@@ -10,6 +10,8 @@ import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
+import { Label } from "@/shared/components/ui/label";
+import { AlphanumericKeypad } from "@/shared/components/ui/alphanumeric-keypad";
 import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n/presets";
 
 const ORDER_TYPE_VALUES: OrderType[] = ["DINE_IN", "TOGO", "DELIVERY"];
@@ -41,9 +43,11 @@ interface Props {
   orderType: OrderType;
   tableNumber: string | null;
   deliveryPlatform: string;
+  deliveryOrderNumber: string;
   onOrderTypeChange: (type: OrderType) => void;
   onTableNumberChange: (tableNumber: string | null) => void;
   onDeliveryPlatformChange: (platform: string) => void;
+  onDeliveryOrderNumberChange: (orderNumber: string) => void;
 }
 
 const SectionLabel = ({ children }: { children: React.ReactNode }) => (
@@ -63,9 +67,11 @@ const CartArea = ({
   orderType,
   tableNumber,
   deliveryPlatform,
+  deliveryOrderNumber,
   onOrderTypeChange,
   onTableNumberChange,
   onDeliveryPlatformChange,
+  onDeliveryOrderNumberChange,
 }: Props) => {
   const { t, language } = useTranslation();
   const defaultDeliveryPlatforms = useMemo(
@@ -80,6 +86,9 @@ const CartArea = ({
     defaultDeliveryPlatforms
   );
   const [quickNotes, setQuickNotes] = useState(defaultQuickNotes);
+  const [isDeliveryKeypadOpen, setIsDeliveryKeypadOpen] = useState(false);
+  const [isDeviceKeyboardEnabled, setIsDeviceKeyboardEnabled] = useState(false);
+  const deliveryOrderInputRef = useRef<HTMLInputElement | null>(null);
 
   const deliverySettingsKey = useMemo(
     () => `store:${window.location.pathname.split("/")[2]}:delivery-platforms`,
@@ -138,6 +147,21 @@ const CartArea = ({
     if (nextType === "DINE_IN") {
       setIsTableDialogOpen(true);
     }
+    if (nextType !== "DELIVERY") {
+      setIsDeliveryKeypadOpen(false);
+      setIsDeviceKeyboardEnabled(false);
+    }
+  };
+
+  const openDeviceKeyboard = () => {
+    setIsDeliveryKeypadOpen(false);
+    setIsDeviceKeyboardEnabled(true);
+    window.setTimeout(() => deliveryOrderInputRef.current?.focus(), 0);
+  };
+
+  const openCustomKeypad = () => {
+    setIsDeviceKeyboardEnabled(false);
+    setIsDeliveryKeypadOpen((current) => !current);
   };
 
   return (
@@ -214,18 +238,75 @@ const CartArea = ({
           )}
 
           {orderType === "DELIVERY" && (
-            <div>
-              <SectionLabel>{t("pos.cart.deliveryPlatform")}</SectionLabel>
-              <div className="grid grid-cols-2 gap-2">
-                {deliveryPlatforms.map((platform) => (
-                  <SelectionChip
-                    key={platform}
-                    active={deliveryPlatform === platform}
-                    onClick={() => onDeliveryPlatformChange(platform)}
+            <div className="space-y-4">
+              <div>
+                <SectionLabel>{t("pos.cart.deliveryPlatform")}</SectionLabel>
+                <div className="grid grid-cols-2 gap-2">
+                  {deliveryPlatforms.map((platform) => (
+                    <SelectionChip
+                      key={platform}
+                      active={deliveryPlatform === platform}
+                      onClick={() => onDeliveryPlatformChange(platform)}
+                    >
+                      {platform}
+                    </SelectionChip>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="deliveryOrderNumber">
+                  {t("pos.cart.deliveryOrderNumber")}
+                </Label>
+                {isDeviceKeyboardEnabled ? (
+                  <input
+                    id="deliveryOrderNumber"
+                    ref={deliveryOrderInputRef}
+                    value={deliveryOrderNumber}
+                    onChange={(event) =>
+                      onDeliveryOrderNumberChange(event.target.value.slice(0, 24))
+                    }
+                    onBlur={() => setIsDeviceKeyboardEnabled(false)}
+                    inputMode="text"
+                    autoComplete="off"
+                    className="mt-1 h-input-height w-full rounded-input border border-input-border bg-input-bg px-input-padding-x font-mono text-input text-text-primary tabular-nums outline-none transition-colors duration-[var(--motion-fast)] placeholder:text-input-placeholder focus:border-input-border-focus focus:ring-2 focus:ring-accent/25"
+                    placeholder={t("pos.cart.deliveryOrderNumberPlaceholder")}
+                  />
+                ) : (
+                  <button
+                    id="deliveryOrderNumber"
+                    type="button"
+                    onClick={openCustomKeypad}
+                    aria-haspopup="dialog"
+                    aria-expanded={isDeliveryKeypadOpen}
+                    className="mt-1 flex h-input-height w-full items-center justify-between gap-3 rounded-input border border-input-border bg-input-bg px-input-padding-x text-left text-input-text transition-colors duration-[var(--motion-fast)] focus:border-input-border-focus focus:outline-none focus:ring-2 focus:ring-accent/25"
                   >
-                    {platform}
-                  </SelectionChip>
-                ))}
+                    <span
+                      className={
+                        deliveryOrderNumber
+                          ? "font-mono text-input tabular-nums text-text-primary"
+                          : "text-input text-input-placeholder"
+                      }
+                    >
+                      {deliveryOrderNumber ||
+                        t("pos.cart.deliveryOrderNumberPlaceholder")}
+                    </span>
+                    <LuKeyboard className="h-5 w-5 shrink-0 text-text-tertiary" />
+                  </button>
+                )}
+                <p className="mt-2 text-caption leading-5 text-text-tertiary">
+                  {t("pos.cart.deliveryOrderNumberHelp")}
+                </p>
+                {isDeliveryKeypadOpen && (
+                  <div className="mt-3">
+                    <AlphanumericKeypad
+                      value={deliveryOrderNumber}
+                      onChange={onDeliveryOrderNumberChange}
+                      onDone={() => setIsDeliveryKeypadOpen(false)}
+                      onRequestDeviceKeyboard={openDeviceKeyboard}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           )}

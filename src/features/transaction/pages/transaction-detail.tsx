@@ -289,6 +289,12 @@ const TransactionDetailPage = () => {
                 value={order.deliveryPlatform}
               />
             )}
+            {order.deliveryOrderNumber && (
+              <InfoCell
+                label={t("transaction.detail.info.deliveryOrderNumber")}
+                value={order.deliveryOrderNumber}
+              />
+            )}
             <InfoCell
               label={t("transaction.detail.info.orderId")}
               value={

@@ -79,7 +79,8 @@ export function useOrderService({
         data.orderType,
         data.tableNumber,
         data.customerName,
-        data.deliveryPlatform
+        data.deliveryPlatform,
+        data.deliveryOrderNumber
       ),
     onSuccess: (response) => {
       const created = unwrapApiData<{ id?: string }>(response);
