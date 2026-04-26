@@ -7,6 +7,7 @@ import { useAppDispatch } from "@/shared/hooks/hooks";
 import { clearCurrentStore, setCurrentStore } from "@/shared/store/slices/current-store-slice";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import type { IStore } from "@/features/store/types/store.model";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuPlus, LuStore } from "react-icons/lu";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -20,6 +21,14 @@ export default function UserDashboard() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
+
+  // First-run users (e.g. after Google sign-up) shouldn't have to click
+  // through an empty dashboard — drop them straight into onboarding.
+  useEffect(() => {
+    if (!storesLoading && stores && stores.length === 0) {
+      navigate("/onboarding", { replace: true });
+    }
+  }, [storesLoading, stores, navigate]);
 
   const handleLogout = () => {
     dispatch(clearCurrentStore());

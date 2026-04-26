@@ -2,8 +2,10 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
+import { GoogleSignInButton } from "@/features/auth/components/google-sign-in-button";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +13,15 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const auth = useAuth();
+  const { t } = useTranslation();
+
+  // Only mount the Google button when an OAuth client ID is configured.
+  // `useGoogleLogin` throws when wrapped in a provider with an empty
+  // clientId, which would crash the whole login screen otherwise.
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as
+    | string
+    | undefined;
+  const googleEnabled = Boolean(googleClientId);
 
   const handleLogin = async () => {
     try {
@@ -18,7 +29,7 @@ const LoginPage = () => {
       await auth?.login(email, password);
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Login failed";
+        err instanceof Error ? err.message : t("auth.errors.loginFailed");
       setError(message);
     }
   };
@@ -47,11 +58,11 @@ const LoginPage = () => {
         </section>
 
         <Card className="mx-auto w-full max-w-md">
-          <CardContent className="space-y-8">
+          <CardContent className="space-y-6">
             <div className="space-y-2">
-              <h2 className="text-heading text-text-primary">Sign In</h2>
+              <h2 className="text-heading text-text-primary">{t("auth.login.title")}</h2>
               <p className="text-body-sm leading-6 text-text-secondary">
-                Enter your credentials to access your account.
+                {t("auth.login.subtitle")}
               </p>
             </div>
 
@@ -63,27 +74,51 @@ const LoginPage = () => {
               className="space-y-4"
             >
               <Input
-                label="Email"
+                label={t("auth.fields.emailLabel")}
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t("auth.fields.emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
 
               <Input
-                label="Password"
+                label={t("auth.fields.passwordLabel")}
                 type="password"
-                placeholder="Enter your password"
+                placeholder={t("auth.fields.passwordPlaceholder")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
 
               {error && <p className="text-label text-danger">{error}</p>}
 
-              <Button type="submit" className="w-full">
-                Sign In
+              <Button type="submit" className="w-full" loading={auth?.loading}>
+                {t("auth.login.submit")}
               </Button>
             </form>
+
+            {googleEnabled && (
+              <>
+                <div className="flex items-center gap-3">
+                  <span className="h-px flex-1 bg-border" />
+                  <span className="text-caption text-text-secondary">
+                    {t("auth.divider.or")}
+                  </span>
+                  <span className="h-px flex-1 bg-border" />
+                </div>
+
+                <GoogleSignInButton mode="signIn" onError={setError} />
+              </>
+            )}
+
+            <p className="text-center text-body-sm text-text-secondary">
+              {t("auth.login.noAccount")}{" "}
+              <Link
+                to="/register"
+                className="text-accent hover:underline"
+              >
+                {t("auth.login.signUpLink")}
+              </Link>
+            </p>
           </CardContent>
         </Card>
       </div>

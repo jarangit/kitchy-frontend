@@ -4,7 +4,11 @@ export interface ILoginRequest {
 }
 
 export interface IRegisterRequest {
-  email: string;
+  email?: string;
+  phoneNumber?: string;
   password: string;
-  name?: string;
+}
+
+export interface IGoogleLoginRequest {
+  idToken: string;
 }
