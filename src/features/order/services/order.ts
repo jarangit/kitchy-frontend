@@ -55,7 +55,7 @@ export const orderApiService = {
   updateOrderStationItem: async (
     orderStationItemId: string,
     orderStationItemData: {
-      status: "pending" | "complete";
+      status: "pending" | "complete" | "served";
       stationId: string;
       orderItemId: string;
     }

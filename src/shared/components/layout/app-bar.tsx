@@ -1,12 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { LuBellRing, LuClock3, LuWifi, LuWifiOff } from "react-icons/lu";
+import { useEffect, useState } from "react";
+import { LuClock3, LuWifi, LuWifiOff } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { appBus } from "@/shared/events/app-events";
 import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
-import { useReadyToServeItems } from "@/features/kds/hooks/use-ready-to-serve";
-import { readReadyToServeDismissed } from "@/features/kds/utils/ready-to-serve-dismissed";
 import { cn } from "@/shared/utils/cn";
+import { AppBarNotch } from "@/shared/components/layout/app-bar-notch";
 
 const useClock = () => {
   const [now, setNow] = useState(() => new Date());
@@ -23,26 +21,8 @@ export function AppBar() {
   const { t, language } = useTranslation();
   const now = useClock();
   const isOnline = useNetworkStatus();
-  const storeId = useAppSelector((state) => state.currentStore.storeId);
   const storeName = useAppSelector((state) => state.currentStore.storeName);
   const stationName = useAppSelector((state) => state.currentStation.stationName);
-  const { items } = useReadyToServeItems();
-  const [dismissed, setDismissed] = useState(() => readReadyToServeDismissed(storeId));
-
-  useEffect(() => {
-    setDismissed(readReadyToServeDismissed(storeId));
-  }, [storeId]);
-
-  useEffect(() => {
-    return appBus.on("ui:readyToServeDismissed", () => {
-      setDismissed(readReadyToServeDismissed(storeId));
-    });
-  }, [storeId]);
-
-  const readyCount = useMemo(
-    () => items.filter((item) => !dismissed.has(item.id)).length,
-    [items, dismissed]
-  );
 
   const locale = language === "th" ? "th-TH" : "en-US";
   const timeLabel = now.toLocaleTimeString(locale, {
@@ -56,7 +36,7 @@ export function AppBar() {
   });
 
   return (
-    <header className="sticky top-0 z-40 h-12 border-b border-border/70 bg-bg/82 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72">
+    <header className="sticky top-0 z-40 h-12 border-b border-border/70 bg-bg/82 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72 relative">
       <div className="flex h-12 min-w-0 items-center justify-between gap-2 px-3 text-caption text-text-secondary sm:px-4 lg:px-6">
         <div className="flex min-w-0 flex-1 items-center gap-1.5">
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface text-[11px] font-[var(--weight-semibold)] text-text-primary">
@@ -75,31 +55,18 @@ export function AppBar() {
           )}
         </div>
 
-        <div className="flex shrink-0 items-center gap-1.5">
-          {readyCount > 0 && (
-            <button
-              type="button"
-              onClick={() => appBus.emit("ui:readyToServeRequested", {})}
-              className="inline-flex h-6 items-center gap-1 rounded-full bg-warning-bg px-2 text-[11px] font-[var(--weight-semibold)] leading-none text-warning transition-colors hover:bg-warning/15"
-            >
-              <LuBellRing size={13} />
-              <span className="hidden md:inline">
-                {t("appbar.ready", { count: String(readyCount) })}
-              </span>
-              <span className="md:hidden">{readyCount}</span>
-            </button>
-          )}
+        <AppBarNotch />
 
+        <div className="flex shrink-0 items-center gap-1.5">
           <span
+            aria-label={isOnline ? t("appbar.online") : t("appbar.offline")}
+            title={isOnline ? t("appbar.online") : t("appbar.offline")}
             className={cn(
-              "hidden h-6 items-center gap-1 rounded-full px-2 text-[11px] leading-none sm:inline-flex",
+              "hidden h-6 w-6 items-center justify-center rounded-full text-[11px] leading-none sm:inline-flex",
               isOnline ? "bg-success-bg text-success" : "bg-danger-bg text-danger"
             )}
           >
             {isOnline ? <LuWifi size={13} /> : <LuWifiOff size={13} />}
-            <span className="hidden md:inline">
-              {isOnline ? t("appbar.online") : t("appbar.offline")}
-            </span>
           </span>
 
           <span className="inline-flex h-6 items-center gap-1 rounded-full bg-surface px-2 text-[11px] leading-none text-text-secondary">

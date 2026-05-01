@@ -11,7 +11,6 @@ import {
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { cn } from "@/shared/utils/cn";
 import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
-import { useReadyToServeCount } from "@/features/kds/hooks/use-ready-to-serve";
 import { NavBadge } from "@/shared/components/ui/nav-badge";
 import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 
@@ -34,7 +33,6 @@ const Sidebar = () => {
   const resolvedStoreId = routeStoreId ?? (currentStoreId ? String(currentStoreId) : undefined);
 
   const { count: pendingOrdersCount } = usePendingOrdersCount();
-  const { count: readyToServeCount } = useReadyToServeCount();
 
   const storeMenuList: NavItem[] = resolvedStoreId
     ? [
@@ -61,11 +59,9 @@ const Sidebar = () => {
           path: `/store/${resolvedStoreId}/kds`,
           icon: <LuChefHat size={22} />,
           match: "prefix",
-          badgeCount: readyToServeCount || pendingOrdersCount,
+          badgeCount: pendingOrdersCount,
           badgeAriaLabel:
-            readyToServeCount > 0
-              ? `${readyToServeCount} รายการพร้อมเสิร์ฟ`
-              : pendingOrdersCount > 0
+            pendingOrdersCount > 0
               ? `${pendingOrdersCount} ออเดอร์ค้างในครัว`
               : undefined,
         },

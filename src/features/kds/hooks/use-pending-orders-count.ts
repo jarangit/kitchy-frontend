@@ -39,7 +39,7 @@ export const usePendingOrdersCount = () => {
     for (const result of results) {
       const items = unwrapPayload<IOrderStationItemDto>(result.data);
       for (const item of items) {
-        if (item.status !== "complete") total += 1;
+        if (item.status === "pending") total += 1;
       }
     }
     return total;

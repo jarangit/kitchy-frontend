@@ -1,4 +1,4 @@
-export type KdsStatus = "PENDING" | "READY";
+export type KdsStatus = "PENDING" | "READY" | "SERVED";
 
 /**
  * One card = one order-station-item.

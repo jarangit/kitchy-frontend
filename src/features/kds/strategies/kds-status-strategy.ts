@@ -13,7 +13,7 @@ export interface KdsStatusStrategy {
   readonly key: KdsStatus;
   readonly labelKey: string;
   /** Badge variant used when rendering the status as a chip. */
-  readonly badgeVariant: "warning" | "success";
+  readonly badgeVariant: "warning" | "success" | "info";
   /**
    * Next status in the happy-path flow. When the user toggles back, the
    * card falls back to the previous state via `fallback`.
@@ -35,13 +35,22 @@ const readyStrategy: KdsStatusStrategy = {
   key: "READY",
   labelKey: "kds.status.ready",
   badgeVariant: "success",
-  next: "PENDING",
-  nextActionKey: "kds.card.backToPending",
+  next: "SERVED",
+  nextActionKey: "kds.card.markServed",
+};
+
+const servedStrategy: KdsStatusStrategy = {
+  key: "SERVED",
+  labelKey: "kds.status.served",
+  badgeVariant: "info",
+  next: "READY",
+  nextActionKey: "kds.card.backToReady",
 };
 
 export const kdsStatusStrategies: Record<KdsStatus, KdsStatusStrategy> = {
   PENDING: pendingStrategy,
   READY: readyStrategy,
+  SERVED: servedStrategy,
 };
 
 export const getKdsStatusStrategy = (status: KdsStatus): KdsStatusStrategy =>

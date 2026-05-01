@@ -9,6 +9,7 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { LuUtensilsCrossed } from "react-icons/lu";
+import type { KdsStatus } from "@/features/kds/types/kds.model";
 
 const DUE_NOW_MINUTES = 10;
 
@@ -22,7 +23,7 @@ const KdsBoardPage = () => {
   const { t } = useTranslation();
   const { stationsQuery } = useStationService({});
   const activeStation = stationsQuery?.[0];
-  const [activeTab, setActiveTab] = useState<"PENDING" | "READY">("PENDING");
+  const [activeTab, setActiveTab] = useState<KdsStatus>("PENDING");
 
   const { cards, isLoading, isRefetching, isUpdating, updateStatus } = useKds(
     activeStation?.id
@@ -34,6 +35,10 @@ const KdsBoardPage = () => {
   );
   const readyCards = useMemo(
     () => cards.filter((c) => c.status === "READY"),
+    [cards]
+  );
+  const servedCards = useMemo(
+    () => cards.filter((c) => c.status === "SERVED"),
     [cards]
   );
   const sortedPending = useMemo(
@@ -50,6 +55,13 @@ const KdsBoardPage = () => {
       ),
     [readyCards]
   );
+  const sortedServed = useMemo(
+    () =>
+      [...servedCards].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      ),
+    [servedCards]
+  );
   const dueNow = useMemo(
     () => sortedPending.filter((c) => getWaitingMinutes(c.createdAt) >= DUE_NOW_MINUTES),
     [sortedPending]
@@ -58,7 +70,19 @@ const KdsBoardPage = () => {
     () => sortedPending.filter((c) => getWaitingMinutes(c.createdAt) < DUE_NOW_MINUTES),
     [sortedPending]
   );
-  const visibleCards = activeTab === "PENDING" ? sortedPending : sortedReady;
+  const visibleCards =
+    activeTab === "PENDING"
+      ? sortedPending
+      : activeTab === "READY"
+      ? sortedReady
+      : sortedServed;
+
+  const emptyTitle =
+    activeTab === "PENDING"
+      ? t("kds.empty.pendingTitle")
+      : activeTab === "READY"
+      ? t("kds.empty.readyTitle")
+      : t("kds.empty.servedTitle");
 
   return (
     <div className="space-y-8 h-full">
@@ -70,7 +94,7 @@ const KdsBoardPage = () => {
 
       <Tabs
         value={activeTab}
-        onChange={(v) => setActiveTab(v as "PENDING" | "READY")}
+        onChange={(v) => setActiveTab(v as KdsStatus)}
         variant="chip"
         size="md"
       >
@@ -80,6 +104,9 @@ const KdsBoardPage = () => {
           </Tab>
           <Tab value="READY" count={readyCards.length}>
             {t("kds.tab.ready")}
+          </Tab>
+          <Tab value="SERVED" count={servedCards.length}>
+            {t("kds.tab.served")}
           </Tab>
         </TabList>
       </Tabs>
@@ -102,7 +129,7 @@ const KdsBoardPage = () => {
         <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
           <EmptyState
             icon={<LuUtensilsCrossed size={28} />}
-            title={activeTab === "PENDING" ? t("kds.empty.pendingTitle") : t("kds.empty.readyTitle")}
+            title={emptyTitle}
             description={t("kds.empty.description")}
           />
         </div>

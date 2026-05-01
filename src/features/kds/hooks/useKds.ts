@@ -7,16 +7,18 @@ import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
 
 /**
- * Map backend status ('pending' | 'complete') to KDS UI status.
+ * Map backend status ('pending' | 'complete' | 'served') to KDS UI status.
  */
 const toKdsStatus = (backendStatus: string): KdsStatus => {
+  if (backendStatus === "served") return "SERVED";
   return backendStatus === "complete" ? "READY" : "PENDING";
 };
 
 /**
  * Map KDS UI status back to backend status for PATCH.
  */
-const toBackendStatus = (kdsStatus: KdsStatus): "pending" | "complete" => {
+const toBackendStatus = (kdsStatus: KdsStatus): "pending" | "complete" | "served" => {
+  if (kdsStatus === "SERVED") return "served";
   return kdsStatus === "READY" ? "complete" : "pending";
 };
 

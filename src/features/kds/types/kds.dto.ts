@@ -6,7 +6,7 @@
  */
 export interface IOrderStationItemDto {
   id: string;
-  status: "pending" | "complete";
+  status: "pending" | "complete" | "served";
   orderItem: {
     id: string;
     quantity: number;
