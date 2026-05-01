@@ -33,7 +33,7 @@ export function useStationService({
       }),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: ["stations", stationId],
+        queryKey: ["stations", storeId],
       }),
   });
 
@@ -45,18 +45,26 @@ export function useStationService({
       stationId: string;
       stationData: { name: string };
     }) => stationServiceApi.update(stationId, stationData),
-    onSuccess: () =>
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["stations", stationId],
-      }),
+        queryKey: ["stations", storeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["station", variables.stationId],
+      });
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (stationId: string) => stationServiceApi.delete(stationId),
-    onSuccess: () =>
+    onSuccess: (_, deletedStationId) => {
       queryClient.invalidateQueries({
-        queryKey: ["stations", stationId],
-      }),
+        queryKey: ["stations", storeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["station", deletedStationId],
+      });
+    },
   });
 
   return {

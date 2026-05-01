@@ -5,12 +5,11 @@ import { IconTile } from "@/shared/components/ui/icon-tile";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { type ReactNode, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
   LuChefHat,
   LuClipboardCheck,
-  LuRefreshCw,
   LuSettings,
 } from "react-icons/lu";
 
@@ -40,56 +39,19 @@ const isSameCalendarDay = (dateValue: string | undefined, targetDate: Date): boo
   );
 };
 
-/* ── Hooks ─────────────────────────────────────────────── */
-
-const useLiveClock = () => {
-  const [now, setNow] = useState(new Date());
-  useEffect(() => {
-    const interval = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-  return now;
-};
-
 /* ── Sub-components ────────────────────────────────────── */
-
-const SignalBars = () => (
-  <svg width="18" height="14" viewBox="0 0 18 14" fill="none" aria-hidden="true">
-    <rect x="0" y="10" width="3" height="4" rx="0.75" fill="var(--color-warning)" />
-    <rect x="5" y="7" width="3" height="7" rx="0.75" fill="var(--color-warning)" />
-    <rect x="10" y="3" width="3" height="11" rx="0.75" fill="var(--color-warning)" />
-    <rect x="15" y="0" width="3" height="14" rx="0.75" fill="var(--color-warning)" />
-  </svg>
-);
 
 const DashboardChrome = ({
   overviewLabel,
   storeName,
-  time,
-  date,
 }: {
   overviewLabel: string;
   storeName: string;
-  time: string;
-  date: string;
 }) => (
   <header className="flex w-full items-center justify-between gap-4 py-2">
     <div>
       <p className="text-label text-text-tertiary">{overviewLabel}</p>
       <span className="text-subtitle font-semibold text-text-primary">{storeName}</span>
-    </div>
-    <div className="flex items-center gap-3">
-      <div className="flex items-center gap-1.5 text-body-sm text-text-tertiary tabular-nums">
-        <span>{time}</span>
-        <LuRefreshCw size={12} />
-      </div>
-      <div className="flex items-center gap-2 rounded-chip border border-border bg-chip-inactive-bg px-3 py-1.5">
-        <span className="text-body-sm font-semibold text-text-primary tabular-nums">
-          {time}
-        </span>
-        <span className="text-caption text-text-tertiary">{date}</span>
-        <SignalBars />
-      </div>
     </div>
   </header>
 );
@@ -155,26 +117,15 @@ const StoreDashboardPage = () => {
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
     useStoreService({});
   const { ordersQuery } = useOrderService({});
-  const now = useLiveClock();
-
-  const timeString = now.toLocaleTimeString("th-TH", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  const dateString = now.toLocaleDateString("th-TH", {
-    day: "numeric",
-    month: "long",
-  });
-
-  const today = new Date();
 
   const todayOrders = useMemo(
-    () =>
-      (ordersQuery as DashboardOrder[]).filter((order) =>
+    () => {
+      const today = new Date();
+      return (ordersQuery as DashboardOrder[]).filter((order) =>
         isSameCalendarDay(order.createdAt, today),
-      ),
-    [ordersQuery, today],
+      );
+    },
+    [ordersQuery],
   );
 
   const todayOrderCount = todayOrders.length;
@@ -211,8 +162,6 @@ const StoreDashboardPage = () => {
         <DashboardChrome
           overviewLabel={t("dashboard.storeOverview")}
           storeName={storeName}
-          time={timeString}
-          date={dateString}
         />
       </div>
 

@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { LuShoppingCart, LuArrowLeft } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { useNetworkQuality } from "@/shared/hooks/useNetworkQuality";
@@ -71,25 +70,7 @@ const PosHeader = ({
   onExit,
 }: Props) => {
   const { t } = useTranslation();
-  const [currentTime, setCurrentTime] = useState(new Date());
   const { isOnline, level } = useNetworkQuality();
-
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formattedTime = currentTime.toLocaleTimeString("th-TH", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  const formattedDate = currentTime.toLocaleDateString("th-TH", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
 
   return (
     <div className="flex items-center justify-between border-b border-border bg-bg px-5 py-5 sm:px-8">
@@ -100,21 +81,8 @@ const PosHeader = ({
       </div>
 
       <div className="flex shrink-0 items-center gap-3 sm:gap-4">
-        <div className="hidden h-12 shrink-0 grid-cols-[1rem_auto_1rem] items-center gap-3 overflow-hidden rounded-chip bg-chip-inactive-bg border border-border px-4 sm:grid">
-          <span className="h-4 w-4" aria-hidden />
-          <div className="text-center">
-            <div className="text-body font-semibold leading-tight tabular-nums text-text-primary">
-              {formattedTime}
-            </div>
-            <div className="text-caption leading-tight text-text-secondary">
-              {formattedDate}
-            </div>
-          </div>
-          <NetworkQualityIcon level={level} isOnline={isOnline} />
-        </div>
-
         <div className="flex items-center gap-2">
-          <div className="sm:hidden">
+          <div>
             <NetworkQualityIcon level={level} isOnline={isOnline} />
           </div>
 

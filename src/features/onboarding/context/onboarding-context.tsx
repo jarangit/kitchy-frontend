@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import type {
   OnboardingDraft,
   OnboardingMenuDraft,
@@ -16,34 +9,8 @@ import {
   ONBOARDING_STEP_ORDER,
   ONBOARDING_VISIBLE_STEPS,
 } from "@/features/onboarding/types/onboarding.model";
-
-interface OnboardingContextValue {
-  step: OnboardingStep;
-  draft: OnboardingDraft;
-  /** 1-based index within visible steps; 0 if on a terminal step. */
-  stepIndex: number;
-  totalVisibleSteps: number;
-
-  goTo: (step: OnboardingStep) => void;
-  next: () => void;
-  back: () => void;
-
-  setStoreName: (name: string) => void;
-  setPromptpay: (value: string) => void;
-
-  addMenu: () => void;
-  updateMenu: (localId: string, patch: Partial<Omit<OnboardingMenuDraft, "localId">>) => void;
-  removeMenu: (localId: string) => void;
-
-  setShopType: (value: OnboardingShopType | null) => void;
-
-  /** Populate backend-issued ids after Step 1 submit succeeds. */
-  setCreatedIds: (ids: { storeId: string; stationId: string }) => void;
-
-  resetDraft: () => void;
-}
-
-const OnboardingContext = createContext<OnboardingContextValue | null>(null);
+import { OnboardingContext } from "@/features/onboarding/context/onboarding-context-value";
+import type { OnboardingContextValue } from "@/features/onboarding/context/onboarding-context-value";
 
 function createInitialDraft(): OnboardingDraft {
   return {
@@ -185,12 +152,4 @@ export function OnboardingProvider({
   return (
     <OnboardingContext.Provider value={value}>{children}</OnboardingContext.Provider>
   );
-}
-
-export function useOnboarding(): OnboardingContextValue {
-  const ctx = useContext(OnboardingContext);
-  if (!ctx) {
-    throw new Error("useOnboarding must be used within <OnboardingProvider>");
-  }
-  return ctx;
 }

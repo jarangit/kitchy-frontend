@@ -30,7 +30,7 @@ const AddUpStoreForm = ({ onSubmit, defaultValues }: Props) => {
       // Set default values if provided
       reset(defaultValues);
     }
-  }, [defaultValues]);
+  }, [defaultValues, reset]);
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">

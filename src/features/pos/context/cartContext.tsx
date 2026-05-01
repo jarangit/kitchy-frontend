@@ -1,54 +1,14 @@
-import { createContext, useContext, useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
-import type { ICartItem, OrderType, PaymentMethod } from "@/features/pos/types/pos.model";
+import type { ICartItem, OrderType } from "@/features/pos/types/pos.model";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { onboardingStorage } from "@/features/onboarding/utils/onboarding-storage";
-
-// --- Cart State ---
-interface CartState {
-  items: ICartItem[];
-  addItem: (product: { id: string; name: string; price: number }) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  setItemNote: (productId: string, note: string) => void;
-  clearCart: () => void;
-  subtotal: number;
-  totalItems: number;
-  orderType: OrderType;
-  tableNumber: string | null;
-  customerName: string;
-  deliveryPlatform: string;
-  deliveryOrderNumber: string;
-  setOrderType: (type: OrderType) => void;
-  setTableNumber: (tableNumber: string | null) => void;
-  setCustomerName: (name: string) => void;
-  setDeliveryPlatform: (platform: string) => void;
-  setDeliveryOrderNumber: (orderNumber: string) => void;
-}
-
-// --- Payment Result (persisted after successful payment) ---
-export interface PaymentResult {
-  receiptId: string;
-  items: ICartItem[];
-  subtotal: number;
-  paymentMethod: PaymentMethod;
-  receivedAmount: number;
-  change: number;
-  orderType: OrderType;
-  tableNumber: string | null;
-  customerName: string;
-  deliveryPlatform: string;
-  deliveryOrderNumber: string;
-}
-
-interface CartContextValue extends CartState {
-  paymentResult: PaymentResult | null;
-  setPaymentResult: (result: PaymentResult) => void;
-  clearPaymentResult: () => void;
-}
-
-const CartContext = createContext<CartContextValue | null>(null);
+import { CartContext } from "@/features/pos/context/cart-context-value";
+import type {
+  CartContextValue,
+  PaymentResult,
+} from "@/features/pos/context/cart-context-value";
 
 const createCartItemId = () =>
   `cart-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -209,12 +169,4 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
-}
-
-export function useCartContext() {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCartContext must be used within a CartProvider");
-  }
-  return context;
 }

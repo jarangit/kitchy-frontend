@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance } from "axios";
+import { appBus } from "@/shared/events/app-events";
 
 const axiosClient: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -20,6 +21,16 @@ axiosClient.interceptors.request.use(
   },
   (error) => {
     // Handle request error
+    return Promise.reject(error);
+  }
+);
+
+axiosClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      appBus.emit("auth:unauthorized", {});
+    }
     return Promise.reject(error);
   }
 );

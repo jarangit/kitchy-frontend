@@ -53,7 +53,6 @@ export function createEventBus<
           (handler as EventHandler<typeof payload>)(payload);
         } catch (err) {
           // Never let one broken handler break the whole emit pipeline.
-          // eslint-disable-next-line no-console
           console.error(`[event-bus] handler for "${String(event)}" threw`, err);
         }
       }

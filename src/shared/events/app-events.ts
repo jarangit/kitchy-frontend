@@ -23,6 +23,9 @@ export type AppEventMap = {
   "transaction:refunded": { transactionId: string; storeId?: string };
   "auth:login": { userId?: string };
   "auth:logout": Record<string, never>;
+  "auth:unauthorized": Record<string, never>;
+  "ui:readyToServeRequested": Record<string, never>;
+  "ui:readyToServeDismissed": { itemId: string };
 };
 
 /**

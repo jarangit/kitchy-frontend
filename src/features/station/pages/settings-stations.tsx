@@ -1,13 +1,13 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import StationListTemplate from "@/features/station/components/station-list";
 import { SettingsShell } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 
 const SettingsStationsPage = () => {
-  const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const resolvedStoreId = id ?? storeId;
+  const resolvedStoreId = useStoreRouteParam();
 
   return (
     <SettingsShell

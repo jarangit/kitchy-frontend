@@ -1,5 +1,5 @@
 import { LuQrCode } from "react-icons/lu";
-import type { PaymentResult } from "@/features/pos/context/cartContext";
+import type { PaymentResult } from "@/features/pos/context/cart-context-value";
 import { Card } from "@/shared/components/ui/card";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";

@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LuX } from "react-icons/lu";
 import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
 import { useStoreContextSync } from "@/shared/hooks/use-store-context-sync";
+import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
@@ -31,9 +32,7 @@ export function SettingsFrame({ children, wide = false }: Props) {
   const { t } = useTranslation();
   const isOnline = useNetworkStatus();
   useStoreContextSync();
-
-  const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
-  const resolvedStoreId = storeId ?? id;
+  const resolvedStoreId = useStoreRouteParam();
 
   const handleClose = () => {
     if (resolvedStoreId) {

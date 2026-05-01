@@ -1,3 +1,3 @@
-import { useLanguageContext } from "./language-context";
+import { useLanguageContext } from "./language-hooks";
 
 export const useTranslation = () => useLanguageContext();

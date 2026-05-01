@@ -2,7 +2,7 @@ import { LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useOnboarding } from "@/features/onboarding/context/onboarding-context";
+import { useOnboarding } from "@/features/onboarding/context/onboarding-hooks";
 
 interface Props {
   onSubmit: () => void;

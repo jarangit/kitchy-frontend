@@ -93,12 +93,13 @@ function LabelBlock({
 export function SettingRow(props: Props) {
   const { t } = useTranslation();
   const { icon, label, hint, className } = props;
+  const editableValue = props.variant === "editable" ? props.value : "";
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(editableValue);
 
   // ---------- editable ----------
   if (props.variant === "editable") {
     const { value, onSave, placeholder, emptyLabel, type = "text" } = props;
-    const [editing, setEditing] = useState(false);
-    const [draft, setDraft] = useState(value);
 
     const start = () => {
       setDraft(value);

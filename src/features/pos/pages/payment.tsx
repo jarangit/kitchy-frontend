@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LuArrowLeft } from "react-icons/lu";
 import { useOrderService } from "@/features/order/hooks/useOrder";
-import { useCartContext } from "@/features/pos/context/cartContext";
+import { useCartContext } from "@/features/pos/context/cart-hooks";
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import OrderSummary from "@/features/pos/components/order-summary";
 import PaymentMethodSelector from "@/features/pos/components/payment-method";

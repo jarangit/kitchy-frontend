@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   LuLayoutDashboard,
   LuShoppingCart,
@@ -11,7 +11,9 @@ import {
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { cn } from "@/shared/utils/cn";
 import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
+import { useReadyToServeCount } from "@/features/kds/hooks/use-ready-to-serve";
 import { NavBadge } from "@/shared/components/ui/nav-badge";
+import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 
 type NavMatch = "exact" | "prefix";
 
@@ -26,12 +28,13 @@ interface NavItem {
 
 const Sidebar = () => {
   const location = useLocation();
-  const { id } = useParams<{ id: string }>();
+  const routeStoreId = useStoreRouteParam();
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
 
-  const resolvedStoreId = id ?? (currentStoreId ? String(currentStoreId) : undefined);
+  const resolvedStoreId = routeStoreId ?? (currentStoreId ? String(currentStoreId) : undefined);
 
   const { count: pendingOrdersCount } = usePendingOrdersCount();
+  const { count: readyToServeCount } = useReadyToServeCount();
 
   const storeMenuList: NavItem[] = resolvedStoreId
     ? [
@@ -58,10 +61,12 @@ const Sidebar = () => {
           path: `/store/${resolvedStoreId}/kds`,
           icon: <LuChefHat size={22} />,
           match: "prefix",
-          badgeCount: pendingOrdersCount,
+          badgeCount: readyToServeCount || pendingOrdersCount,
           badgeAriaLabel:
-            pendingOrdersCount > 0
-              ? `${pendingOrdersCount} ออเดอร์ค้าง`
+            readyToServeCount > 0
+              ? `${readyToServeCount} รายการพร้อมเสิร์ฟ`
+              : pendingOrdersCount > 0
+              ? `${pendingOrdersCount} ออเดอร์ค้างในครัว`
               : undefined,
         },
         {

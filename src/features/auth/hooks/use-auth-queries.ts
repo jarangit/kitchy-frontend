@@ -7,7 +7,7 @@ import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
 
 const TOKEN_KEY = "token";
 
-const hasToken = () =>
+export const hasAuthToken = () =>
   typeof window !== "undefined" && !!localStorage.getItem(TOKEN_KEY);
 
 /**
@@ -36,7 +36,7 @@ export const useMeQuery = () => {
       const { data } = await userServiceApi.getMe();
       return data as IUser;
     },
-    enabled: hasToken(),
+    enabled: hasAuthToken(),
     retry: false,
     staleTime: 5 * 60 * 1000,
   });

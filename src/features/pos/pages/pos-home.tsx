@@ -3,7 +3,7 @@ import { useMemo, useState, useCallback } from "react";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
-import { useCartContext } from "@/features/pos/context/cartContext";
+import { useCartContext } from "@/features/pos/context/cart-hooks";
 import PosHeader from "@/features/pos/components/header";
 import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";

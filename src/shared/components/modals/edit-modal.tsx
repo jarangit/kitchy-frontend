@@ -2,6 +2,7 @@ import type { IOrderItem } from "@/features/order/types/order.model";
 import type { IUpdateOrder } from "@/features/order/types/order.dto";
 import { useEffect, useState } from "react";
 import { OrderForm } from "@/features/order/components/order-form";
+import type { OrderFormSubmitPayload } from "@/features/order/components/order-form";
 import OrderCard from "@/features/order/components/order-card";
 
 type Props = {
@@ -9,15 +10,17 @@ type Props = {
   _onSubmit: (data: IUpdateOrder) => void;
 };
 
+const isEditableOrderType = (
+  value: string
+): value is "" | "TOGO" | "DINE_IN" =>
+  value === "" || value === "TOGO" || value === "DINE_IN";
+
 function EditModal({ data, _onSubmit }: Props) {
   const { type } = data;
   const [order, setOrder] = useState<IOrderItem>();
-  const allowedTypes = ["TOGO", "DINE_IN", ""] as const;
-  const safeType = allowedTypes.includes(type as any)
-    ? (type as "" | "TOGO" | "DINE_IN")
-    : "";
+  const safeType = isEditableOrderType(type) ? type : "";
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: OrderFormSubmitPayload) => {
     const { orderType, orderNumber, isWaitingInStore } = e;
     const payload: IUpdateOrder = {
       id: data.id,
@@ -49,7 +52,7 @@ function EditModal({ data, _onSubmit }: Props) {
             label={""}
             buttonColor={""}
             initValue={order}
-            _onSubmit={(e: any) => onSubmit(e)}
+            _onSubmit={onSubmit}
           />
         </div>
       )}

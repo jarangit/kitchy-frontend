@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { LuCircleCheck, LuPrinter, LuArrowRight } from "react-icons/lu";
-import { useCartContext } from "@/features/pos/context/cartContext";
+import { useCartContext } from "@/features/pos/context/cart-hooks";
 import { Button } from "@/shared/components/ui/button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import PaymentReceipt from "@/features/pos/components/payment-receipt";

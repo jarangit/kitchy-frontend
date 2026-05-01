@@ -2,21 +2,22 @@
 import { useQueryClient } from "@tanstack/react-query";
 import type { IAuthContext } from "@/features/auth/types/auth.model";
 import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
-import { createContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { PropsWithChildren } from "react";
 import {
   clearAuthState,
+  hasAuthToken,
   useLoginMutation,
   useRegisterMutation,
   useGoogleLoginMutation,
   useMeQuery,
 } from "@/features/auth/hooks/use-auth-queries";
 import { authChannel } from "@/features/auth/events/auth-channel";
+import { AuthContext } from "@/features/auth/context/auth-context";
+import { appBus } from "@/shared/events/app-events";
 
-export const AuthContext = createContext<IAuthContext | null>(null);
-
-export function AuthProvider({ children }: PropsWithChildren<{}>) {
+export function AuthProvider({ children }: PropsWithChildren) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -29,14 +30,24 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
   // redirect here too; when another tab logs in, refetch ["me"] so we
   // hydrate without requiring a page reload.
   useEffect(() => {
-    return authChannel.subscribe((event) => {
+    const unsubscribeChannel = authChannel.subscribe((event) => {
       if (event.type === "logout") {
-        queryClient.clear();
+        clearAuthState(queryClient);
         navigate("/login");
       } else if (event.type === "login") {
         queryClient.invalidateQueries({ queryKey: ["me"] });
       }
     });
+
+    const unsubscribeUnauthorized = appBus.on("auth:unauthorized", () => {
+      clearAuthState(queryClient);
+      navigate("/login");
+    });
+
+    return () => {
+      unsubscribeChannel();
+      unsubscribeUnauthorized();
+    };
   }, [queryClient, navigate]);
 
   const login = async (email: string, password: string) => {
@@ -72,6 +83,7 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
     navigate("/login");
   };
 
+  const hasToken = hasAuthToken();
   const value: IAuthContext = {
     user: meQuery.data ?? null,
     loading:
@@ -79,6 +91,8 @@ export function AuthProvider({ children }: PropsWithChildren<{}>) {
       loginMutation.isPending ||
       registerMutation.isPending ||
       googleLoginMutation.isPending,
+    isAuthenticated: hasToken && !!meQuery.data,
+    isReady: !hasToken || meQuery.isSuccess || meQuery.isError,
     login,
     register,
     googleLogin,

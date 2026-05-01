@@ -1,7 +1,7 @@
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
-import { useOnboarding } from "@/features/onboarding/context/onboarding-context";
+import { useOnboarding } from "@/features/onboarding/context/onboarding-hooks";
 import type { OnboardingShopType } from "@/features/onboarding/types/onboarding.model";
 
 interface Props {

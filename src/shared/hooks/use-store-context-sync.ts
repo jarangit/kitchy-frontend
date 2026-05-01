@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
 import { setCurrentStoreId } from "@/shared/store/slices/current-store-slice";
 import {
@@ -8,6 +7,7 @@ import {
 } from "@/shared/store/slices/current-station-slice";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { setupAutoReload } from "@/shared/utils/idleReload";
+import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 
 /**
  * Shared side-effects for any authenticated store-scoped shell.
@@ -19,14 +19,12 @@ import { setupAutoReload } from "@/shared/utils/idleReload";
  */
 export function useStoreContextSync() {
   const dispatch = useAppDispatch();
-  const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
+  const routeStoreId = useStoreRouteParam();
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
   const currentStationId = useAppSelector(
     (state) => state.currentStation.stationId,
   );
   const { stationsQuery } = useStationService({});
-
-  const routeStoreId = storeId ?? id;
 
   useEffect(() => {
     setupAutoReload(10);

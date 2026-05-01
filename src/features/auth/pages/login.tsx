@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { GoogleSignInButton } from "@/features/auth/components/google-sign-in-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { getApiErrorMessage } from "@/shared/services/api-error";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -28,9 +29,7 @@ const LoginPage = () => {
       setError("");
       await auth?.login(email, password);
     } catch (err: unknown) {
-      const message =
-        err instanceof Error ? err.message : t("auth.errors.loginFailed");
-      setError(message);
+      setError(getApiErrorMessage(err, t("auth.errors.loginFailed")));
     }
   };
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { LuPlus, LuShapes } from "react-icons/lu";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import AddUpCategoryForm, {
@@ -14,14 +14,14 @@ import {
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 import type { SortingState } from "@/shared/components/ui/data-table";
 import type { CategoryModel } from "@/features/category/types/category.model";
 
 const SettingsCategoriesPage = () => {
-  const { id, storeId } = useParams<{ id?: string; storeId?: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const resolvedStoreId = id ?? storeId;
+  const resolvedStoreId = useStoreRouteParam();
   const {
     categoriesQuery,
     categoriesQueryLoading,

@@ -1,5 +1,5 @@
 import { LuCircleCheck, LuPrinter } from "react-icons/lu";
-import type { PaymentResult } from "@/features/pos/context/cartContext";
+import type { PaymentResult } from "@/features/pos/context/cart-context-value";
 import { Button } from "@/shared/components/ui/button";
 import { Dialog } from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";

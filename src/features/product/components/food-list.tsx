@@ -30,7 +30,7 @@ const ProductListTemplate = () => {
   } = useProductService();
   const { categoriesQuery } = useCategoryService();
 
-  const products = (productsQuery ?? []) as IMenu[];
+  const products = useMemo(() => (productsQuery ?? []) as IMenu[], [productsQuery]);
 
   // Dialog state
   const [isFormOpen, setIsFormOpen] = useState(false);

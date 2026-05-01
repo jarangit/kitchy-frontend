@@ -19,7 +19,7 @@ const Countdown = ({ seconds, onComplete }: CountdownProps) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeLeft]);
+  }, [timeLeft, onComplete]);
 
   // แปลงเป็น hh:mm:ss
   const formatTime = (secs: number) => {

@@ -1,3 +1,5 @@
+import type { thMessages } from "./th";
+
 export const enMessages = {
   "common.backToSettings": "Back to Settings",
   "common.back": "Back",
@@ -5,6 +7,10 @@ export const enMessages = {
   "common.save": "Save",
   "common.clear": "Clear",
   "common.close": "Close",
+  "appbar.storeFallback": "Loading store",
+  "appbar.ready": "Ready {count}",
+  "appbar.online": "Online",
+  "appbar.offline": "Offline",
 
   "settings.title": "Settings",
   "settings.description": "Manage products, categories, delivery apps, and display preferences for this store.",
@@ -469,6 +475,17 @@ export const enMessages = {
   "kds.card.backToPending": "Back to Pending",
   "kds.status.pending": "Pending",
   "kds.status.ready": "Ready",
+  "serve.toast.title": "{context} is ready",
+  "serve.toast.body": "{product} x{quantity} is done in the kitchen",
+  "serve.action.view": "View list",
+  "serve.action.acknowledge": "Acknowledge",
+  "serve.action.openKds": "Open KDS",
+  "serve.drawer.title": "Ready to serve",
+  "serve.drawer.subtitle": "{count} items waiting to serve",
+  "serve.empty.title": "No ready items",
+  "serve.empty.body": "Items will appear here when the kitchen marks them done.",
+  "serve.item.meta": "Order #{order} · {station}",
+  "serve.item.waiting": "Waiting {minutes} min",
 
   "report.title": "Report",
   "report.subtitle.today": "{date}",
@@ -654,4 +671,4 @@ export const enMessages = {
   "settings.stations.addLocked.label": "Add Station",
   "settings.stations.addLocked.badge": "Coming soon",
   "settings.stations.addLocked.hint": "Creating custom stations will be available in an upcoming plan.",
-} as const;
+} as const satisfies Record<keyof typeof thMessages, string>;

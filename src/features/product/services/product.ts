@@ -16,7 +16,7 @@ export const productApiService = {
   },
 
   getProductsByCategoryId: async (categoryId: string) => {
-    return await axiosClient.get<ApiResponse<IMenu[]>>(`/products/category${categoryId}`);
+    return await axiosClient.get<ApiResponse<IMenu[]>>(`/products/category/${categoryId}`);
   },
 
   createProduct: async (data: CreateProductRequest) => {

@@ -30,7 +30,6 @@ const ensureChannel = (): BroadcastChannel | null => {
         try {
           sub(data);
         } catch (err) {
-          // eslint-disable-next-line no-console
           console.error("[auth-channel] subscriber threw", err);
         }
       }

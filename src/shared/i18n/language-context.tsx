@@ -1,29 +1,12 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { messages, type MessageKey } from "./messages";
-
-export type Language = "th" | "en";
+import {
+  LanguageContext,
+  type Language,
+  type TranslationValues,
+} from "@/shared/i18n/language-context-value";
 
 const STORAGE_KEY = "app-language";
-
-interface TranslationValues {
-  [key: string]: string | number;
-}
-
-interface LanguageContextValue {
-  language: Language;
-  setLanguage: (language: Language) => void;
-  t: (key: MessageKey, values?: TranslationValues) => string;
-}
-
-const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 const getInitialLanguage = (): Language => {
   const stored = localStorage.getItem(STORAGE_KEY);
@@ -62,13 +45,4 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   return (
     <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
   );
-};
-
-export const useLanguageContext = () => {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error("useLanguageContext must be used within LanguageProvider");
-  }
-
-  return context;
 };

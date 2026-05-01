@@ -8,8 +8,8 @@ import { setCurrentStore } from "@/shared/store/slices/current-store-slice";
 import { setCurrentStation } from "@/shared/store/slices/current-station-slice";
 import {
   OnboardingProvider,
-  useOnboarding,
 } from "@/features/onboarding/context/onboarding-context";
+import { useOnboarding } from "@/features/onboarding/context/onboarding-hooks";
 import { useOnboardingFlow } from "@/features/onboarding/hooks/use-onboarding-flow";
 import { onboardingStorage } from "@/features/onboarding/utils/onboarding-storage";
 import { WizardShell } from "@/features/onboarding/components/wizard-shell";

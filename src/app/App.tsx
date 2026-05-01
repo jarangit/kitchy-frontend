@@ -36,10 +36,12 @@ import OnboardingWizardPage from "@/features/onboarding/pages/onboarding-wizard"
 
 // Layout
 import Layout from "@/shared/components/layout/layout";
+import { ReadyToServeNotifier } from "@/features/kds/components/ready-to-serve-notifier";
 
 function App() {
   return (
     <AuthProvider>
+      <ReadyToServeNotifier />
       <Routes>
         {/* Public */}
         <Route path="/" element={<Navigate to="/login" replace />} />

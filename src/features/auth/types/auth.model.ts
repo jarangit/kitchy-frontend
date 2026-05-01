@@ -9,6 +9,8 @@ export interface IUser {
 export interface IAuthContext {
   user: IUser | null;
   loading: boolean;
+  isAuthenticated: boolean;
+  isReady: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (payload: IRegisterRequest) => Promise<void>;
   googleLogin: (idToken: string) => Promise<void>;

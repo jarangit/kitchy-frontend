@@ -112,18 +112,6 @@ const AddUpProductForm = ({
     onClose();
   };
 
-  const onCreateOptionCategory = () => {
-    if (categoriesQuery && categoriesQuery.length > 0) {
-      const options = categoriesQuery.map((category) => ({
-        value: category.id,
-        label: category.name,
-      }));
-      setOptionCategory(options);
-    } else {
-      setOptionCategory([]);
-    }
-  };
-
   const handleImagePick = async (
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
@@ -167,7 +155,15 @@ const AddUpProductForm = ({
   }, [open, defaultValues, stationId, reset]);
 
   useEffect(() => {
-    onCreateOptionCategory();
+    if (categoriesQuery && categoriesQuery.length > 0) {
+      const options = categoriesQuery.map((category) => ({
+        value: category.id,
+        label: category.name,
+      }));
+      setOptionCategory(options);
+    } else {
+      setOptionCategory([]);
+    }
   }, [categoriesQuery]);
 
   useEffect(() => {

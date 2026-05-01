@@ -47,9 +47,6 @@ export function QuerySyncProvider({ children }: { children: ReactNode }) {
       appBus.on("transaction:updated", ({ transactionId, storeId }) => {
         queryClient.invalidateQueries({ queryKey: ["transactions", storeId] });
         queryClient.invalidateQueries({ queryKey: ["transaction", transactionId] });
-        queryClient.invalidateQueries({
-          queryKey: ["transaction-detail", transactionId],
-        });
         queryClient.invalidateQueries({ queryKey: ["orders", storeId] });
       }),
       appBus.on("transaction:refunded", ({ transactionId, storeId }) => {
@@ -65,6 +62,9 @@ export function QuerySyncProvider({ children }: { children: ReactNode }) {
         queryClient.invalidateQueries({ queryKey: ["me"] });
       }),
       appBus.on("auth:logout", () => {
+        queryClient.clear();
+      }),
+      appBus.on("auth:unauthorized", () => {
         queryClient.clear();
       }),
     );

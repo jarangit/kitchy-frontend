@@ -8,20 +8,18 @@ import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { IOrderItem } from "@/features/order/types/order.model";
 
+export type OrderFormSubmitPayload = {
+  orderType: "" | "TOGO" | "DINE_IN";
+  orderNumber: string;
+  isWaitingInStore: boolean;
+};
+
 interface OrderFormProps {
   orderType: "TOGO" | "DINE_IN" | "";
   label: string;
   buttonColor: string;
   initValue?: IOrderItem;
-  _onSubmit: ({
-    orderType,
-    orderNumber,
-    isWaitingInStore,
-  }: {
-    orderType: string;
-    orderNumber: string;
-    isWaitingInStore: boolean;
-  }) => void;
+  _onSubmit: (payload: OrderFormSubmitPayload) => void;
 }
 
 type WaitingKey = "here" | "waiting";
@@ -51,7 +49,7 @@ export function OrderForm({
     handleSubmit();
   };
 
-  const onInitValue = () => {
+  useEffect(() => {
     if (initValue) {
       setNumber(initValue.orderNumber || "");
       setIsWaitingInStore(initValue.isWaitingInStore || false);
@@ -59,10 +57,6 @@ export function OrderForm({
       setNumber("");
       setIsWaitingInStore(false);
     }
-  };
-
-  useEffect(() => {
-    onInitValue();
   }, [initValue]);
 
   const dineInItems = [

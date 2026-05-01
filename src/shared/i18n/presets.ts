@@ -1,4 +1,4 @@
-import type { Language } from "./language-context";
+import type { Language } from "./language-context-value";
 
 export const getDefaultQuickNotes = (language: Language) => {
   if (language === "en") {
