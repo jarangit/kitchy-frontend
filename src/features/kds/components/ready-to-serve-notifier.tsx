@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LuBellRing, LuCheck, LuChefHat, LuExternalLink, LuX } from "react-icons/lu";
+import { LuCheck, LuChefHat, LuExternalLink, LuX } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
@@ -14,6 +14,7 @@ import {
   readReadyToServeDismissed,
   writeReadyToServeDismissed,
 } from "@/features/kds/utils/ready-to-serve-dismissed";
+import { toast } from "@/shared/services/toast-service";
 
 const getItemContext = (item: ReadyToServeItem) => {
   if (item.orderType === "DINE_IN" && item.tableNumber) {
@@ -39,7 +40,6 @@ export function ReadyToServeNotifier() {
     readReadyToServeDismissed(storeId)
   );
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [toastItem, setToastItem] = useState<ReadyToServeItem | null>(null);
   const previousIdsRef = useRef<Set<string> | null>(null);
 
   useEffect(() => {
@@ -60,14 +60,26 @@ export function ReadyToServeNotifier() {
     }
 
     const newest = visibleItems.find((item) => !previousIdsRef.current?.has(item.id));
-    if (newest) setToastItem(newest);
+    if (newest) {
+      toast.success({
+        title: t("serve.toast.title", { context: getItemContext(newest) }),
+        description: t("serve.toast.body", {
+          product: newest.productName,
+          quantity: String(newest.quantity),
+        }),
+        action: {
+          label: t("serve.action.view"),
+          onClick: () => setDrawerOpen(true),
+        },
+      });
+    }
     previousIdsRef.current = visibleIds;
-  }, [visibleItems]);
+  }, [t, visibleItems]);
 
   useEffect(() => {
     return appBus.on("ui:readyToServeRequested", () => {
       setDrawerOpen(true);
-      setToastItem(null);
+      toast.dismiss();
     });
   }, []);
 
@@ -79,56 +91,15 @@ export function ReadyToServeNotifier() {
       appBus.emit("ui:readyToServeDismissed", { itemId: id });
       return next;
     });
-    if (toastItem?.id === id) setToastItem(null);
   };
 
   const openKds = () => {
     if (storeId) navigate(`/store/${storeId}/kds`);
     setDrawerOpen(false);
-    setToastItem(null);
   };
 
   return (
     <>
-      {toastItem && (
-        <div className="fixed inset-x-4 bottom-4 z-[70] sm:inset-x-auto sm:bottom-auto sm:right-6 sm:top-6 sm:w-[360px]">
-          <div className="rounded-card border border-warning/30 bg-surface p-4 shadow-xl ring-1 ring-warning/10">
-            <div className="flex items-start gap-3">
-              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-warning-bg text-warning">
-                <LuBellRing size={20} />
-              </span>
-              <div className="min-w-0 flex-1 space-y-1">
-                <p className="text-title font-[var(--weight-semibold)] text-text-primary">
-                  {t("serve.toast.title", { context: getItemContext(toastItem) })}
-                </p>
-                <p className="text-body-sm text-text-secondary">
-                  {t("serve.toast.body", {
-                    product: toastItem.productName,
-                    quantity: String(toastItem.quantity),
-                  })}
-                </p>
-                <div className="flex gap-2 pt-2">
-                  <Button size="sm" onClick={() => setDrawerOpen(true)}>
-                    {t("serve.action.view")}
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => setToastItem(null)}>
-                    {t("common.close")}
-                  </Button>
-                </div>
-              </div>
-              <button
-                type="button"
-                aria-label={t("common.close")}
-                onClick={() => setToastItem(null)}
-                className="rounded-full p-1 text-text-tertiary transition-colors hover:bg-surface-hover hover:text-text-primary"
-              >
-                <LuX size={18} />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {drawerOpen && (
         <div className="fixed inset-0 z-[65]">
           <button
