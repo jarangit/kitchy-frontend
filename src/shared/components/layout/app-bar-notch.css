@@ -1,0 +1,236 @@
+.appbar-notch-root {
+  --appbar-notch-success: var(--green-500);
+  --appbar-notch-success-bg: color-mix(in srgb, var(--green-500) 22%, transparent);
+  --appbar-notch-warning: var(--yellow-500);
+  --appbar-notch-warning-bg: color-mix(in srgb, var(--yellow-500) 22%, transparent);
+
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+.appbar-notch-anchor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.appbar-notch-pill {
+  pointer-events: auto;
+  position: relative;
+  z-index: 20;
+  display: inline-flex;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-text-primary);
+  background: var(--color-text-primary);
+  padding-inline: var(--space-2);
+  color: var(--color-text-inverse);
+  font-size: 11px;
+  line-height: 1;
+  box-shadow: var(--shadow-soft);
+  transition: background-color var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-fast) var(--ease-standard);
+}
+
+.appbar-notch-pill:hover {
+  background: color-mix(in srgb, var(--color-text-primary) 90%, transparent);
+}
+
+.appbar-notch-pill:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+.appbar-notch-pill-chip {
+  display: inline-flex;
+  height: 20px;
+  align-items: center;
+  gap: var(--space-1);
+  border-radius: var(--radius-full);
+  padding-inline: var(--space-2);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.appbar-notch-pill-chip--warning {
+  background: var(--appbar-notch-warning-bg);
+  color: var(--appbar-notch-warning);
+}
+
+.appbar-notch-pill-chip--success {
+  background: var(--appbar-notch-success-bg);
+  color: var(--appbar-notch-success);
+}
+
+.appbar-notch-divider {
+  height: 16px;
+  width: 1px;
+  background: color-mix(in srgb, var(--color-text-inverse) 25%, transparent);
+}
+
+.appbar-notch-card {
+  pointer-events: auto;
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  z-index: 10;
+  margin-top: var(--space-2);
+  width: min(92vw, 380px);
+  transform: translateX(-50%);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-text-primary);
+  background: var(--color-text-primary);
+  padding: var(--spacing-card-padding);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-xl);
+}
+
+.appbar-notch-card-header {
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.appbar-notch-title {
+  color: var(--color-text-inverse);
+  font-size: var(--text-title-size);
+  line-height: var(--text-title-line-height);
+  font-weight: var(--text-title-weight);
+}
+
+.appbar-notch-subtitle {
+  margin-top: 2px;
+  color: color-mix(in srgb, var(--color-text-inverse) 60%, transparent);
+  font-size: var(--text-caption-size);
+  line-height: var(--text-caption-line-height);
+}
+
+.appbar-notch-close {
+  border-radius: var(--radius-full);
+  padding: var(--space-1);
+  color: color-mix(in srgb, var(--color-text-inverse) 55%, transparent);
+  transition: background-color var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard);
+}
+
+.appbar-notch-close:hover {
+  background: color-mix(in srgb, var(--color-text-inverse) 10%, transparent);
+  color: var(--color-text-inverse);
+}
+
+.appbar-notch-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.appbar-notch-stat-card,
+.appbar-notch-empty,
+.appbar-notch-preview-item {
+  border-radius: var(--radius-xl);
+  border: 1px solid color-mix(in srgb, var(--color-text-inverse) 10%, transparent);
+  background: color-mix(in srgb, var(--color-text-inverse) 8%, transparent);
+}
+
+.appbar-notch-stat-card {
+  padding: var(--space-3);
+}
+
+.appbar-notch-stat-label {
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-caption-size);
+  line-height: var(--text-caption-line-height);
+  font-weight: var(--weight-semibold);
+}
+
+.appbar-notch-stat-label--warning {
+  color: var(--appbar-notch-warning);
+}
+
+.appbar-notch-stat-label--success {
+  color: var(--appbar-notch-success);
+}
+
+.appbar-notch-ready-badge {
+  background: var(--appbar-notch-success-bg);
+  color: var(--appbar-notch-success);
+}
+
+.appbar-notch-stat-number {
+  color: var(--color-text-inverse);
+  font-size: var(--text-heading-size);
+  line-height: var(--text-heading-line-height);
+  font-weight: var(--text-heading-weight);
+  font-variant-numeric: tabular-nums;
+}
+
+.appbar-notch-section {
+  margin-top: var(--space-4);
+}
+
+.appbar-notch-section-title {
+  margin-bottom: var(--space-2);
+  color: color-mix(in srgb, var(--color-text-inverse) 60%, transparent);
+  font-size: var(--text-caption-size);
+  line-height: var(--text-caption-line-height);
+  font-weight: var(--weight-semibold);
+}
+
+.appbar-notch-empty {
+  padding: var(--space-3);
+  color: color-mix(in srgb, var(--color-text-inverse) 60%, transparent);
+  font-size: var(--text-body-sm-size);
+  line-height: var(--text-body-sm-line-height);
+}
+
+.appbar-notch-preview-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.appbar-notch-preview-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+}
+
+.appbar-notch-preview-text {
+  min-width: 0;
+}
+
+.appbar-notch-preview-name {
+  overflow: hidden;
+  color: var(--color-text-inverse);
+  font-size: var(--text-body-sm-size);
+  line-height: var(--text-body-sm-line-height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appbar-notch-preview-meta {
+  overflow: hidden;
+  color: color-mix(in srgb, var(--color-text-inverse) 55%, transparent);
+  font-size: var(--text-caption-size);
+  line-height: var(--text-caption-line-height);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appbar-notch-action {
+  margin-top: var(--space-4);
+  width: 100%;
+}

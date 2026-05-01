@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
-import { setCurrentStoreId } from "@/shared/store/slices/current-store-slice";
+import { setCurrentStore, setCurrentStoreId } from "@/shared/store/slices/current-store-slice";
 import {
   clearCurrentStation,
   setCurrentStation,
@@ -8,6 +8,7 @@ import {
 import { useStationService } from "@/features/station/hooks/useStation";
 import { setupAutoReload } from "@/shared/utils/idleReload";
 import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
+import { useStoreService } from "@/features/store/hooks/useStoreService";
 
 /**
  * Shared side-effects for any authenticated store-scoped shell.
@@ -21,10 +22,12 @@ export function useStoreContextSync() {
   const dispatch = useAppDispatch();
   const routeStoreId = useStoreRouteParam();
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
+  const currentStoreName = useAppSelector((state) => state.currentStore.storeName);
   const currentStationId = useAppSelector(
     (state) => state.currentStation.stationId,
   );
   const { stationsQuery } = useStationService({});
+  const { storeFinOneQuery } = useStoreService({});
 
   useEffect(() => {
     setupAutoReload(10);
@@ -36,6 +39,18 @@ export function useStoreContextSync() {
       dispatch(clearCurrentStation());
     }
   }, [dispatch, routeStoreId, currentStoreId]);
+
+  useEffect(() => {
+    const storeName = storeFinOneQuery?.name;
+    if (!currentStoreId || !storeName || currentStoreName === storeName) return;
+
+    dispatch(
+      setCurrentStore({
+        storeId: currentStoreId,
+        storeName,
+      }),
+    );
+  }, [dispatch, currentStoreId, currentStoreName, storeFinOneQuery?.name]);
 
   useEffect(() => {
     const stations = (stationsQuery ?? []) as Array<{

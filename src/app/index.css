@@ -13,6 +13,7 @@
 
 /* Tailwind v4 theme integration + typography utilities */
 @import "./theme.css";
+@import "./App.css";
 
 /* Vendor overrides */
 @import "./vendors/react-day-picker.css";

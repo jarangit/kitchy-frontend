@@ -1,8 +1,11 @@
+import "./app-bar-notch.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LuBellRing, LuChefHat, LuExternalLink, LuX } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { appBus } from "@/shared/events/app-events";
+import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
 import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
 import { useReadyToServeItems } from "@/features/kds/hooks/use-ready-to-serve";
 import { readReadyToServeDismissed } from "@/features/kds/utils/ready-to-serve-dismissed";
@@ -73,10 +76,10 @@ export function AppBarNotch() {
   return (
     <div
       ref={containerRef}
-      className="pointer-events-none absolute inset-0 z-10"
+      className="appbar-notch-root"
     >
       {/* Notch pill – centered in header */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="appbar-notch-anchor">
         <button
           type="button"
           onClick={() => {
@@ -84,109 +87,114 @@ export function AppBarNotch() {
           }}
           aria-label={label}
           title={label}
-          className="pointer-events-auto relative z-20 inline-flex h-7 items-center justify-center gap-2 rounded-full bg-text-primary px-3 text-[11px] font-[var(--weight-semibold)] leading-none text-white shadow-lg transition-transform duration-[var(--motion-fast)] hover:scale-[1.03]"
+          className="appbar-notch-pill"
         >
-          <span className="inline-flex items-center gap-1 text-white">
-            <LuChefHat size={13} className="text-amber-300" />
-            <span className="tabular-nums">{pendingOrdersCount}</span>
+          <span className="appbar-notch-pill-chip appbar-notch-pill-chip--warning">
+            <LuChefHat size={13} />
+            <span>{pendingOrdersCount}</span>
           </span>
-          <span className="h-3 w-px bg-white/25" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1 text-white">
-            <LuBellRing size={13} className="text-emerald-300" />
-            <span className="tabular-nums">{readyCount}</span>
+          <span className="appbar-notch-divider" aria-hidden="true" />
+          <span className="appbar-notch-pill-chip appbar-notch-pill-chip--success">
+            <LuBellRing size={13} />
+            <span>{readyCount}</span>
           </span>
         </button>
       </div>
 
       {/* Expanded card */}
       {expanded && (
-        <div className="animate-notch-card-in pointer-events-auto absolute left-1/2 top-full z-10 mt-2 w-[min(92vw,380px)]  rounded-[28px] bg-text-primary p-4 text-white shadow-2xl">
-          <div className="mb-4 flex items-start justify-between gap-3">
+        <div className="animate-notch-card-in appbar-notch-card">
+          <div className="appbar-notch-card-header">
             <div>
-              <p className="text-title font-[var(--weight-semibold)] text-white">
+              <p className="appbar-notch-title">
                 {t("appbar.notch.title")}
               </p>
-              <p className="mt-0.5 text-caption text-white/60">{label}</p>
+              <p className="appbar-notch-subtitle">{label}</p>
             </div>
             <button
               type="button"
               aria-label={t("common.close")}
               onClick={() => setExpanded(false)}
-              className="rounded-full p-1.5 text-white/55 transition-colors hover:bg-white/10 hover:text-white"
+              className="appbar-notch-close"
             >
               <LuX size={16} />
             </button>
           </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <div className="rounded-2xl bg-white/8 p-3">
-              <div className="mb-2 flex items-center gap-1.5 text-amber-300">
+          <div className="appbar-notch-stats">
+            <div className="appbar-notch-stat-card">
+              <div className="appbar-notch-stat-label appbar-notch-stat-label--warning">
                 <LuChefHat size={15} />
-                <span className="text-caption font-[var(--weight-semibold)]">
+                <span>
                   {t("appbar.notch.pending")}
                 </span>
               </div>
-              <p className="text-heading font-[var(--weight-semibold)] text-white tabular-nums">
+              <p className="appbar-notch-stat-number">
                 {pendingOrdersCount}
               </p>
             </div>
-            <div className="rounded-2xl bg-white/8 p-3">
-              <div className="mb-2 flex items-center gap-1.5 text-emerald-300">
+            <div className="appbar-notch-stat-card">
+              <div className="appbar-notch-stat-label appbar-notch-stat-label--success">
                 <LuBellRing size={15} />
-                <span className="text-caption font-[var(--weight-semibold)]">
+                <span>
                   {t("appbar.notch.ready")}
                 </span>
               </div>
-              <p className="text-heading font-[var(--weight-semibold)] text-white tabular-nums">
+              <p className="appbar-notch-stat-number">
                 {readyCount}
               </p>
             </div>
           </div>
 
-          <div className="mt-4 space-y-2">
-            <p className="text-caption font-[var(--weight-semibold)] text-white/60">
+          <div className="appbar-notch-section">
+            <p className="appbar-notch-section-title">
               {t("appbar.notch.readyPreview")}
             </p>
             {previewItems.length === 0 ? (
-              <div className="rounded-2xl bg-white/8 p-3 text-body-sm text-white/60">
+              <div className="appbar-notch-empty">
                 {t("appbar.notch.noReady")}
               </div>
             ) : (
-              <div className="space-y-2">
+              <div className="appbar-notch-preview-list">
                 {previewItems.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between gap-3 rounded-2xl bg-white/8 px-3 py-2"
+                    className="appbar-notch-preview-item"
                   >
-                    <div className="min-w-0">
-                      <p className="truncate text-body-sm font-[var(--weight-semibold)] text-white">
+                    <div className="appbar-notch-preview-text">
+                      <p className="appbar-notch-preview-name">
                         {item.productName} x{item.quantity}
                       </p>
-                      <p className="truncate text-caption text-white/55">
+                      <p className="appbar-notch-preview-meta">
                         {getItemContext(item)} · {item.stationName}
                       </p>
                     </div>
-                    <span className="shrink-0 rounded-full bg-emerald-300/15 px-2 py-1 text-[10px] font-[var(--weight-semibold)] text-emerald-200">
+                    <Badge
+                      variant="success"
+                      size="sm"
+                      className="appbar-notch-ready-badge shrink-0"
+                    >
                       {t("kds.status.ready")}
-                    </span>
+                    </Badge>
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          <button
+          <Button
             type="button"
             onClick={() => {
               appBus.emit("ui:readyToServeRequested", {});
               setExpanded(false);
             }}
-            className="mt-4 inline-flex h-9 w-full items-center justify-center gap-2 rounded-full bg-white text-label font-[var(--weight-semibold)] text-text-primary transition-colors hover:bg-white/90 disabled:opacity-50"
+            size="sm"
+            className="appbar-notch-action"
             disabled={readyCount <= 0}
           >
             <LuExternalLink size={15} />
             {t("serve.action.view")}
-          </button>
+          </Button>
         </div>
       )}
     </div>

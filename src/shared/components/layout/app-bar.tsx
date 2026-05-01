@@ -22,7 +22,6 @@ export function AppBar() {
   const now = useClock();
   const isOnline = useNetworkStatus();
   const storeName = useAppSelector((state) => state.currentStore.storeName);
-  const stationName = useAppSelector((state) => state.currentStation.stationName);
 
   const locale = language === "th" ? "th-TH" : "en-US";
   const timeLabel = now.toLocaleTimeString(locale, {
@@ -45,14 +44,6 @@ export function AppBar() {
           <span className="max-w-[140px] truncate text-text-primary sm:max-w-[220px] lg:max-w-[320px]">
             {storeName || t("appbar.storeFallback")}
           </span>
-          {stationName && (
-            <>
-              <span className="hidden text-text-tertiary sm:inline">/</span>
-              <span className="hidden max-w-[160px] truncate sm:inline lg:max-w-[220px]">
-                {stationName}
-              </span>
-            </>
-          )}
         </div>
 
         <AppBarNotch />
