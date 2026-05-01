@@ -36,8 +36,8 @@ export function AppBar() {
   });
 
   return (
-    <header className="sticky top-0 z-40 h-12 border-b border-border/70 bg-bg/82 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72 relative">
-      <div className="flex h-12 min-w-0 items-center justify-between gap-2 px-3 text-caption text-text-secondary sm:px-4 lg:px-6">
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-bg/82 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72 relative">
+      <div className="flex py-4 min-w-0 items-center justify-between gap-2 px-3 text-caption text-text-secondary sm:px-4 lg:px-6">
         <div className="flex min-w-0 flex-1 items-center gap-1.5">
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface text-[11px] font-[var(--weight-semibold)] text-text-primary">
             K
