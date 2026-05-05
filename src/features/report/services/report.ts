@@ -1,6 +1,7 @@
 import type { IReportData } from "@/features/report/types/report.model";
 import type { IReportFilter } from "@/features/report/types/report.dto";
 import { generateMockReportData } from "@/features/report/data/mock-report-data";
+import { IS_DEMO_MODE, getAdapter } from "@/shared/services/adapters/data-adapter";
 
 /**
  * Report service.
@@ -11,6 +12,8 @@ import { generateMockReportData } from "@/features/report/data/mock-report-data"
  */
 export const reportService = {
   async getReportData(filter: IReportFilter): Promise<IReportData> {
+    if (IS_DEMO_MODE) return (await getAdapter()).getReportData(filter);
+
     // TODO: replace with real API call
     // const { data } = await axiosClient.get<IReportData>('/reports', { params: filter });
     // return data;

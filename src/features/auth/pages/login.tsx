@@ -7,10 +7,11 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import { getApiErrorMessage } from "@/shared/services/api-error";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { IS_DEMO_MODE } from "@/shared/services/adapters/data-adapter";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(IS_DEMO_MODE ? "demo@kitchy.app" : "");
+  const [password, setPassword] = useState(IS_DEMO_MODE ? "demo1234" : "");
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const auth = useAuth();
@@ -22,7 +23,7 @@ const LoginPage = () => {
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as
     | string
     | undefined;
-  const googleEnabled = Boolean(googleClientId);
+  const googleEnabled = Boolean(googleClientId) && !IS_DEMO_MODE;
 
   const handleLogin = async () => {
     try {
@@ -58,6 +59,11 @@ const LoginPage = () => {
 
         <Card className="mx-auto w-full max-w-md">
           <CardContent className="space-y-6">
+            {IS_DEMO_MODE && (
+              <div className="rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-center text-caption text-accent">
+                Demo Mode — ข้อมูลจำลองเก็บใน localStorage
+              </div>
+            )}
             <div className="space-y-2">
               <h2 className="text-heading text-text-primary">{t("auth.login.title")}</h2>
               <p className="text-body-sm leading-6 text-text-secondary">

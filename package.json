@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:demo": "VITE_DEMO_MODE=true vite",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint",
     "build": "tsc -b && vite build",
+    "build:demo": "VITE_DEMO_MODE=true tsc -b && VITE_DEMO_MODE=true vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
