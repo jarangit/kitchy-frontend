@@ -10,6 +10,7 @@ import type { ICreateStation, IUpdateStation } from "@/features/station/types/st
 import type { CreateProductRequest, UpdateProductRequest } from "@/features/product/types/product.dto";
 import type { CreateCategoryRequestDto, UpdateCategoryRequestDto } from "@/features/category/types/category.dto";
 import type { OrderType } from "@/features/order/types/order.dto";
+import type { IOrderItem } from "@/features/order/types/order.model";
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
 import type { IReportFilter } from "@/features/report/types/report.dto";
 
@@ -124,7 +125,8 @@ export const apiAdapter: DataAdapter = {
   },
   async getOrderById(id) {
     const res = await orderApiService.getById(id);
-    return unwrapPayload(res);
+    const arr = unwrapPayload<IOrderItem>(res);
+    return arr[0];
   },
   async createOrder(storeId, orderNumber, products, orderType: OrderType, tableNumber?, customerName?, deliveryPlatform?, deliveryOrderNumber?) {
     const res = await orderApiService.add(storeId, orderNumber, products, orderType, tableNumber, customerName, deliveryPlatform, deliveryOrderNumber);

@@ -23,12 +23,18 @@ export const userServiceApi = {
     return response.data;
   },
   getBydId: async (id: number) => {
-    if (IS_DEMO_MODE) return (await getAdapter()).getMe();
+    if (IS_DEMO_MODE) {
+      const user = await (await getAdapter()).getMe();
+      return { data: user };
+    }
     const response = await axiosClient.get("/users/" + id);
     return response.data;
   },
   getMe: async () => {
-    if (IS_DEMO_MODE) return (await getAdapter()).getMe();
+    if (IS_DEMO_MODE) {
+      const user = await (await getAdapter()).getMe();
+      return { data: user };
+    }
     const response = await axiosClient.get("/users/me");
     return response.data;
   }

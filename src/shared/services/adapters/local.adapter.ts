@@ -19,7 +19,6 @@ import type { OrderType } from "@/features/order/types/order.dto";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 import type { ITransaction } from "@/features/transaction/types/transaction.model";
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
-import type { IReportData } from "@/features/report/types/report.model";
 import type { IReportFilter } from "@/features/report/types/report.dto";
 import {
   seedUser,
