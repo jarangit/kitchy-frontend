@@ -26,9 +26,9 @@ const variantStyles: Record<BadgeVariant, string> = {
 };
 
 const sizeStyles: Record<BadgeSize, string> = {
-  sm: "px-badge-padding-x py-badge-padding-y text-badge",
-  md: "min-h-7 px-2.5 py-0.5 text-label",
-  lg: "min-w-[60px] px-3 py-1 text-label font-[var(--weight-semibold)] text-center",
+  sm: "min-h-6 px-badge-padding-x py-badge-padding-y text-badge leading-5",
+  md: "min-h-8 px-3 py-1 text-label leading-5",
+  lg: "min-h-9 min-w-[72px] px-3.5 py-1.5 text-label font-[var(--weight-semibold)] text-center leading-5",
 };
 
 export function Badge({
@@ -41,7 +41,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center",
+        "inline-flex items-center justify-center whitespace-nowrap",
         "rounded-badge",
         "font-badge",
         variantStyles[variant],

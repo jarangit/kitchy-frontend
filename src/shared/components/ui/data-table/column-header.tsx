@@ -27,7 +27,7 @@ export function DataTableColumnHeader<TData, TValue>({
     return (
       <span
         className={cn(
-          "text-label font-[var(--weight-medium)] text-text-secondary",
+          "text-label font-[var(--weight-medium)] text-text-secondary leading-6",
           className,
         )}
       >
@@ -45,12 +45,12 @@ export function DataTableColumnHeader<TData, TValue>({
       className={cn(
         "inline-flex items-center gap-1.5 cursor-pointer",
         "text-label font-[var(--weight-medium)] text-text-secondary",
-        "hover:text-text-primary transition-colors duration-[var(--motion-fast)]",
+        "leading-6 hover:text-text-primary transition-colors duration-[var(--motion-fast)]",
         align === "right" && "flex-row-reverse",
         className,
       )}
     >
-      <span>{title}</span>
+      <span className="min-w-0">{title}</span>
       {sorted === "asc" ? (
         <LuChevronUp className="h-3.5 w-3.5" />
       ) : sorted === "desc" ? (

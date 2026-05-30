@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ICartItem } from "@/features/pos/types/pos.model";
 import type { OrderType } from "@/features/pos/types/pos.model";
-import { LuKeyboard, LuShoppingCart } from "react-icons/lu";
+import {
+  LuBike,
+  LuKeyboard,
+  LuPackage,
+  LuShoppingCart,
+  LuTableProperties,
+  LuUtensilsCrossed,
+  LuX,
+} from "react-icons/lu";
 import CartItem from "./cart-item";
 import CartSummary from "./cart-summary";
 import TablePickerDialog from "./table-picker-dialog";
@@ -22,6 +30,12 @@ const ORDER_TYPE_LABEL_KEYS = {
   DELIVERY: "pos.orderType.delivery",
 } as const;
 
+const ORDER_TYPE_ICONS = {
+  DINE_IN: LuUtensilsCrossed,
+  TOGO: LuPackage,
+  DELIVERY: LuBike,
+} as const;
+
 const hasQuickNotes = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
 };
@@ -38,7 +52,6 @@ interface Props {
   onUpdateQuantity: (productId: string, quantity: number) => void;
   onRemoveItem: (productId: string) => void;
   onUpdateItemNote: (productId: string, note: string) => void;
-  onClearCart: () => void;
   onPay: () => void;
   orderType: OrderType;
   tableNumber: string | null;
@@ -62,7 +75,6 @@ const CartArea = ({
   onUpdateQuantity,
   onRemoveItem,
   onUpdateItemNote,
-  onClearCart,
   onPay,
   orderType,
   tableNumber,
@@ -166,90 +178,84 @@ const CartArea = ({
 
   return (
     <div className="flex h-full w-full flex-col bg-card-bg border-l border-border">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border px-6 py-5">
-        <div className="flex items-center gap-3">
-          <h2 className="text-title text-text-primary">{t("pos.cart.title")}</h2>
-          {totalItems > 0 && (
-            <span className="inline-flex min-w-6 h-6 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent tabular-nums">
-              {totalItems}
-            </span>
-          )}
-        </div>
-        {items.length > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onClearCart}
-              className="text-danger hover:text-danger-hover"
-            >
-            {t("pos.cart.clearAll")}
-          </Button>
-        )}
-      </div>
-
       {/* Scroll region */}
       <div className="flex-1 overflow-y-auto">
         {/* Order config */}
          <div className="space-y-6 border-b border-border px-6 py-6">
           <div>
             <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
-            <div className="grid grid-cols-3 gap-3">
-              {ORDER_TYPE_VALUES.map((value) => (
-                <SelectionChip
-                  key={value}
-                  active={orderType === value}
-                  onClick={() => handleOrderTypeChange(value)}
-                >
-                  {t(ORDER_TYPE_LABEL_KEYS[value])}
-                </SelectionChip>
-              ))}
+             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+               {ORDER_TYPE_VALUES.map((value) => (
+                 (() => {
+                   const Icon = ORDER_TYPE_ICONS[value];
+                   const label = t(ORDER_TYPE_LABEL_KEYS[value]);
+
+                   return (
+                  <SelectionChip
+                    key={value}
+                    active={orderType === value}
+                    onClick={() => handleOrderTypeChange(value)}
+                    className="justify-center px-0"
+                    aria-label={label}
+                    title={label}
+                  >
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                    <span className="sr-only">{label}</span>
+                  </SelectionChip>
+                   );
+                 })()
+               ))}
             </div>
           </div>
 
           {orderType === "DINE_IN" && (
-            <div className="flex items-center justify-between gap-4">
-              <div className="min-w-0">
-                <SectionLabel>{t("pos.cart.table")}</SectionLabel>
-                <p className="text-body font-semibold text-text-primary truncate">
-                  {tableNumber ?? t("pos.cart.tableNotSelected")}
-                </p>
-              </div>
-              <div className="flex shrink-0 items-center gap-3">
-                {tableNumber && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => onTableNumberChange(null)}
-                  >
-                    {t("common.clear")}
-                  </Button>
-                )}
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => setIsTableDialogOpen(true)}
-                >
-                  {t("pos.cart.selectTable")}
-                </Button>
-              </div>
-            </div>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+               <div className="min-w-0">
+                 <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
+                   <LuTableProperties className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
+                   <p className="truncate">{tableNumber ?? t("pos.cart.tableNotSelected")}</p>
+                 </div>
+               </div>
+                <div className="flex flex-wrap items-center gap-3 sm:justify-end">
+                 {tableNumber && (
+                   <Button
+                     type="button"
+                     variant="ghost"
+                     size="icon"
+                     onClick={() => onTableNumberChange(null)}
+                     aria-label={t("common.clear")}
+                     title={t("common.clear")}
+                   >
+                     <LuX className="h-4 w-4" aria-hidden="true" />
+                   </Button>
+                 )}
+                 <Button
+                   variant="secondary"
+                   size="icon"
+                   onClick={() => setIsTableDialogOpen(true)}
+                   aria-label={t("pos.cart.selectTable")}
+                   title={t("pos.cart.selectTable")}
+                 >
+                   <LuTableProperties className="h-4 w-4" aria-hidden="true" />
+                 </Button>
+               </div>
+             </div>
           )}
 
           {orderType === "DELIVERY" && (
             <div className="space-y-5">
               <div>
                 <SectionLabel>{t("pos.cart.deliveryPlatform")}</SectionLabel>
-                <div className="grid grid-cols-2 gap-3">
-                  {deliveryPlatforms.map((platform) => (
-                    <SelectionChip
-                      key={platform}
-                      active={deliveryPlatform === platform}
-                      onClick={() => onDeliveryPlatformChange(platform)}
-                    >
-                      {platform}
-                    </SelectionChip>
+                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                   {deliveryPlatforms.map((platform) => (
+                     <SelectionChip
+                       key={platform}
+                       active={deliveryPlatform === platform}
+                       onClick={() => onDeliveryPlatformChange(platform)}
+                       className="justify-center text-center"
+                     >
+                       {platform}
+                     </SelectionChip>
                   ))}
                 </div>
               </div>
@@ -294,9 +300,6 @@ const CartArea = ({
                     <LuKeyboard className="h-5 w-5 shrink-0 text-text-tertiary" />
                   </button>
                 )}
-                <p className="mt-2 text-body-sm leading-6 text-text-tertiary">
-                  {t("pos.cart.deliveryOrderNumberHelp")}
-                </p>
                 {isDeliveryKeypadOpen && (
                   <div className="mt-3">
                     <AlphanumericKeypad
@@ -339,13 +342,13 @@ const CartArea = ({
 
       {/* Summary + Pay */}
       <div className="space-y-5 border-t border-border bg-card-bg px-6 pb-6 pt-5">
-        {items.length > 0 && <CartSummary subtotal={subtotal} />}
+        {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
         <Button
           onClick={onPay}
           disabled={items.length === 0}
           size="lg"
           data-onboarding-target="pay-button"
-          className="w-full text-title tabular-nums"
+          className="w-full whitespace-normal text-center text-title tabular-nums leading-6"
         >
           {t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })}
         </Button>

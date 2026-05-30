@@ -15,7 +15,7 @@ export function Table({
   return (
     <div className="overflow-x-auto rounded-card border border-card-border bg-card-bg">
       <table
-        className={cn("w-full border-collapse text-left", className)}
+        className={cn("w-full min-w-[640px] border-collapse text-left", className)}
         {...props}
       >
         {children}
@@ -133,7 +133,7 @@ export function TableHead({
   return (
     <th
       scope="col"
-      className={cn("px-4 py-3 whitespace-nowrap", alignClass, className)}
+      className={cn("px-4 py-3 align-middle", alignClass, className)}
       aria-sort={
         sortable
           ? sortDirection === "asc"

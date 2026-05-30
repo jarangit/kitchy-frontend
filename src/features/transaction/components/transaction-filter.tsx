@@ -61,10 +61,8 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
 
   const items = STATUS_OPTIONS.map((s) => ({
     key: s.value,
-    label: t("transaction.list.countSummary", {
-      label: t(s.labelKey),
-      count: counts[s.countKey],
-    }),
+    label: t(s.labelKey),
+    count: counts[s.countKey],
   }));
 
   return (
@@ -78,11 +76,13 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
         value={status}
         onChange={(v) => handleStatusChange(v as TransactionFilterStatus)}
         variant="segmented"
+        className="min-w-0"
       >
         <TabList fullWidth>
           {items.map((item) => (
-            <Tab key={item.key} value={item.key}>
-              {item.label}
+            <Tab key={item.key} value={item.key} className="gap-1.5">
+              <span>{item.label}</span>
+              <span className="tabular-nums text-text-tertiary">({item.count})</span>
             </Tab>
           ))}
         </TabList>

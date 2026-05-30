@@ -56,6 +56,7 @@ const CashPaymentSection = ({
                 variant="secondary"
                 size="sm"
                 onClick={() => onReceivedAmountChange(String(amt.value))}
+                className="whitespace-normal text-center"
               >
                 {amt.label}
               </Button>
@@ -64,7 +65,7 @@ const CashPaymentSection = ({
         </div>
 
         {Number(receivedAmount) > 0 && (
-          <p className="text-display tabular-nums text-success">
+          <p className="break-words text-display tabular-nums text-success">
             {t("pos.payment.change", { amount: `฿${change.toFixed(2)}` })}
           </p>
         )}

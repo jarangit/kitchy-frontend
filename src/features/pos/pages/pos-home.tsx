@@ -1,10 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
 import { useMemo, useState, useCallback } from "react";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
-import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
-import PosHeader from "@/features/pos/components/header";
 import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
@@ -15,11 +12,8 @@ import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { LuX } from "react-icons/lu";
 
 const PosHomePage = () => {
-  const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("ALL");
 
-  const { storeFinOneQuery } = useStoreService({});
   const {
     productsQuery,
     productsQueryLoading,
@@ -32,7 +26,6 @@ const PosHomePage = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
-  const toggleCart = useCallback(() => setIsCartOpen((prev) => !prev), []);
   const closeCart = useCallback(() => setIsCartOpen(false), []);
 
   const categories = useMemo(
@@ -68,14 +61,6 @@ const PosHomePage = () => {
 
   return (
     <div className="flex h-full flex-col">
-      {/* Header */}
-      <PosHeader
-        shopName={storeFinOneQuery?.name || "Store"}
-        onCartClick={toggleCart}
-        cartItemCount={cart.totalItems}
-        onExit={() => navigate(`/store/${id}`)}
-      />
-
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Product area */}
@@ -112,14 +97,13 @@ const PosHomePage = () => {
         </div>
 
         {/* Desktop cart — always visible on lg+ */}
-        <div className="hidden w-[380px] shrink-0 border-l border-card-border lg:flex">
+        <div className="hidden w-[460px] shrink-0 border-l border-card-border lg:flex">
           <CartArea
             items={cart.items}
             subtotal={cart.subtotal}
             onUpdateQuantity={cart.updateQuantity}
             onRemoveItem={cart.removeItem}
             onUpdateItemNote={cart.setItemNote}
-            onClearCart={cart.clearCart}
             onPay={handlePay}
             orderType={cart.orderType}
             tableNumber={cart.tableNumber}
@@ -143,7 +127,7 @@ const PosHomePage = () => {
           />
 
           {/* Slide-in panel */}
-          <div className="animate-slide-in-right absolute top-0 right-0 bottom-0 w-full max-w-[400px] border-l border-card-border bg-card-bg">
+          <div className="animate-slide-in-right absolute top-0 right-0 bottom-0 w-full max-w-[460px] border-l border-card-border bg-card-bg">
             {/* Close button */}
             <div className="flex items-center justify-between border-b border-card-border px-5 py-4">
               <span className="text-title text-text-primary">
@@ -168,7 +152,6 @@ const PosHomePage = () => {
                 onUpdateQuantity={cart.updateQuantity}
                 onRemoveItem={cart.removeItem}
                 onUpdateItemNote={cart.setItemNote}
-                onClearCart={cart.clearCart}
                 onPay={handlePay}
                 orderType={cart.orderType}
                 tableNumber={cart.tableNumber}

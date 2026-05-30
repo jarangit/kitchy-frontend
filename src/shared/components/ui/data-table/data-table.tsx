@@ -113,12 +113,14 @@ export function DataTable<TData>({
                   : meta.align === "center"
                     ? "text-center"
                     : "text-left";
+              const wrapClass = meta.wrap ? "whitespace-normal" : "whitespace-nowrap";
               return (
                 <TableHead
                   key={header.id}
                   align={meta.align}
                   className={cn(
                     alignClass,
+                    wrapClass,
                     meta.className,
                     meta.hideBelow && hideBelowClass[meta.hideBelow],
                   )}
@@ -152,6 +154,7 @@ export function DataTable<TData>({
                     key={j}
                     align={meta.align}
                     className={cn(
+                      meta.wrap ? "whitespace-normal" : "whitespace-nowrap",
                       meta.className,
                       meta.hideBelow && hideBelowClass[meta.hideBelow],
                     )}
@@ -192,6 +195,7 @@ export function DataTable<TData>({
                     key={cell.id}
                     align={meta.align}
                     className={cn(
+                      meta.wrap ? "whitespace-normal" : "whitespace-nowrap",
                       meta.className,
                       meta.hideBelow && hideBelowClass[meta.hideBelow],
                     )}

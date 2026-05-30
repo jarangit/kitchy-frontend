@@ -10,6 +10,8 @@ export interface DataTableColumnMeta {
   align?: CellAlign;
   /** Optional Tailwind class that controls width (e.g. "w-16", "w-28"). */
   className?: string;
+  /** Allow content to wrap instead of forcing a single line. */
+  wrap?: boolean;
   /** If true, clicks on cells in this column do not trigger row click. */
   preventRowClick?: boolean;
 }

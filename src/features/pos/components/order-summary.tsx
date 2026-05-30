@@ -18,9 +18,9 @@ const OrderSummary = ({ items, subtotal }: Props) => {
         {items.map((item) => (
           <div
             key={item.productId}
-            className="flex justify-between gap-4 text-body text-text-secondary"
+            className="flex flex-col gap-2 text-body text-text-secondary sm:flex-row sm:items-start sm:justify-between"
           >
-            <div>
+            <div className="min-w-0 flex-1">
               <span>
                 {item.name} x{item.quantity}
               </span>
@@ -30,13 +30,15 @@ const OrderSummary = ({ items, subtotal }: Props) => {
                 </p>
               )}
             </div>
-            <span>฿{(item.price * item.quantity).toFixed(2)}</span>
+            <span className="shrink-0 tabular-nums text-text-primary sm:text-right">
+              ฿{(item.price * item.quantity).toFixed(2)}
+            </span>
           </div>
         ))}
       </div>
-      <div className="mt-5 flex justify-between border-t border-border pt-5 text-title">
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-5 text-title">
         <span>{t("pos.receipt.total")}</span>
-        <span>฿{subtotal.toFixed(2)}</span>
+        <span className="tabular-nums">฿{subtotal.toFixed(2)}</span>
       </div>
     </div>
   );

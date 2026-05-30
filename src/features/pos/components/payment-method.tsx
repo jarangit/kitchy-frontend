@@ -17,13 +17,13 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {methods.map((method) => (
         <SelectionChip
           key={method.value}
           active={selected === method.value}
           onClick={() => onSelect(method.value)}
-          className="min-h-[120px] flex-col gap-3 py-5"
+          className="min-h-[120px] flex-col gap-3 py-5 text-center"
         >
           <span aria-hidden="true">{method.icon}</span>
           <span>{method.label}</span>

@@ -130,6 +130,7 @@ const TransactionListPage = () => {
             title={t("transaction.list.col.orderNumber")}
           />
         ),
+        meta: { className: "min-w-[120px]" },
         cell: ({ row }) => (
           <span className="text-body font-[var(--weight-medium)] text-text-primary">
             #{row.original.orderNumber}
@@ -145,10 +146,11 @@ const TransactionListPage = () => {
             title={t("transaction.list.col.status")}
           />
         ),
+        meta: { className: "min-w-[132px]" },
         cell: ({ row }) => {
           const flow = getFlowStatus(row.original.status);
           return (
-            <Badge variant={flowVariant(flow)}>
+            <Badge variant={flowVariant(flow)} size="md">
               {t(
                 flow === "DONE"
                   ? "transaction.filter.done"
@@ -169,7 +171,7 @@ const TransactionListPage = () => {
             title={t("transaction.list.col.createdAt")}
           />
         ),
-        meta: { hideBelow: "sm" },
+        meta: { hideBelow: "sm", className: "min-w-[168px]", wrap: true },
         cell: ({ row }) => {
           const date = parseISO(row.original.createdAt);
           return (
@@ -188,13 +190,13 @@ const TransactionListPage = () => {
         id: "items",
         header: () => <span>{t("transaction.list.col.items")}</span>,
         enableSorting: false,
-        meta: { hideBelow: "md" },
+        meta: { hideBelow: "md", className: "min-w-[180px]", wrap: true },
         cell: ({ row }) => {
           const items = row.original.products ?? [];
           const totalQty = items.reduce((sum, p) => sum + (p.quantity ?? 0), 0);
           const first = items[0]?.name;
           return (
-            <span className="text-body-sm text-text-secondary">
+            <span className="block text-body-sm leading-6 text-text-secondary">
               {first
                 ? items.length > 1
                   ? `${first} +${items.length - 1}`
@@ -217,7 +219,7 @@ const TransactionListPage = () => {
             align="right"
           />
         ),
-        meta: { align: "right", className: "tabular-nums w-32" },
+        meta: { align: "right", className: "tabular-nums min-w-[128px]" },
         cell: ({ row }) => (
           <span className="text-body font-[var(--weight-medium)] text-text-primary">
             {formatCurrency(row.original.totalAmount ?? 0)}

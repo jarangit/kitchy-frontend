@@ -96,6 +96,7 @@ const ReportPage = () => {
             }}
           />
         }
+        className="min-w-0"
       />
 
       {isLoading || !data ? (

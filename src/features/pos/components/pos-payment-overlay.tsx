@@ -138,16 +138,16 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
       <Dialog
         open={open}
         onClose={handleClosePayment}
-        className="!max-w-6xl w-[min(96vw,76rem)] max-h-[92vh] p-0 overflow-hidden"
+        className="!max-w-6xl w-[min(96vw,76rem)] max-h-[92vh] overflow-hidden p-0"
       >
-        <div className="flex items-center justify-between gap-4 border-b border-border bg-card-bg px-6 py-5">
-          <div>
+        <div className="flex flex-wrap items-start gap-4 border-b border-border bg-card-bg px-6 py-5">
+          <div className="min-w-0 flex-1">
             <h2 className="text-title text-text-primary">
               {t("pos.payment.title")}
             </h2>
           </div>
           {items.length > 0 && (
-            <div className="ml-auto rounded-chip bg-chip-inactive-bg px-5 py-3 text-right">
+            <div className="rounded-chip bg-chip-inactive-bg px-5 py-3 text-right">
               <p className="text-caption text-text-secondary">
                 {t("pos.receipt.total")}
               </p>
@@ -193,40 +193,40 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                       {t("pos.payment.orderInfo")}
                     </h3>
                     <dl className="space-y-3 text-body">
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                         <dt className="text-text-secondary">
                           {t("pos.payment.type")}
                         </dt>
-                        <dd className="font-semibold text-text-primary">
+                        <dd className="font-semibold text-text-primary sm:text-right">
                           {orderTypeLabel}
                         </dd>
                       </div>
                       {orderType === "DINE_IN" && (
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                           <dt className="text-text-secondary">
                             {t("pos.payment.table")}
                           </dt>
-                          <dd className="font-semibold text-text-primary">
+                          <dd className="font-semibold text-text-primary sm:text-right">
                             {tableNumber ?? "—"}
                           </dd>
                         </div>
                       )}
                       {orderType === "DELIVERY" && (
                         <>
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                             <dt className="text-text-secondary">
                               {t("pos.payment.platform")}
                             </dt>
-                            <dd className="font-semibold text-text-primary">
+                            <dd className="font-semibold text-text-primary sm:text-right">
                               {deliveryPlatform || "—"}
                             </dd>
                           </div>
                           {deliveryOrderNumber.trim().length > 0 && (
-                            <div className="flex items-center justify-between">
+                            <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                               <dt className="text-text-secondary">
                                 {t("pos.payment.deliveryOrderNumber")}
                               </dt>
-                              <dd className="font-semibold text-text-primary">
+                              <dd className="break-words font-semibold text-text-primary sm:max-w-[14rem] sm:text-right">
                                 {deliveryOrderNumber.trim()}
                               </dd>
                             </div>
@@ -283,11 +283,11 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               </div>
             </div>
 
-            <div className="flex shrink-0 gap-4 border-t border-border bg-card-bg p-5">
+            <div className="flex shrink-0 flex-col gap-3 border-t border-border bg-card-bg p-5 sm:flex-row sm:gap-4">
               <Button
                 variant="secondary"
                 onClick={handleClosePayment}
-                className="flex-1"
+                className="flex-1 whitespace-normal"
                 disabled={isProcessing}
               >
                 {t("common.cancel")}
@@ -295,7 +295,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               <Button
                 onClick={handleConfirmPayment}
                 disabled={!canConfirm || isProcessing}
-                className="flex-[2] text-title"
+                className="flex-[2] whitespace-normal text-center text-title leading-6"
               >
                 {isProcessing
                   ? t("pos.payment.processing")

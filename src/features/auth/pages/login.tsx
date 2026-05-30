@@ -43,7 +43,7 @@ const LoginPage = () => {
 
   return (
     <div className="page-shell-loose min-h-screen bg-bg">
-      <div className="page-grid-loose mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-center lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="page-grid-loose mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-start lg:items-center lg:grid-cols-[1.1fr_0.9fr]">
         <section className="page-stack max-w-2xl">
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-surface text-title font-[var(--weight-semibold)] text-text-primary">
             K
@@ -57,7 +57,7 @@ const LoginPage = () => {
           </div>
         </section>
 
-        <Card className="mx-auto w-full max-w-md">
+        <Card className="mx-auto w-full max-w-md lg:self-center">
           <CardContent className="page-stack-tight">
             {IS_DEMO_MODE && (
               <div className="rounded-lg border border-accent/20 bg-accent/5 px-3 py-2 text-center text-caption text-accent">

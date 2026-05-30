@@ -46,7 +46,7 @@ export function ProductTable({
       id: "image",
       header: () => <span>{t("settings.products.col.image")}</span>,
       enableSorting: false,
-      meta: { className: "w-16" },
+      meta: { className: "w-16 min-w-[64px]" },
       cell: ({ row }) => {
         const menu = row.original;
         const inactive = !menu.isActive;
@@ -86,8 +86,8 @@ export function ProductTable({
           ? `${menu.categoryName ?? t("settings.products.noCategory")} · ${menu.stationName}`
           : (menu.categoryName ?? t("settings.products.noCategory"));
         return (
-          <div className="flex flex-col min-w-0">
-            <span className="text-body font-[var(--weight-medium)] text-text-primary truncate">
+          <div className="flex min-w-0 flex-col">
+            <span className="truncate text-body font-[var(--weight-medium)] text-text-primary">
               {menu.name}
             </span>
             <span className="text-label text-text-secondary truncate md:hidden">
@@ -101,9 +101,9 @@ export function ProductTable({
       id: "category",
       header: () => <span>{t("settings.products.col.category")}</span>,
       enableSorting: false,
-      meta: { hideBelow: "md" },
+      meta: { hideBelow: "md", className: "min-w-[180px]", wrap: true },
       cell: ({ row }) => (
-        <span className="text-body-sm text-text-secondary">
+        <span className="block text-body-sm leading-6 text-text-secondary">
           {row.original.categoryName ?? t("settings.products.noCategory")}
         </span>
       ),
@@ -118,7 +118,7 @@ export function ProductTable({
           align="right"
         />
       ),
-      meta: { align: "right", className: "tabular-nums" },
+      meta: { align: "right", className: "tabular-nums min-w-[112px]" },
       cell: ({ row }) => {
         const menu = row.original;
         return menu.price == null ? (
@@ -140,7 +140,7 @@ export function ProductTable({
           align="right"
         />
       ),
-      meta: { align: "right", hideBelow: "lg", className: "tabular-nums" },
+      meta: { align: "right", hideBelow: "lg", className: "tabular-nums min-w-[112px]" },
       cell: ({ row }) => {
         const menu = row.original;
         return menu.cost == null ? (
@@ -154,7 +154,7 @@ export function ProductTable({
       id: "status",
       header: () => <span>{t("settings.products.col.status")}</span>,
       enableSorting: false,
-      meta: { align: "center", className: "w-24", preventRowClick: true },
+      meta: { align: "center", className: "w-24 min-w-[96px]", preventRowClick: true },
       cell: ({ row }) => {
         const menu = row.original;
         const isToggling = togglingId === menu.id;
@@ -178,7 +178,7 @@ export function ProductTable({
       id: "actions",
       header: () => <span>{t("settings.products.col.actions")}</span>,
       enableSorting: false,
-      meta: { align: "right", className: "w-36", preventRowClick: true },
+      meta: { align: "right", className: "w-36 min-w-[112px]", preventRowClick: true },
       cell: ({ row }) => {
         const menu = row.original;
         return (

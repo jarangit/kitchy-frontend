@@ -89,8 +89,8 @@ export function TabList({
         role="tablist"
         aria-label={ariaLabel}
         className={cn(
-          "bg-segment-bg border border-segment-border rounded-full p-1",
-          fullWidth ? "flex w-full" : "inline-flex",
+          "bg-segment-bg border border-segment-border rounded-[1.25rem] p-1",
+          fullWidth ? "grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:flex lg:gap-0" : "inline-flex flex-wrap gap-1",
           className,
         )}
       >
@@ -227,8 +227,8 @@ export function Tab({
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex items-center justify-center rounded-full",
-          "min-h-chip-height-md px-5 text-segment font-segment whitespace-nowrap",
+          "flex items-center justify-center rounded-full text-center",
+          "min-h-chip-height-md min-w-0 px-4 text-segment font-segment whitespace-normal leading-5 sm:px-5",
           "transition-colors duration-[var(--motion-fast)]",
           "flex-1",
           isActive

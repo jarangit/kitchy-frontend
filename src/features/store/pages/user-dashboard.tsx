@@ -55,8 +55,8 @@ export default function UserDashboard() {
   return (
     <div className="min-h-screen bg-bg">
       <header className="sticky top-0 z-10 border-b border-border/60 bg-bg/95 backdrop-blur-xl">
-        <div className="page-inline mx-auto flex h-14 max-w-6xl items-center justify-between gap-6">
-          <div className="flex items-center gap-2.5">
+        <div className="page-inline mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-4 py-2">
+          <div className="flex min-w-0 items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface">
               <span className="text-label font-semibold text-text-primary">
                 K
@@ -71,8 +71,8 @@ export default function UserDashboard() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="hidden text-caption text-text-tertiary md:inline">
+          <div className="flex min-w-0 items-center gap-3 sm:ml-auto">
+            <span className="hidden max-w-[18rem] truncate text-caption text-text-tertiary md:inline">
               {user?.email}
             </span>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
@@ -129,7 +129,7 @@ export default function UserDashboard() {
                           <LuStore size={18} />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-subtitle text-text-primary">{item.name}</p>
+                          <p className="text-subtitle text-text-primary line-clamp-2">{item.name}</p>
                           <p className="text-body-sm leading-6 text-text-tertiary">
                             {t("store.dashboard.card.open")}
                           </p>

@@ -38,7 +38,7 @@ export function AppBar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-bg/82 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72 relative">
-      <div className="flex py-4 min-w-0 items-center justify-between gap-2 px-3 text-caption text-text-secondary sm:px-4 lg:px-6">
+      <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-4 text-caption text-text-secondary sm:px-4 lg:px-6">
         {storeId ? (
           <Link
             to={`/store/${storeId}`}
@@ -49,7 +49,7 @@ export function AppBar() {
               K
             </span>
             <span
-              className="max-w-[140px] truncate text-text-primary sm:max-w-[220px] lg:max-w-[320px]"
+              className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
               title={storeName || t("appbar.storeFallback")}
             >
               {storeName || t("appbar.storeFallback")}
@@ -60,10 +60,10 @@ export function AppBar() {
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface text-[13px] font-[var(--weight-semibold)] text-text-primary">
               K
             </span>
-            <span
-              className="max-w-[140px] truncate text-text-primary sm:max-w-[220px] lg:max-w-[320px]"
-              title={storeName || t("appbar.storeFallback")}
-            >
+             <span
+               className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
+               title={storeName || t("appbar.storeFallback")}
+             >
               {storeName || t("appbar.storeFallback")}
             </span>
           </div>
@@ -71,19 +71,19 @@ export function AppBar() {
 
         <AppBarNotch />
 
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="flex shrink-0 items-center gap-2">
           <span
             aria-label={isOnline ? t("appbar.online") : t("appbar.offline")}
             title={isOnline ? t("appbar.online") : t("appbar.offline")}
             className={cn(
-              "hidden h-6 w-6 items-center justify-center rounded-full text-[11px] leading-none sm:inline-flex",
+              "hidden h-7 w-7 items-center justify-center rounded-full text-[11px] leading-none sm:inline-flex",
               isOnline ? "bg-success-bg text-success" : "bg-danger-bg text-danger"
             )}
           >
             {isOnline ? <LuWifi size={13} /> : <LuWifiOff size={13} />}
           </span>
 
-          <span className="inline-flex h-6 items-center gap-1 rounded-full bg-surface px-2 text-[11px] leading-none text-text-secondary">
+          <span className="inline-flex min-h-7 items-center gap-1 rounded-full bg-surface px-2.5 text-[11px] leading-none text-text-secondary">
             <LuClock3 size={13} />
             <span className="hidden lg:inline">{dateLabel}</span>
             <span className="text-text-primary">{timeLabel}</span>

@@ -46,8 +46,9 @@ export function CategoryTable({
           title={t("settings.categories.col.name")}
         />
       ),
+      meta: { className: "min-w-[180px]", wrap: true },
       cell: ({ row }) => (
-        <span className="text-body font-[var(--weight-medium)] text-text-primary">
+        <span className="block text-body font-[var(--weight-medium)] leading-7 text-text-primary">
           {row.original.name}
         </span>
       ),
@@ -62,7 +63,7 @@ export function CategoryTable({
           align="right"
         />
       ),
-      meta: { align: "right", className: "tabular-nums w-28", hideBelow: "sm" },
+      meta: { align: "right", className: "tabular-nums w-28 min-w-[112px]", hideBelow: "sm" },
       cell: ({ row }) => (
         <span className="text-body-sm text-text-primary">
           {row.original.sortOrder}
@@ -73,7 +74,7 @@ export function CategoryTable({
       id: "status",
       header: () => <span>{t("settings.categories.col.status")}</span>,
       enableSorting: false,
-      meta: { align: "center", className: "w-24", preventRowClick: true },
+      meta: { align: "center", className: "w-24 min-w-[96px]", preventRowClick: true },
       cell: ({ row }) => {
         const c = row.original;
         return (
@@ -96,7 +97,7 @@ export function CategoryTable({
       id: "actions",
       header: () => <span>{t("settings.categories.col.actions")}</span>,
       enableSorting: false,
-      meta: { align: "right", className: "w-36", preventRowClick: true },
+      meta: { align: "right", className: "w-36 min-w-[112px]", preventRowClick: true },
       cell: ({ row }) => (
         <div className="inline-flex items-center gap-2">
           <Button

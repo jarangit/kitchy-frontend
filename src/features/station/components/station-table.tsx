@@ -43,7 +43,7 @@ export function StationTable({
       id: "color",
       header: () => <span>{t("settings.stations.col.color")}</span>,
       enableSorting: false,
-      meta: { className: "w-12" },
+      meta: { className: "w-12 min-w-[48px]" },
       cell: ({ row }) => <ColorDot color={row.original.color} size="md" />,
     },
     {
@@ -55,8 +55,9 @@ export function StationTable({
           title={t("settings.stations.col.name")}
         />
       ),
+      meta: { className: "min-w-[180px]", wrap: true },
       cell: ({ row }) => (
-        <span className="text-body font-[var(--weight-medium)] text-text-primary">
+        <span className="block text-body font-[var(--weight-medium)] leading-7 text-text-primary">
           {row.original.name}
         </span>
       ),
@@ -71,7 +72,7 @@ export function StationTable({
           align="right"
         />
       ),
-      meta: { align: "right", className: "tabular-nums", hideBelow: "sm" },
+      meta: { align: "right", className: "tabular-nums min-w-[112px]", hideBelow: "sm" },
       cell: ({ row }) => (
         <span className="text-body-sm text-text-primary">
           {row.original.activeOrders}
@@ -82,7 +83,7 @@ export function StationTable({
       id: "actions",
       header: () => <span>{t("settings.stations.col.actions")}</span>,
       enableSorting: false,
-      meta: { align: "right", className: "w-36", preventRowClick: true },
+      meta: { align: "right", className: "w-36 min-w-[112px]", preventRowClick: true },
       cell: ({ row }) => (
         <div className="inline-flex items-center gap-2">
           <Button
