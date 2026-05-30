@@ -325,6 +325,7 @@ export const thMessages = {
   "pos.cart.table": "โต๊ะ",
   "pos.cart.tableNotSelected": "ยังไม่ได้เลือก",
   "pos.cart.selectTable": "เลือกโต๊ะ",
+  "pos.cart.selectTableDescription": "แตะเพื่อเลือกโต๊ะสำหรับออเดอร์ทานที่ร้าน",
   "pos.cart.deliveryPlatform": "แพลตฟอร์มเดลิเวอรี",
   "pos.cart.deliveryOrderNumber": "เลขออเดอร์จากแอป",
   "pos.cart.deliveryOrderNumberPlaceholder": "เช่น GF-1234 / LM-5678",

@@ -9,6 +9,8 @@ import NotFoundPage from "@/shared/pages/not-found";
 
 // POS
 import PosHomePage from "@/features/pos/pages/pos-home";
+import PaymentPage from "@/features/pos/pages/payment";
+import PaymentSuccessPage from "@/features/pos/pages/payment-success";
 import { PosLayout } from "@/features/pos/components/pos-layout";
 
 // Transaction
@@ -92,6 +94,8 @@ function App() {
           }
         >
           <Route index element={<PosHomePage />} />
+          <Route path="payment" element={<PaymentPage />} />
+          <Route path="payment/success" element={<PaymentSuccessPage />} />
         </Route>
 
         {/* Transactions */}

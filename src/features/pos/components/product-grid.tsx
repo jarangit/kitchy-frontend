@@ -67,7 +67,7 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
               "relative flex min-h-[176px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
               "border border-card-border",
               "hover:border-border-hover hover:-translate-y-[1px]",
-              isSelected && "border-accent ring-1 ring-accent",
+              isSelected && "border-accent shadow-[inset_0_0_0_1px_var(--color-accent)]",
             )}
           >
             {isSelected && (

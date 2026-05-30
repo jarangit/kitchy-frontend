@@ -53,7 +53,7 @@ const PaymentReceipt = ({
       <div className="space-y-2 border-t border-border pb-4 pt-4">
         {items.map((item) => (
           <div
-            key={item.productId}
+            key={item.cartItemId}
             className="grid grid-cols-[1fr_auto_auto] gap-2 text-label text-text-secondary"
           >
             <div>

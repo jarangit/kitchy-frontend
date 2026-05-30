@@ -327,6 +327,7 @@ export const enMessages = {
   "pos.cart.table": "Table",
   "pos.cart.tableNotSelected": "Not selected",
   "pos.cart.selectTable": "Select Table",
+  "pos.cart.selectTableDescription": "Tap to select a table for the dine-in order.",
   "pos.cart.deliveryPlatform": "Delivery Platform",
   "pos.cart.deliveryOrderNumber": "App order number",
   "pos.cart.deliveryOrderNumberPlaceholder": "e.g. GF-1234 / LM-5678",

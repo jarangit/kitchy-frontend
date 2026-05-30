@@ -9,7 +9,7 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 interface Props {
   item: ICartItem | null;
   onClose: () => void;
-  onSave: (productId: string, note: string) => void;
+  onSave: (cartItemId: string, note: string) => void;
   quickNotes: string[];
 }
 
@@ -39,7 +39,7 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
 
   const handleSave = () => {
     if (!item) return;
-    onSave(item.productId, draftNote);
+    onSave(item.cartItemId, draftNote);
     onClose();
   };
 

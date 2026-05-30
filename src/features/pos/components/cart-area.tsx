@@ -51,9 +51,10 @@ const hasEnabledPlatforms = (
 interface Props {
   items: ICartItem[];
   subtotal: number;
-  onUpdateQuantity: (productId: string, quantity: number) => void;
-  onRemoveItem: (productId: string) => void;
-  onUpdateItemNote: (productId: string, note: string) => void;
+  onUpdateQuantity: (cartItemId: string, quantity: number) => void;
+  onRemoveItem: (cartItemId: string) => void;
+  onUpdateItemNote: (cartItemId: string, note: string) => void;
+  onClearCart: () => void;
   onPay: () => void;
   orderType: OrderType;
   tableNumber: string | null;
@@ -77,6 +78,7 @@ const CartArea = ({
   onUpdateQuantity,
   onRemoveItem,
   onUpdateItemNote,
+  onClearCart,
   onPay,
   orderType,
   tableNumber,
@@ -103,6 +105,7 @@ const CartArea = ({
   const [isDeliveryKeypadOpen, setIsDeliveryKeypadOpen] = useState(false);
   const [isDeviceKeyboardEnabled, setIsDeviceKeyboardEnabled] = useState(false);
   const [isConfigExpanded, setIsConfigExpanded] = useState(false);
+  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
   const deliveryOrderInputRef = useRef<HTMLInputElement | null>(null);
 
   const deliverySettingsKey = useMemo(
@@ -199,7 +202,7 @@ const CartArea = ({
 
   return (
     <div className="flex h-full max-h-full w-full min-h-0 flex-col overflow-hidden border-l border-border bg-card-bg">
-      <div className="shrink-0 border-b border-border px-6 py-3">
+      <div className="shrink-0 border-b border-border p-4">
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
             <ActiveOrderTypeIcon className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
@@ -350,11 +353,25 @@ const CartArea = ({
                 </div>
               </div>
             )}
+
+            {items.length > 0 && (
+              <div className="flex justify-end border-t border-border pt-4">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClearCart}
+                  className="text-danger hover:bg-danger-bg hover:text-danger"
+                >
+                  {t("pos.cart.clearAll")}
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-28 pt-3">
+      <div className="min-h-0 flex-1 overflow-y-auto bg-card-bg p-4 pb-28">
         {items.length === 0 ? (
           <EmptyState
             icon={<LuShoppingCart size={32} />}
@@ -363,21 +380,27 @@ const CartArea = ({
             className="py-10"
           />
         ) : (
-          <div className="divide-y divide-border">
-            {items.map((item) => (
-              <CartItem
-                key={item.productId}
-                item={item}
-                onUpdateQuantity={onUpdateQuantity}
-                onRemove={onRemoveItem}
-                onEditNote={() => setActiveNoteItem(item)}
-              />
-            ))}
-          </div>
+            <div className="space-y-3">
+              {items.map((item) => (
+                <CartItem
+                  key={item.cartItemId}
+                  item={item}
+                  expanded={expandedItemId === item.cartItemId}
+                  onUpdateQuantity={onUpdateQuantity}
+                  onRemove={onRemoveItem}
+                  onEditNote={() => setActiveNoteItem(item)}
+                  onToggleExpand={(nextItem) =>
+                    setExpandedItemId((current) =>
+                      current === nextItem.cartItemId ? null : nextItem.cartItemId
+                    )
+                  }
+                />
+              ))}
+            </div>
         )}
       </div>
 
-      <div className="z-10 shrink-0 space-y-3 border-t border-border bg-card-bg px-6 pb-4 pt-3 shadow-[0_-10px_24px_rgba(15,23,42,0.08)] md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
+      <div className="z-10 shrink-0 space-y-3 border-t border-border bg-card-bg p-4 shadow-[0_-10px_24px_rgba(15,23,42,0.08)] md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
         {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
         <Button
           onClick={onPay}

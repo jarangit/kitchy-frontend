@@ -4,9 +4,9 @@ import type { ICartItem, OrderType, PaymentMethod } from "@/features/pos/types/p
 interface CartState {
   items: ICartItem[];
   addItem: (product: { id: string; name: string; price: number }) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
-  setItemNote: (productId: string, note: string) => void;
+  removeItem: (cartItemId: string) => void;
+  updateQuantity: (cartItemId: string, quantity: number) => void;
+  setItemNote: (cartItemId: string, note: string) => void;
   clearCart: () => void;
   subtotal: number;
   totalItems: number;

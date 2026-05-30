@@ -1,15 +1,17 @@
 import { useMemo, useState, type CSSProperties } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
 import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
-import PosPaymentOverlay from "@/features/pos/components/pos-payment-overlay";
 import { PosCoachOverlay } from "@/features/onboarding/components/pos-coach-overlay";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 
 const PosHomePage = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const cartRailStyle = {
     "--pos-cart-width": "460px",
   } as CSSProperties;
@@ -23,8 +25,6 @@ const PosHomePage = () => {
   } = useProductService(selectedCategory);
   const { categoriesQuery } = useCategoryService();
   const cart = useCartContext();
-
-  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   const categories = useMemo(
     () =>
@@ -53,7 +53,7 @@ const PosHomePage = () => {
     selectedCategory === "ALL" ? productsQueryLoading : productsByCategoryLoading;
 
   const handlePay = () => {
-    setIsPaymentOpen(true);
+    navigate(`/store/${id}/pos/payment`);
   };
 
   return (
@@ -104,6 +104,7 @@ const PosHomePage = () => {
             onUpdateQuantity={cart.updateQuantity}
             onRemoveItem={cart.removeItem}
             onUpdateItemNote={cart.setItemNote}
+            onClearCart={cart.clearCart}
             onPay={handlePay}
             orderType={cart.orderType}
             tableNumber={cart.tableNumber}
@@ -116,12 +117,6 @@ const PosHomePage = () => {
           />
         </div>
       </div>
-
-      <PosPaymentOverlay
-        open={isPaymentOpen}
-        onClose={() => setIsPaymentOpen(false)}
-      />
-
       <PosCoachOverlay
         cartItemCount={cart.totalItems}
         subtotal={cart.subtotal}

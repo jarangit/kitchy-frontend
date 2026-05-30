@@ -64,29 +64,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
     []
   );
 
-  const removeItem = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((item) => item.productId !== productId));
+  const removeItem = useCallback((cartItemId: string) => {
+    setItems((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
   }, []);
 
   const updateQuantity = useCallback(
-    (productId: string, quantity: number) => {
+    (cartItemId: string, quantity: number) => {
       if (quantity <= 0) {
-        removeItem(productId);
+        removeItem(cartItemId);
         return;
       }
       setItems((prev) =>
         prev.map((item) =>
-          item.productId === productId ? { ...item, quantity } : item
+          item.cartItemId === cartItemId ? { ...item, quantity } : item
         )
       );
     },
     [removeItem]
   );
 
-  const setItemNote = useCallback((productId: string, note: string) => {
+  const setItemNote = useCallback((cartItemId: string, note: string) => {
     setItems((prev) =>
       prev.map((item) =>
-        item.productId === productId ? { ...item, note: note.trim() } : item
+        item.cartItemId === cartItemId ? { ...item, note: note.trim() } : item
       )
     );
   }, []);

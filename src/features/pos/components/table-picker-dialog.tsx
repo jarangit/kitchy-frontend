@@ -1,5 +1,6 @@
 import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
-import { SelectionChip } from "@/shared/components/ui/selection-chip";
+import { useTranslation } from "@/shared/i18n/use-translation";
+import { cn } from "@/shared/utils/cn";
 
 const TABLE_OPTIONS = Array.from(
   { length: 20 },
@@ -14,26 +15,37 @@ interface Props {
 }
 
 const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
+  const { t } = useTranslation();
+
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogHeader>
-        <DialogTitle>Select Table</DialogTitle>
-        <DialogDescription>Tap to select table for dine in order.</DialogDescription>
+    <Dialog open={open} onClose={onClose} className="max-w-2xl p-6 sm:p-7">
+      <DialogHeader className="mb-6">
+        <DialogTitle>{t("pos.cart.selectTable")}</DialogTitle>
+        <DialogDescription>{t("pos.cart.selectTableDescription")}</DialogDescription>
       </DialogHeader>
 
-      <div className="grid grid-cols-3 gap-4 sm:grid-cols-4">
+      <div className="grid grid-cols-4 gap-3">
         {TABLE_OPTIONS.map((table) => (
-          <SelectionChip
+          <button
             key={table}
-            active={tableNumber === table}
             onClick={() => {
               onSelect(table);
               onClose();
             }}
-            className="min-h-[60px] text-body"
+            className={cn(
+              "flex h-20 items-center justify-center rounded-[var(--radius-md)] border bg-card-bg px-3 text-center transition-all duration-[var(--motion-fast)]",
+              "font-mono text-title tabular-nums whitespace-nowrap text-text-secondary",
+              "hover:-translate-y-[1px] hover:border-border-hover hover:text-text-primary",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+              tableNumber === table
+                ? "border-accent bg-accent/5 text-accent shadow-[inset_0_0_0_1px_var(--color-accent)]"
+                : "border-card-border"
+            )}
+            aria-pressed={tableNumber === table}
+            type="button"
           >
             {table}
-          </SelectionChip>
+          </button>
         ))}
       </div>
     </Dialog>
