@@ -6,9 +6,10 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 interface Props {
   selected: PaymentMethod;
   onSelect: (method: PaymentMethod) => void;
+  compact?: boolean;
 }
 
-const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
+const PaymentMethodSelector = ({ selected, onSelect, compact = false }: Props) => {
   const { t } = useTranslation();
 
   const methods: { value: PaymentMethod; label: string; icon: React.ReactNode }[] = [
@@ -17,13 +18,13 @@ const PaymentMethodSelector = ({ selected, onSelect }: Props) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       {methods.map((method) => (
         <SelectionChip
           key={method.value}
           active={selected === method.value}
           onClick={() => onSelect(method.value)}
-          className="min-h-[120px] flex-col gap-3 py-5 text-center"
+          className={compact ? "min-h-[104px] flex-col gap-2 py-4 text-center" : "min-h-[120px] flex-col gap-3 py-5 text-center"}
         >
           <span aria-hidden="true">{method.icon}</span>
           <span>{method.label}</span>

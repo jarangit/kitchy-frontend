@@ -9,6 +9,7 @@ interface Props {
   onReceivedAmountChange: (value: string) => void;
   change: number;
   className?: string;
+  embedded?: boolean;
 }
 
 const CashPaymentSection = ({
@@ -17,6 +18,7 @@ const CashPaymentSection = ({
   onReceivedAmountChange,
   change,
   className,
+  embedded = false,
 }: Props) => {
   const { t } = useTranslation();
   const quickAmounts = [
@@ -31,11 +33,16 @@ const CashPaymentSection = ({
   ];
 
   return (
-    <div className={cn("mt-6 rounded-card border border-card-border bg-card-bg p-card-padding", className)}>
-      <h3 className="mb-5 text-title text-text-primary">
+    <div
+      className={cn(
+        embedded ? "space-y-4" : "mt-6 rounded-card border border-card-border bg-card-bg p-card-padding",
+        className
+      )}
+    >
+      <h3 className="text-title text-text-primary">
         {t("pos.payment.cashTitle")}
       </h3>
-      <div className="space-y-5">
+      <div className={embedded ? "space-y-4" : "space-y-5"}>
         <Input
           label={t("pos.payment.receivedAmount")}
           type="number"
@@ -46,7 +53,7 @@ const CashPaymentSection = ({
         />
 
         <div>
-          <p className="mb-3 text-label text-text-secondary">
+          <p className="mb-2 text-label text-text-secondary">
             {t("pos.payment.quickAmounts")}
           </p>
           <div className="flex flex-wrap gap-3">

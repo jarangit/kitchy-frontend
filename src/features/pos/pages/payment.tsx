@@ -16,6 +16,8 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 
+const CARD_CLASS = "rounded-card border border-card-border bg-card-bg p-4";
+
 const PaymentPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -40,6 +42,21 @@ const PaymentPage = () => {
 
   const paymentStrategy = getPaymentStrategy(paymentMethod);
   const orderTypeStrategy = getOrderTypeStrategy(orderType);
+  const orderTypeLabel = t(orderTypeStrategy.labelKey as MessageKey);
+  const nextStepHint =
+    paymentMethod === "CASH"
+      ? t("pos.payment.nextStepCash")
+      : t("pos.payment.nextStepQr");
+  const orderMeta = [
+    orderTypeLabel,
+    orderType === "DINE_IN" && tableNumber ? tableNumber : null,
+    orderType === "DELIVERY" && deliveryPlatform.trim().length > 0
+      ? deliveryPlatform.trim()
+      : null,
+    orderType === "DELIVERY" && deliveryOrderNumber.trim().length > 0
+      ? deliveryOrderNumber.trim()
+      : null,
+  ].filter(Boolean) as string[];
 
   const change = useMemo(
     () =>
@@ -62,6 +79,13 @@ const PaymentPage = () => {
       deliveryPlatform,
       deliveryOrderNumber,
     });
+
+  const validationMessage =
+    orderType === "DINE_IN" && !tableNumber
+      ? t("pos.payment.selectTableFirst")
+      : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
+        ? t("pos.payment.selectPlatformFirst")
+        : null;
 
   const handleCancel = () => {
     navigate(`/store/${id}/pos`);
@@ -115,8 +139,6 @@ const PaymentPage = () => {
     }
   };
 
-  const orderTypeLabel = t(orderTypeStrategy.labelKey as MessageKey);
-
   if (items.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center">
@@ -131,139 +153,110 @@ const PaymentPage = () => {
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-bg">
-      <div className="border-b border-border bg-card-bg px-6 py-5">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-start gap-4">
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-3">
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleCancel}
-                className="gap-1.5"
-              >
-                <LuArrowLeft size={18} />
-                {t("pos.payment.backToPos")}
-              </Button>
-            </div>
-            <h1 className="mt-4 text-title text-text-primary">{t("pos.payment.title")}</h1>
-          </div>
-          <div className="rounded-chip bg-chip-inactive-bg px-5 py-3 text-right">
-            <p className="text-caption text-text-secondary">{t("pos.receipt.total")}</p>
-            <p className="text-heading font-semibold tabular-nums text-text-primary">
-              ฿{subtotal.toFixed(2)}
-            </p>
-          </div>
-        </div>
-      </div>
-
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="mx-auto grid min-h-full max-w-6xl lg:grid-cols-[minmax(0,1fr)_420px]">
-          <div className="min-h-0 border-border p-6 lg:border-r">
+        <div className="mx-auto grid min-h-full max-w-6xl gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-0">
+          <div className="min-h-0 lg:border-r lg:border-border lg:pr-4">
             <OrderSummary items={items} subtotal={subtotal} />
           </div>
 
-          <div className="min-h-0 bg-bg p-6">
-            <div className="space-y-6">
-              <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
-                <h2 className="mb-4 text-title text-text-primary">{t("pos.payment.orderInfo")}</h2>
-                <dl className="space-y-3 text-body">
-                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                    <dt className="text-text-secondary">{t("pos.payment.type")}</dt>
-                    <dd className="font-semibold text-text-primary sm:text-right">{orderTypeLabel}</dd>
-                  </div>
+          <div className="min-h-0 lg:pl-4">
+            <div className="flex min-h-full flex-col lg:sticky lg:top-4">
+              <section className={`${CARD_CLASS} space-y-4`}>
+                <div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleCancel}
+                    className="gap-1.5"
+                  >
+                    <LuArrowLeft size={18} />
+                    {t("pos.payment.backToPos")}
+                  </Button>
+                </div>
 
-                  {orderType === "DINE_IN" && (
-                    <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                      <dt className="text-text-secondary">{t("pos.payment.table")}</dt>
-                      <dd className="font-semibold text-text-primary sm:text-right">
-                        {tableNumber ?? "-"}
-                      </dd>
+                <div className="space-y-1">
+                  <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
+                    {t("pos.payment.title")}
+                  </p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h1 className="text-title text-text-primary">{t("pos.payment.method")}</h1>
+                      <p className="mt-1 text-body text-text-secondary">{nextStepHint}</p>
                     </div>
+                    <div className="text-right">
+                      <p className="text-caption text-text-secondary">{t("pos.receipt.total")}</p>
+                      <p className="text-heading font-semibold tabular-nums text-text-primary">
+                        ฿{subtotal.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 border-t border-border pt-4">
+                  {orderMeta.map((value) => (
+                    <span
+                      key={value}
+                      className="inline-flex rounded-full border border-card-border bg-bg px-3 py-1.5 text-label text-text-secondary"
+                    >
+                      {value}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="border-t border-border pt-4">
+                  <PaymentMethodSelector selected={paymentMethod} onSelect={setPaymentMethod} compact />
+                </div>
+
+                <div className="border-t border-border pt-4">
+                  {paymentMethod === "CASH" && (
+                    <CashPaymentSection
+                      subtotal={subtotal}
+                      receivedAmount={receivedAmount}
+                      onReceivedAmountChange={setReceivedAmount}
+                      change={change}
+                      className="border-0 bg-transparent p-0"
+                      embedded
+                    />
                   )}
 
-                  {orderType === "DELIVERY" && (
-                    <>
-                      <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                        <dt className="text-text-secondary">{t("pos.payment.platform")}</dt>
-                        <dd className="font-semibold text-text-primary sm:text-right">
-                          {deliveryPlatform || "-"}
-                        </dd>
-                      </div>
-
-                      {deliveryOrderNumber.trim().length > 0 && (
-                        <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                          <dt className="text-text-secondary">
-                            {t("pos.payment.deliveryOrderNumber")}
-                          </dt>
-                          <dd className="break-words font-semibold text-text-primary sm:max-w-[14rem] sm:text-right">
-                            {deliveryOrderNumber.trim()}
-                          </dd>
-                        </div>
-                      )}
-                    </>
+                  {paymentMethod === "QR" && (
+                    <QrPaymentSection subtotal={subtotal} className="border-0 bg-transparent p-0" embedded />
                   )}
-                </dl>
+                </div>
+
+                <div className="border-t border-border pt-4">
+                  <div className="space-y-3">
+                    {(errorMessage || validationMessage) && (
+                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
+                        {errorMessage ?? validationMessage}
+                      </p>
+                    )}
+
+                    <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+                      <Button
+                        variant="secondary"
+                        onClick={handleCancel}
+                        className="flex-1 whitespace-normal"
+                        disabled={isProcessing}
+                      >
+                        {t("common.cancel")}
+                      </Button>
+                      <Button
+                        onClick={handleConfirmPayment}
+                        disabled={!canConfirm || isProcessing}
+                        className="flex-[2] whitespace-normal text-center text-title leading-6"
+                      >
+                        {isProcessing
+                          ? t("pos.payment.processing")
+                          : t("pos.payment.payAmount", {
+                              amount: `฿${subtotal.toFixed(2)}`,
+                            })}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </section>
-
-              <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
-                <h2 className="mb-4 text-title text-text-primary">{t("pos.payment.method")}</h2>
-                <PaymentMethodSelector selected={paymentMethod} onSelect={setPaymentMethod} />
-              </section>
-
-              {paymentMethod === "CASH" && (
-                <CashPaymentSection
-                  subtotal={subtotal}
-                  receivedAmount={receivedAmount}
-                  onReceivedAmountChange={setReceivedAmount}
-                  change={change}
-                  className="mt-0"
-                />
-              )}
-
-              {paymentMethod === "QR" && <QrPaymentSection subtotal={subtotal} className="mt-0" />}
-
-              <div className="space-y-3">
-                {errorMessage && (
-                  <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
-                    {errorMessage}
-                  </p>
-                )}
-
-                {orderType === "DINE_IN" && !tableNumber && (
-                  <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
-                    {t("pos.payment.selectTableFirst")}
-                  </p>
-                )}
-
-                {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
-                  <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
-                    {t("pos.payment.selectPlatformFirst")}
-                  </p>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-                <Button
-                  variant="secondary"
-                  onClick={handleCancel}
-                  className="flex-1 whitespace-normal"
-                  disabled={isProcessing}
-                >
-                  {t("common.cancel")}
-                </Button>
-                <Button
-                  onClick={handleConfirmPayment}
-                  disabled={!canConfirm || isProcessing}
-                  className="flex-[2] whitespace-normal text-center text-title leading-6"
-                >
-                  {isProcessing
-                    ? t("pos.payment.processing")
-                    : t("pos.payment.payAmount", {
-                        amount: `฿${subtotal.toFixed(2)}`,
-                      })}
-                </Button>
-              </div>
             </div>
           </div>
         </div>
