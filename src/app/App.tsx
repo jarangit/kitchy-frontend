@@ -1,56 +1,55 @@
+import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import LoginPage from "@/features/auth/pages/login";
-import RegisterPage from "@/features/auth/pages/register";
-import UserDashboardPage from "@/features/store/pages/user-dashboard";
-import StoreDashboardPage from "@/features/store/pages/store-dashboard";
 import { AuthProvider } from "@/features/auth/context/authContext";
 import { ProtectedRoute } from "@/shared/components/protected-route";
 import NotFoundPage from "@/shared/pages/not-found";
 
-// POS
-import PosHomePage from "@/features/pos/pages/pos-home";
-import PaymentPage from "@/features/pos/pages/payment";
-import PaymentSuccessPage from "@/features/pos/pages/payment-success";
 import { PosLayout } from "@/features/pos/components/pos-layout";
-
-// Transaction
-import TransactionListPage from "@/features/transaction/pages/transaction-list";
-import TransactionDetailPage from "@/features/transaction/pages/transaction-detail";
-import KdsBoardPage from "@/features/kds/pages/kds-board";
-
-// Report
-import ReportPage from "@/features/report/pages/report-page";
-
-// Settings
-import SettingsPage from "@/features/store/pages/settings";
-import SettingsProductsPage from "@/features/store/pages/settings-products";
-import SettingsShopPage from "@/features/store/pages/settings-shop";
-import SettingsDeliveryPage from "@/features/store/pages/settings-delivery";
-import SettingsQuickNotesPage from "@/features/store/pages/settings-quick-notes";
-import SettingsStationsPage from "@/features/station/pages/settings-stations";
-import SettingsCategoriesPage from "@/features/category/pages/settings-categories";
-
-// Station
-import StationPage from "@/features/station/pages/[station]";
-
-// Onboarding
-import OnboardingWizardPage from "@/features/onboarding/pages/onboarding-wizard";
 
 // Layout
 import Layout from "@/shared/components/layout/layout";
 import { ReadyToServeNotifier } from "@/features/kds/components/ready-to-serve-notifier";
 import { ToastProvider } from "@/shared/components/ui/toast/toast-provider";
+import { Spinner } from "@/shared/components/ui/spinner";
+
+const LoginPage = lazy(() => import("@/features/auth/pages/login"));
+const RegisterPage = lazy(() => import("@/features/auth/pages/register"));
+const UserDashboardPage = lazy(() => import("@/features/store/pages/user-dashboard"));
+const StoreDashboardPage = lazy(() => import("@/features/store/pages/store-dashboard"));
+const PosHomePage = lazy(() => import("@/features/pos/pages/pos-home"));
+const PaymentPage = lazy(() => import("@/features/pos/pages/payment"));
+const PaymentSuccessPage = lazy(() => import("@/features/pos/pages/payment-success"));
+const TransactionListPage = lazy(() => import("@/features/transaction/pages/transaction-list"));
+const TransactionDetailPage = lazy(() => import("@/features/transaction/pages/transaction-detail"));
+const KdsBoardPage = lazy(() => import("@/features/kds/pages/kds-board"));
+const ReportPage = lazy(() => import("@/features/report/pages/report-page"));
+const SettingsPage = lazy(() => import("@/features/store/pages/settings"));
+const SettingsProductsPage = lazy(() => import("@/features/store/pages/settings-products"));
+const SettingsShopPage = lazy(() => import("@/features/store/pages/settings-shop"));
+const SettingsDeliveryPage = lazy(() => import("@/features/store/pages/settings-delivery"));
+const SettingsQuickNotesPage = lazy(() => import("@/features/store/pages/settings-quick-notes"));
+const SettingsStationsPage = lazy(() => import("@/features/station/pages/settings-stations"));
+const SettingsCategoriesPage = lazy(() => import("@/features/category/pages/settings-categories"));
+const StationPage = lazy(() => import("@/features/station/pages/[station]"));
+const OnboardingWizardPage = lazy(() => import("@/features/onboarding/pages/onboarding-wizard"));
+
+const RouteFallback = () => (
+  <div className="flex min-h-screen items-center justify-center bg-bg">
+    <Spinner size="lg" />
+  </div>
+);
 
 function App() {
   return (
     <AuthProvider>
       <ToastProvider />
       <ReadyToServeNotifier />
-      <Routes>
-        {/* Public */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+      <Suspense fallback={<RouteFallback />}>
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
 
         {/* User Dashboard (store selection) */}
         <Route
@@ -222,9 +221,10 @@ function App() {
           }
         />
 
-        {/* 404 */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
+          {/* 404 */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </AuthProvider>
   );
 }

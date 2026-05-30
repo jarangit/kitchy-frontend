@@ -2,8 +2,10 @@
 import { storeServiceApi } from "@/features/store/services/store";
 import type { ICreateStore } from "@/features/store/types/store.dto";
 import type { IUpdateStore } from "@/features/store/types/store.dto";
+import type { IStore } from "@/features/store/types/store.model";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "@/shared/hooks/hooks";
+import { normalizeResponse } from "@/shared/services/normalize-response";
 
 export function useStoreService({
   userId,
@@ -18,14 +20,14 @@ export function useStoreService({
     queryKey: ["stores", userId],
     queryFn: () => storeServiceApi.getByUserId(userId as string),
     enabled: !!userId,
-    select: (data: any) => data.data,
+    select: (data: unknown) => normalizeResponse<IStore[]>(data),
   });
 
   const storeFinOneQuery = useQuery({
     queryKey: ["store", storeId],
     queryFn: () => storeServiceApi.getById(storeId as string),
     enabled: !!storeId,
-    select: (data: any) => data.data,
+    select: (data: unknown) => normalizeResponse<IStore>(data),
   });
 
   // CREATE

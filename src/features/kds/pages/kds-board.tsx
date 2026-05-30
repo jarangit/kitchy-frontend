@@ -22,8 +22,13 @@ const KdsBoardPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const { stationsQuery } = useStationService({});
-  const activeStation = stationsQuery?.[0];
+  const stations = useMemo(() => stationsQuery ?? [], [stationsQuery]);
+  const [activeStationId, setActiveStationId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<KdsStatus>("PENDING");
+  const activeStation = useMemo(() => {
+    if (stations.length === 0) return null;
+    return stations.find((station) => station.id === activeStationId) ?? stations[0];
+  }, [activeStationId, stations]);
 
   const { cards, isLoading, isRefetching, isUpdating, updateStatus } = useKds(
     activeStation?.id
@@ -91,6 +96,23 @@ const KdsBoardPage = () => {
         stationName={activeStation?.name}
         isRefetching={isRefetching}
       />
+
+      {stations.length > 1 && (
+        <Tabs
+          value={activeStation?.id ?? ""}
+          onChange={setActiveStationId}
+          variant="chip"
+          size="md"
+        >
+          <TabList aria-label={t("pos.cart.selectTable")} scrollable>
+            {stations.map((station) => (
+              <Tab key={station.id} value={station.id}>
+                {station.name}
+              </Tab>
+            ))}
+          </TabList>
+        </Tabs>
+      )}
 
       <Tabs
         value={activeTab}

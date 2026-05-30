@@ -1,7 +1,9 @@
 import { stationServiceApi } from "@/features/station/services/station";
 import type { ICreateStation } from "@/features/station/types/station.dto";
+import type { IStation } from "@/features/station/types/station.model";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "@/shared/hooks/hooks";
+import { normalizeResponse } from "@/shared/services/normalize-response";
 
 export function useStationService({
   stationId,
@@ -15,14 +17,14 @@ export function useStationService({
     queryKey: ["stations", storeId],
     queryFn: () => stationServiceApi.getByStoreId(storeId as string),
     enabled: !!storeId,
-    select: (data) => data.data,
+    select: (data) => normalizeResponse<IStation[]>(data),
   });
 
   const stationFinOneQuery = useQuery({
     queryKey: ["station", stationId],
     queryFn: () => stationServiceApi.getById(stationId as string),
     enabled: !!stationId,
-    select: (data) => data.data,
+    select: (data) => normalizeResponse<IStation>(data),
   });
 
   const createMutation = useMutation({

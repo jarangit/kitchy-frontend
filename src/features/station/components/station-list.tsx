@@ -83,15 +83,10 @@ const StationListTemplate = () => {
   const rows: StationRow[] = useMemo(
     () =>
       (stationsQuery ?? []).map(
-        (s: {
-          id: string;
-          name: string;
-          color: string;
-          activeOrders?: number;
-        }) => ({
+        (s: { id: string; name: string; color?: string; activeOrders?: number }) => ({
           id: s.id,
           name: s.name,
-          color: s.color,
+          color: s.color ?? "#111315",
           activeOrders: s.activeOrders ?? 0,
         }),
       ),
