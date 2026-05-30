@@ -3,6 +3,8 @@ import type { ICartItem } from "@/features/pos/types/pos.model";
 import type { OrderType } from "@/features/pos/types/pos.model";
 import {
   LuBike,
+  LuChevronDown,
+  LuChevronUp,
   LuKeyboard,
   LuPackage,
   LuShoppingCart,
@@ -100,6 +102,7 @@ const CartArea = ({
   const [quickNotes, setQuickNotes] = useState(defaultQuickNotes);
   const [isDeliveryKeypadOpen, setIsDeliveryKeypadOpen] = useState(false);
   const [isDeviceKeyboardEnabled, setIsDeviceKeyboardEnabled] = useState(false);
+  const [isConfigExpanded, setIsConfigExpanded] = useState(false);
   const deliveryOrderInputRef = useRef<HTMLInputElement | null>(null);
 
   const deliverySettingsKey = useMemo(
@@ -176,172 +179,205 @@ const CartArea = ({
     setIsDeliveryKeypadOpen((current) => !current);
   };
 
-  return (
-    <div className="flex h-full w-full flex-col bg-card-bg border-l border-border">
-      {/* Scroll region */}
-      <div className="flex-1 overflow-y-auto">
-        {/* Order config */}
-         <div className="space-y-6 border-b border-border px-6 py-6">
-          <div>
-            <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
-             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-               {ORDER_TYPE_VALUES.map((value) => (
-                 (() => {
-                   const Icon = ORDER_TYPE_ICONS[value];
-                   const label = t(ORDER_TYPE_LABEL_KEYS[value]);
+  const ActiveOrderTypeIcon = ORDER_TYPE_ICONS[orderType];
+  const orderTypeLabel = t(ORDER_TYPE_LABEL_KEYS[orderType]);
+  const deliveryOrderNumberValue = deliveryOrderNumber.trim();
+  const summaryParts = [orderTypeLabel];
 
-                   return (
-                  <SelectionChip
-                    key={value}
-                    active={orderType === value}
-                    onClick={() => handleOrderTypeChange(value)}
-                    className="justify-center px-0"
-                    aria-label={label}
-                    title={label}
-                  >
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                    <span className="sr-only">{label}</span>
-                  </SelectionChip>
-                   );
-                 })()
-               ))}
-            </div>
+  if (orderType === "DINE_IN") {
+    summaryParts.push(tableNumber ?? t("pos.cart.tableNotSelected"));
+  }
+
+  if (orderType === "DELIVERY") {
+    if (deliveryPlatform.trim().length > 0) {
+      summaryParts.push(deliveryPlatform.trim());
+    }
+    if (deliveryOrderNumberValue.length > 0) {
+      summaryParts.push(deliveryOrderNumberValue);
+    }
+  }
+
+  return (
+    <div className="flex h-full max-h-full w-full min-h-0 flex-col overflow-hidden border-l border-border bg-card-bg">
+      <div className="shrink-0 border-b border-border px-6 py-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
+            <ActiveOrderTypeIcon className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
+            <p className="truncate">{summaryParts.join(" • ")}</p>
           </div>
 
-          {orderType === "DINE_IN" && (
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-               <div className="min-w-0">
-                 <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
-                   <LuTableProperties className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
-                   <p className="truncate">{tableNumber ?? t("pos.cart.tableNotSelected")}</p>
-                 </div>
-               </div>
-                <div className="flex flex-wrap items-center gap-3 sm:justify-end">
-                 {tableNumber && (
-                   <Button
-                     type="button"
-                     variant="ghost"
-                     size="icon"
-                     onClick={() => onTableNumberChange(null)}
-                     aria-label={t("common.clear")}
-                     title={t("common.clear")}
-                   >
-                     <LuX className="h-4 w-4" aria-hidden="true" />
-                   </Button>
-                 )}
-                 <Button
-                   variant="secondary"
-                   size="icon"
-                   onClick={() => setIsTableDialogOpen(true)}
-                   aria-label={t("pos.cart.selectTable")}
-                   title={t("pos.cart.selectTable")}
-                 >
-                   <LuTableProperties className="h-4 w-4" aria-hidden="true" />
-                 </Button>
-               </div>
-             </div>
-          )}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => setIsConfigExpanded((current) => !current)}
+            aria-label={t("common.edit")}
+            title={t("common.edit")}
+            className="shrink-0"
+          >
+            <span>{t("common.edit")}</span>
+            {isConfigExpanded ? <LuChevronUp className="h-4 w-4" aria-hidden="true" /> : <LuChevronDown className="h-4 w-4" aria-hidden="true" />}
+          </Button>
+        </div>
 
-          {orderType === "DELIVERY" && (
-            <div className="space-y-5">
-              <div>
-                <SectionLabel>{t("pos.cart.deliveryPlatform")}</SectionLabel>
-                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                   {deliveryPlatforms.map((platform) => (
-                     <SelectionChip
-                       key={platform}
-                       active={deliveryPlatform === platform}
-                       onClick={() => onDeliveryPlatformChange(platform)}
-                       className="justify-center text-center"
-                     >
-                       {platform}
-                     </SelectionChip>
-                  ))}
+        {isConfigExpanded && (
+          <div className="mt-4 space-y-5">
+            <div>
+              <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
+              <div className="grid grid-cols-3 gap-3">
+                {ORDER_TYPE_VALUES.map((value) => {
+                  const Icon = ORDER_TYPE_ICONS[value];
+                  const label = t(ORDER_TYPE_LABEL_KEYS[value]);
+
+                  return (
+                    <SelectionChip
+                      key={value}
+                      active={orderType === value}
+                      onClick={() => handleOrderTypeChange(value)}
+                      className="justify-center px-0"
+                      aria-label={label}
+                      title={label}
+                    >
+                      <Icon className="h-5 w-5" aria-hidden="true" />
+                      <span className="sr-only">{label}</span>
+                    </SelectionChip>
+                  );
+                })}
+              </div>
+            </div>
+
+            {orderType === "DINE_IN" && (
+              <div className="flex items-center justify-between gap-3">
+                <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
+                  <LuTableProperties className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
+                  <p className="truncate">{tableNumber ?? t("pos.cart.tableNotSelected")}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  {tableNumber && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => onTableNumberChange(null)}
+                      aria-label={t("common.clear")}
+                      title={t("common.clear")}
+                    >
+                      <LuX className="h-4 w-4" aria-hidden="true" />
+                    </Button>
+                  )}
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon"
+                    onClick={() => setIsTableDialogOpen(true)}
+                    aria-label={t("pos.cart.selectTable")}
+                    title={t("pos.cart.selectTable")}
+                  >
+                    <LuTableProperties className="h-4 w-4" aria-hidden="true" />
+                  </Button>
                 </div>
               </div>
+            )}
 
-              <div>
-                <Label htmlFor="deliveryOrderNumber">
-                  {t("pos.cart.deliveryOrderNumber")}
-                </Label>
-                {isDeviceKeyboardEnabled ? (
-                  <input
-                    id="deliveryOrderNumber"
-                    ref={deliveryOrderInputRef}
-                    value={deliveryOrderNumber}
-                    onChange={(event) =>
-                      onDeliveryOrderNumberChange(event.target.value.slice(0, 24))
-                    }
-                    onBlur={() => setIsDeviceKeyboardEnabled(false)}
-                    inputMode="text"
-                    autoComplete="off"
-                    className="mt-1 h-input-height w-full rounded-input border border-input-border bg-input-bg px-input-padding-x font-mono text-input text-text-primary tabular-nums outline-none transition-colors duration-[var(--motion-fast)] placeholder:text-input-placeholder focus:border-input-border-focus focus:ring-2 focus:ring-accent/25"
-                    placeholder={t("pos.cart.deliveryOrderNumberPlaceholder")}
-                  />
-                ) : (
-                  <button
-                    id="deliveryOrderNumber"
-                    type="button"
-                    onClick={openCustomKeypad}
-                    aria-haspopup="dialog"
-                    aria-expanded={isDeliveryKeypadOpen}
-                    className="mt-1 flex h-input-height w-full items-center justify-between gap-3 rounded-input border border-input-border bg-input-bg px-input-padding-x text-left text-input-text transition-colors duration-[var(--motion-fast)] focus:border-input-border-focus focus:outline-none focus:ring-2 focus:ring-accent/25"
-                  >
-                    <span
-                      className={
-                        deliveryOrderNumber
-                          ? "font-mono text-input tabular-nums text-text-primary"
-                          : "text-input text-input-placeholder"
-                      }
-                    >
-                      {deliveryOrderNumber ||
-                        t("pos.cart.deliveryOrderNumberPlaceholder")}
-                    </span>
-                    <LuKeyboard className="h-5 w-5 shrink-0 text-text-tertiary" />
-                  </button>
-                )}
-                {isDeliveryKeypadOpen && (
-                  <div className="mt-3">
-                    <AlphanumericKeypad
-                      value={deliveryOrderNumber}
-                      onChange={onDeliveryOrderNumberChange}
-                      onDone={() => setIsDeliveryKeypadOpen(false)}
-                      onRequestDeviceKeyboard={openDeviceKeyboard}
-                    />
+            {orderType === "DELIVERY" && (
+              <div className="space-y-5">
+                <div>
+                  <SectionLabel>{t("pos.cart.deliveryPlatform")}</SectionLabel>
+                  <div className="grid grid-cols-2 gap-3">
+                    {deliveryPlatforms.map((platform) => (
+                      <SelectionChip
+                        key={platform}
+                        active={deliveryPlatform === platform}
+                        onClick={() => onDeliveryPlatformChange(platform)}
+                        className="justify-center text-center"
+                      >
+                        {platform}
+                      </SelectionChip>
+                    ))}
                   </div>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
+                </div>
 
-        {/* Items */}
-         <div className="px-6 pt-5 pb-3">
-          {items.length === 0 ? (
-            <EmptyState
-              icon={<LuShoppingCart size={32} />}
-              title={t("pos.cart.emptyTitle")}
-              description={t("pos.cart.emptyDescription")}
-              className="py-10"
-            />
-          ) : (
-            <div className="divide-y divide-border">
-              {items.map((item) => (
-                <CartItem
-                  key={item.productId}
-                  item={item}
-                  onUpdateQuantity={onUpdateQuantity}
-                  onRemove={onRemoveItem}
-                  onEditNote={() => setActiveNoteItem(item)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+                <div>
+                  <Label htmlFor="deliveryOrderNumber">
+                    {t("pos.cart.deliveryOrderNumber")}
+                  </Label>
+                  {isDeviceKeyboardEnabled ? (
+                    <input
+                      id="deliveryOrderNumber"
+                      ref={deliveryOrderInputRef}
+                      value={deliveryOrderNumber}
+                      onChange={(event) =>
+                        onDeliveryOrderNumberChange(event.target.value.slice(0, 24))
+                      }
+                      onBlur={() => setIsDeviceKeyboardEnabled(false)}
+                      inputMode="text"
+                      autoComplete="off"
+                      className="mt-1 h-input-height w-full rounded-input border border-input-border bg-input-bg px-input-padding-x font-mono text-input text-text-primary tabular-nums outline-none transition-colors duration-[var(--motion-fast)] placeholder:text-input-placeholder focus:border-input-border-focus focus:ring-2 focus:ring-accent/25"
+                      placeholder={t("pos.cart.deliveryOrderNumberPlaceholder")}
+                    />
+                  ) : (
+                    <button
+                      id="deliveryOrderNumber"
+                      type="button"
+                      onClick={openCustomKeypad}
+                      aria-haspopup="dialog"
+                      aria-expanded={isDeliveryKeypadOpen}
+                      className="mt-1 flex h-input-height w-full items-center justify-between gap-3 rounded-input border border-input-border bg-input-bg px-input-padding-x text-left text-input-text transition-colors duration-[var(--motion-fast)] focus:border-input-border-focus focus:outline-none focus:ring-2 focus:ring-accent/25"
+                    >
+                      <span
+                        className={
+                          deliveryOrderNumber
+                            ? "font-mono text-input tabular-nums text-text-primary"
+                            : "text-input text-input-placeholder"
+                        }
+                      >
+                        {deliveryOrderNumber ||
+                          t("pos.cart.deliveryOrderNumberPlaceholder")}
+                      </span>
+                      <LuKeyboard className="h-5 w-5 shrink-0 text-text-tertiary" />
+                    </button>
+                  )}
+                  {isDeliveryKeypadOpen && (
+                    <div className="mt-3">
+                      <AlphanumericKeypad
+                        value={deliveryOrderNumber}
+                        onChange={onDeliveryOrderNumberChange}
+                        onDone={() => setIsDeliveryKeypadOpen(false)}
+                        onRequestDeviceKeyboard={openDeviceKeyboard}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Summary + Pay */}
-      <div className="space-y-5 border-t border-border bg-card-bg px-6 pb-6 pt-5">
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-28 pt-3">
+        {items.length === 0 ? (
+          <EmptyState
+            icon={<LuShoppingCart size={32} />}
+            title={t("pos.cart.emptyTitle")}
+            description={t("pos.cart.emptyDescription")}
+            className="py-10"
+          />
+        ) : (
+          <div className="divide-y divide-border">
+            {items.map((item) => (
+              <CartItem
+                key={item.productId}
+                item={item}
+                onUpdateQuantity={onUpdateQuantity}
+                onRemove={onRemoveItem}
+                onEditNote={() => setActiveNoteItem(item)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="z-10 shrink-0 space-y-3 border-t border-border bg-card-bg px-6 pb-4 pt-3 shadow-[0_-10px_24px_rgba(15,23,42,0.08)] md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
         {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
         <Button
           onClick={onPay}

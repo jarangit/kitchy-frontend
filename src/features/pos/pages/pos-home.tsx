@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
@@ -7,11 +7,12 @@ import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
 import PosPaymentOverlay from "@/features/pos/components/pos-payment-overlay";
 import { PosCoachOverlay } from "@/features/onboarding/components/pos-coach-overlay";
-import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
-import { LuX } from "react-icons/lu";
 
 const PosHomePage = () => {
+  const cartRailStyle = {
+    "--pos-cart-width": "460px",
+  } as CSSProperties;
   const [selectedCategory, setSelectedCategory] = useState("ALL");
 
   const {
@@ -23,10 +24,7 @@ const PosHomePage = () => {
   const { categoriesQuery } = useCategoryService();
   const cart = useCartContext();
 
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-
-  const closeCart = useCallback(() => setIsCartOpen(false), []);
 
   const categories = useMemo(
     () =>
@@ -55,14 +53,13 @@ const PosHomePage = () => {
     selectedCategory === "ALL" ? productsQueryLoading : productsByCategoryLoading;
 
   const handlePay = () => {
-    setIsCartOpen(false);
     setIsPaymentOpen(true);
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       {/* Main content */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Product area */}
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden px-6 py-6">
           <CategoryTabs
@@ -73,7 +70,7 @@ const PosHomePage = () => {
 
           <div className="mt-5 flex-1 overflow-y-auto">
             {isProductsLoading ? (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <SkeletonCard key={i} className="min-h-[140px]" />
                 ))}
@@ -96,8 +93,11 @@ const PosHomePage = () => {
           </div>
         </div>
 
-        {/* Desktop cart — always visible on lg+ */}
-        <div className="hidden w-[460px] shrink-0 border-l border-card-border lg:flex">
+        {/* iPad-first cart rail */}
+        <div
+          className="hidden min-h-0 w-[var(--pos-cart-width)] shrink-0 border-l border-card-border md:flex"
+          style={cartRailStyle}
+        >
           <CartArea
             items={cart.items}
             subtotal={cart.subtotal}
@@ -116,56 +116,6 @@ const PosHomePage = () => {
           />
         </div>
       </div>
-
-      {/* Tablet / mobile cart overlay */}
-      {isCartOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-dialog-overlay transition-opacity duration-[var(--motion-normal)]"
-            onClick={closeCart}
-          />
-
-          {/* Slide-in panel */}
-          <div className="animate-slide-in-right absolute top-0 right-0 bottom-0 w-full max-w-[460px] border-l border-card-border bg-card-bg">
-            {/* Close button */}
-            <div className="flex items-center justify-between border-b border-card-border px-5 py-4">
-              <span className="text-title text-text-primary">
-                Cart
-              </span>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  onClick={closeCart}
-                  className="h-12 w-12"
-                >
-                <LuX size={20} />
-              </Button>
-            </div>
-
-            {/* Cart content */}
-            <div className="h-[calc(100%-60px)]">
-              <CartArea
-                items={cart.items}
-                subtotal={cart.subtotal}
-                onUpdateQuantity={cart.updateQuantity}
-                onRemoveItem={cart.removeItem}
-                onUpdateItemNote={cart.setItemNote}
-                onPay={handlePay}
-                orderType={cart.orderType}
-                tableNumber={cart.tableNumber}
-                deliveryPlatform={cart.deliveryPlatform}
-                deliveryOrderNumber={cart.deliveryOrderNumber}
-                onOrderTypeChange={cart.setOrderType}
-                onTableNumberChange={cart.setTableNumber}
-                onDeliveryPlatformChange={cart.setDeliveryPlatform}
-                onDeliveryOrderNumberChange={cart.setDeliveryOrderNumber}
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       <PosPaymentOverlay
         open={isPaymentOpen}
