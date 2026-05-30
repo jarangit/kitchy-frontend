@@ -55,7 +55,7 @@ export default function UserDashboard() {
   return (
     <div className="min-h-screen bg-bg">
       <header className="sticky top-0 z-10 border-b border-border/60 bg-bg/95 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-6 px-6">
+        <div className="page-inline mx-auto flex h-14 max-w-6xl items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface">
               <span className="text-label font-semibold text-text-primary">
@@ -82,119 +82,123 @@ export default function UserDashboard() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl px-6 pt-20 pb-24">
-        <div className="mb-20 space-y-3">
-          <p className="text-label text-text-secondary">
-            {t("store.dashboard.welcome.eyebrow")}
-          </p>
-          <h1 className="text-display text-text-primary">
-            {t("store.dashboard.welcome.title")}
-          </h1>
-          <p className="text-body-sm text-text-tertiary">
-            {user?.email}
-          </p>
-        </div>
+      <main className="page-shell-loose mx-auto max-w-6xl">
+        <div className="page-stack-loose">
+          <div className="page-title-stack">
+            <p className="text-label text-text-secondary">
+              {t("store.dashboard.welcome.eyebrow")}
+            </p>
+            <h1 className="text-display text-text-primary">
+              {t("store.dashboard.welcome.title")}
+            </h1>
+            <p className="text-body-sm text-text-tertiary">
+              {user?.email}
+            </p>
+          </div>
 
-        <div className="mb-8 space-y-2">
-          <h2 className="text-heading text-text-primary">
-            {t("store.dashboard.section.title")}
-          </h2>
-          <p className="text-body-sm text-text-tertiary">
-            {t("store.dashboard.section.description")}
-          </p>
-        </div>
+          <section className="page-stack-tight">
+            <div className="page-title-stack">
+              <h2 className="text-heading text-text-primary">
+                {t("store.dashboard.section.title")}
+              </h2>
+              <p className="text-body-sm text-text-tertiary">
+                {t("store.dashboard.section.description")}
+              </p>
+            </div>
 
-        {hasStores ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {stores.map((item: IStore) => (
-              <button
-                key={item.id}
-                type="button"
-                className="cursor-pointer text-left"
-                onClick={() => {
-                  dispatch(
-                    setCurrentStore({
-                      storeId: String(item.id),
-                      storeName: item.name,
-                    })
-                  );
-                  navigate(`/store/${item.id}`);
-                }}
-              >
-                <Card className="min-h-44 bg-surface transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
-                  <CardContent className="flex h-full flex-col justify-between">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-bg text-text-tertiary">
-                      <LuStore size={18} />
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-subtitle text-text-primary">{item.name}</p>
-                      <p className="text-body-sm leading-6 text-text-tertiary">
-                        {t("store.dashboard.card.open")}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </button>
-            ))}
+            {hasStores ? (
+              <div className="page-grid-loose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {stores.map((item: IStore) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className="cursor-pointer text-left"
+                    onClick={() => {
+                      dispatch(
+                        setCurrentStore({
+                          storeId: String(item.id),
+                          storeName: item.name,
+                        })
+                      );
+                      navigate(`/store/${item.id}`);
+                    }}
+                  >
+                    <Card className="min-h-44 bg-surface transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                      <CardContent className="flex h-full flex-col justify-between">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-bg text-text-tertiary">
+                          <LuStore size={18} />
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-subtitle text-text-primary">{item.name}</p>
+                          <p className="text-body-sm leading-6 text-text-tertiary">
+                            {t("store.dashboard.card.open")}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </button>
+                ))}
 
-            {isMultiStoreLocked ? (
-              <div
-                role="group"
-                aria-disabled="true"
-                className="text-left"
-              >
-                <Card className="flex min-h-44 items-center justify-center border-dashed border-border/60 bg-bg text-center">
-                  <CardContent className="flex flex-col items-center gap-3 py-8">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
-                      <LuPlus size={18} />
-                    </div>
-                    <div className="flex flex-col items-center gap-2">
-                      <p className="text-body text-text-secondary">
-                        {t("store.dashboard.create.locked.title")}
-                      </p>
-                      <Badge variant="default" size="sm">
-                        {t("store.dashboard.create.locked.badge")}
-                      </Badge>
-                      <p className="max-w-[220px] text-caption leading-5 text-text-tertiary">
-                        {t("store.dashboard.create.locked.hint")}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+                {isMultiStoreLocked ? (
+                  <div
+                    role="group"
+                    aria-disabled="true"
+                    className="text-left"
+                  >
+                    <Card className="flex min-h-44 items-center justify-center border-dashed border-border/60 bg-bg text-center">
+                      <CardContent className="flex flex-col items-center gap-3 py-8">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
+                          <LuPlus size={18} />
+                        </div>
+                        <div className="flex flex-col items-center gap-2">
+                          <p className="text-body text-text-secondary">
+                            {t("store.dashboard.create.locked.title")}
+                          </p>
+                          <Badge variant="default" size="sm">
+                            {t("store.dashboard.create.locked.badge")}
+                          </Badge>
+                          <p className="max-w-[220px] text-caption leading-5 text-text-tertiary">
+                            {t("store.dashboard.create.locked.hint")}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="cursor-pointer text-left"
+                    onClick={handleCreateStore}
+                  >
+                    <Card className="flex min-h-44 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                      <CardContent className="flex flex-col items-center gap-3 py-8">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
+                          <LuPlus size={18} />
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-body text-text-secondary">
+                            {t("store.dashboard.create.locked.title")}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </button>
+                )}
               </div>
             ) : (
-              <button
-                type="button"
-                className="cursor-pointer text-left"
-                onClick={handleCreateStore}
-              >
-                <Card className="flex min-h-44 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
-                  <CardContent className="flex flex-col items-center gap-3 py-8">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
-                      <LuPlus size={18} />
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-body text-text-secondary">
-                        {t("store.dashboard.create.locked.title")}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </button>
+              <EmptyState
+                icon={<LuStore size={48} />}
+                title={t("store.dashboard.empty.title")}
+                description={t("store.dashboard.empty.description")}
+                action={
+                  <Button onClick={handleCreateStore}>
+                    {t("store.dashboard.empty.action")}
+                  </Button>
+                }
+              />
             )}
-          </div>
-        ) : (
-          <EmptyState
-            icon={<LuStore size={48} />}
-            title={t("store.dashboard.empty.title")}
-            description={t("store.dashboard.empty.description")}
-            action={
-              <Button onClick={handleCreateStore}>
-                {t("store.dashboard.empty.action")}
-              </Button>
-            }
-          />
-        )}
+          </section>
+        </div>
       </main>
     </div>
   );

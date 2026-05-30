@@ -53,14 +53,14 @@ const StationPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
+    <div className="mx-auto max-w-4xl space-y-6">
       <PageHeader
         backTo={true}
         title={t("station.page.title", { name: station?.name ?? "" })}
         subtitle={station?.id}
       />
 
-      <section className="space-y-4">
+      <section className="space-y-3">
         <h2 className="text-subtitle font-[var(--weight-semibold)] text-text-primary">
           {t("station.page.currentOrders")}
         </h2>

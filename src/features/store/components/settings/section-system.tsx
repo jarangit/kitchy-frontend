@@ -67,7 +67,7 @@ export function SectionSystem() {
           label={t("settings.language.title")}
           hint={t("settings.language.description")}
           control={
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <ChipTab
                 size="sm"
                 active={language === "th"}

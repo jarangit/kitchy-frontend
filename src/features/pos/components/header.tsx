@@ -73,7 +73,7 @@ const PosHeader = ({
   const { isOnline, level } = useNetworkQuality();
 
   return (
-    <div className="flex items-center justify-between border-b border-border bg-bg px-5 py-5 sm:px-8">
+    <div className="flex items-center justify-between border-b border-border bg-bg px-6 py-5 sm:px-8">
       <div className="min-w-0 flex-1">
         <h1 className="truncate text-heading text-text-primary">
           {shopName}
@@ -95,7 +95,7 @@ const PosHeader = ({
                 size="icon"
                 onClick={onCartClick}
                 aria-label={t("pos.header.openCart")}
-                className="relative h-12 w-12 bg-surface"
+                className="relative h-[52px] w-[52px] bg-surface"
               >
                 <LuShoppingCart size={20} className="text-text-primary" />
                 {cartItemCount > 0 && (
@@ -113,7 +113,7 @@ const PosHeader = ({
             variant="secondary"
             size="sm"
             onClick={onExit}
-            className="h-12 px-4 text-base"
+            className="h-[52px] px-5 text-body"
           >
             <LuArrowLeft size={16} />
             {t("pos.header.exitPos")}

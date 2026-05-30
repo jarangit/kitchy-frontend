@@ -133,9 +133,9 @@ const KdsOrderCard = ({
       </div>
 
       {/* ── Action button (sticky bottom) ── */}
-      <div className="mt-5 border-t border-border pt-4">
+      <div className="mt-5 border-t border-border pt-5">
         <Button
-          className="h-12 w-full text-body"
+          className="w-full text-title"
           onClick={() => onMove(card, nextAction.status)}
           disabled={disabled}
         >

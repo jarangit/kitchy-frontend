@@ -96,7 +96,7 @@ export function ProductCard({
         </span>
 
         {/* Footer: Toggle + Actions */}
-        <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
+        <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
           {onToggleActive ? (
             <Toggle
               checked={isActive}
@@ -117,7 +117,7 @@ export function ProductCard({
           )}
 
           {hasActions && (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               {onEdit && (
                 <Button
                   variant="ghost"

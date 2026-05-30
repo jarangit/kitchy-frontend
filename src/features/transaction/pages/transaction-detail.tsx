@@ -135,7 +135,7 @@ const TransactionDetailPage = () => {
 
   if (!order) {
     return (
-      <div className="space-y-8">
+      <div className="space-y-6">
         <PageHeader
           backTo={`/store/${storeId}/transactions`}
           title={t("transaction.detail.notFound.title")}
@@ -223,7 +223,7 @@ const TransactionDetailPage = () => {
 
   return (
     <>
-      <div className="space-y-6">
+      <div className="page-stack-tight">
         <PageHeader
           backTo={`/store/${storeId}/transactions`}
           title={order.orderNumber}
@@ -236,7 +236,7 @@ const TransactionDetailPage = () => {
         />
 
         {/* Card 1: Hero action + order info */}
-        <div className="space-y-5 rounded-card border border-card-border bg-card-bg p-card-padding">
+        <div className="space-y-4 rounded-card border border-card-border bg-card-bg p-card-padding">
           <div className="flex items-start gap-3">
             <span
               className={cn(
@@ -264,7 +264,7 @@ const TransactionDetailPage = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-4 border-t border-border pt-5 sm:grid-cols-3">
+          <div className="page-grid grid grid-cols-2 border-t border-border pt-5 sm:grid-cols-3">
             {order.type && (
               <InfoCell
                 label={t("transaction.detail.info.type")}
@@ -412,12 +412,12 @@ const TransactionDetailPage = () => {
             {editableItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between gap-3 rounded-card border border-card-border px-3 py-2"
+                className="flex items-center justify-between gap-4 rounded-card border border-card-border px-4 py-3"
               >
                 <p className="min-w-0 flex-1 truncate text-body-sm text-text-primary">
                   {item.name}
                 </p>
-                <div className="inline-flex items-center gap-1 rounded-chip bg-chip-inactive-bg p-1">
+                  <div className="inline-flex items-center gap-2 rounded-chip bg-chip-inactive-bg p-1.5">
                   <button
                     type="button"
                     aria-label={t("transaction.detail.edit.decrease")}
@@ -430,12 +430,12 @@ const TransactionDetailPage = () => {
                         ),
                       )
                     }
-                    className="inline-flex h-7 w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex h-[44px] w-[44px] items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={item.quantity <= 0}
                   >
-                    <LuMinus size={14} />
+                    <LuMinus size={18} />
                   </button>
-                  <span className="min-w-6 text-center text-label tabular-nums text-text-primary">
+                  <span className="min-w-8 text-center text-body tabular-nums text-text-primary">
                     {item.quantity}
                   </span>
                   <button
@@ -450,9 +450,9 @@ const TransactionDetailPage = () => {
                         ),
                       )
                     }
-                    className="inline-flex h-7 w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary"
+                    className="inline-flex h-[44px] w-[44px] items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary"
                   >
-                    <LuPlus size={14} />
+                    <LuPlus size={18} />
                   </button>
                 </div>
               </div>

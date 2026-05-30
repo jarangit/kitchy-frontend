@@ -231,7 +231,7 @@ const TransactionListPage = () => {
   const hasAny = filteredTransactions.length > 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         title={t("transaction.title")}
         subtitle={t("transaction.subtitle")}

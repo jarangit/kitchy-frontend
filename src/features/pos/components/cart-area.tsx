@@ -167,7 +167,7 @@ const CartArea = ({
   return (
     <div className="flex h-full w-full flex-col bg-card-bg border-l border-border">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-border">
+      <div className="flex items-center justify-between border-b border-border px-6 py-5">
         <div className="flex items-center gap-3">
           <h2 className="text-title text-text-primary">{t("pos.cart.title")}</h2>
           {totalItems > 0 && (
@@ -177,12 +177,12 @@ const CartArea = ({
           )}
         </div>
         {items.length > 0 && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onClearCart}
-            className="text-label text-danger hover:text-danger-hover"
-          >
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onClearCart}
+              className="text-danger hover:text-danger-hover"
+            >
             {t("pos.cart.clearAll")}
           </Button>
         )}
@@ -191,10 +191,10 @@ const CartArea = ({
       {/* Scroll region */}
       <div className="flex-1 overflow-y-auto">
         {/* Order config */}
-        <div className="px-6 pt-5 pb-5 space-y-5 border-b border-border">
+         <div className="space-y-6 border-b border-border px-6 py-6">
           <div>
             <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-3">
               {ORDER_TYPE_VALUES.map((value) => (
                 <SelectionChip
                   key={value}
@@ -208,14 +208,14 @@ const CartArea = ({
           </div>
 
           {orderType === "DINE_IN" && (
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-4">
               <div className="min-w-0">
                 <SectionLabel>{t("pos.cart.table")}</SectionLabel>
                 <p className="text-body font-semibold text-text-primary truncate">
                   {tableNumber ?? t("pos.cart.tableNotSelected")}
                 </p>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex shrink-0 items-center gap-3">
                 {tableNumber && (
                   <Button
                     type="button"
@@ -238,10 +238,10 @@ const CartArea = ({
           )}
 
           {orderType === "DELIVERY" && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div>
                 <SectionLabel>{t("pos.cart.deliveryPlatform")}</SectionLabel>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-2 gap-3">
                   {deliveryPlatforms.map((platform) => (
                     <SelectionChip
                       key={platform}
@@ -313,7 +313,7 @@ const CartArea = ({
         </div>
 
         {/* Items */}
-        <div className="px-6 pt-4 pb-2">
+         <div className="px-6 pt-5 pb-3">
           {items.length === 0 ? (
             <EmptyState
               icon={<LuShoppingCart size={32} />}
@@ -338,14 +338,14 @@ const CartArea = ({
       </div>
 
       {/* Summary + Pay */}
-      <div className="px-6 pb-6 pt-4 space-y-4 border-t border-border bg-card-bg">
+      <div className="space-y-5 border-t border-border bg-card-bg px-6 pb-6 pt-5">
         {items.length > 0 && <CartSummary subtotal={subtotal} />}
         <Button
           onClick={onPay}
           disabled={items.length === 0}
           size="lg"
           data-onboarding-target="pay-button"
-          className="w-full h-14 text-subtitle tabular-nums"
+          className="w-full text-title tabular-nums"
         >
           {t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })}
         </Button>

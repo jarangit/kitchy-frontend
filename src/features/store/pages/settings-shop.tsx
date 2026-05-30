@@ -58,7 +58,7 @@ const SettingsShopPage = () => {
           title={t("settings.shop.dangerZone")}
           description={t("settings.shop.dangerDescription")}
         >
-          <div className="space-y-6">
+          <div className="space-y-5">
             <Button
               variant="danger"
               onClick={() => setIsDeleteDialogOpen(true)}
@@ -66,7 +66,7 @@ const SettingsShopPage = () => {
               {t("settings.shop.deleteStore")}
             </Button>
 
-            <div className="border-t border-border pt-5">
+            <div className="border-t border-border pt-4">
               <p className="mb-3 text-caption text-text-tertiary">
                 {t("settings.shop.switchStorePrompt")}
               </p>

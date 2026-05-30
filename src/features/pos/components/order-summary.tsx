@@ -11,21 +11,21 @@ const OrderSummary = ({ items, subtotal }: Props) => {
 
   return (
     <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
-      <h3 className="mb-4 text-title text-text-primary">
+      <h3 className="mb-5 text-title text-text-primary">
         {t("pos.payment.orderSummary")}
       </h3>
-      <div className="space-y-3">
+      <div className="space-y-4">
         {items.map((item) => (
           <div
             key={item.productId}
-            className="flex justify-between gap-3 text-base text-text-secondary"
+            className="flex justify-between gap-4 text-body text-text-secondary"
           >
             <div>
               <span>
                 {item.name} x{item.quantity}
               </span>
               {item.note && (
-                <p className="mt-1 text-label leading-5 text-text-tertiary">
+                <p className="mt-1 text-body-sm leading-6 text-text-tertiary">
                   {t("pos.receipt.note", { note: item.note })}
                 </p>
               )}
@@ -34,7 +34,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-between border-t border-border pt-4 text-title">
+      <div className="mt-5 flex justify-between border-t border-border pt-5 text-title">
         <span>{t("pos.receipt.total")}</span>
         <span>฿{subtotal.toFixed(2)}</span>
       </div>

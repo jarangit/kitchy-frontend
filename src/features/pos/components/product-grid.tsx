@@ -64,7 +64,7 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
             onClick={() => onAddToCart(product)}
             data-onboarding-target={`product-card-${product.id}`}
             className={cn(
-              "relative flex min-h-[148px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
+              "relative flex min-h-[176px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
               "border border-card-border",
               "hover:border-border-hover hover:-translate-y-[1px]",
               isSelected && "border-accent ring-1 ring-accent",
@@ -77,7 +77,7 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
             )}
             <div
               className={cn(
-                "mb-4 flex h-14 w-14 items-center justify-center rounded-full text-title",
+                "mb-5 flex h-16 w-16 items-center justify-center rounded-full text-title",
                 getColorForName(product.name),
               )}
             >
@@ -86,7 +86,7 @@ const ProductGrid = ({ products, onAddToCart, quantityByProductId }: Props) => {
             <span className="line-clamp-2 text-center text-body font-medium leading-tight text-text-primary">
               {product.name}
             </span>
-            <span className="mt-2 text-subtitle tabular-nums text-text-primary">
+            <span className="mt-3 text-title tabular-nums text-text-primary">
               {formatPrice(product.price)}
             </span>
           </button>

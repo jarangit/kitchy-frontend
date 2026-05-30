@@ -105,7 +105,7 @@ export function TabList({
       role="tablist"
       aria-label={ariaLabel}
       className={cn(
-        "flex gap-2",
+          "flex gap-3",
         scrollable
           ? "overflow-x-auto flex-nowrap whitespace-nowrap"
           : "flex-wrap",
@@ -228,7 +228,7 @@ export function Tab({
         onKeyDown={handleKeyDown}
         className={cn(
           "flex items-center justify-center rounded-full",
-          "px-4 h-[34px] text-segment font-segment whitespace-nowrap",
+          "min-h-chip-height-md px-5 text-segment font-segment whitespace-nowrap",
           "transition-colors duration-[var(--motion-fast)]",
           "flex-1",
           isActive

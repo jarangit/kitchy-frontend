@@ -32,10 +32,10 @@ const CashPaymentSection = ({
 
   return (
     <div className={cn("mt-6 rounded-card border border-card-border bg-card-bg p-card-padding", className)}>
-      <h3 className="mb-4 text-title text-text-primary">
+      <h3 className="mb-5 text-title text-text-primary">
         {t("pos.payment.cashTitle")}
       </h3>
-      <div className="space-y-4">
+      <div className="space-y-5">
         <Input
           label={t("pos.payment.receivedAmount")}
           type="number"
@@ -46,10 +46,10 @@ const CashPaymentSection = ({
         />
 
         <div>
-          <p className="mb-2 text-label text-text-secondary">
+          <p className="mb-3 text-label text-text-secondary">
             {t("pos.payment.quickAmounts")}
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3">
             {quickAmounts.map((amt) => (
               <Button
                 key={amt.value}
@@ -64,7 +64,7 @@ const CashPaymentSection = ({
         </div>
 
         {Number(receivedAmount) > 0 && (
-          <p className="text-heading tabular-nums text-success">
+          <p className="text-display tabular-nums text-success">
             {t("pos.payment.change", { amount: `฿${change.toFixed(2)}` })}
           </p>
         )}

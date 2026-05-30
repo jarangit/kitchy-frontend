@@ -58,7 +58,7 @@ export function SectionSales() {
           variant="control"
           label={t("settings.cp.sales.default.label")}
           control={
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <ChipTab
                 size="sm"
                 active={defaultType === "dineIn"}

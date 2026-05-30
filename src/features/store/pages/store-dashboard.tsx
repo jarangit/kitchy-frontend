@@ -69,7 +69,7 @@ const HeroSection = ({
   posLabel: string;
   posSubtitle: string;
 }) => (
-  <section className="mb-16 flex flex-col items-center gap-5 text-center">
+  <section className="page-hero-stack flex flex-col items-center text-center">
     <p className="text-label text-text-tertiary uppercase tracking-[0.08em]">{todayLabel}</p>
     <h1 className="text-display font-semibold text-text-primary tracking-tight">
       {storeName}
@@ -97,7 +97,7 @@ const ShortcutCard = ({
 }) => (
   <Link to={to}>
     <Card className="transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
-      <CardContent className="flex flex-col items-center gap-4 py-8">
+      <CardContent className="flex flex-col items-center gap-3 py-6">
         <IconTile size="lg" tone="neutral" shape="square">
           {icon}
         </IconTile>
@@ -165,7 +165,7 @@ const StoreDashboardPage = () => {
         />
       </div>
 
-      <div className="flex flex-1 flex-col justify-center py-12">
+      <div className="page-stack-loose flex flex-1 flex-col justify-center py-8">
         <HeroSection
           storeName={storeName}
           storeId={id ?? ""}
@@ -174,7 +174,7 @@ const StoreDashboardPage = () => {
           posSubtitle={t("dashboard.startReceivingOrders")}
         />
 
-        <section className="mb-16 grid w-full gap-4 md:grid-cols-2">
+        <section className="page-grid grid w-full md:grid-cols-2">
           <StatCard
             label={t("dashboard.todayRevenue")}
             value={`฿ ${formatCurrency(todayRevenue)}`}
@@ -186,11 +186,11 @@ const StoreDashboardPage = () => {
           />
         </section>
 
-        <section className="w-full">
-          <h2 className="mb-4 text-subtitle font-semibold text-text-primary">
+        <section className="page-stack-tight w-full">
+          <h2 className="text-subtitle font-semibold text-text-primary">
             {t("dashboard.shortcuts")}
           </h2>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="page-grid grid md:grid-cols-3">
             <ShortcutCard
               icon={<LuClipboardCheck size={28} />}
               label={t("dashboard.orders")}

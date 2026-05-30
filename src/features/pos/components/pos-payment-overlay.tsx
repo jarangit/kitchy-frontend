@@ -140,18 +140,18 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
         onClose={handleClosePayment}
         className="!max-w-6xl w-[min(96vw,76rem)] max-h-[92vh] p-0 overflow-hidden"
       >
-        <div className="flex items-center justify-between gap-4 border-b border-border bg-card-bg px-6 py-4">
+        <div className="flex items-center justify-between gap-4 border-b border-border bg-card-bg px-6 py-5">
           <div>
             <h2 className="text-title text-text-primary">
               {t("pos.payment.title")}
             </h2>
           </div>
           {items.length > 0 && (
-            <div className="ml-auto rounded-chip bg-chip-inactive-bg px-4 py-2 text-right">
+            <div className="ml-auto rounded-chip bg-chip-inactive-bg px-5 py-3 text-right">
               <p className="text-caption text-text-secondary">
                 {t("pos.receipt.total")}
               </p>
-              <p className="text-title font-semibold tabular-nums text-text-primary">
+              <p className="text-heading font-semibold tabular-nums text-text-primary">
                 ฿{subtotal.toFixed(2)}
               </p>
             </div>
@@ -180,19 +180,19 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
             />
           </div>
         ) : (
-          <div className="flex max-h-[calc(92vh-73px)] flex-col">
-            <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_380px]">
+          <div className="flex max-h-[calc(92vh-81px)] flex-col">
+            <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_420px]">
               <div className="min-h-0 overflow-y-auto border-border p-6 lg:border-r">
                 <OrderSummary items={items} subtotal={subtotal} />
               </div>
 
               <div className="min-h-0 overflow-y-auto bg-bg p-6">
-                <div className="space-y-5">
+                <div className="space-y-6">
                   <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
-                    <h3 className="mb-3 text-subtitle text-text-primary">
+                    <h3 className="mb-4 text-title text-text-primary">
                       {t("pos.payment.orderInfo")}
                     </h3>
-                    <dl className="space-y-2 text-body-sm">
+                    <dl className="space-y-3 text-body">
                       <div className="flex items-center justify-between">
                         <dt className="text-text-secondary">
                           {t("pos.payment.type")}
@@ -237,7 +237,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                   </section>
 
                   <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
-                    <h3 className="mb-3 text-subtitle text-text-primary">
+                    <h3 className="mb-4 text-title text-text-primary">
                       {t("pos.payment.method")}
                     </h3>
                     <PaymentMethodSelector
@@ -260,7 +260,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                     <QrPaymentSection subtotal={subtotal} className="mt-0" />
                   )}
 
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {errorMessage && (
                       <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
                         {errorMessage}
@@ -283,11 +283,11 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               </div>
             </div>
 
-            <div className="flex shrink-0 gap-3 border-t border-border bg-card-bg p-4">
+            <div className="flex shrink-0 gap-4 border-t border-border bg-card-bg p-5">
               <Button
                 variant="secondary"
                 onClick={handleClosePayment}
-                className="h-12 flex-1"
+                className="flex-1"
                 disabled={isProcessing}
               >
                 {t("common.cancel")}
@@ -295,7 +295,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
               <Button
                 onClick={handleConfirmPayment}
                 disabled={!canConfirm || isProcessing}
-                className="h-12 flex-[2] text-subtitle"
+                className="flex-[2] text-title"
               >
                 {isProcessing
                   ? t("pos.payment.processing")

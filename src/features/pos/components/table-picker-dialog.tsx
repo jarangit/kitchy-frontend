@@ -21,7 +21,7 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
         <DialogDescription>Tap to select table for dine in order.</DialogDescription>
       </DialogHeader>
 
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-3 gap-4 sm:grid-cols-4">
         {TABLE_OPTIONS.map((table) => (
           <SelectionChip
             key={table}
@@ -30,7 +30,7 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
               onSelect(table);
               onClose();
             }}
-            className="text-base"
+            className="min-h-[60px] text-body"
           >
             {table}
           </SelectionChip>

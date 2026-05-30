@@ -18,7 +18,7 @@ const Layout = ({ children, noPadding, hideSidebar }: Props) => {
       {!hideSidebar && <Sidebar />}
       <div className={cn("flex min-h-screen flex-grow flex-col transition-all duration-300", !hideSidebar && "ml-sidebar-width")}>
         <AppBar />
-        <main className={cn("flex flex-1 flex-col", !noPadding && "px-4 py-5 lg:px-6 lg:py-6 xl:px-8 xl:py-8")}>{children}</main>
+        <main className={cn("flex flex-1 flex-col", !noPadding && "px-4 py-4 lg:px-6 lg:py-5 xl:px-7 xl:py-6")}>{children}</main>
       </div>
     </div>
   );

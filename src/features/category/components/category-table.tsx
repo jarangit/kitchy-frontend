@@ -96,9 +96,9 @@ export function CategoryTable({
       id: "actions",
       header: () => <span>{t("settings.categories.col.actions")}</span>,
       enableSorting: false,
-      meta: { align: "right", className: "w-28", preventRowClick: true },
+      meta: { align: "right", className: "w-36", preventRowClick: true },
       cell: ({ row }) => (
-        <div className="inline-flex items-center gap-1">
+        <div className="inline-flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"

@@ -138,11 +138,11 @@ const SettingsDeliveryPage = () => {
           </div>
         }
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
           {supportedPlatforms.map((platform) => (
             <Card
               key={platform}
-              className="flex min-h-36 flex-col justify-between bg-bg px-5 py-4 sm:px-6 sm:py-5"
+              className="flex min-h-32 flex-col justify-between bg-bg px-5 py-4 sm:px-5 sm:py-4"
             >
               <div className="min-w-0 space-y-1.5">
                 <div className="font-semibold text-text-primary">
@@ -155,7 +155,7 @@ const SettingsDeliveryPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
+               <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
                 <span className="text-label text-text-secondary">
                   {enabledPlatforms.includes(platform)
                     ? t("settings.delivery.enabled")
@@ -178,7 +178,7 @@ const SettingsDeliveryPage = () => {
         description={t("settings.delivery.addCustomPlatformDescription")}
       >
         <Card className="bg-bg p-5 sm:p-6">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-5">
             <div className="flex-1">
               <Input
                 label={t("settings.delivery.platformName")}

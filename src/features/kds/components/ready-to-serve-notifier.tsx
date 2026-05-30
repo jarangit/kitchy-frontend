@@ -112,7 +112,7 @@ export function ReadyToServeNotifier() {
             <div className="mb-5 flex items-start justify-between gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-warning-bg text-warning">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-warning-bg text-warning">
                     <LuChefHat size={20} />
                   </span>
                   <h2 className="text-heading text-text-primary">{t("serve.drawer.title")}</h2>
@@ -125,7 +125,7 @@ export function ReadyToServeNotifier() {
                 type="button"
                 aria-label={t("common.close")}
                 onClick={() => setDrawerOpen(false)}
-                className="rounded-full p-2 text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
+                className="rounded-full p-3 text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
               >
                 <LuX size={20} />
               </button>

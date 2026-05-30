@@ -96,9 +96,9 @@ const PaymentPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-8">
+    <div className="page-shell page-stack-tight mx-auto max-w-5xl">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-8">
+      <div className="flex items-center gap-4">
         <Button
           variant="ghost"
           size="sm"
@@ -114,11 +114,11 @@ const PaymentPage = () => {
       </div>
 
       {/* Two-column layout */}
-      <div className="gap-6 space-y-6 lg:grid lg:grid-cols-[1fr_320px] lg:space-y-0">
+      <div className="page-grid-loose space-y-6 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:space-y-0">
         <OrderSummary items={items} subtotal={subtotal} />
 
         <Card>
-          <h3 className="mb-4 text-subtitle text-text-primary">
+          <h3 className="mb-5 text-title text-text-primary">
             Payment Method
           </h3>
           <PaymentMethodSelector
@@ -142,27 +142,27 @@ const PaymentPage = () => {
       )}
 
       {errorMessage && (
-        <p className="text-label text-danger mt-4">
+        <p className="text-label text-danger">
           {errorMessage}
         </p>
       )}
 
-      <div className="flex gap-3 mt-6">
+      <div className="flex gap-4">
         <Button
           variant="secondary"
           onClick={handleCancel}
-          className="flex-1 h-12"
+          className="flex-1"
           disabled={isProcessing}
         >
           Cancel
         </Button>
-        <Button
-          onClick={handleConfirmPayment}
-          disabled={!canConfirm || isProcessing}
-          className="flex-1 h-12 text-subtitle"
-        >
-          {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
-        </Button>
+          <Button
+            onClick={handleConfirmPayment}
+            disabled={!canConfirm || isProcessing}
+            className="flex-1 text-title"
+          >
+            {isProcessing ? "Processing..." : `Pay ฿${subtotal.toFixed(2)}`}
+          </Button>
       </div>
     </div>
   );

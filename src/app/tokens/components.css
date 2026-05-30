@@ -30,13 +30,13 @@
   --color-button-ghost-text: var(--color-text-primary);
 
   --radius-button: var(--radius-xl);
-  --spacing-button-height-sm: 36px;
-  --spacing-button-height-md: 44px;
-  --spacing-button-height-lg: 56px;
-  --spacing-button-padding-x: var(--space-4);
+  --spacing-button-height-sm: 44px;
+  --spacing-button-height-md: 52px;
+  --spacing-button-height-lg: 60px;
+  --spacing-button-padding-x: var(--space-5);
   --font-weight-button: var(--weight-medium);
   --font-size-button-sm: var(--text-label-size);
-  --font-size-button-md: var(--text-label-size);
+  --font-size-button-md: var(--text-body-size);
   --font-size-button-lg: var(--text-body-size);
 
   /* ── Card ── */
@@ -46,7 +46,7 @@
   --color-card-border: var(--color-border);
   --color-card-border-hover: var(--color-border);
   --radius-card: var(--radius-xl);
-  --spacing-card-padding: var(--space-6);
+  --spacing-card-padding: var(--space-5);
   --font-size-card-title: var(--text-body-size);
   --font-weight-card-title: var(--text-heading-weight);
   --font-size-card-desc: var(--text-body-sm-size);
@@ -71,9 +71,9 @@
   --color-input-text: var(--color-text-primary);
   --color-input-placeholder: var(--color-text-tertiary);
   --radius-input: var(--radius-lg);
-  --spacing-input-height: 44px;
-  --spacing-input-padding-x: var(--space-4);
-  --font-size-input: var(--text-label-size);
+  --spacing-input-height: 52px;
+  --spacing-input-padding-x: var(--space-5);
+  --font-size-input: var(--text-body-size);
 
   /* ── Badge ── */
   --radius-badge: 9999px;
@@ -101,12 +101,12 @@
   --color-chip-inactive-text: var(--color-text-secondary);
   --color-chip-inactive-bg-hover: var(--color-surface-hover);
   --radius-chip: 9999px;
-  --spacing-chip-height-sm: 36px;
-  --spacing-chip-height-md: 44px;
-  --spacing-chip-height-lg: 48px;
-  --spacing-chip-padding-x: var(--space-4);
+  --spacing-chip-height-sm: 44px;
+  --spacing-chip-height-md: 52px;
+  --spacing-chip-height-lg: 60px;
+  --spacing-chip-padding-x: var(--space-5);
   --font-weight-chip: var(--weight-medium);
-  --font-size-chip: var(--text-label-size);
+  --font-size-chip: var(--text-body-size);
 
   /* ── SegmentedControl ── */
   --color-segment-bg: var(--color-surface);
@@ -116,7 +116,7 @@
   --color-segment-inactive-text: var(--color-text-secondary);
   --color-segment-inactive-text-hover: var(--color-text-primary);
   --radius-segment: var(--radius-lg);
-  --font-size-segment: var(--text-label-size);
+  --font-size-segment: var(--text-body-size);
   --font-weight-segment: var(--text-label-weight);
 
   /* ── SelectionChip ── */
@@ -127,15 +127,15 @@
   --color-selection-active-bg: var(--color-accent-bg);
   --color-selection-active-text: var(--color-accent-text);
   --radius-selection: var(--radius-lg);
-  --spacing-selection-height: 48px;
-  --font-size-selection: var(--text-label-size);
+  --spacing-selection-height: 52px;
+  --font-size-selection: var(--text-body-size);
   --font-weight-selection: var(--weight-medium); /* 500 — calmer */
 
   /* ── Dialog ── */
   --color-dialog-bg: var(--color-surface);
   --color-dialog-border: transparent;          /* Newsroom: no visible border */
   --radius-dialog: var(--radius-xl);           /* Slightly larger for premium feel */
-  --spacing-dialog-padding: var(--space-6);
+  --spacing-dialog-padding: var(--space-5);
   --color-dialog-overlay: var(--color-overlay);
   --font-size-dialog-title: var(--text-subtitle-size);
   --font-weight-dialog-title: var(--weight-semibold);
@@ -161,8 +161,26 @@
   --color-select-border-focus: var(--color-primary);
   --color-select-text: var(--color-text-primary);
   --radius-select: var(--radius-lg);
-  --spacing-select-height: 44px;
-  --font-size-select: var(--text-label-size);
+  --spacing-select-height: 52px;
+  --font-size-select: var(--text-body-size);
+
+  /* ── Page chrome ── */
+  --spacing-page-padding-x: var(--space-5);
+  --spacing-page-padding-x-sm: var(--space-5);
+  --spacing-page-padding-x-lg: var(--space-6);
+  --spacing-page-padding-y: var(--space-5);
+  --spacing-page-padding-y-sm: var(--space-6);
+  --spacing-page-padding-y-lg: var(--space-7);
+  --spacing-page-padding-y-loose: var(--space-6);
+  --spacing-page-padding-y-loose-sm: var(--space-7);
+  --spacing-page-padding-y-loose-lg: var(--space-8);
+  --spacing-page-header-gap: var(--space-3);
+  --spacing-page-hero-gap: var(--space-4);
+  --spacing-page-section-gap-tight: var(--space-4);
+  --spacing-page-section-gap: var(--space-5);
+  --spacing-page-section-gap-loose: var(--space-6);
+  --spacing-page-grid-gap: var(--space-4);
+  --spacing-page-grid-gap-loose: var(--space-5);
 
   /* ── Label ── */
   --color-label-comp-text: var(--color-text-primary);

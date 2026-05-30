@@ -80,7 +80,7 @@ const SettingsQuickNotesPage = () => {
         title={t("settings.quickNotes.presetNotes")}
         description={t("settings.quickNotes.presetNotesDescription")}
         action={
-          <Button variant="secondary" size="sm" className="h-11" onClick={handleResetDefault}>
+          <Button variant="secondary" size="sm" onClick={handleResetDefault}>
             {t("settings.quickNotes.resetDefault")}
           </Button>
         }
@@ -99,7 +99,7 @@ const SettingsQuickNotesPage = () => {
                 variant="ghost"
                 size="icon"
                 onClick={() => handleRemoveQuickNote(note)}
-                className="h-9 w-9 rounded-full text-text-tertiary hover:bg-danger-bg hover:text-danger"
+                className="text-text-tertiary hover:bg-danger-bg hover:text-danger"
                 aria-label={t("settings.quickNotes.removeAria", { note })}
                 disabled={quickNotes.length === 1}
               >
@@ -114,8 +114,8 @@ const SettingsQuickNotesPage = () => {
         title={t("settings.quickNotes.addQuickNote")}
         description={t("settings.quickNotes.addQuickNoteDescription")}
       >
-        <Card className="bg-bg p-5 sm:p-6">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-6">
+        <Card className="bg-bg p-5 sm:p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-5">
             <div className="flex-1">
               <Input
                 label={t("settings.quickNotes.quickNote")}

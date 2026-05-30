@@ -15,7 +15,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
   const noteActionLabel = item.note ? t("pos.cart.editNote") : t("pos.cart.addNote");
 
   return (
-    <div className="border-b border-border py-3.5 last:border-0">
+    <div className="border-b border-border py-4 last:border-0">
       <div className="flex items-start justify-between gap-3">
         <p
           className="min-w-0 flex-1 line-clamp-1 text-subtitle font-[var(--weight-semibold)] text-text-primary"
@@ -37,8 +37,8 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
         </p>
       ) : null}
 
-      <div className="mt-2 flex items-center justify-between gap-1.5">
-        <div className="inline-flex items-center gap-0.5 rounded-full border border-card-border bg-card-bg px-0.5 py-0.5">
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <div className="inline-flex items-center gap-1 rounded-full border border-card-border bg-card-bg p-1">
           <Button
             type="button"
             variant="ghost"
@@ -48,12 +48,12 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
                 ? onRemove(item.productId)
                 : onUpdateQuantity(item.productId, item.quantity - 1)
             }
-            className="h-7 w-7 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            className="h-[44px] w-[44px] rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
             aria-label={item.quantity <= 1 ? "Remove item" : "Decrease quantity"}
           >
             <span className="text-label font-[var(--weight-semibold)] leading-none">-</span>
           </Button>
-          <span className="min-w-6 text-center text-caption font-[var(--weight-semibold)] tabular-nums text-text-primary">
+          <span className="min-w-8 text-center text-body font-[var(--weight-semibold)] tabular-nums text-text-primary">
             {item.quantity}
           </span>
           <Button
@@ -61,35 +61,35 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
             variant="ghost"
             size="icon"
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            className="h-7 w-7 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
+            className="h-[44px] w-[44px] rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
             aria-label="Increase quantity"
           >
-            <LuPlus size={14} />
+            <LuPlus size={18} />
           </Button>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="ghost"
             size="icon"
             onClick={() => onRemove(item.productId)}
-            className="h-7 w-7 rounded-full text-text-secondary hover:bg-danger-bg hover:text-danger"
+            className="text-text-secondary hover:bg-danger-bg hover:text-danger"
             aria-label="Remove item"
             title="Remove item"
           >
-            <LuTrash2 size={13} />
+            <LuTrash2 size={16} />
           </Button>
           <Button
             type="button"
             variant="ghost"
             size="icon"
             onClick={() => onEditNote(item)}
-            className="h-7 w-7 rounded-full text-text-secondary hover:bg-surface hover:text-text-primary"
+            className="text-text-secondary hover:bg-surface hover:text-text-primary"
             aria-label={noteActionLabel}
             title={noteActionLabel}
           >
-            <LuPencil size={13} />
+            <LuPencil size={16} />
           </Button>
         </div>
       </div>

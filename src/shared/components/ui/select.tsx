@@ -21,17 +21,17 @@ export function Select({
           {label}
         </label>
       )}
-      <select
-        className={cn(
-          "w-full h-select-height",
-          "bg-select-bg",
-          "border border-select-border",
-          "rounded-select",
-          "px-3",
-          "text-select-text text-select",
-          "outline-none",
-          "transition-colors duration-[var(--motion-fast)]",
-          "focus:border-select-border-focus focus:ring-2 focus:ring-select-border-focus/10",
+        <select
+          className={cn(
+            "w-full h-select-height",
+            "bg-select-bg",
+            "border border-select-border",
+            "rounded-select",
+            "px-input-padding-x",
+            "text-select-text text-select",
+            "outline-none",
+            "transition-colors duration-[var(--motion-fast)]",
+            "focus:border-select-border-focus focus:ring-2 focus:ring-select-border-focus/10",
           className,
         )}
         {...props}

@@ -16,7 +16,7 @@ interface Props {
 export function SettingsNavSidebar({ storeId }: Props) {
   const { t } = useTranslation();
   return (
-    <nav className="flex flex-col gap-0.5">
+    <nav className="flex flex-col gap-1.5">
       {SETTINGS_SECTIONS.map((s) => {
         const Icon = s.icon;
         return (
@@ -26,14 +26,14 @@ export function SettingsNavSidebar({ storeId }: Props) {
             end
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 rounded-card px-3 py-2.5 text-body text-text-secondary",
+                "flex min-h-[56px] items-center gap-4 rounded-card px-4 py-3 text-body text-text-secondary",
                 "transition-colors duration-[var(--motion-fast)]",
                 "hover:bg-surface-hover hover:text-text-primary",
                 isActive && "bg-primary-bg text-text-primary font-medium",
               )
             }
           >
-            <span className="flex h-7 w-7 items-center justify-center">
+            <span className="flex h-9 w-9 items-center justify-center">
               <Icon size={20} />
             </span>
             <span className="truncate">{t(s.label)}</span>
@@ -48,7 +48,7 @@ export function SettingsNavSidebar({ storeId }: Props) {
 export function SettingsNavChips({ storeId }: Props) {
   const { t } = useTranslation();
   return (
-    <nav className="flex gap-2 overflow-x-auto px-1 pb-2">
+    <nav className="flex gap-3 overflow-x-auto px-1 pb-2">
       {SETTINGS_SECTIONS.map((s) => {
         const Icon = s.icon;
         return (
@@ -58,7 +58,7 @@ export function SettingsNavChips({ storeId }: Props) {
             end
             className={({ isActive }) =>
               cn(
-                "flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-body-sm",
+                "flex min-h-[52px] shrink-0 items-center gap-3 rounded-full px-5 py-3 text-body",
                 "transition-colors duration-[var(--motion-fast)]",
                 isActive
                   ? "bg-primary text-on-accent"

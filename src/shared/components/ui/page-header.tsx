@@ -58,7 +58,7 @@ export function PageHeader({
         className,
       )}
     >
-      <div className={cn("space-y-4", sticky && "px-4 py-4 sm:px-6")}>
+      <div className={cn("space-y-3", sticky && "px-4 py-3 sm:px-5")}>
         {backTo !== undefined && (
           <Button variant="ghost" size="sm" onClick={handleBack}>
             <LuArrowLeft size={16} />
@@ -66,7 +66,7 @@ export function PageHeader({
           </Button>
         )}
 
-        <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0 space-y-1">
             <h1 className="text-heading font-semibold text-text-primary tracking-tight">
               {title}

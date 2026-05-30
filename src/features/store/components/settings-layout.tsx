@@ -25,11 +25,11 @@ export function SettingsLayout({ storeId, children }: Props) {
   return (
     <div className="w-full">
       {/* Mobile: chip rail */}
-      <div className="md:hidden mb-6">
+      <div className="mb-5 md:hidden">
         <SettingsNavChips storeId={storeId} />
       </div>
 
-      <div className="flex flex-col gap-6 md:flex-row md:gap-10 lg:gap-12">
+      <div className="flex flex-col gap-5 md:flex-row md:gap-8 lg:gap-10">
         {/* Desktop: flat sidebar — stretches with row so the inner sticky
             element can travel the full scroll height of the content column. */}
         <aside className="hidden md:block md:w-[240px] md:shrink-0 md:self-stretch">

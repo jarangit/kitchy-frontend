@@ -137,13 +137,13 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg px-6 py-10 sm:px-8 lg:px-12 lg:py-14">
-      <div className="mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="max-w-2xl space-y-6">
+    <div className="page-shell-loose min-h-screen bg-bg">
+      <div className="page-grid-loose mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-center lg:grid-cols-[1.1fr_0.9fr]">
+        <section className="page-stack max-w-2xl">
           <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-surface text-title font-[var(--weight-semibold)] text-text-primary">
             K
           </div>
-          <div className="space-y-4">
+          <div className="page-hero-stack">
             <p className="text-label text-text-secondary">Kitchy POS</p>
             <h1 className="text-display text-text-primary">
               Start running calmer service in minutes.
@@ -156,7 +156,7 @@ const RegisterPage = () => {
         </section>
 
         <Card className="mx-auto w-full max-w-md">
-          <CardContent className="space-y-6">
+          <CardContent className="page-stack-tight">
             <div className="space-y-2">
               <h2 className="text-heading text-text-primary">
                 {t("auth.register.title")}

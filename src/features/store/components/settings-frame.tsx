@@ -52,7 +52,7 @@ export function SettingsFrame({ children, wide = false }: Props) {
             onClick={handleClose}
             aria-label={t("common.close")}
             title={t("common.close")}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <LuX size={20} />
           </button>
@@ -71,8 +71,8 @@ export function SettingsFrame({ children, wide = false }: Props) {
       <main
         className={
           wide
-            ? "px-4 py-6 sm:px-6 lg:px-10 lg:py-10"
-            : "mx-auto w-full max-w-[1280px] px-4 py-6 sm:px-6 lg:px-10 lg:py-10"
+            ? "px-4 py-5 sm:px-5 lg:px-8 lg:py-8"
+            : "mx-auto w-full max-w-[1280px] px-4 py-5 sm:px-5 lg:px-8 lg:py-8"
         }
       >
         {children}

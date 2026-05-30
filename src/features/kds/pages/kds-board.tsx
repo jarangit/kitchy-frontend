@@ -85,7 +85,7 @@ const KdsBoardPage = () => {
       : t("kds.empty.servedTitle");
 
   return (
-    <div className="space-y-8 h-full">
+    <div className="h-full space-y-6">
       <KdsHeader
         storeId={id as string}
         stationName={activeStation?.name}
@@ -112,7 +112,7 @@ const KdsBoardPage = () => {
       </Tabs>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           <SkeletonCard className="min-h-[280px]" />
           <SkeletonCard className="min-h-[280px]" />
           <SkeletonCard className="min-h-[280px]" />
@@ -134,13 +134,13 @@ const KdsBoardPage = () => {
           />
         </div>
       ) : activeTab === "PENDING" ? (
-        <div className="space-y-8">
+        <div className="space-y-6">
           {dueNow.length > 0 && (
-            <section className="space-y-4">
+            <section className="space-y-3">
               <span className="inline-flex min-h-8 items-center rounded-full bg-danger-bg px-3 text-label font-semibold text-danger tracking-[0.08em] uppercase">
                 {t("kds.priority.dueNow", { count: String(dueNow.length) })}
               </span>
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {dueNow.map((card, index) => (
                   <div key={card.orderStationItemId} className="h-full min-h-[300px]">
                     <KdsOrderCard
@@ -158,11 +158,11 @@ const KdsBoardPage = () => {
           )}
 
           {next.length > 0 && (
-            <section className="space-y-4">
+            <section className="space-y-3">
               <span className="inline-flex min-h-8 items-center rounded-full bg-warning-bg px-3 text-label font-semibold text-warning tracking-[0.08em] uppercase">
                 {t("kds.priority.next", { count: String(next.length) })}
               </span>
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 {next.map((card, index) => (
                   <div key={card.orderStationItemId} className="h-full min-h-[300px]">
                     <KdsOrderCard
@@ -180,7 +180,7 @@ const KdsBoardPage = () => {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {visibleCards.map((card) => (
             <div key={card.orderStationItemId} className="h-full min-h-[300px]">
               <KdsOrderCard

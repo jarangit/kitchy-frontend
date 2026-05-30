@@ -79,16 +79,16 @@ const PosHomePage = () => {
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Product area */}
-        <div className="flex min-w-0 flex-1 flex-col px-6 py-5 overflow-hidden">
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden px-6 py-6">
           <CategoryTabs
             categories={categories}
             selected={selectedCategory}
             onSelect={setSelectedCategory}
           />
 
-          <div className="flex-1 overflow-y-auto mt-4">
+          <div className="mt-5 flex-1 overflow-y-auto">
             {isProductsLoading ? (
-              <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {Array.from({ length: 10 }).map((_, i) => (
                   <SkeletonCard key={i} className="min-h-[140px]" />
                 ))}
@@ -145,7 +145,7 @@ const PosHomePage = () => {
           {/* Slide-in panel */}
           <div className="animate-slide-in-right absolute top-0 right-0 bottom-0 w-full max-w-[400px] border-l border-card-border bg-card-bg">
             {/* Close button */}
-            <div className="flex items-center justify-between border-b border-card-border px-5 py-3">
+            <div className="flex items-center justify-between border-b border-card-border px-5 py-4">
               <span className="text-title text-text-primary">
                 Cart
               </span>

@@ -72,7 +72,7 @@ const ReportPage = () => {
 
   if (error) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-5">
         <PageHeader backTo={`/store/${id}`} title={t("report.title")} />
         <div className="rounded-card border border-card-border bg-danger-bg p-card-padding text-center">
           <p className="text-danger">{t("report.error")}</p>
@@ -82,7 +82,7 @@ const ReportPage = () => {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <PageHeader
         backTo={`/store/${id}`}
         title={t("report.title")}

@@ -61,7 +61,7 @@ type Props =
   | EditableProps;
 
 const rowBase =
-  "group flex items-center gap-4 px-4 py-3.5 min-h-14 text-body text-text-primary";
+  "group flex items-center gap-4 px-5 py-4 min-h-[60px] text-body text-text-primary";
 
 const tappable =
   "cursor-pointer transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover focus-visible:outline-none focus-visible:bg-surface-hover";
@@ -74,7 +74,7 @@ function LabelBlock({
   return (
     <div className="flex min-w-0 flex-1 items-center gap-3">
       {icon && (
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface text-text-secondary">
+        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-surface text-text-secondary">
           {icon}
         </span>
       )}
@@ -120,7 +120,7 @@ export function SettingRow(props: Props) {
 
     if (editing) {
       return (
-        <div className={cn(rowBase, "items-stretch gap-3 py-2.5", className)}>
+        <div className={cn(rowBase, "items-stretch gap-4 py-3", className)}>
           <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <div className="shrink-0 text-body text-text-secondary sm:w-40">
               {label}

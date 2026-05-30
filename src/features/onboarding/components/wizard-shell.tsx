@@ -32,8 +32,8 @@ export function WizardShell({
 
   return (
     <div className="flex min-h-screen flex-col bg-bg">
-      <header className="flex h-14 items-center justify-between border-b border-border/60 bg-bg/95 px-4 backdrop-blur-xl">
-        <div className="w-20">
+      <header className="flex h-16 items-center justify-between border-b border-border/60 bg-bg/95 px-5 backdrop-blur-xl">
+        <div className="w-28">
           {onBack ? (
             <Button
               variant="ghost"
@@ -56,7 +56,7 @@ export function WizardShell({
           </span>
         </div>
 
-        <div className="flex w-20 justify-end">
+        <div className="flex w-28 justify-end">
           {onSkip ? (
             <Button variant="ghost" size="sm" onClick={onSkip}>
               {t("onboarding.common.skip")}
@@ -69,7 +69,7 @@ export function WizardShell({
         <div className="w-full max-w-md">{children}</div>
       </main>
 
-      <footer className="flex h-14 items-center justify-center border-t border-border/60 bg-bg/95 backdrop-blur-xl">
+      <footer className="flex h-16 items-center justify-center border-t border-border/60 bg-bg/95 backdrop-blur-xl">
         <ProgressDots total={totalSteps} current={stepIndex} />
       </footer>
     </div>
