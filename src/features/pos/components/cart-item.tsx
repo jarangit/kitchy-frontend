@@ -23,14 +23,14 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, onEditNote }: Props) => {
         >
           {item.name}
         </p>
-        <p className="shrink-0 text-label font-[var(--weight-medium)] tabular-nums text-text-secondary">
+        <p className="shrink-0 text-body-sm font-[var(--weight-medium)] tabular-nums text-text-secondary">
           ฿{(item.price * item.quantity).toFixed(2)}
         </p>
       </div>
 
       {item.note ? (
         <p
-          className="mt-1 line-clamp-1 text-caption text-text-tertiary"
+          className="mt-1 line-clamp-1 text-body-sm text-text-tertiary"
           title={item.note}
         >
           {item.note}

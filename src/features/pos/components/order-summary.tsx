@@ -25,7 +25,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
                 {item.name} x{item.quantity}
               </span>
               {item.note && (
-                <p className="mt-1 text-body-sm leading-6 text-text-tertiary">
+                <p className="mt-1 text-body leading-6 text-text-tertiary">
                   {t("pos.receipt.note", { note: item.note })}
                 </p>
               )}

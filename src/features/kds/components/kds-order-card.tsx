@@ -83,7 +83,7 @@ const KdsOrderCard = ({
             </span>
           )}
           {card.note && (
-            <p className="mt-1 text-body-sm leading-5 text-text-tertiary">
+            <p className="mt-1 text-body leading-6 text-text-tertiary">
               {t("kds.card.note", { note: card.note })}
             </p>
           )}
@@ -106,12 +106,12 @@ const KdsOrderCard = ({
           </p>
         </div>
         {orderInfoParts.length > 0 && (
-          <p className="mt-0.5 text-label text-text-secondary">
+          <p className="mt-1 text-body-sm text-text-secondary">
             {orderInfoParts.join(" ")}
           </p>
         )}
         {card.orderType === "DELIVERY" && card.deliveryOrderNumber && (
-          <p className="mt-1 font-mono text-label font-semibold text-accent-text tabular-nums">
+          <p className="mt-1 font-mono text-body-sm font-semibold text-accent-text tabular-nums">
             {t("kds.card.deliveryOrderNumber", {
               orderNumber: card.deliveryOrderNumber,
             })}

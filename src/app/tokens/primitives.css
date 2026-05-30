@@ -54,15 +54,15 @@
   --font-mono: ui-monospace, "JetBrains Mono", monospace;
 
   /* Font size scale */
-  --size-xs:   12px;
-  --size-sm:   14px;
-  --size-base: 16px;
-  --size-lg:   18px;
-  --size-xl:   20px;
-  --size-2xl:  24px;
-  --size-3xl:  30px;
-  --size-4xl:  36px;
-  --size-5xl:  48px;
+  --size-xs:   13px;
+  --size-sm:   16px;
+  --size-base: 18px;
+  --size-lg:   20px;
+  --size-xl:   24px;
+  --size-2xl:  28px;
+  --size-3xl:  32px;
+  --size-4xl:  40px;
+  --size-5xl:  52px;
 
   /* Font weight scale */
   --weight-regular:  400;

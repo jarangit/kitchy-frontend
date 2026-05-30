@@ -117,7 +117,7 @@ export function ReadyToServeNotifier() {
                   </span>
                   <h2 className="text-heading text-text-primary">{t("serve.drawer.title")}</h2>
                 </div>
-                <p className="text-body-sm text-text-secondary">
+                <p className="text-body text-text-secondary">
                   {t("serve.drawer.subtitle", { count: String(visibleItems.length) })}
                 </p>
               </div>
@@ -134,7 +134,7 @@ export function ReadyToServeNotifier() {
             {visibleItems.length === 0 ? (
               <div className="rounded-card border border-card-border bg-card-bg p-card-padding text-center">
                 <p className="text-title text-text-primary">{t("serve.empty.title")}</p>
-                <p className="mt-1 text-body-sm text-text-secondary">{t("serve.empty.body")}</p>
+                <p className="mt-1 text-body text-text-secondary">{t("serve.empty.body")}</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -146,7 +146,7 @@ export function ReadyToServeNotifier() {
                     <div className="mb-3 flex items-start justify-between gap-3">
                       <div>
                         <p className="text-title text-text-primary">{getItemContext(item)}</p>
-                        <p className="text-body-sm text-text-secondary">
+                        <p className="text-body text-text-secondary">
                           {t("serve.item.meta", {
                             order: item.orderNumber,
                             station: item.stationName,
@@ -164,7 +164,7 @@ export function ReadyToServeNotifier() {
                         {item.productName} x{item.quantity}
                       </p>
                       {item.note && (
-                        <p className="mt-1 text-caption text-text-secondary">{item.note}</p>
+                        <p className="mt-1 text-body-sm text-text-secondary">{item.note}</p>
                       )}
                     </div>
                     <div className="mt-4 flex gap-2">

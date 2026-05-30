@@ -294,7 +294,7 @@ const CartArea = ({
                     <LuKeyboard className="h-5 w-5 shrink-0 text-text-tertiary" />
                   </button>
                 )}
-                <p className="mt-2 text-caption leading-5 text-text-tertiary">
+                <p className="mt-2 text-body-sm leading-6 text-text-tertiary">
                   {t("pos.cart.deliveryOrderNumberHelp")}
                 </p>
                 {isDeliveryKeypadOpen && (
