@@ -75,9 +75,10 @@ const TransactionDetailPage = () => {
     0,
   );
 
-  const canEditOrder = order && order.status !== "CANCELLED";
+  const orderStatus = order?.status ?? "PENDING";
+  const canEditOrder = order && orderStatus !== "CANCELLED";
   const flowStatus: FlowStatus = order
-    ? toFlowStatus(order.status)
+    ? toFlowStatus(orderStatus)
     : "IN_PROGRESS";
 
   const hasRemovedAllItems = useMemo(
@@ -231,8 +232,8 @@ const TransactionDetailPage = () => {
           title={order.orderNumber}
           subtitle={`${formattedDate} · ${formattedTime}`}
           action={
-            <Badge variant={toStatusBadgeVariant(order.status)}>
-              {formatStatusLabel(order.status)}
+            <Badge variant={toStatusBadgeVariant(orderStatus)}>
+              {formatStatusLabel(orderStatus)}
             </Badge>
           }
         />

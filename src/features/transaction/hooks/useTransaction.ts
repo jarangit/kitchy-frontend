@@ -11,7 +11,6 @@ export function useTransactionService() {
     queryKey: ["transactions", storeId],
     queryFn: () => transactionServiceApi.getByStoreId(storeId as string),
     enabled: !!storeId,
-    select: (data) => data.data,
   });
 
   const updateMutation = useMutation({
@@ -48,7 +47,6 @@ export function useTransactionDetail(transactionId?: string) {
     queryKey: ["transaction", transactionId],
     queryFn: () => transactionServiceApi.getById(transactionId as string),
     enabled: !!transactionId,
-    select: (res) => res.data,
   });
 
   const updateMutation = useMutation({

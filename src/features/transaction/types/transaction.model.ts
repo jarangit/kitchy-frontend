@@ -3,10 +3,18 @@ export interface ITransaction {
   orderId: string;
   orderNumber: string;
   storeId: string;
+  status?: string;
+  type?: string;
+  tableNumber?: string;
+  customerName?: string;
+  deliveryPlatform?: string;
+  deliveryOrderNumber?: string;
   method: string;
   amount: number;
+  totalAmount?: number;
   receiptId: string;
   items: ITransactionItem[];
+  products?: ITransactionItem[];
   createdAt: string;
   updatedAt: string;
 }

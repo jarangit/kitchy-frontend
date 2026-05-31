@@ -66,6 +66,64 @@ function genId(): string {
 
 const now = () => new Date().toISOString();
 
+function buildTransactionItems(
+  meta: DemoOrderMeta | undefined,
+  products: IMenu[],
+  fallbackItems: ITransaction["items"] = [],
+): ITransaction["items"] {
+  if (!meta) return fallbackItems;
+
+  return meta.products.map((product) => {
+    const productRecord = products.find((item) => item.id === product.productId);
+    const price = productRecord?.price ?? 0;
+
+    return {
+      productId: product.productId,
+      name: productRecord?.name ?? `Product #${product.productId}`,
+      price,
+      quantity: product.quantity,
+      total: price * product.quantity,
+    };
+  });
+}
+
+function buildTransactionView(
+  order: IOrderItem,
+  meta: DemoOrderMeta | undefined,
+  products: IMenu[],
+  payments: ITransaction[],
+): ITransaction {
+  const relatedPayments = payments.filter((payment) => payment.orderId === order.id);
+  const primaryPayment = relatedPayments.at(-1);
+  const items = buildTransactionItems(meta, products, primaryPayment?.items ?? []);
+  const amount = items.reduce((sum, item) => sum + item.total, 0);
+
+  return {
+    id: order.id,
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    storeId: meta?.storeId ?? "",
+    status: order.status,
+    type: order.type,
+    tableNumber: meta?.tableNumber,
+    customerName: meta?.customerName,
+    deliveryPlatform: meta?.deliveryPlatform,
+    deliveryOrderNumber: meta?.deliveryOrderNumber,
+    method: primaryPayment?.method ?? "CASH",
+    amount,
+    totalAmount: amount,
+    receiptId: primaryPayment?.receiptId ?? `DEMO-${order.orderNumber}`,
+    items,
+    products: items,
+    createdAt: String(order.createdAt),
+    updatedAt: String(order.updatedAt),
+  };
+}
+
+function resolveTransactionOrderId(id: string, payments: ITransaction[]): string {
+  return payments.find((payment) => payment.id === id)?.orderId ?? id;
+}
+
 // Simulate network latency
 const delay = (ms = 80) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -390,27 +448,109 @@ export const localAdapter: DataAdapter = {
   // ═══ Transaction ═══
   async getTransactionsByStoreId(filter: ITransactionFilter) {
     await delay();
-    let txns = get<ITransaction[]>(KEYS.transactions, seedTransactions).filter((t) => t.storeId === filter.storeId);
-    if (filter.method) txns = txns.filter((t) => t.method === filter.method);
+    const orders = get<IOrderItem[]>(KEYS.orders, seedOrders);
+    const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, seedOrderMeta);
+    const products = get<IMenu[]>(KEYS.products, seedProducts);
+    const payments = get<ITransaction[]>(KEYS.transactions, seedTransactions);
+
+    let txns = orders
+      .map((order) =>
+        buildTransactionView(
+          order,
+          metas.find((meta) => meta.id === order.id),
+          products,
+          payments,
+        ),
+      )
+      .filter((transaction) => transaction.storeId === filter.storeId);
+
+    if (filter.method) txns = txns.filter((transaction) => transaction.method === filter.method);
+
     return txns;
   },
 
   async getTransactionById(id: string) {
     await delay();
-    const txns = get<ITransaction[]>(KEYS.transactions, seedTransactions);
-    return txns.find((t) => t.id === id) ?? txns[0];
+    const orders = get<IOrderItem[]>(KEYS.orders, seedOrders);
+    const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, seedOrderMeta);
+    const products = get<IMenu[]>(KEYS.products, seedProducts);
+    const payments = get<ITransaction[]>(KEYS.transactions, seedTransactions);
+    const orderId = resolveTransactionOrderId(id, payments);
+    const order = orders.find((item) => item.id === orderId);
+
+    if (!order) {
+      return buildTransactionView(orders[0], metas.find((meta) => meta.id === orders[0].id), products, payments);
+    }
+
+    return buildTransactionView(
+      order,
+      metas.find((meta) => meta.id === order.id),
+      products,
+      payments,
+    );
   },
 
   async updateTransaction(id: string, payload: unknown) {
     await delay();
-    const txns = get<ITransaction[]>(KEYS.transactions, seedTransactions);
-    const idx = txns.findIndex((t) => t.id === id);
-    if (idx >= 0) {
-      txns[idx] = { ...txns[idx], ...(payload as Partial<ITransaction>), updatedAt: now() };
-      set(KEYS.transactions, txns);
-      return txns[idx];
+    const payments = get<ITransaction[]>(KEYS.transactions, seedTransactions);
+    const orders = get<IOrderItem[]>(KEYS.orders, seedOrders);
+    const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, seedOrderMeta);
+    const products = get<IMenu[]>(KEYS.products, seedProducts);
+    const orderStationItems = get<IOrderStationItemDto[]>(KEYS.orderStationItems, seedOrderStationItems);
+    const orderId = resolveTransactionOrderId(id, payments);
+    const orderIdx = orders.findIndex((order) => order.id === orderId);
+
+    if (orderIdx < 0) {
+      throw new Error("Transaction not found");
     }
-    throw new Error("Transaction not found");
+
+    const updates = payload as {
+      status?: IOrderItem["status"];
+      tableNumber?: string;
+      products?: { productId: string; quantity: number; note?: string }[];
+    };
+
+    orders[orderIdx] = {
+      ...orders[orderIdx],
+      status: updates.status ?? orders[orderIdx].status,
+      updatedAt: now(),
+    };
+    set(KEYS.orders, orders);
+
+    const metaIdx = metas.findIndex((meta) => meta.id === orderId);
+    if (metaIdx >= 0) {
+      metas[metaIdx] = {
+        ...metas[metaIdx],
+        tableNumber:
+          updates.tableNumber !== undefined
+            ? updates.tableNumber
+            : metas[metaIdx].tableNumber,
+        products: updates.products ?? metas[metaIdx].products,
+      };
+    }
+    set(KEYS.orderMeta, metas);
+
+    const orderMeta = metas.find((meta) => meta.id === orderId);
+    const nextStatus = updates.status;
+    if (nextStatus) {
+      const nextOrderStationItems = orderStationItems.map((item) =>
+        item.orderItem.order.id === orderId
+          ? {
+              ...item,
+              orderItem: {
+                ...item.orderItem,
+                order: {
+                  ...item.orderItem.order,
+                  status: nextStatus,
+                },
+              },
+            }
+          : item,
+      );
+      set(KEYS.orderStationItems, nextOrderStationItems);
+    }
+
+    return buildTransactionView(orders[orderIdx], orderMeta, products, payments);
   },
 
   // ═══ Report ═══
