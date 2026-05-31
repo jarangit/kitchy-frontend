@@ -1,4 +1,5 @@
 import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
@@ -26,26 +27,28 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
 
       <div className="grid grid-cols-4 gap-3">
         {TABLE_OPTIONS.map((table) => (
-          <button
+          <InsetPanel
+            as="button"
             key={table}
             onClick={() => {
               onSelect(table);
               onClose();
             }}
+            padding="none"
             className={cn(
-              "flex h-20 items-center justify-center rounded-[var(--radius-md)] border bg-card-bg px-3 text-center transition-all duration-[var(--motion-fast)]",
+              "flex h-20 items-center justify-center bg-card-bg px-3 text-center transition-all duration-[var(--motion-fast)]",
               "font-mono text-title tabular-nums whitespace-nowrap text-text-secondary",
               "hover:-translate-y-[1px] hover:border-border-hover hover:text-text-primary",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
               tableNumber === table
-                ? "border-accent bg-accent/5 text-accent shadow-[inset_0_0_0_1px_var(--color-accent)]"
+                ? "accent-inset-ring border-accent bg-accent/5 text-accent"
                 : "border-card-border"
             )}
             aria-pressed={tableNumber === table}
             type="button"
           >
             {table}
-          </button>
+          </InsetPanel>
         ))}
       </div>
     </Dialog>

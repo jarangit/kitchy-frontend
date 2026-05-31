@@ -9,6 +9,7 @@ import {
 import ElapsedTime from "@/shared/components/elapsed-time";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { cn } from "@/shared/utils/cn";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { IOrderItem } from "@/features/order/types/order.model";
@@ -87,10 +88,9 @@ const OrderCard = ({
   const highlightWaiting = !isToGo && isWaitingInStore;
 
   return (
-    <div
+    <Card
       className={cn(
         "relative flex h-full w-full flex-col justify-between gap-3",
-        "rounded-card border border-card-border bg-card-bg p-card-padding",
         "transition-opacity duration-300",
         highlightWaiting && "border-warning/30 bg-warning-bg/40",
         isFading ? "opacity-0" : "opacity-100",
@@ -98,7 +98,7 @@ const OrderCard = ({
     >
       <div className="space-y-3">
         <div className="flex items-center gap-2">
-          <div className="text-title font-[var(--weight-semibold)] text-text-primary md:text-display">
+          <div className="text-title font-semibold text-text-primary md:text-display">
             #{orderNumber}
           </div>
           <div className="flex items-center gap-1 text-label text-text-secondary md:hidden">
@@ -190,7 +190,7 @@ const OrderCard = ({
           )}
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

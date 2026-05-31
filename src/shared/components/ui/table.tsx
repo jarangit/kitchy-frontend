@@ -32,7 +32,7 @@ export function TableHeader({
   return (
     <thead
       className={cn(
-        "bg-surface-muted/40 border-b border-card-border",
+        "bg-surface-muted border-b border-card-border",
         className,
       )}
       {...props}
@@ -66,11 +66,11 @@ export function TableRow({
 }: TableRowProps) {
   return (
     <tr
-      className={cn(
-        "transition-colors duration-[var(--motion-fast)]",
+        className={cn(
+          "transition-colors duration-[var(--motion-fast)]",
         clickable &&
-          "cursor-pointer hover:bg-surface-muted/40 focus-within:bg-surface-muted/40",
-        className,
+          "cursor-pointer hover:bg-surface-muted-hover focus-within:bg-surface-muted-hover",
+          className,
       )}
       {...props}
     >
@@ -110,7 +110,7 @@ export function TableHead({
       onClick={onSort}
       className={cn(
         "inline-flex items-center gap-1.5 cursor-pointer",
-        "text-label font-[var(--weight-medium)] text-text-secondary",
+        "table-header-label",
         "hover:text-text-primary transition-colors duration-[var(--motion-fast)]",
         align === "right" && "flex-row-reverse",
       )}
@@ -125,7 +125,7 @@ export function TableHead({
       )}
     </button>
   ) : (
-    <span className="text-label font-[var(--weight-medium)] text-text-secondary">
+    <span className="table-header-label">
       {children}
     </span>
   );

@@ -1,5 +1,6 @@
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
@@ -32,13 +33,8 @@ const CashPaymentSection = ({
     { label: "฿1,000", value: 1000 },
   ];
 
-  return (
-    <div
-      className={cn(
-        embedded ? "space-y-4" : "mt-6 rounded-card border border-card-border bg-card-bg p-card-padding",
-        className
-      )}
-    >
+  const content = (
+    <>
       <h3 className="text-title text-text-primary">
         {t("pos.payment.cashTitle")}
       </h3>
@@ -77,8 +73,14 @@ const CashPaymentSection = ({
           </p>
         )}
       </div>
-    </div>
+    </>
   );
+
+  if (embedded) {
+    return <div className={cn("space-y-4", className)}>{content}</div>;
+  }
+
+  return <Card className={cn("mt-6 space-y-5", className)}>{content}</Card>;
 };
 
 export default CashPaymentSection;

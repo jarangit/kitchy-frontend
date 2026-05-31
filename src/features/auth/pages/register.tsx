@@ -1,6 +1,7 @@
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Button } from "@/shared/components/ui/button";
 import { Card, CardContent } from "@/shared/components/ui/card";
+import { BrandMark } from "@/shared/components/ui/brand-mark";
 import { Input } from "@/shared/components/ui/input";
 import { GoogleSignInButton } from "@/features/auth/components/google-sign-in-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -138,11 +139,9 @@ const RegisterPage = () => {
 
   return (
     <div className="page-shell-loose min-h-screen bg-bg">
-      <div className="page-grid-loose mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-start lg:items-center lg:grid-cols-[1.1fr_0.9fr]">
+      <main className="page-grid-loose mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl items-start lg:items-center lg:grid-cols-[1.1fr_0.9fr]">
         <section className="page-stack max-w-2xl">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-surface text-title font-[var(--weight-semibold)] text-text-primary">
-            K
-          </div>
+          <BrandMark />
           <div className="page-hero-stack">
             <p className="text-label text-text-secondary">Kitchy POS</p>
             <h1 className="text-display text-text-primary">
@@ -174,6 +173,8 @@ const RegisterPage = () => {
               className="space-y-4"
             >
               <Input
+                id="register-identifier"
+                name="identifier"
                 label={t("auth.fields.identifierLabel")}
                 type="text"
                 inputMode="email"
@@ -189,8 +190,11 @@ const RegisterPage = () => {
               </p>
 
               <Input
+                id="register-password"
+                name="password"
                 label={t("auth.fields.passwordLabel")}
                 type="password"
+                autoComplete="new-password"
                 placeholder={t("auth.fields.passwordPlaceholder")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -222,13 +226,13 @@ const RegisterPage = () => {
 
             <p className="text-center text-body-sm text-text-secondary">
               {t("auth.register.hasAccount")}{" "}
-              <Link to="/login" className="text-accent hover:underline">
+              <Link to="/login" className="text-accent-text underline underline-offset-4">
                 {t("auth.register.signInLink")}
               </Link>
             </p>
           </CardContent>
         </Card>
-      </div>
+      </main>
     </div>
   );
 };

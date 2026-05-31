@@ -1,4 +1,5 @@
 import type { ICartItem } from "@/features/pos/types/pos.model";
+import { Card } from "@/shared/components/ui/card";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
@@ -10,7 +11,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+    <Card>
       <h3 className="mb-5 text-title text-text-primary">
         {t("pos.payment.orderSummary")}
       </h3>
@@ -40,7 +41,7 @@ const OrderSummary = ({ items, subtotal }: Props) => {
         <span>{t("pos.receipt.total")}</span>
         <span className="tabular-nums">฿{subtotal.toFixed(2)}</span>
       </div>
-    </div>
+    </Card>
   );
 };
 

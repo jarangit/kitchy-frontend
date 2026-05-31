@@ -23,7 +23,7 @@ const PaymentSuccessDialog = ({ open, onClose, paymentResult }: Props) => {
           <h2 className="mb-1 text-heading text-text-primary">
             Payment Successful!
           </h2>
-          <p className="mb-6 text-display font-[var(--weight-semibold)] text-text-primary">
+          <p className="mb-6 text-display font-semibold text-text-primary">
             ฿{paymentResult.subtotal.toFixed(2)}
           </p>
 

@@ -2,6 +2,7 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import { NumericKeypad } from "@/shared/components/numbericKeypad";
+import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
@@ -71,9 +72,10 @@ export function OrderForm({
   const waitingValue: WaitingKey = isWaitingInStore ? "waiting" : "here";
 
   return (
-    <form
+    <Card
+      as="form"
       onSubmit={handleFormSubmit}
-      className="rounded-card border border-card-border bg-card-bg p-card-padding lg:min-w-[300px]"
+      className="lg:min-w-[300px]"
     >
       <div className="flex flex-col space-y-4">
         <Label htmlFor="orderNumber">{label}</Label>
@@ -108,6 +110,6 @@ export function OrderForm({
           />
         </div>
       </div>
-    </form>
+    </Card>
   );
 }

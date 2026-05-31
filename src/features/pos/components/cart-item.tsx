@@ -1,6 +1,7 @@
 import type { ICartItem } from "@/features/pos/types/pos.model";
 import { LuChevronUp, LuPencil, LuPlus, LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
+import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
@@ -25,10 +26,10 @@ const CartItem = ({
   const noteActionLabel = item.note ? t("pos.cart.editNote") : t("pos.cart.addNote");
 
   return (
-    <div className="rounded-[var(--radius-md)] border border-accent/15 bg-accent/5 px-3 py-3 shadow-[0_1px_2px_rgba(15,23,42,0.05)]">
+    <InsetPanel className="border-accent/15 bg-accent/5 px-3 py-3 shadow-xs">
       <div className="flex items-center gap-2.5">
         <p
-          className="min-w-0 flex-1 truncate text-body font-[var(--weight-semibold)] leading-6 text-text-primary"
+          className="min-w-0 flex-1 truncate text-body font-semibold leading-6 text-text-primary"
           title={item.name}
         >
           {item.name}
@@ -36,7 +37,7 @@ const CartItem = ({
         <span className="shrink-0 text-label font-medium tabular-nums text-text-tertiary">
           x{item.quantity}
         </span>
-        <p className="shrink-0 text-body-sm font-[var(--weight-medium)] tabular-nums text-text-secondary">
+        <p className="shrink-0 text-body-sm font-medium tabular-nums text-text-secondary">
           ฿{(item.price * item.quantity).toFixed(2)}
         </p>
         <button
@@ -55,7 +56,7 @@ const CartItem = ({
       </div>
 
       {expanded && (
-        <div className="mt-3 rounded-[var(--radius-sm)] border border-border/70 bg-bg px-3 py-3">
+        <InsetPanel className="mt-3 rounded-sm border-border/70 bg-bg px-3 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="inline-flex items-center gap-0.5 rounded-full border border-card-border bg-card-bg p-0.5">
               <Button
@@ -70,9 +71,9 @@ const CartItem = ({
                 className="h-9 w-9 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                 aria-label={item.quantity <= 1 ? "Remove item" : "Decrease quantity"}
               >
-                <span className="text-label font-[var(--weight-semibold)] leading-none">-</span>
+                <span className="text-label font-semibold leading-none">-</span>
               </Button>
-              <span className="min-w-8 text-center text-label font-[var(--weight-semibold)] tabular-nums text-text-primary">
+              <span className="min-w-8 text-center text-label font-semibold tabular-nums text-text-primary">
                 {item.quantity}
               </span>
               <Button
@@ -112,15 +113,15 @@ const CartItem = ({
           </div>
 
           {item.note ? (
-            <div className="mt-3 rounded-[var(--radius-sm)] border border-border/60 bg-surface px-3 py-2">
+            <InsetPanel className="mt-3 rounded-sm border-border/60 bg-surface px-3 py-2">
               <p className="line-clamp-2 text-label leading-5 text-text-tertiary" title={item.note}>
                 {item.note}
               </p>
-            </div>
+            </InsetPanel>
           ) : null}
-        </div>
+        </InsetPanel>
       )}
-    </div>
+    </InsetPanel>
   );
 };
 

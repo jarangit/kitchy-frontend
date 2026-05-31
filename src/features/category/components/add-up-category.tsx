@@ -10,6 +10,7 @@ import {
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Toggle } from "@/shared/components/ui/toggle";
+import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 export type CategoryFormMode = "create" | "edit";
@@ -121,9 +122,9 @@ const AddUpCategoryForm = ({
             name="isActive"
             control={control}
             render={({ field }) => (
-              <div className="flex items-center justify-between rounded-[var(--radius-md)] border border-border bg-surface-muted/40 px-4 py-3">
+              <InsetPanel className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-body font-[var(--weight-medium)] text-text-primary">
+                  <span className="text-body font-medium text-text-primary">
                     {t("settings.categories.isActive")}
                   </span>
                   <span className="text-label text-text-secondary">
@@ -135,7 +136,7 @@ const AddUpCategoryForm = ({
                   onChange={(v) => field.onChange(v)}
                   label={t("settings.categories.isActive")}
                 />
-              </div>
+              </InsetPanel>
             )}
           />
         </div>

@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuX } from "react-icons/lu";
+import { IconButton } from "@/shared/components/ui/icon-button";
+import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
 import { useStoreContextSync } from "@/shared/hooks/use-store-context-sync";
 import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
@@ -47,23 +49,22 @@ export function SettingsFrame({ children, wide = false }: Props) {
       {/* Top bar */}
       <header className="sticky top-0 z-40 border-b border-border bg-bg/80 backdrop-blur-xl">
         <div className="flex h-14 items-center gap-3 px-4 sm:px-6">
-          <button
-            type="button"
+          <IconButton
             onClick={handleClose}
             aria-label={t("common.close")}
             title={t("common.close")}
-            className="inline-flex h-[52px] w-[52px] items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            size="lg"
           >
             <LuX size={20} />
-          </button>
-          <h1 className="text-title font-[var(--weight-semibold)] text-text-primary">
+          </IconButton>
+          <h1 className="text-title font-semibold text-text-primary">
             {t("settings.cp.title")}
           </h1>
         </div>
         {!isOnline && (
-          <div className="w-full bg-danger-bg py-2 text-center text-label font-[var(--weight-medium)] text-danger">
+          <InlineAlert tone="danger" className="rounded-none border-x-0 border-b-0 px-4 py-2 text-center text-label font-medium">
             You are offline
-          </div>
+          </InlineAlert>
         )}
       </header>
 

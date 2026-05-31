@@ -1,23 +1,58 @@
-import type { HTMLAttributes } from "react";
+import type {
+  ComponentPropsWithoutRef,
+  ElementType,
+  HTMLAttributes,
+  ReactNode,
+} from "react";
 import { cn } from "@/shared/utils/cn";
 
-type CardProps = HTMLAttributes<HTMLDivElement>;
+type CardVariant = "default" | "muted" | "interactive" | "dashed";
+type CardPadding = "md" | "sm" | "none";
 
-export function Card({ className, children, ...props }: CardProps) {
+type CardProps<T extends ElementType = "div"> = {
+  as?: T;
+  variant?: CardVariant;
+  padding?: CardPadding;
+  className?: string;
+  children?: ReactNode;
+} & Omit<ComponentPropsWithoutRef<T>, "as" | "className" | "children">;
+
+const variantStyles: Record<CardVariant, string> = {
+  default: "bg-card-bg border border-card-border",
+  muted: "bg-surface-muted border border-border",
+  interactive:
+    "bg-card-bg border border-card-border hover:bg-card-bg-hover hover:border-card-border-hover",
+  dashed: "bg-bg border border-dashed border-border",
+};
+
+const paddingStyles: Record<CardPadding, string> = {
+  md: "p-card-padding",
+  sm: "p-4",
+  none: "p-0",
+};
+
+export function Card<T extends ElementType = "div">({
+  as,
+  variant = "default",
+  padding = "md",
+  className,
+  children,
+  ...props
+}: CardProps<T>) {
+  const Component = as ?? "div";
+
   return (
-    <div
+    <Component
       className={cn(
-        "bg-card-bg",
-        "border border-card-border",
-        "rounded-card",
-        "p-card-padding",
-        "transition-colors duration-[var(--motion-fast)]",
+        "rounded-card transition-colors duration-[var(--motion-fast)]",
+        variantStyles[variant],
+        paddingStyles[padding],
         className,
       )}
       {...props}
     >
       {children}
-    </div>
+    </Component>
   );
 }
 
@@ -40,10 +75,10 @@ export function CardTitle({
 }: HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-        className={cn(
-          "text-card-title font-card-title text-text-primary tracking-tight",
-          className,
-        )}
+      className={cn(
+        "text-card-title font-card-title text-text-primary tracking-tight",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -58,10 +93,10 @@ export function CardDescription({
 }: HTMLAttributes<HTMLParagraphElement>) {
   return (
     <p
-        className={cn(
-          "text-card-desc text-text-secondary mt-1 leading-6",
-          className,
-        )}
+      className={cn(
+        "mt-1 text-card-desc leading-6 text-text-secondary",
+        className,
+      )}
       {...props}
     >
       {children}

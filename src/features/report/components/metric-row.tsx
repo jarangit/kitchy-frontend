@@ -18,15 +18,13 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
       label: "Orders",
       value: orders.toLocaleString(),
       icon: <LuShoppingCart size={18} />,
-      colorBg: "var(--color-info-bg)",
-      colorText: "var(--color-info)",
+      iconShellClassName: "bg-info-bg text-info",
     },
     {
       label: "Avg / Order",
       value: `฿${formatCurrency(averageOrderValue)}`,
       icon: <LuTrendingUp size={18} />,
-      colorBg: "var(--color-warning-bg)",
-      colorText: "var(--color-warning)",
+      iconShellClassName: "bg-warning-bg text-warning",
     },
   ];
 
@@ -39,10 +37,9 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
         >
           <div className="flex items-center gap-3">
             <div
-              className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
-              style={{ backgroundColor: m.colorBg }}
+              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${m.iconShellClassName}`}
             >
-              <span style={{ color: m.colorText }}>{m.icon}</span>
+              <span>{m.icon}</span>
             </div>
             <div className="min-w-0">
               <div className="text-title font-semibold text-text-primary">

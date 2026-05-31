@@ -10,6 +10,7 @@ import TransactionFilter, {
 import { PageHeader } from "@/shared/components/ui/page-header";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Badge } from "@/shared/components/ui/badge";
+import { Card } from "@/shared/components/ui/card";
 import {
   DataTable,
   DataTableColumnHeader,
@@ -132,7 +133,7 @@ const TransactionListPage = () => {
         ),
         meta: { className: "min-w-[120px]" },
         cell: ({ row }) => (
-          <span className="text-body font-[var(--weight-medium)] text-text-primary">
+          <span className="text-body font-medium text-text-primary">
             #{row.original.orderNumber}
           </span>
         ),
@@ -221,7 +222,7 @@ const TransactionListPage = () => {
         ),
         meta: { align: "right", className: "tabular-nums min-w-[128px]" },
         cell: ({ row }) => (
-          <span className="text-body font-[var(--weight-medium)] text-text-primary">
+          <span className="text-body font-medium text-text-primary">
             {formatCurrency(row.original.totalAmount ?? 0)}
           </span>
         ),
@@ -242,15 +243,15 @@ const TransactionListPage = () => {
       <TransactionFilter counts={counts} onFilterChange={setFilter} />
 
       {!isLoading && !hasAny ? (
-        <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
+        <Card padding="none" className="overflow-hidden">
           <EmptyState
             icon={<LuReceipt size={32} />}
             title={t("transaction.empty.title")}
             description={t("transaction.empty.description")}
           />
-        </div>
+        </Card>
       ) : (
-        <div className="overflow-hidden rounded-card border border-card-border bg-card-bg">
+        <Card padding="none" className="overflow-hidden">
           <DataTable<TransactionListItem>
             data={filteredTransactions}
             columns={columns}
@@ -262,7 +263,7 @@ const TransactionListPage = () => {
             getRowId={(row) => row.id}
             isLoading={isLoading}
           />
-        </div>
+        </Card>
       )}
     </div>
   );

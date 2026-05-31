@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Card } from "@/shared/components/ui/card";
 import { cn } from "@/shared/utils/cn";
 
 interface StatCardProps {
@@ -35,18 +36,8 @@ export function StatCard({
   className,
   onClick,
 }: StatCardProps) {
-  const Comp = onClick ? "button" : "div";
-  return (
-    <Comp
-      onClick={onClick}
-      type={onClick ? "button" : undefined}
-      className={cn(
-        "flex w-full items-center gap-3 rounded-card border border-card-border bg-card-bg px-4 py-3 text-left",
-        "transition-colors duration-[var(--motion-fast)]",
-        onClick && "cursor-pointer hover:bg-card-bg-hover",
-        className,
-      )}
-    >
+  const content = (
+    <>
       <div className="min-w-0 flex-1 space-y-0.5">
         <p className="text-caption text-text-tertiary">{label}</p>
         <p
@@ -60,6 +51,27 @@ export function StatCard({
         {hint && <p className="text-caption text-text-tertiary">{hint}</p>}
       </div>
       {trailing && <div className="shrink-0">{trailing}</div>}
-    </Comp>
+    </>
+  );
+
+  const shellClassName = cn(
+    "flex w-full items-center gap-3 px-4 py-3 text-left",
+    "transition-colors duration-[var(--motion-fast)]",
+    onClick && "cursor-pointer hover:bg-card-bg-hover",
+    className,
+  );
+
+  if (onClick) {
+    return (
+      <Card as="button" type="button" onClick={onClick} padding="none" className={shellClassName}>
+        {content}
+      </Card>
+    );
+  }
+
+  return (
+    <Card padding="none" className={shellClassName}>
+      {content}
+    </Card>
   );
 }

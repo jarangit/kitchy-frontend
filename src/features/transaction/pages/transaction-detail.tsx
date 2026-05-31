@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useTransactionDetail } from "@/features/transaction/hooks/useTransaction";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
+import { Card } from "@/shared/components/ui/card";
+import { IconButton } from "@/shared/components/ui/icon-button";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { PageHeader } from "@/shared/components/ui/page-header";
 import {
@@ -236,7 +238,7 @@ const TransactionDetailPage = () => {
         />
 
         {/* Card 1: Hero action + order info */}
-        <div className="space-y-4 rounded-card border border-card-border bg-card-bg p-card-padding">
+        <Card className="space-y-4">
           <div className="flex items-start gap-3">
             <span
               className={cn(
@@ -307,11 +309,11 @@ const TransactionDetailPage = () => {
               }
             />
           </div>
-        </div>
+        </Card>
 
         {/* Card 2: Items */}
         {items.length > 0 && (
-          <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+          <Card>
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-caption font-semibold uppercase tracking-wider text-text-tertiary">
                 {t("transaction.detail.section.items")}
@@ -365,11 +367,11 @@ const TransactionDetailPage = () => {
                 );
               })}
             </div>
-          </div>
+          </Card>
         )}
 
         {/* Card 3: Summary */}
-        <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+        <Card>
           <div className="flex justify-between items-baseline py-1">
             <span className="text-body-sm text-text-secondary">
               {t("transaction.detail.summary.subtotal", { count: itemCount })}
@@ -386,7 +388,7 @@ const TransactionDetailPage = () => {
               {formatCurrency(grandTotal)}
             </span>
           </div>
-        </div>
+        </Card>
       </div>
 
       <Dialog open={isEditOpen} onClose={() => setIsEditOpen(false)}>
@@ -418,8 +420,7 @@ const TransactionDetailPage = () => {
                   {item.name}
                 </p>
                   <div className="inline-flex items-center gap-2 rounded-chip bg-chip-inactive-bg p-1.5">
-                  <button
-                    type="button"
+                  <IconButton
                     aria-label={t("transaction.detail.edit.decrease")}
                     onClick={() =>
                       setEditableItems((prev) =>
@@ -430,16 +431,15 @@ const TransactionDetailPage = () => {
                         ),
                       )
                     }
-                    className="inline-flex h-[44px] w-[44px] items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={item.quantity <= 0}
+                    size="md"
                   >
                     <LuMinus size={18} />
-                  </button>
+                  </IconButton>
                   <span className="min-w-8 text-center text-body tabular-nums text-text-primary">
                     {item.quantity}
                   </span>
-                  <button
-                    type="button"
+                  <IconButton
                     aria-label={t("transaction.detail.edit.increase")}
                     onClick={() =>
                       setEditableItems((prev) =>
@@ -450,10 +450,10 @@ const TransactionDetailPage = () => {
                         ),
                       )
                     }
-                    className="inline-flex h-[44px] w-[44px] items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover hover:text-text-primary"
+                    size="md"
                   >
                     <LuPlus size={18} />
-                  </button>
+                  </IconButton>
                 </div>
               </div>
             ))}

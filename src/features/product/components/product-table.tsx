@@ -53,7 +53,7 @@ export function ProductTable({
         return (
           <div
             className={cn(
-              "h-12 w-12 rounded-[var(--radius-sm)] overflow-hidden bg-surface-muted flex items-center justify-center text-text-tertiary",
+              "flex h-12 w-12 items-center justify-center overflow-hidden rounded-sm bg-surface-muted text-text-tertiary",
               inactive && "grayscale",
             )}
           >
@@ -87,7 +87,7 @@ export function ProductTable({
           : (menu.categoryName ?? t("settings.products.noCategory"));
         return (
           <div className="flex min-w-0 flex-col">
-            <span className="truncate text-body font-[var(--weight-medium)] text-text-primary">
+            <span className="truncate text-body font-medium text-text-primary">
               {menu.name}
             </span>
             <span className="text-label text-text-secondary truncate md:hidden">

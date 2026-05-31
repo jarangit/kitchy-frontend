@@ -12,6 +12,7 @@ import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Select } from "@/shared/components/ui/select";
 import { Toggle } from "@/shared/components/ui/toggle";
+import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { LuImage, LuTrash2 } from "react-icons/lu";
@@ -204,7 +205,7 @@ const AddUpProductForm = ({
             control={control}
             render={() => (
               <div className="space-y-2">
-                <label className="text-label font-[var(--weight-medium)] text-text-primary">
+                <label className="text-label font-medium text-text-primary">
                   {t("settings.products.image")}
                 </label>
 
@@ -217,11 +218,11 @@ const AddUpProductForm = ({
                 />
 
                 {imageUrl ? (
-                  <div className="flex items-center gap-4 rounded-[var(--radius-md)] border border-border bg-surface-muted/40 p-3">
+                  <InsetPanel className="flex items-center gap-4" padding="sm">
                     <img
                       src={imageUrl}
                       alt="Product preview"
-                      className="h-20 w-20 rounded-[var(--radius-sm)] object-cover"
+                      className="h-20 w-20 rounded-sm object-cover"
                     />
                     <div className="flex flex-1 flex-col gap-2">
                       <span className="text-label text-text-secondary">
@@ -245,21 +246,24 @@ const AddUpProductForm = ({
                         </Button>
                       </div>
                     </div>
-                  </div>
+                  </InsetPanel>
                 ) : (
-                  <button
+                  <InsetPanel
+                    as="button"
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex w-full flex-col items-center justify-center gap-2 rounded-[var(--radius-md)] border border-dashed border-border bg-surface-muted/40 px-4 py-8 text-text-secondary transition-colors hover:bg-surface-muted/70 hover:text-text-primary"
+                    variant="dashed"
+                    padding="lg"
+                    className="flex w-full flex-col items-center justify-center gap-2"
                   >
                     <LuImage className="h-8 w-8" />
-                    <span className="text-body font-[var(--weight-medium)]">
+                    <span className="text-body font-medium">
                       {t("settings.products.imageUpload")}
                     </span>
                     <span className="text-label">
                       {t("settings.products.imageHint")}
                     </span>
-                  </button>
+                  </InsetPanel>
                 )}
 
                 {imageError && (
@@ -341,9 +345,9 @@ const AddUpProductForm = ({
             name="isActive"
             control={control}
             render={({ field }) => (
-              <div className="flex items-center justify-between rounded-[var(--radius-md)] border border-border bg-surface-muted/40 px-4 py-3">
+              <InsetPanel className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-body font-[var(--weight-medium)] text-text-primary">
+                  <span className="text-body font-medium text-text-primary">
                     {t("settings.products.isActive")}
                   </span>
                   <span className="text-label text-text-secondary">
@@ -355,7 +359,7 @@ const AddUpProductForm = ({
                   onChange={(v) => field.onChange(v)}
                   label={t("settings.products.isActive")}
                 />
-              </div>
+              </InsetPanel>
             )}
           />
 
@@ -363,9 +367,9 @@ const AddUpProductForm = ({
             name="isBestSeller"
             control={control}
             render={({ field }) => (
-              <div className="flex items-center justify-between rounded-[var(--radius-md)] border border-border bg-surface-muted/40 px-4 py-3">
+              <InsetPanel className="flex items-center justify-between">
                 <div className="flex flex-col">
-                  <span className="text-body font-[var(--weight-medium)] text-text-primary">
+                  <span className="text-body font-medium text-text-primary">
                     {t("settings.products.isBestSeller")}
                   </span>
                   <span className="text-label text-text-secondary">
@@ -377,7 +381,7 @@ const AddUpProductForm = ({
                   onChange={(v) => field.onChange(v)}
                   label={t("settings.products.isBestSeller")}
                 />
-              </div>
+              </InsetPanel>
             )}
           />
 

@@ -9,8 +9,10 @@ import CashPaymentSection from "@/features/pos/components/cash-payment-section";
 import QrPaymentSection from "@/features/pos/components/qr-payment-section";
 import PaymentSuccessDialog from "@/features/pos/components/payment-success-dialog";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { Dialog } from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
@@ -188,7 +190,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
 
               <div className="min-h-0 overflow-y-auto bg-bg p-6">
                 <div className="space-y-6">
-                  <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
+                  <Card as="section">
                     <h3 className="mb-4 text-title text-text-primary">
                       {t("pos.payment.orderInfo")}
                     </h3>
@@ -234,9 +236,9 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                         </>
                       )}
                     </dl>
-                  </section>
+                  </Card>
 
-                  <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
+                  <Card as="section">
                     <h3 className="mb-4 text-title text-text-primary">
                       {t("pos.payment.method")}
                     </h3>
@@ -244,7 +246,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                       selected={paymentMethod}
                       onSelect={setPaymentMethod}
                     />
-                  </section>
+                  </Card>
 
                   {paymentMethod === "CASH" && (
                     <CashPaymentSection
@@ -262,21 +264,21 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
 
                   <div className="space-y-3">
                     {errorMessage && (
-                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
+                      <InlineAlert tone="danger">
                         {errorMessage}
-                      </p>
+                      </InlineAlert>
                     )}
 
                     {orderType === "DINE_IN" && !tableNumber && (
-                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
+                      <InlineAlert tone="danger">
                         {t("pos.payment.selectTableFirst")}
-                      </p>
+                      </InlineAlert>
                     )}
 
                     {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
-                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
+                      <InlineAlert tone="danger">
                         {t("pos.payment.selectPlatformFirst")}
-                      </p>
+                      </InlineAlert>
                     )}
                   </div>
                 </div>

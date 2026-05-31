@@ -10,6 +10,8 @@
   --color-bg: var(--gray-100);           /* #F5F5F7 — Newsroom page background */
   --color-surface: var(--gray-0);        /* #FFFFFF — white cards on gray bg */
   --color-surface-hover: var(--gray-100); /* #F5F5F7 — subtle hover on white cards */
+  --color-surface-muted: rgba(29, 29, 31, 0.04);
+  --color-surface-muted-hover: rgba(29, 29, 31, 0.08);
   --color-overlay: rgba(29, 29, 31, 0.55);
 
   /* Text — solid Newsroom grays, no alpha */
@@ -52,6 +54,8 @@
   --color-bg: #141416;
   --color-surface: #1F1F21;
   --color-surface-hover: #2A2A2C;
+  --color-surface-muted: rgba(255, 255, 255, 0.06);
+  --color-surface-muted-hover: rgba(255, 255, 255, 0.1);
   --color-overlay: rgba(0, 0, 0, 0.65);
 
   --color-text-primary: #F5F5F7;

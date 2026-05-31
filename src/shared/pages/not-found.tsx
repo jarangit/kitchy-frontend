@@ -18,7 +18,7 @@ export default function NotFoundPage({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-surface px-4">
-      <h1 className="text-8xl font-[var(--weight-semibold)] text-text-tertiary">{title}</h1>
+      <h1 className="text-8xl font-semibold text-text-tertiary">{title}</h1>
       <p className="mt-4 text-title text-text-secondary">{message}</p>
       <Button
         onClick={() => navigate(backTo)}

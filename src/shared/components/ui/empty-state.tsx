@@ -26,7 +26,7 @@ export function EmptyState({
       {icon && (
         <div className="mb-5 text-text-tertiary">{icon}</div>
       )}
-      <h3 className="mb-1 text-subtitle font-[var(--weight-medium)] text-text-primary">
+      <h3 className="mb-1 text-subtitle font-medium text-text-primary">
         {title}
       </h3>
       {description && (

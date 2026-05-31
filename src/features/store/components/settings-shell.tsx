@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { LuArrowLeft } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { SettingsFrame } from "./settings-frame";
 
@@ -38,7 +39,7 @@ export const SettingsShell = ({
             </Button>
           )}
 
-          <div className="space-y-2 rounded-card border border-card-border bg-card-bg p-card-padding">
+          <Card className="space-y-2">
             <h1 className="text-heading leading-tight text-text-primary sm:text-display">
               {title}
             </h1>
@@ -47,7 +48,7 @@ export const SettingsShell = ({
                 {description}
               </p>
             )}
-          </div>
+          </Card>
         </div>
 
         <div className="space-y-5 lg:space-y-6">{children}</div>
@@ -70,7 +71,7 @@ export const SettingsSectionCard = ({
   children,
 }: SettingsSectionCardProps) => {
   return (
-    <section className="rounded-card border border-card-border bg-card-bg p-card-padding">
+    <Card as="section">
       {(title || description || action) && (
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
@@ -90,6 +91,6 @@ export const SettingsSectionCard = ({
       )}
 
       {children}
-    </section>
+    </Card>
   );
 };

@@ -61,7 +61,7 @@ const StationPage = () => {
       />
 
       <section className="space-y-3">
-        <h2 className="text-subtitle font-[var(--weight-semibold)] text-text-primary">
+        <h2 className="text-subtitle font-semibold text-text-primary">
           {t("station.page.currentOrders")}
         </h2>
 
@@ -77,7 +77,7 @@ const StationPage = () => {
               <Card key={order.id} className="space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="space-y-1">
-                    <p className="text-title font-[var(--weight-semibold)] text-text-primary">
+                    <p className="text-title font-semibold text-text-primary">
                       #{order.orderNumber}
                     </p>
                     <p className="flex items-center gap-1 text-caption text-text-tertiary">

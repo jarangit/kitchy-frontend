@@ -25,11 +25,11 @@ export function DataTableColumnHeader<TData, TValue>({
 
   if (!sortable) {
     return (
-      <span
-        className={cn(
-          "text-label font-[var(--weight-medium)] text-text-secondary leading-6",
-          className,
-        )}
+        <span
+          className={cn(
+            "table-header-label",
+            className,
+          )}
       >
         {title}
       </span>
@@ -44,8 +44,7 @@ export function DataTableColumnHeader<TData, TValue>({
       onClick={() => column.toggleSorting()}
       className={cn(
         "inline-flex items-center gap-1.5 cursor-pointer",
-        "text-label font-[var(--weight-medium)] text-text-secondary",
-        "leading-6 hover:text-text-primary transition-colors duration-[var(--motion-fast)]",
+        "table-header-label hover:text-text-primary transition-colors duration-[var(--motion-fast)]",
         align === "right" && "flex-row-reverse",
         className,
       )}

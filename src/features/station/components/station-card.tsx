@@ -69,7 +69,7 @@ export function StationCard({
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="rounded-card border border-card-border bg-bg px-4 py-3 text-center">
-              <div className="text-heading font-[var(--weight-semibold)] tabular-nums text-warning">
+              <div className="text-heading font-semibold tabular-nums text-warning">
                 {activeOrders}
               </div>
               <div className="text-caption text-text-tertiary">
@@ -77,7 +77,7 @@ export function StationCard({
               </div>
             </div>
             <div className="rounded-card border border-card-border bg-bg px-4 py-3 text-center">
-              <div className="text-heading font-[var(--weight-semibold)] tabular-nums text-success">
+              <div className="text-heading font-semibold tabular-nums text-success">
                 {completedToday}
               </div>
               <div className="text-caption text-text-tertiary">

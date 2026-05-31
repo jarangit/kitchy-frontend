@@ -12,7 +12,7 @@ export default function LoadingOverlay() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-dialog-overlay backdrop-blur-sm">
       <div className="flex flex-col items-center space-y-4 text-text-inverse">
         <Spinner size="lg" label={t("common.loading")} />
-        <p className="text-subtitle font-[var(--weight-medium)]">
+        <p className="text-subtitle font-medium">
           {t("common.loadingLong")}
         </p>
       </div>

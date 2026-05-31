@@ -60,7 +60,7 @@ export function NumericKeypad({
                 key === "clear" || key === "backspace" ? "secondary" : "primary"
               }
               className={cn(
-                "p-6 text-title font-[var(--weight-bold)]",
+                "p-6 text-title font-bold",
                 key === "clear"
                   ? "bg-warning-bg hover:opacity-80 text-warning border border-border"
                   : key === "backspace"
@@ -81,7 +81,7 @@ export function NumericKeypad({
         onClick={() => {
           onSubmit(), onChange("");
         }}
-        className="w-full text-title font-[var(--weight-bold)] py-4 px-8 h-auto"
+        className="h-auto w-full px-8 py-4 text-title font-bold"
         loading={isLoading}
         loadingText={t("common.adding")}
       >

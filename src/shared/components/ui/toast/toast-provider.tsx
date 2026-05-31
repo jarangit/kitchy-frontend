@@ -62,7 +62,7 @@ function ToastItem({ record, onDismiss }: { record: ToastRecord; onDismiss: (id:
           {styles.iconNode}
         </span>
         <div className="min-w-0 flex-1 space-y-1">
-          <p className="text-title font-[var(--weight-semibold)] text-text-primary">
+          <p className="text-title font-semibold text-text-primary">
             {record.title}
           </p>
           {record.description && (

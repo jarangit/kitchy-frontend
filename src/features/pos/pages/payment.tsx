@@ -12,11 +12,11 @@ import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
-
-const CARD_CLASS = "rounded-card border border-card-border bg-card-bg p-4";
 
 const PaymentPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -161,7 +161,7 @@ const PaymentPage = () => {
 
           <div className="min-h-0 lg:pl-4">
             <div className="flex min-h-full flex-col lg:sticky lg:top-4">
-              <section className={`${CARD_CLASS} space-y-4`}>
+              <Card as="section" padding="sm" className="space-y-4">
                 <div>
                   <Button
                     type="button"
@@ -226,12 +226,12 @@ const PaymentPage = () => {
                 </div>
 
                 <div className="border-t border-border pt-4">
-                  <div className="space-y-3">
-                    {(errorMessage || validationMessage) && (
-                      <p className="rounded-card border border-danger/30 bg-danger/10 px-3 py-2 text-body-sm text-danger">
-                        {errorMessage ?? validationMessage}
-                      </p>
-                    )}
+                    <div className="space-y-3">
+                      {(errorMessage || validationMessage) && (
+                        <InlineAlert tone="danger">
+                          {errorMessage ?? validationMessage}
+                        </InlineAlert>
+                      )}
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                       <Button
@@ -256,7 +256,7 @@ const PaymentPage = () => {
                     </div>
                   </div>
                 </div>
-              </section>
+              </Card>
             </div>
           </div>
         </div>

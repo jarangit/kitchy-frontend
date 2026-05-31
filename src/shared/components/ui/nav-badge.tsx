@@ -49,7 +49,7 @@ export const NavBadge = ({
     <span
       aria-label={rest["aria-label"] ?? `${count}`}
       className={cn(
-        "pointer-events-none absolute right-0.5 top-0.5 z-10 flex min-h-[20px] min-w-[20px] items-center justify-center rounded-full bg-red-500 px-1.5 text-[11px] font-semibold leading-none text-white ring-2 ring-sidebar-bg",
+        "pointer-events-none absolute right-0.5 top-0.5 z-10 flex min-h-[20px] min-w-[20px] items-center justify-center rounded-full bg-danger px-1.5 text-caption font-semibold leading-none text-text-inverse ring-2 ring-sidebar-bg",
         pulsing && "animate-pulse",
         className
       )}

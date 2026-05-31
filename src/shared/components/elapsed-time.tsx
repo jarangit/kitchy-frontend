@@ -35,7 +35,7 @@ const ElapsedTime = ({ createdAt }: ElapsedTimeProps) => {
     return () => clearInterval(interval);
   }, [createdAt]);
 
-  return <span className="font-[var(--weight-semibold)]">{elapsed}</span>;
+  return <span className="font-semibold">{elapsed}</span>;
 };
 
 export default ElapsedTime;

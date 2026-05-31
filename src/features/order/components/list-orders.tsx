@@ -16,6 +16,7 @@ import {
 } from "@/features/order/utils/order-normalizer";
 import EditModal from "@/shared/components/modals/edit-modal";
 import { Badge } from "@/shared/components/ui/badge";
+import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
@@ -164,51 +165,48 @@ export const ListOrders = ({
           <Badge variant="danger">{t("order.legend.togo")}</Badge>
         </div>
       </div>
-      <div
-        ref={containerRef}
-        className={cn(
-          "flex h-full flex-grow flex-col overflow-y-auto rounded-card border border-card-border bg-card-bg p-card-padding",
-        )}
-      >
-        {isLoading && !filteredOrders?.length ? (
-          <div className="text-center text-text-secondary">
-            {t("common.loading")}
-          </div>
-        ) : filteredOrders.length ? (
-          <div
-            className={cn(
-              "grid grid-cols-1 gap-3 md:grid-cols-3 2xl:grid-cols-4",
-              containerRef.current && containerRef.current.offsetWidth > 950
-                ? "md:grid-cols-4"
-                : "md:grid-cols-3",
-            )}
-          >
-            {filteredOrders.map((order) => (
-              <OrderCard
-                key={order.id}
-                order={{
-                  ...(order as unknown as IOrderItem),
-                  type: normalizeType(order.type) as IOrderItem["type"],
-                  status: normalizeStatus(order.status) as IOrderItem["status"],
-                }}
-                onDelete={() => handleDelete(order.id)}
-                onUpdateStatus={(data: IUpdateOrder) =>
-                  handleUpdateOrderStatus(data)
-                }
-                onEditOrder={() =>
-                  handleEditOrder(order as unknown as IOrderItem)
-                }
-                isCanDelete={isCanDelete}
-                isCanAction={isCanUpdate}
-              />
-            ))}
-          </div>
-        ) : (
-          <EmptyState
-            icon={<LuInbox size={32} />}
-            title={t("order.empty")}
-          />
-        )}
+      <div ref={containerRef} className="flex h-full flex-grow flex-col overflow-y-auto">
+        <Card className="flex h-full flex-grow flex-col overflow-y-auto">
+          {isLoading && !filteredOrders?.length ? (
+            <div className="text-center text-text-secondary">
+              {t("common.loading")}
+            </div>
+          ) : filteredOrders.length ? (
+            <div
+              className={cn(
+                "grid grid-cols-1 gap-3 md:grid-cols-3 2xl:grid-cols-4",
+                containerRef.current && containerRef.current.offsetWidth > 950
+                  ? "md:grid-cols-4"
+                  : "md:grid-cols-3",
+              )}
+            >
+              {filteredOrders.map((order) => (
+                <OrderCard
+                  key={order.id}
+                  order={{
+                    ...(order as unknown as IOrderItem),
+                    type: normalizeType(order.type) as IOrderItem["type"],
+                    status: normalizeStatus(order.status) as IOrderItem["status"],
+                  }}
+                  onDelete={() => handleDelete(order.id)}
+                  onUpdateStatus={(data: IUpdateOrder) =>
+                    handleUpdateOrderStatus(data)
+                  }
+                  onEditOrder={() =>
+                    handleEditOrder(order as unknown as IOrderItem)
+                  }
+                  isCanDelete={isCanDelete}
+                  isCanAction={isCanUpdate}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              icon={<LuInbox size={32} />}
+              title={t("order.empty")}
+            />
+          )}
+        </Card>
       </div>
     </div>
   );

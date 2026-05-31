@@ -4,6 +4,9 @@ import { LuCheck, LuChefHat, LuExternalLink, LuX } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { Button } from "@/shared/components/ui/button";
 import { Badge } from "@/shared/components/ui/badge";
+import { Card } from "@/shared/components/ui/card";
+import { IconButton } from "@/shared/components/ui/icon-button";
+import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { appBus } from "@/shared/events/app-events";
 import {
@@ -121,27 +124,26 @@ export function ReadyToServeNotifier() {
                   {t("serve.drawer.subtitle", { count: String(visibleItems.length) })}
                 </p>
               </div>
-              <button
-                type="button"
+              <IconButton
                 aria-label={t("common.close")}
                 onClick={() => setDrawerOpen(false)}
-                className="rounded-full p-3 text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"
               >
                 <LuX size={20} />
-              </button>
+              </IconButton>
             </div>
 
             {visibleItems.length === 0 ? (
-              <div className="rounded-card border border-card-border bg-card-bg p-card-padding text-center">
+              <Card className="text-center">
                 <p className="text-title text-text-primary">{t("serve.empty.title")}</p>
                 <p className="mt-1 text-body text-text-secondary">{t("serve.empty.body")}</p>
-              </div>
+              </Card>
             ) : (
               <div className="space-y-3">
                 {visibleItems.map((item) => (
-                  <article
+                  <Card
+                    as="article"
                     key={item.id}
-                    className="rounded-card border border-card-border bg-card-bg p-4"
+                    padding="sm"
                   >
                     <div className="mb-3 flex items-start justify-between gap-3">
                       <div>
@@ -159,14 +161,14 @@ export function ReadyToServeNotifier() {
                         })}
                       </Badge>
                     </div>
-                    <div className="rounded-lg bg-surface px-3 py-2">
+                    <InsetPanel className="rounded-lg px-3 py-2">
                       <p className="text-body text-text-primary">
                         {item.productName} x{item.quantity}
                       </p>
                       {item.note && (
                         <p className="mt-1 text-body-sm text-text-secondary">{item.note}</p>
                       )}
-                    </div>
+                    </InsetPanel>
                     <div className="mt-4 flex gap-2">
                       <Button size="sm" onClick={() => acknowledge(item.id)}>
                         <LuCheck size={16} />
@@ -177,7 +179,7 @@ export function ReadyToServeNotifier() {
                         {t("serve.action.openKds")}
                       </Button>
                     </div>
-                  </article>
+                  </Card>
                 ))}
               </div>
             )}

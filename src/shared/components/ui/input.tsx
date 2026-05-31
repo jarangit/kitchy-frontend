@@ -1,5 +1,6 @@
 import {
   forwardRef,
+  useId,
   useRef,
   useState,
   type ForwardedRef,
@@ -36,6 +37,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 ) {
   const [showKeyboard, setShowKeyboard] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const generatedId = useId();
+  const inputId = props.id ?? generatedId;
+  const errorId = error ? `${inputId}-error` : undefined;
+  const describedBy = [props["aria-describedby"], errorId]
+    .filter(Boolean)
+    .join(" ") || undefined;
 
   const handleToggleKeyboard = () => {
     setShowKeyboard((current) => !current);
@@ -43,16 +50,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   };
 
   return (
-    <div>
+      <div>
       {label && (
-        <label className="mb-1 block text-label-comp font-label-comp text-label-comp-text">
+        <label htmlFor={inputId} className="mb-1 block text-label-comp font-label-comp text-label-comp-text">
           {label}
         </label>
       )}
       <div className="relative">
         <input
+          id={inputId}
           ref={(node) => setInputRefs(node, [inputRef, ref])}
           readOnly={keyboardToggle ? readOnly ?? !showKeyboard : readOnly}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedBy}
           className={cn(
             "w-full h-input-height",
             error ? "bg-danger-bg" : "bg-input-bg",
@@ -85,7 +95,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
       </div>
       {error && (
-        <p className="mt-1 text-caption text-danger">
+        <p id={errorId} className="mt-1 text-caption text-danger">
           {error}
         </p>
       )}

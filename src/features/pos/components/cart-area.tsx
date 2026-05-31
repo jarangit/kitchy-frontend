@@ -400,7 +400,7 @@ const CartArea = ({
         )}
       </div>
 
-      <div className="z-10 shrink-0 space-y-3 border-t border-border bg-card-bg p-4 shadow-[0_-10px_24px_rgba(15,23,42,0.08)] md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
+      <div className="shadow-cart-dock z-10 shrink-0 space-y-3 border-t border-border bg-card-bg p-4 md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
         {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
         <Button
           onClick={onPay}

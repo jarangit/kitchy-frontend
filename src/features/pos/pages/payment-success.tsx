@@ -48,7 +48,7 @@ const PaymentSuccessPage = () => {
         <LuCircleCheck size={72} />
       </div>
 
-      <h1 className="text-heading font-[var(--weight-semibold)] text-text-primary mb-1">
+      <h1 className="mb-1 text-heading font-semibold text-text-primary">
         Payment Successful!
       </h1>
       <p className="text-display text-text-primary mb-6">

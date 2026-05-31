@@ -11,6 +11,7 @@
     "build": "tsc -b && vite build",
     "build:demo": "VITE_DEMO_MODE=true tsc -b && VITE_DEMO_MODE=true vite build",
     "lint": "eslint .",
+    "lint:styles": "node ./scripts/lint-styles.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

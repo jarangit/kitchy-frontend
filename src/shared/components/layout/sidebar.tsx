@@ -112,7 +112,7 @@ const Sidebar = () => {
         {badgeCount > 0 && (
           <NavBadge count={badgeCount} aria-label={item.badgeAriaLabel} />
         )}
-        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded-md border border-border bg-surface px-3 py-2 text-caption font-[var(--weight-medium)] text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
+        <span className="pointer-events-none absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded-md border border-border bg-surface px-3 py-2 text-caption font-medium text-text-secondary opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100">
           {item.name}
         </span>
       </Link>

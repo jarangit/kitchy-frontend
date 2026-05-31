@@ -1,5 +1,6 @@
 import { LuShoppingCart, LuArrowLeft } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
+import { IconButton } from "@/shared/components/ui/icon-button";
 import { useNetworkQuality } from "@/shared/hooks/useNetworkQuality";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
@@ -89,13 +90,11 @@ const PosHeader = ({
           {/* Cart badge button — tablet only */}
           {onCartClick && (
             <div className="relative lg:hidden">
-              <Button
-                type="button"
-                variant="secondary"
-                size="icon"
+              <IconButton
                 onClick={onCartClick}
                 aria-label={t("pos.header.openCart")}
-                className="relative h-[52px] w-[52px] bg-surface"
+                size="lg"
+                className="relative bg-surface"
               >
                 <LuShoppingCart size={20} className="text-text-primary" />
                 {cartItemCount > 0 && (
@@ -103,7 +102,7 @@ const PosHeader = ({
                     {cartItemCount}
                   </span>
                 )}
-              </Button>
+              </IconButton>
             </div>
           )}
         </div>
@@ -113,7 +112,7 @@ const PosHeader = ({
             variant="secondary"
             size="sm"
             onClick={onExit}
-            className="h-[52px] px-5 text-body"
+            className="h-button-height-md px-5 text-body"
           >
             <LuArrowLeft size={16} />
             {t("pos.header.exitPos")}

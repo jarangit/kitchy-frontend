@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Button } from "@/shared/components/ui/button";
 import { Badge, type BadgeVariant } from "@/shared/components/ui/badge";
+import { Card } from "@/shared/components/ui/card";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 import type { KdsCard, KdsStatus } from "@/features/kds/types/kds.model";
@@ -70,7 +71,7 @@ const KdsOrderCard = ({
   }
 
   return (
-    <div className="flex h-full flex-col rounded-card border border-card-border bg-card-bg p-card-padding">
+    <Card className="flex h-full flex-col">
       {/* ── Product name + quantity (main focus) ── */}
       <div className="mb-4 flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
@@ -142,7 +143,7 @@ const KdsOrderCard = ({
           {nextAction.label}
         </Button>
       </div>
-    </div>
+    </Card>
   );
 };
 

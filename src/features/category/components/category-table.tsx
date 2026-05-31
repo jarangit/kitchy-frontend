@@ -48,7 +48,7 @@ export function CategoryTable({
       ),
       meta: { className: "min-w-[180px]", wrap: true },
       cell: ({ row }) => (
-        <span className="block text-body font-[var(--weight-medium)] leading-7 text-text-primary">
+        <span className="block text-body font-medium leading-7 text-text-primary">
           {row.original.name}
         </span>
       ),

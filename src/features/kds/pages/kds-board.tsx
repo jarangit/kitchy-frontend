@@ -4,6 +4,7 @@ import { useKds } from "@/features/kds/hooks/useKds";
 import KdsHeader from "@/features/kds/components/kds-header";
 import KdsOrderCard from "@/features/kds/components/kds-order-card";
 import { useStationService } from "@/features/station/hooks/useStation";
+import { Card } from "@/shared/components/ui/card";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
@@ -140,21 +141,21 @@ const KdsBoardPage = () => {
           <SkeletonCard className="min-h-[280px]" />
         </div>
       ) : activeStation == null ? (
-        <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+        <Card>
           <EmptyState
             icon={<LuUtensilsCrossed size={28} />}
             title={t("kds.empty.noStationTitle")}
             description={t("kds.empty.noStationDescription")}
           />
-        </div>
+        </Card>
       ) : visibleCards.length === 0 ? (
-        <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+        <Card>
           <EmptyState
             icon={<LuUtensilsCrossed size={28} />}
             title={emptyTitle}
             description={t("kds.empty.description")}
           />
-        </div>
+        </Card>
       ) : activeTab === "PENDING" ? (
         <div className="space-y-6">
           {dueNow.length > 0 && (

@@ -1,5 +1,6 @@
 import { LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useOnboarding } from "@/features/onboarding/context/onboarding-hooks";
@@ -46,9 +47,9 @@ export function StepAddMenu({ onSubmit, submitting, error }: Props) {
         {draft.menus.map((menu, idx) => {
           const showRemove = draft.menus.length > 1;
           return (
-            <div
+            <Card
               key={menu.localId}
-              className="rounded-card border border-card-border bg-card-bg p-3"
+              padding="sm"
             >
               <div className="flex items-start gap-2">
                 <div className="flex flex-1 flex-col gap-2">
@@ -85,7 +86,7 @@ export function StepAddMenu({ onSubmit, submitting, error }: Props) {
                   </Button>
                 ) : null}
               </div>
-            </div>
+            </Card>
           );
         })}
       </div>
