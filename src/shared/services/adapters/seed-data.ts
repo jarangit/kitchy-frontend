@@ -43,6 +43,11 @@ export const seedCategories: CategoryModel[] = [
   { id: "cat-001", name: "อาหารจานเดียว", isActive: true, sortOrder: 1, createdAt: twoHoursAgo, updatedAt: now },
   { id: "cat-002", name: "เครื่องดื่ม", isActive: true, sortOrder: 2, createdAt: twoHoursAgo, updatedAt: now },
   { id: "cat-003", name: "ของหวาน", isActive: true, sortOrder: 3, createdAt: twoHoursAgo, updatedAt: now },
+  { id: "cat-004", name: "อาหารทานเล่น", isActive: true, sortOrder: 4, createdAt: twoHoursAgo, updatedAt: now },
+  { id: "cat-005", name: "เมนูย่าง", isActive: true, sortOrder: 5, createdAt: twoHoursAgo, updatedAt: now },
+  { id: "cat-006", name: "ซุปและแกง", isActive: true, sortOrder: 6, createdAt: twoHoursAgo, updatedAt: now },
+  { id: "cat-007", name: "สลัดและสุขภาพ", isActive: true, sortOrder: 7, createdAt: twoHoursAgo, updatedAt: now },
+  { id: "cat-008", name: "เมนูพิเศษ", isActive: true, sortOrder: 8, createdAt: twoHoursAgo, updatedAt: now },
 ];
 
 // ─── Products ──────────────────────────────────────────────
@@ -57,6 +62,21 @@ export const seedProducts: IMenu[] = [
   { id: "prod-008", name: "น้ำมะนาว", isActive: true, price: 35, cost: 8, categoryId: "cat-002", categoryName: "เครื่องดื่ม", stationId: "station-002", stationName: "เครื่องดื่ม", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
   { id: "prod-009", name: "ข้าวเหนียวมะม่วง", isActive: true, price: 80, cost: 35, categoryId: "cat-003", categoryName: "ของหวาน", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
   { id: "prod-010", name: "ไอศกรีมกะทิ", isActive: true, price: 45, cost: 15, categoryId: "cat-003", categoryName: "ของหวาน", stationId: "station-002", stationName: "เครื่องดื่ม", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-011", name: "ปอเปี๊ยะทอด", isActive: true, price: 65, cost: 24, categoryId: "cat-004", categoryName: "อาหารทานเล่น", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-012", name: "ไก่ทอดสมุนไพร", isActive: true, isBestSeller: true, price: 95, cost: 38, categoryId: "cat-004", categoryName: "อาหารทานเล่น", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-013", name: "เฟรนช์ฟรายส์", isActive: true, price: 59, cost: 20, categoryId: "cat-004", categoryName: "อาหารทานเล่น", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-014", name: "คอหมูย่าง", isActive: true, isBestSeller: true, price: 120, cost: 48, categoryId: "cat-005", categoryName: "เมนูย่าง", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-015", name: "ไก่ย่างน้ำจิ้มแจ่ว", isActive: true, price: 110, cost: 45, categoryId: "cat-005", categoryName: "เมนูย่าง", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-016", name: "ปลาหมึกย่าง", isActive: true, price: 135, cost: 60, categoryId: "cat-005", categoryName: "เมนูย่าง", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-017", name: "แกงเขียวหวานไก่", isActive: true, price: 95, cost: 36, categoryId: "cat-006", categoryName: "ซุปและแกง", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-018", name: "ต้มข่าไก่", isActive: true, price: 110, cost: 42, categoryId: "cat-006", categoryName: "ซุปและแกง", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-019", name: "แกงจืดเต้าหู้หมูสับ", isActive: true, price: 85, cost: 30, categoryId: "cat-006", categoryName: "ซุปและแกง", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-020", name: "สลัดอกไก่ย่าง", isActive: true, price: 99, cost: 40, categoryId: "cat-007", categoryName: "สลัดและสุขภาพ", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-021", name: "สลัดทูน่า", isActive: true, price: 109, cost: 44, categoryId: "cat-007", categoryName: "สลัดและสุขภาพ", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-022", name: "โยเกิร์ตผลไม้", isActive: true, price: 69, cost: 24, categoryId: "cat-007", categoryName: "สลัดและสุขภาพ", stationId: "station-002", stationName: "เครื่องดื่ม", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-023", name: "ชามะนาวโซดา", isActive: true, isBestSeller: true, price: 55, cost: 16, categoryId: "cat-008", categoryName: "เมนูพิเศษ", stationId: "station-002", stationName: "เครื่องดื่ม", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-024", name: "โกโก้ลาวา", isActive: true, price: 65, cost: 22, categoryId: "cat-008", categoryName: "เมนูพิเศษ", stationId: "station-002", stationName: "เครื่องดื่ม", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
+  { id: "prod-025", name: "ข้าวหน้าหมูย่างซอสเกาหลี", isActive: true, price: 129, cost: 52, categoryId: "cat-008", categoryName: "เมนูพิเศษ", stationId: "station-001", stationName: "ครัวร้อน", storeId: "store-001", createdAt: twoHoursAgo, updatedAt: now },
 ];
 
 // ─── Orders ────────────────────────────────────────────────
