@@ -59,69 +59,71 @@ const ProductGrid = ({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {products.map((product) => {
-        const quantity = quantityByProductId[product.id] ?? 0;
-        const isSelected = quantity > 0;
+    <div className="flex min-h-0 flex-1 max-h-[calc(100dvh-14rem)] flex-col overflow-y-auto pr-2">
+      <div className="grid flex-none content-start grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        {products.map((product) => {
+          const quantity = quantityByProductId[product.id] ?? 0;
+          const isSelected = quantity > 0;
 
-        return (
-          <div
-            key={product.id}
-            onClick={() => onAddToCart(product)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onAddToCart(product);
-              }
-            }}
-            role="button"
-            tabIndex={0}
-            data-onboarding-target={`product-card-${product.id}`}
-            className={cn(
-              "relative flex min-h-[176px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
-              "border border-card-border",
-              "hover:border-border-hover hover:-translate-y-[1px]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-              isSelected && "accent-inset-ring border-accent",
-            )}
-            aria-label={`${product.name} ${formatPrice(product.price)}`}
-          >
-            {isSelected && (
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  onDecreaseQuantity(product.id);
-                }}
-                className="absolute left-2 top-2 z-10 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full border border-card-border bg-bg px-2 text-label font-bold leading-none text-text-primary shadow-xs transition-all duration-[var(--motion-fast)] hover:scale-[1.03] hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg active:scale-[0.97]"
-                aria-label={t("transaction.detail.edit.decrease")}
-                title={t("transaction.detail.edit.decrease")}
-              >
-                -
-              </button>
-            )}
-            {isSelected && (
-              <span className="absolute right-2 top-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent shadow-xs tabular-nums">
-                {quantity}
-              </span>
-            )}
+          return (
             <div
+              key={product.id}
+              onClick={() => onAddToCart(product)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onAddToCart(product);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              data-onboarding-target={`product-card-${product.id}`}
               className={cn(
-                "mb-5 flex h-16 w-16 items-center justify-center rounded-full text-title",
-                getColorForName(product.name),
+                "relative flex min-h-[176px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
+                "border border-card-border",
+                "hover:border-border-hover hover:-translate-y-[1px]",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+                isSelected && "accent-inset-ring border-accent",
               )}
+              aria-label={`${product.name} ${formatPrice(product.price)}`}
             >
-              {product.name.charAt(0).toUpperCase()}
+              {isSelected && (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onDecreaseQuantity(product.id);
+                  }}
+                  className="absolute left-2 top-2 z-10 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full border border-card-border bg-bg px-2 text-label font-bold leading-none text-text-primary shadow-xs transition-all duration-[var(--motion-fast)] hover:scale-[1.03] hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg active:scale-[0.97]"
+                  aria-label={t("transaction.detail.edit.decrease")}
+                  title={t("transaction.detail.edit.decrease")}
+                >
+                  -
+                </button>
+              )}
+              {isSelected && (
+                <span className="absolute right-2 top-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent shadow-xs tabular-nums">
+                  {quantity}
+                </span>
+              )}
+              <div
+                className={cn(
+                  "mb-5 flex h-16 w-16 items-center justify-center rounded-full text-title",
+                  getColorForName(product.name),
+                )}
+              >
+                {product.name.charAt(0).toUpperCase()}
+              </div>
+              <span className="line-clamp-2 text-center text-body font-medium leading-tight text-text-primary">
+                {product.name}
+              </span>
+              <span className="mt-3 text-title tabular-nums text-text-primary">
+                {formatPrice(product.price)}
+              </span>
             </div>
-            <span className="line-clamp-2 text-center text-body font-medium leading-tight text-text-primary">
-              {product.name}
-            </span>
-            <span className="mt-3 text-title tabular-nums text-text-primary">
-              {formatPrice(product.price)}
-            </span>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };
