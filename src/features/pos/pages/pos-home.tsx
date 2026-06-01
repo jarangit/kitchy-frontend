@@ -56,6 +56,18 @@ const PosHomePage = () => {
     navigate(`/store/${id}/pos/payment`);
   };
 
+  const handleDecreaseQuantity = (productId: string) => {
+    const existingItem = cart.items.find((item) => item.productId === productId);
+    if (!existingItem) return;
+
+    if (existingItem.quantity <= 1) {
+      cart.removeItem(existingItem.cartItemId);
+      return;
+    }
+
+    cart.updateQuantity(existingItem.cartItemId, existingItem.quantity - 1);
+  };
+
   return (
     <div className="flex h-full min-h-0 flex-col">
       {/* Main content */}
@@ -87,6 +99,7 @@ const PosHomePage = () => {
                   ) || []
                 }
                 onAddToCart={cart.addItem}
+                onDecreaseQuantity={handleDecreaseQuantity}
                 quantityByProductId={quantityByProductId}
               />
             )}
