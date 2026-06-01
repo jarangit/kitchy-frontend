@@ -10,6 +10,7 @@ import {
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
 import { Label } from "@/shared/components/ui/label";
 import { Button } from "@/shared/components/ui/button";
+import { Card } from "@/shared/components/ui/card";
 import { AlphanumericKeypad } from "@/shared/components/ui/alphanumeric-keypad";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
@@ -46,6 +47,13 @@ export function DeliveryDetailsDialog({
   onCloseKeypad,
 }: Props) {
   const { t } = useTranslation();
+  const hasSelectedPlatform = deliveryPlatform.trim().length > 0;
+  const hasOrderNumber = deliveryOrderNumber.trim().length > 0;
+  const summaryText = hasSelectedPlatform
+    ? hasOrderNumber
+      ? `${deliveryPlatform.trim()} • ${deliveryOrderNumber.trim()}`
+      : deliveryPlatform.trim()
+    : t("pos.deliveryDialog.platformRequired");
 
   return (
     <Dialog
@@ -56,22 +64,22 @@ export function DeliveryDetailsDialog({
       <DialogHeader>
         <DialogTitle>{t("pos.orderType.delivery")}</DialogTitle>
         <DialogDescription>
-          {t("pos.payment.selectPlatformFirst")}
+          {t("pos.deliveryDialog.description")}
         </DialogDescription>
       </DialogHeader>
 
       <div
         className={cn(
-          "space-y-5",
+          "flex flex-col gap-5",
           isDeliveryKeypadOpen &&
-            "space-y-0 lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-6",
+            "grid grid-cols-1 items-start gap-5 lg:grid-cols-[minmax(0,1fr)_380px]",
         )}
       >
-        <div className="min-w-0 space-y-5">
+        <div className={cn("flex min-w-0 flex-col gap-5", isDeliveryKeypadOpen && "lg:gap-4")}>
           <div>
-            <p className="mb-3 text-label uppercase tracking-[0.08em] text-text-tertiary">
+            <Label className="mb-3 uppercase tracking-[0.08em] text-text-tertiary">
               {t("pos.cart.deliveryPlatform")}
-            </p>
+            </Label>
             <div className="grid grid-cols-2 gap-3">
               {deliveryPlatforms.map((platform) => (
                 <SelectionChip
@@ -84,12 +92,22 @@ export function DeliveryDetailsDialog({
                 </SelectionChip>
               ))}
             </div>
+            {!hasSelectedPlatform && (
+              <p className="mt-2 text-label text-danger">
+                {t("pos.deliveryDialog.platformRequired")}
+              </p>
+            )}
           </div>
 
           <div>
-            <Label htmlFor="deliveryOrderNumberDialog">
-              {t("pos.cart.deliveryOrderNumber")}
-            </Label>
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor="deliveryOrderNumberDialog">
+                {t("pos.cart.deliveryOrderNumber")}
+              </Label>
+              <span className="text-label text-text-tertiary">
+                {t("pos.deliveryDialog.optional")}
+              </span>
+            </div>
 
             {isDeviceKeyboardEnabled ? (
               <input
@@ -133,15 +151,11 @@ export function DeliveryDetailsDialog({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 rounded-card border border-card-border bg-surface px-3 py-3 text-body-sm text-text-secondary">
-            <LuBike className="h-4 w-4 shrink-0 text-text-tertiary" />
-            <span>
-              {deliveryPlatform.trim().length > 0
-                ? deliveryOrderNumber.trim().length > 0
-                  ? `${deliveryPlatform.trim()} • ${deliveryOrderNumber.trim()}`
-                  : deliveryPlatform.trim()
-                : t("pos.payment.selectPlatformFirst")}
-            </span>
+          <div className="pt-1">
+            <Card variant="muted" padding="sm" className="flex items-center gap-2 text-body-sm text-text-secondary">
+              <LuBike className="h-4 w-4 shrink-0 text-text-tertiary" />
+              <span>{summaryText}</span>
+            </Card>
           </div>
         </div>
 
@@ -159,9 +173,11 @@ export function DeliveryDetailsDialog({
 
       <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
-          {t("common.cancel")}
+          {t("common.close")}
         </Button>
-        <Button onClick={onClose}>{t("common.confirm")}</Button>
+        <Button onClick={onClose} disabled={!hasSelectedPlatform}>
+          {t("common.save")}
+        </Button>
       </DialogFooter>
     </Dialog>
   );
