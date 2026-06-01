@@ -27,7 +27,7 @@ const CartItem = ({
 
   return (
     <InsetPanel className="border-accent/15 bg-accent/5 px-3 py-3 shadow-xs">
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-2">
         <p
           className="min-w-0 flex-1 truncate text-body font-semibold leading-6 text-text-primary"
           title={item.name}
@@ -56,7 +56,7 @@ const CartItem = ({
       </div>
 
       {expanded && (
-        <InsetPanel className="mt-3 rounded-sm border-border/70 bg-bg px-3 py-3">
+        <InsetPanel className="mt-2 rounded-sm border-border/70 bg-bg px-3 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="inline-flex items-center gap-0.5 rounded-full border border-card-border bg-card-bg p-0.5">
               <Button
@@ -113,7 +113,7 @@ const CartItem = ({
           </div>
 
           {item.note ? (
-            <InsetPanel className="mt-3 rounded-sm border-border/60 bg-surface px-3 py-2">
+            <InsetPanel className="mt-2 rounded-sm border-border/60 bg-surface px-3 py-2">
               <p className="line-clamp-2 text-label leading-5 text-text-tertiary" title={item.note}>
                 {item.note}
               </p>

@@ -11,7 +11,7 @@ const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
     <Tabs value={selected} onChange={onSelect} variant="chip" size="lg">
       <TabList
         scrollable
-        className="pb-3 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] gap-3"
+        className="gap-2 pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       >
         <Tab value="ALL">All</Tab>
         {categories.map((cat) => (

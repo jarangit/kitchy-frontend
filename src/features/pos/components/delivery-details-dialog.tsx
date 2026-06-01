@@ -86,14 +86,14 @@ export function DeliveryDetailsDialog({
 
       <div
         className={cn(
-          "flex flex-col gap-5",
+          "page-stack-tight",
           isDeliveryKeypadOpen &&
-            "grid grid-cols-1 items-start gap-5 lg:grid-cols-[minmax(0,1fr)_380px]",
+            "grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_380px]",
         )}
       >
-        <div className={cn("flex min-w-0 flex-col gap-5", isDeliveryKeypadOpen && "lg:gap-4")}>
+        <div className={cn("page-stack-tight min-w-0", isDeliveryKeypadOpen && "lg:gap-4")}> 
           <div>
-            <Label className="mb-3 uppercase tracking-[0.08em] text-text-tertiary">
+            <Label className="mb-2 uppercase tracking-[0.08em] text-text-tertiary">
               {t("pos.cart.deliveryPlatform")}
             </Label>
             <div className="grid grid-cols-2 gap-3">
@@ -109,9 +109,9 @@ export function DeliveryDetailsDialog({
               ))}
             </div>
             {!hasSelectedPlatform && (
-              <p className="mt-2 text-label text-danger">
-                {t("pos.deliveryDialog.platformRequired")}
-              </p>
+                <p className="mt-2 text-label text-danger">
+                  {t("pos.deliveryDialog.platformRequired")}
+                </p>
             )}
           </div>
 
@@ -168,7 +168,7 @@ export function DeliveryDetailsDialog({
             </p>
           </div>
 
-          <div className="pt-1">
+          <div>
             <Card variant="muted" padding="sm" className="flex items-center gap-2 text-body-sm text-text-secondary">
               <LuBike className="h-4 w-4 shrink-0 text-text-tertiary" />
               <span>{summaryText}</span>

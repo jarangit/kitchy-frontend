@@ -49,8 +49,8 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
   };
 
   return (
-    <Dialog open={item != null} onClose={handleClose}>
-      <DialogHeader>
+      <Dialog open={item != null} onClose={handleClose}>
+        <DialogHeader>
         <DialogTitle>
           {item
             ? t("pos.noteDialog.title", { name: item.name })
@@ -94,7 +94,7 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
           maxLength={120}
         />
 
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-3 pt-1">
           <Button
             variant="ghost"
             size="sm"
@@ -103,7 +103,7 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
           >
             {t("pos.noteDialog.clearNote")}
           </Button>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Button variant="secondary" onClick={handleClose}>
               {t("common.cancel")}
             </Button>

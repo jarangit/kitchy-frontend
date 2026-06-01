@@ -59,8 +59,8 @@ const ProductGrid = ({
   }
 
   return (
-    <div className="flex min-h-0 flex-1 max-h-[calc(100dvh-14rem)] flex-col overflow-y-auto pr-2">
-      <div className="grid flex-none content-start grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+    <div className="flex min-h-0 flex-1 max-h-[calc(100dvh-14rem)] flex-col overflow-y-auto pr-1">
+      <div className="page-grid grid flex-none content-start grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {products.map((product) => {
           const quantity = quantityByProductId[product.id] ?? 0;
           const isSelected = quantity > 0;
@@ -79,7 +79,7 @@ const ProductGrid = ({
               tabIndex={0}
               data-onboarding-target={`product-card-${product.id}`}
               className={cn(
-                "relative flex min-h-[176px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-5 transition-all duration-[var(--motion-fast)]",
+                "relative flex min-h-[168px] cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-4 transition-all duration-[var(--motion-fast)]",
                 "border border-card-border",
                 "hover:border-border-hover hover:-translate-y-[1px]",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
@@ -108,7 +108,7 @@ const ProductGrid = ({
               )}
               <div
                 className={cn(
-                  "mb-5 flex h-16 w-16 items-center justify-center rounded-full text-title",
+                  "mb-4 flex h-16 w-16 items-center justify-center rounded-full text-title",
                   getColorForName(product.name),
                 )}
               >
@@ -117,7 +117,7 @@ const ProductGrid = ({
               <span className="line-clamp-2 text-center text-body font-medium leading-tight text-text-primary">
                 {product.name}
               </span>
-              <span className="mt-3 text-title tabular-nums text-text-primary">
+              <span className="mt-2 text-title tabular-nums text-text-primary">
                 {formatPrice(product.price)}
               </span>
             </div>

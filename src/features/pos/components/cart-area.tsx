@@ -65,7 +65,7 @@ interface Props {
 }
 
 const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <p className="mb-3 text-label uppercase tracking-[0.08em] text-text-tertiary">
+  <p className="mb-2 text-label uppercase tracking-[0.08em] text-text-tertiary">
     {children}
   </p>
 );
@@ -236,7 +236,7 @@ const CartArea = ({
   return (
     <div className="flex h-full max-h-full w-full min-h-0 flex-col overflow-hidden border-l border-border bg-card-bg">
       <div
-        className="shrink-0 border-b border-border p-4"
+        className="shrink-0 border-b border-border p-card-padding"
         role="button"
         tabIndex={0}
         aria-expanded={isConfigExpanded}
@@ -273,10 +273,10 @@ const CartArea = ({
         </div>
 
         {isConfigExpanded && (
-          <div className="mt-4 space-y-5">
+          <div className="page-stack-tight mt-4">
             <div>
               <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="page-grid grid grid-cols-3">
                 {ORDER_TYPE_VALUES.map((value) => {
                   const Icon = ORDER_TYPE_ICONS[value];
                   const label = t(ORDER_TYPE_LABEL_KEYS[value]);
@@ -391,7 +391,7 @@ const CartArea = ({
         )}
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto bg-card-bg p-4 pb-28">
+       <div className="min-h-0 flex-1 overflow-y-auto bg-card-bg p-card-padding pb-28">
         {items.length === 0 ? (
           <EmptyState
             icon={<LuShoppingCart size={32} />}
@@ -400,7 +400,7 @@ const CartArea = ({
             className="py-10"
           />
         ) : (
-            <div className="space-y-3">
+            <div className="page-stack-tight">
               {items.map((item) => (
                 <CartItem
                   key={item.cartItemId}
@@ -420,7 +420,7 @@ const CartArea = ({
         )}
       </div>
 
-      <div className="shadow-cart-dock z-10 shrink-0 space-y-3 border-t border-border bg-card-bg p-4 md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
+      <div className="page-stack-tight shadow-cart-dock z-10 shrink-0 border-t border-border bg-card-bg p-card-padding md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
         {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
         <Button
           onClick={onPay}

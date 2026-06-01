@@ -19,13 +19,13 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog open={open} onClose={onClose} className="max-w-2xl p-6 sm:p-7">
-      <DialogHeader className="mb-6">
+    <Dialog open={open} onClose={onClose} className="max-w-2xl p-5 sm:p-6">
+      <DialogHeader className="mb-5">
         <DialogTitle>{t("pos.cart.selectTable")}</DialogTitle>
         <DialogDescription>{t("pos.cart.selectTableDescription")}</DialogDescription>
       </DialogHeader>
 
-      <div className="grid grid-cols-4 gap-3">
+      <div className="page-grid grid grid-cols-4">
         {TABLE_OPTIONS.map((table) => (
           <InsetPanel
             as="button"
