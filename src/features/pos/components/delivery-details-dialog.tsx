@@ -1,4 +1,4 @@
-import type { RefObject } from "react";
+import { useEffect, type RefObject } from "react";
 import { LuBike, LuKeyboard } from "react-icons/lu";
 import {
   Dialog,
@@ -55,6 +55,22 @@ export function DeliveryDetailsDialog({
       : deliveryPlatform.trim()
     : t("pos.deliveryDialog.platformRequired");
 
+  useEffect(() => {
+    if (!open || !isDeviceKeyboardEnabled) return;
+
+    const timeoutId = window.setTimeout(() => {
+      deliveryOrderInputRef.current?.focus();
+      deliveryOrderInputRef.current?.select();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [deliveryOrderInputRef, isDeviceKeyboardEnabled, open]);
+
+  const handlePlatformSelect = (platform: string) => {
+    onDeliveryPlatformChange(platform);
+    onOpenCustomKeypad();
+  };
+
   return (
     <Dialog
       open={open}
@@ -85,7 +101,7 @@ export function DeliveryDetailsDialog({
                 <SelectionChip
                   key={platform}
                   active={deliveryPlatform === platform}
-                  onClick={() => onDeliveryPlatformChange(platform)}
+                  onClick={() => handlePlatformSelect(platform)}
                   className="justify-center text-center"
                 >
                   {platform}
@@ -120,6 +136,7 @@ export function DeliveryDetailsDialog({
                 onBlur={onCloseKeypad}
                 inputMode="text"
                 autoComplete="off"
+                autoFocus
                 className="mt-1 h-input-height w-full rounded-input border border-input-border bg-input-bg px-input-padding-x font-mono text-input text-text-primary tabular-nums outline-none transition-colors duration-[var(--motion-fast)] placeholder:text-input-placeholder focus:border-input-border-focus focus:ring-2 focus:ring-accent/25"
                 placeholder={t("pos.cart.deliveryOrderNumberPlaceholder")}
               />
@@ -164,7 +181,7 @@ export function DeliveryDetailsDialog({
             <AlphanumericKeypad
               value={deliveryOrderNumber}
               onChange={onDeliveryOrderNumberChange}
-              onDone={onCloseKeypad}
+              onDone={onClose}
               onRequestDeviceKeyboard={onOpenDeviceKeyboard}
             />
           </div>
@@ -174,9 +191,6 @@ export function DeliveryDetailsDialog({
       <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t("common.close")}
-        </Button>
-        <Button onClick={onClose} disabled={!hasSelectedPlatform}>
-          {t("common.save")}
         </Button>
       </DialogFooter>
     </Dialog>

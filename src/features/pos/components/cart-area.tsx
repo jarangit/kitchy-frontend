@@ -106,6 +106,7 @@ const CartArea = ({
   const [isConfigExpanded, setIsConfigExpanded] = useState(false);
   const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
   const deliveryOrderInputRef = useRef<HTMLInputElement | null>(null);
+  const firstDeliveryPlatform = deliveryPlatforms[0] ?? "";
 
   const deliverySettingsKey = useMemo(
     () => `store:${window.location.pathname.split("/")[2]}:delivery-platforms`,
@@ -159,12 +160,43 @@ const CartArea = ({
     }
   }, [quickNotesSettingsKey]);
 
+  useEffect(() => {
+    if (!isDeliveryDialogOpen || !isDeviceKeyboardEnabled) return;
+
+    const timeoutId = window.setTimeout(() => {
+      deliveryOrderInputRef.current?.focus();
+      deliveryOrderInputRef.current?.select();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [isDeliveryDialogOpen, isDeviceKeyboardEnabled]);
+
+  const ensureDeliveryPlatformSelected = () => {
+    if (deliveryPlatform.trim().length > 0 || firstDeliveryPlatform.trim().length === 0) {
+      return;
+    }
+
+    onDeliveryPlatformChange(firstDeliveryPlatform);
+  };
+
+  const openDeliveryEntry = () => {
+    onOrderTypeChange("DELIVERY");
+    ensureDeliveryPlatformSelected();
+    setIsConfigExpanded(false);
+    setIsDeliveryKeypadOpen(true);
+    setIsDeviceKeyboardEnabled(false);
+    setIsDeliveryDialogOpen(true);
+  };
+
   const handleOrderTypeChange = (nextType: OrderType) => {
     onOrderTypeChange(nextType);
     if (nextType === "DINE_IN") {
       setIsTableDialogOpen(true);
     }
     if (nextType === "DELIVERY") {
+      ensureDeliveryPlatformSelected();
+      setIsDeliveryKeypadOpen(true);
+      setIsDeviceKeyboardEnabled(false);
       setIsDeliveryDialogOpen(true);
     }
     if (nextType !== "DELIVERY") {
@@ -176,12 +208,11 @@ const CartArea = ({
   const openDeviceKeyboard = () => {
     setIsDeliveryKeypadOpen(false);
     setIsDeviceKeyboardEnabled(true);
-    window.setTimeout(() => deliveryOrderInputRef.current?.focus(), 0);
   };
 
   const openCustomKeypad = () => {
     setIsDeviceKeyboardEnabled(false);
-    setIsDeliveryKeypadOpen((current) => !current);
+    setIsDeliveryKeypadOpen(true);
   };
 
   const closeDeliveryKeypad = () => {
@@ -216,18 +247,33 @@ const CartArea = ({
             <p className="truncate">{summaryParts.join(" • ")}</p>
           </div>
 
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsConfigExpanded((current) => !current)}
-            aria-label={t("common.edit")}
-            title={t("common.edit")}
-            className="shrink-0"
-          >
-            <span>{t("common.edit")}</span>
-            {isConfigExpanded ? <LuChevronUp className="h-4 w-4" aria-hidden="true" /> : <LuChevronDown className="h-4 w-4" aria-hidden="true" />}
-          </Button>
+          <div className="flex shrink-0 items-center gap-2">
+            <Button
+              type="button"
+              variant={orderType === "DELIVERY" ? "secondary" : "ghost"}
+              size="sm"
+              onClick={openDeliveryEntry}
+              aria-label={t("pos.orderType.delivery")}
+              title={t("pos.orderType.delivery")}
+              className="gap-1.5"
+            >
+              <LuBike className="h-4 w-4" aria-hidden="true" />
+              <span>{t("pos.orderType.delivery")}</span>
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsConfigExpanded((current) => !current)}
+              aria-label={t("common.edit")}
+              title={t("common.edit")}
+              className="shrink-0"
+            >
+              <span>{t("common.edit")}</span>
+              {isConfigExpanded ? <LuChevronUp className="h-4 w-4" aria-hidden="true" /> : <LuChevronDown className="h-4 w-4" aria-hidden="true" />}
+            </Button>
+          </div>
         </div>
 
         {isConfigExpanded && (
