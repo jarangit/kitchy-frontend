@@ -86,9 +86,10 @@ Route composition lives in `src/app/App.tsx`.
 
 Public routes:
 
-- `/` -> redirects to `/login`
+- `/` -> redirects to `/login` in normal mode, `/try` in demo mode
 - `/login`
 - `/register`
+- `/try` -> demo-only public trial entry
 
 Authenticated non-store routes:
 
@@ -210,6 +211,7 @@ Behavior notes:
 - optionally creates starter menus
 - persists some onboarding-derived local settings
 - hands off directly into POS
+- demo mode also exposes `/try`, a public trial entry that bypasses registration and bootstraps a demo session
 
 ### `pos`
 
@@ -221,6 +223,11 @@ Key files:
 - `src/features/pos/pages/pos-home.tsx`
 - `src/features/pos/pages/payment.tsx`
 - `src/features/pos/pages/payment-success.tsx`
+
+Behavior notes:
+
+- cart default order type is still derived from onboarding `shopType`
+- in demo mode, `/try` now separates demo data selection from POS order flow selection
 
 ### `order`
 
@@ -366,6 +373,7 @@ Current architecture:
 - `axiosClient` emits `auth:unauthorized` on 401
 - `DataAdapter` selects API mode or demo mode based on `VITE_DEMO_MODE`
 - demo mode persists data in localStorage and provides offline CRUD-like behavior
+- demo seed selection is now two-dimensional: demo store preset controls sample data, onboarding `shopType` still controls default POS order flow
 
 Important caveat:
 
@@ -386,12 +394,22 @@ Known important keys/areas:
 - language: `app-language`
 - theme via `src/shared/hooks/useTheme.ts`
 - onboarding state via `src/features/onboarding/utils/onboarding-storage.ts`
+- demo store preset: `demo:store-preset`
+- demo seed version: `demo:seed-version`
 - PromptPay per store: `kitchy.setting.store.${storeId}.promptpay`
 - quick notes settings in the store settings area
 - delivery settings in the store settings area
 - KDS dismissal state in `src/features/kds/utils/ready-to-serve-dismissed.ts`
 
 Before adding new persisted settings, search existing keys first.
+
+Demo mode notes:
+
+- `/try` is a single-step public entry in demo mode
+- it selects a demo store preset: `CAFE`, `FAST_FOOD`, or `MADE_TO_ORDER`
+- `/try` always seeds demo mode with `DINE_IN` as the default POS order flow
+- changing the demo store preset invalidates the demo seed version and rehydrates local demo data
+- `clearDemoData()` intentionally preserves the demo store preset key so the selected preset can be re-seeded
 
 ## i18n
 

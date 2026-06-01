@@ -61,6 +61,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
     }
   };
 
+  const loginAsDemo = async () => {
+    await loginMutation.mutateAsync({
+      email: "demo@kitchy.app",
+      password: "demo1234",
+    });
+  };
+
   const register = async (payload: IRegisterRequest) => {
     const data = await registerMutation.mutateAsync(payload);
     if (data?.access_token) {
@@ -94,6 +101,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     isAuthenticated: hasToken && !!meQuery.data,
     isReady: !hasToken || meQuery.isSuccess || meQuery.isError,
     login,
+    loginAsDemo,
     register,
     googleLogin,
     logout,

@@ -78,4 +78,17 @@ export const onboardingStorage = {
       /* ignore */
     }
   },
+
+  resetStore: (storeId: string) => {
+    if (typeof window === "undefined") return;
+    try {
+      window.localStorage.removeItem(onboardingStorageKeys.completed(storeId));
+      window.localStorage.removeItem(onboardingStorageKeys.active(storeId));
+      window.localStorage.removeItem(onboardingStorageKeys.posTourSkipped(storeId));
+      window.localStorage.removeItem(onboardingStorageKeys.firstOrderDone(storeId));
+      window.localStorage.removeItem(onboardingStorageKeys.shopType(storeId));
+    } catch {
+      /* ignore */
+    }
+  },
 };

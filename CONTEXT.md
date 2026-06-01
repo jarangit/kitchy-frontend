@@ -88,6 +88,10 @@ _Avoid_: Settings when you mean the first-run wizard
 The onboarding choice that maps to the POS default Order Type. It is a setup preference, not a separate business entity.
 _Avoid_: Store, Order Type as a general synonym
 
+**Demo Store Preset**:
+The demo-only restaurant style selected on `/try` that changes seeded sample data such as store name, categories, products, orders, transactions, and reports. It does not replace Order Type and does not create a new persisted Store entity.
+_Avoid_: Shop Type, Store, Order Type
+
 **Settings**:
 The operational configuration area for a Store. Settings are grouped into control-panel sections such as kitchen, sales, payments, store, devices, safety, and system.
 _Avoid_: Onboarding when you mean ongoing configuration
@@ -118,6 +122,9 @@ _Avoid_: Best seller when you mean a computed report result rather than a produc
 
 **Shop vs Store**:
 The UI and onboarding language sometimes use "shop" in human-facing copy, but the persisted business entity and canonical domain term should be **Store**.
+
+**Shop Type vs Demo Store Preset**:
+`Shop Type` is the onboarding preference that maps to the default **Order Type**. `Demo Store Preset` is a demo-only data theme for `/try`. They are different concepts and should not be used interchangeably.
 
 **Menu vs Product**:
 Some code uses `IMenu` and onboarding talks about adding menu items, but the canonical domain term for one sellable item should be **Product**.

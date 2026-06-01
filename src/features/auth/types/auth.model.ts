@@ -12,6 +12,7 @@ export interface IAuthContext {
   isAuthenticated: boolean;
   isReady: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginAsDemo: () => Promise<void>;
   register: (payload: IRegisterRequest) => Promise<void>;
   googleLogin: (idToken: string) => Promise<void>;
   logout: () => Promise<void>;

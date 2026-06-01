@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "@/features/auth/context/authContext";
 import { ProtectedRoute } from "@/shared/components/protected-route";
 import NotFoundPage from "@/shared/pages/not-found";
+import { IS_DEMO_MODE } from "@/shared/services/adapters/data-adapter";
 
 import { PosLayout } from "@/features/pos/components/pos-layout";
 
@@ -14,6 +15,7 @@ import { Spinner } from "@/shared/components/ui/spinner";
 
 const LoginPage = lazy(() => import("@/features/auth/pages/login"));
 const RegisterPage = lazy(() => import("@/features/auth/pages/register"));
+const DemoTrialEntryPage = lazy(() => import("@/features/onboarding/pages/demo-trial-entry"));
 const UserDashboardPage = lazy(() => import("@/features/store/pages/user-dashboard"));
 const StoreDashboardPage = lazy(() => import("@/features/store/pages/store-dashboard"));
 const PosHomePage = lazy(() => import("@/features/pos/pages/pos-home"));
@@ -47,9 +49,19 @@ function App() {
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           {/* Public */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<Navigate to={IS_DEMO_MODE ? "/try" : "/login"} replace />} />
+          <Route
+            path="/try"
+            element={IS_DEMO_MODE ? <DemoTrialEntryPage /> : <Navigate to="/login" replace />}
+          />
+          <Route
+            path="/login"
+            element={IS_DEMO_MODE ? <Navigate to="/try" replace /> : <LoginPage />}
+          />
+          <Route
+            path="/register"
+            element={IS_DEMO_MODE ? <Navigate to="/try" replace /> : <RegisterPage />}
+          />
 
         {/* User Dashboard (store selection) */}
         <Route

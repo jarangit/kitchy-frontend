@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import type { ReactNode } from "react";
 import type { ICartItem, OrderType } from "@/features/pos/types/pos.model";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
@@ -95,6 +95,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
     setDeliveryOrderNumberState("");
   }, []);
+
+  useEffect(() => {
+    if (!currentStoreId || items.length > 0) return;
+
+    setOrderTypeState(resolveInitialOrderType(currentStoreId));
+  }, [currentStoreId, items.length]);
 
   const setOrderType = useCallback((type: OrderType) => {
     setOrderTypeState(type);
