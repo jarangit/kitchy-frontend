@@ -21,6 +21,7 @@ import type { ITransaction } from "@/features/transaction/types/transaction.mode
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
 import type { IReportFilter } from "@/features/report/types/report.dto";
 import {
+  DEMO_SEED_VERSION,
   seedUser,
   seedStore,
   seedStations,
@@ -36,6 +37,7 @@ import {
 // ─── Helpers ───────────────────────────────────────────────
 
 const KEYS = {
+  seedVersion: "demo:seed-version",
   user: "demo:user",
   stores: "demo:stores",
   stations: "demo:stations",
@@ -47,7 +49,31 @@ const KEYS = {
   transactions: "demo:transactions",
 } as const;
 
+const SEEDED_COLLECTION_KEYS = [
+  KEYS.user,
+  KEYS.stores,
+  KEYS.stations,
+  KEYS.products,
+  KEYS.categories,
+  KEYS.orders,
+  KEYS.orderMeta,
+  KEYS.orderStationItems,
+  KEYS.transactions,
+] as const;
+
+function ensureSeedVersion(): void {
+  const currentVersion = localStorage.getItem(KEYS.seedVersion);
+  if (currentVersion === DEMO_SEED_VERSION) return;
+
+  for (const key of SEEDED_COLLECTION_KEYS) {
+    localStorage.removeItem(key);
+  }
+
+  localStorage.setItem(KEYS.seedVersion, DEMO_SEED_VERSION);
+}
+
 function get<T>(key: string, fallback: T): T {
+  ensureSeedVersion();
   const raw = localStorage.getItem(key);
   if (!raw) {
     localStorage.setItem(key, JSON.stringify(fallback));

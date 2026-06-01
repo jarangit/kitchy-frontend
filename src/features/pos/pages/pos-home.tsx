@@ -73,7 +73,7 @@ const PosHomePage = () => {
       {/* Main content */}
       <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Product area */}
-        <div className="page-shell page-stack-tight flex min-w-0 flex-1 overflow-hidden">
+        <div className="page-stack-tight flex min-w-0 flex-1 overflow-hidden p-card-padding">
           <CategoryTabs
             categories={categories}
             selected={selectedCategory}
