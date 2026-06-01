@@ -179,13 +179,8 @@ const CartArea = ({
     onDeliveryPlatformChange(firstDeliveryPlatform);
   };
 
-  const openDeliveryEntry = () => {
-    onOrderTypeChange("DELIVERY");
-    ensureDeliveryPlatformSelected();
-    setIsConfigExpanded(false);
-    setIsDeliveryKeypadOpen(true);
-    setIsDeviceKeyboardEnabled(false);
-    setIsDeliveryDialogOpen(true);
+  const toggleConfigExpanded = () => {
+    setIsConfigExpanded((current) => !current);
   };
 
   const handleOrderTypeChange = (nextType: OrderType) => {
@@ -240,7 +235,18 @@ const CartArea = ({
 
   return (
     <div className="flex h-full max-h-full w-full min-h-0 flex-col overflow-hidden border-l border-border bg-card-bg">
-      <div className="shrink-0 border-b border-border p-4">
+      <div
+        className="shrink-0 border-b border-border p-4"
+        role="button"
+        tabIndex={0}
+        aria-expanded={isConfigExpanded}
+        onClick={toggleConfigExpanded}
+        onKeyDown={(event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          toggleConfigExpanded();
+        }}
+      >
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
             <ActiveOrderTypeIcon className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
@@ -250,25 +256,15 @@ const CartArea = ({
           <div className="flex shrink-0 items-center gap-2">
             <Button
               type="button"
-              variant={orderType === "DELIVERY" ? "secondary" : "ghost"}
-              size="sm"
-              onClick={openDeliveryEntry}
-              aria-label={t("pos.orderType.delivery")}
-              title={t("pos.orderType.delivery")}
-              className="gap-1.5"
-            >
-              <LuBike className="h-4 w-4" aria-hidden="true" />
-              <span>{t("pos.orderType.delivery")}</span>
-            </Button>
-
-            <Button
-              type="button"
               variant="ghost"
               size="sm"
-              onClick={() => setIsConfigExpanded((current) => !current)}
+              onClick={(event) => {
+                event.stopPropagation();
+                toggleConfigExpanded();
+              }}
               aria-label={t("common.edit")}
               title={t("common.edit")}
-              className="shrink-0"
+              className={isConfigExpanded ? "shrink-0 text-accent-text hover:text-accent-text" : "shrink-0"}
             >
               <span>{t("common.edit")}</span>
               {isConfigExpanded ? <LuChevronUp className="h-4 w-4" aria-hidden="true" /> : <LuChevronDown className="h-4 w-4" aria-hidden="true" />}
