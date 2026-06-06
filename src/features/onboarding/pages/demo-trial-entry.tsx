@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LuArrowRight, LuCoffee, LuSandwich, LuSoup } from "react-icons/lu";
+import { LuArrowRight, LuCheck, LuCoffee, LuSandwich, LuSoup } from "react-icons/lu";
 import { BrandMark } from "@/shared/components/ui/brand-mark";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -26,25 +26,32 @@ const STORE_PRESET_OPTIONS: Array<{
     | "demo.trial.storePreset.cafe"
     | "demo.trial.storePreset.fastFood"
     | "demo.trial.storePreset.madeToOrder";
+  descriptionKey:
+    | "demo.trial.storePreset.cafeDescription"
+    | "demo.trial.storePreset.fastFoodDescription"
+    | "demo.trial.storePreset.madeToOrderDescription";
   iconClassName: string;
 }> = [
   {
     value: "CAFE",
     icon: LuCoffee,
     labelKey: "demo.trial.storePreset.cafe",
-    iconClassName: "bg-info-bg text-info",
+    descriptionKey: "demo.trial.storePreset.cafeDescription",
+    iconClassName: "bg-accent/8 text-accent",
   },
   {
     value: "FAST_FOOD",
     icon: LuSandwich,
     labelKey: "demo.trial.storePreset.fastFood",
-    iconClassName: "bg-warning-bg text-warning",
+    descriptionKey: "demo.trial.storePreset.fastFoodDescription",
+    iconClassName: "bg-accent/8 text-accent",
   },
   {
     value: "MADE_TO_ORDER",
     icon: LuSoup,
     labelKey: "demo.trial.storePreset.madeToOrder",
-    iconClassName: "bg-success-bg text-success",
+    descriptionKey: "demo.trial.storePreset.madeToOrderDescription",
+    iconClassName: "bg-accent/8 text-accent",
   },
 ];
 
@@ -54,11 +61,14 @@ export default function DemoTrialEntryPage() {
   const dispatch = useAppDispatch();
   const [selectedStorePreset, setSelectedStorePreset] = useState<DemoStorePreset | null>(null);
   const [isStarting, setIsStarting] = useState(false);
+  const [startError, setStartError] = useState(false);
+  const selectedOption = STORE_PRESET_OPTIONS.find((option) => option.value === selectedStorePreset);
 
   const handleStartTrial = async () => {
     if (!selectedStorePreset) return;
 
     try {
+      setStartError(false);
       setIsStarting(true);
       window.localStorage.setItem(DEMO_STORE_PRESET_STORAGE_KEY, selectedStorePreset);
       clearDemoData();
@@ -81,6 +91,8 @@ export default function DemoTrialEntryPage() {
 
       await auth?.loginAsDemo();
       window.location.assign(`/store/${DEMO_STORE_ID}/pos`);
+    } catch {
+      setStartError(true);
     } finally {
       setIsStarting(false);
     }
@@ -106,6 +118,15 @@ export default function DemoTrialEntryPage() {
         </section>
 
         <section className="mx-auto flex w-full max-w-4xl flex-col gap-4 sm:gap-4 lg:gap-4.5 xl:gap-5">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-1.5 text-center">
+            <h2 className="text-subtitle font-semibold text-text-primary">
+              {t("demo.trial.chooseStorePreset")}
+            </h2>
+            <p className="text-label leading-5 text-text-secondary sm:text-body-sm sm:leading-6">
+              {t("demo.trial.chooseStorePresetHint")}
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 xl:gap-4">
             {STORE_PRESET_OPTIONS.map((option) => {
               const Icon = option.icon;
@@ -118,13 +139,25 @@ export default function DemoTrialEntryPage() {
                   onClick={() => setSelectedStorePreset(option.value)}
                   disabled={isStarting}
                   className={cn(
-                    "group min-h-26 rounded-card border border-card-border bg-card-bg px-4 py-3.5 text-center transition-colors duration-[var(--motion-fast)] sm:min-h-30 sm:px-4 sm:py-4 xl:min-h-36 xl:px-5 xl:py-6",
+                    "group relative min-h-32 rounded-card border border-card-border bg-card-bg px-4 py-4 text-center transition-colors duration-[var(--motion-fast)] sm:min-h-38 sm:px-4 sm:py-5 xl:min-h-44 xl:px-5 xl:py-6",
                     "hover:border-border-hover hover:bg-card-bg-hover",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-                    selected && "border-accent bg-accent/4",
+                    "disabled:cursor-not-allowed disabled:opacity-60",
+                    selected && "border-accent bg-accent/8 shadow-sm",
                   )}
                   aria-pressed={selected}
+                  aria-label={`${selected ? `${t("demo.trial.selectedBadge")} ` : ""}${t(option.labelKey)}`}
                 >
+                  <span
+                    className={cn(
+                      "absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border border-card-border bg-card-bg text-text-tertiary transition-colors duration-[var(--motion-fast)]",
+                      selected && "border-accent bg-accent text-white",
+                    )}
+                    aria-hidden="true"
+                  >
+                    {selected && <LuCheck size={14} />}
+                  </span>
+
                   <div className="flex h-full flex-col items-center justify-center gap-2.5 sm:gap-3">
                     <div
                       className={cn(
@@ -135,12 +168,22 @@ export default function DemoTrialEntryPage() {
                       <Icon size={18} />
                     </div>
 
-                    <p className={cn(
-                      "text-body font-medium text-text-primary transition-colors duration-[var(--motion-fast)] sm:text-subtitle",
-                      selected && "text-accent",
-                    )}>
-                      {t(option.labelKey)}
-                    </p>
+                    <div className="flex flex-col items-center gap-1">
+                      <p className={cn(
+                        "text-body font-medium text-text-primary transition-colors duration-[var(--motion-fast)] sm:text-subtitle",
+                        selected && "text-accent",
+                      )}>
+                        {t(option.labelKey)}
+                      </p>
+                      <p className="max-w-40 text-label leading-5 text-text-secondary">
+                        {t(option.descriptionKey)}
+                      </p>
+                      {selected && (
+                        <span className="mt-1 rounded-full bg-accent/10 px-2 py-0.5 text-label font-medium text-accent">
+                          {t("demo.trial.selectedBadge")}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </button>
               );
@@ -151,7 +194,7 @@ export default function DemoTrialEntryPage() {
             {selectedStorePreset ? (
               <>
                 <p className="text-body-sm font-medium text-text-primary sm:text-body">
-                  {t(STORE_PRESET_OPTIONS.find((option) => option.value === selectedStorePreset)?.labelKey ?? "demo.trial.storePreset.madeToOrder")}
+                  {t("demo.trial.selectedPrefix")} {t(selectedOption?.labelKey ?? "demo.trial.storePreset.madeToOrder")}
                 </p>
                 <p className="max-w-2xl text-label leading-5 text-text-secondary sm:text-body-sm sm:leading-6">
                   {t("demo.trial.chooseTypeHint")}
@@ -169,12 +212,17 @@ export default function DemoTrialEntryPage() {
             onClick={handleStartTrial}
             disabled={!selectedStorePreset || isStarting}
             loading={isStarting}
-            loadingText="กำลังเตรียมร้านเดโม..."
+            loadingText={t("demo.trial.starting")}
             className="mx-auto mt-1 w-full max-w-xs sm:max-w-sm"
           >
             {t("demo.trial.start")}
             {!isStarting && <LuArrowRight size={18} aria-hidden="true" />}
           </Button>
+          {startError && (
+            <p className="text-center text-label font-medium text-danger sm:text-body-sm" role="alert">
+              {t("demo.trial.startError")}
+            </p>
+          )}
         </section>
       </main>
     </div>
