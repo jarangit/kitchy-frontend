@@ -11,6 +11,8 @@ interface AlphanumericKeypadProps {
   onRequestDeviceKeyboard?: () => void;
   maxLength?: number;
   hapticFeedback?: boolean;
+  label?: string;
+  placeholder?: string;
 }
 
 const numberRows = [
@@ -36,6 +38,8 @@ export function AlphanumericKeypad({
   onRequestDeviceKeyboard,
   maxLength = 24,
   hapticFeedback = true,
+  label,
+  placeholder = "—",
 }: AlphanumericKeypadProps) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<KeypadMode>("number");
@@ -90,7 +94,25 @@ export function AlphanumericKeypad({
   ];
 
   return (
-    <div className="rounded-card border border-card-border bg-bg p-3">
+    <div className="rounded-card border border-card-border bg-surface p-3">
+      {label !== undefined && (
+        <div className="mb-3">
+          <p className="mb-1 text-caption text-text-tertiary">{label}</p>
+          <div className="flex h-input-height items-center rounded-input border border-input-border bg-input-bg px-input-padding-x">
+            {value ? (
+              <span className="font-mono text-input tabular-nums text-text-primary">
+                {value}
+                <span className="ml-px inline-block w-px translate-y-[1px] animate-pulse bg-text-primary align-middle text-input leading-none">&nbsp;</span>
+              </span>
+            ) : (
+              <span className="font-mono text-input text-input-placeholder">
+                {placeholder}
+                <span className="ml-px inline-block w-px translate-y-[1px] animate-pulse bg-text-tertiary align-middle text-input leading-none">&nbsp;</span>
+              </span>
+            )}
+          </div>
+        </div>
+      )}
       <div className="space-y-2">
         <p className="text-caption text-text-tertiary">{t("ui.keypad.mode")}</p>
         <div
@@ -139,7 +161,7 @@ export function AlphanumericKeypad({
               type="button"
               variant="secondary"
               onClick={() => handlePress(() => append(number))}
-              className="h-12 text-title tabular-nums"
+              className="h-14 text-title tabular-nums"
             >
               {number}
             </Button>
@@ -149,7 +171,7 @@ export function AlphanumericKeypad({
             type="button"
             variant="secondary"
             onClick={() => handlePress(clear)}
-            className="h-12 text-label text-danger"
+            className="h-14 text-label text-danger"
           >
             {t("ui.keypad.clear")}
           </Button>
@@ -157,7 +179,7 @@ export function AlphanumericKeypad({
             type="button"
             variant="secondary"
             onClick={() => handlePress(() => append("0"))}
-            className="h-12 text-title tabular-nums"
+            className="h-14 text-title tabular-nums"
           >
             0
           </Button>
@@ -165,7 +187,7 @@ export function AlphanumericKeypad({
             type="button"
             variant="secondary"
             onClick={() => handlePress(backspace)}
-            className="h-12 text-label"
+            className="h-14 text-label"
             aria-label={t("ui.keypad.backspace")}
           >
             <LuDelete size={18} />
@@ -184,7 +206,7 @@ export function AlphanumericKeypad({
                   type="button"
                   variant="secondary"
                   onClick={() => handlePress(() => append(letter))}
-                  className="h-11 font-mono text-label"
+                  className="h-12 font-mono text-label"
                 >
                   {letter}
                 </Button>
@@ -196,7 +218,7 @@ export function AlphanumericKeypad({
               type="button"
               variant="secondary"
               onClick={() => handlePress(clear)}
-              className="h-12 text-label text-danger"
+              className="h-14 text-label text-danger"
             >
               {t("ui.keypad.clear")}
             </Button>
@@ -204,7 +226,7 @@ export function AlphanumericKeypad({
               type="button"
               variant="secondary"
               onClick={() => handlePress(backspace)}
-              className="h-12 text-label"
+              className="h-14 text-label"
               aria-label={t("ui.keypad.backspace")}
             >
               <LuDelete size={18} />
@@ -216,7 +238,7 @@ export function AlphanumericKeypad({
       <Button
         type="button"
         onClick={() => handlePress(onDone)}
-        className="mt-3 h-12 w-full"
+        className="mt-3 h-14 w-full"
       >
         {t("ui.keypad.done")}
       </Button>

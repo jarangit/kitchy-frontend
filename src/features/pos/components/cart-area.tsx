@@ -12,7 +12,6 @@ import {
   LuX,
 } from "react-icons/lu";
 import CartItem from "./cart-item";
-import CartSummary from "./cart-summary";
 import TablePickerDialog from "./table-picker-dialog";
 import ItemNoteDialog from "./item-note-dialog";
 import { DeliveryDetailsDialog } from "./delivery-details-dialog";
@@ -240,6 +239,16 @@ const CartArea = ({
         ? t("pos.cart.selectDeliveryPlatformBeforePay")
         : null;
   const canPay = items.length > 0 && requirementMessage === null;
+  const openRequirementDialog = () => {
+    if (orderType === "DINE_IN" && !tableNumber) {
+      setIsTableDialogOpen(true);
+      return;
+    }
+
+    if (orderType === "DELIVERY" && deliveryPlatform.trim().length === 0) {
+      setIsDeliveryDialogOpen(true);
+    }
+  };
 
   return (
     <div className="flex h-full max-h-full w-full min-h-0 flex-col overflow-hidden border-l border-border bg-card-bg">
@@ -262,6 +271,20 @@ const CartArea = ({
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
+            {items.length > 0 && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onClearCart();
+                }}
+                className="shrink-0 text-danger hover:bg-danger-bg hover:text-danger"
+              >
+                {t("pos.cart.clearAll")}
+              </Button>
+            )}
             <Button
               type="button"
               variant="ghost"
@@ -279,12 +302,6 @@ const CartArea = ({
             </Button>
           </div>
         </div>
-
-        {requirementMessage && (
-          <p className="mt-2 rounded-full bg-warning-bg px-3 py-1.5 text-label font-medium text-warning">
-            {requirementMessage}
-          </p>
-        )}
 
         {isConfigExpanded && (
           <div className="page-stack-tight mt-4">
@@ -388,24 +405,11 @@ const CartArea = ({
               </div>
             )}
 
-            {items.length > 0 && (
-              <div className="flex justify-end border-t border-border pt-4">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClearCart}
-                  className="text-danger hover:bg-danger-bg hover:text-danger"
-                >
-                  {t("pos.cart.clearAll")}
-                </Button>
-              </div>
-            )}
           </div>
         )}
       </div>
 
-       <div className="min-h-0 flex-1 overflow-y-auto bg-card-bg p-card-padding pb-28">
+       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-card-bg p-card-padding [scrollbar-gutter:stable] [-webkit-overflow-scrolling:touch]">
         {items.length === 0 ? (
           <EmptyState
             icon={<LuShoppingCart size={32} />}
@@ -434,12 +438,15 @@ const CartArea = ({
         )}
       </div>
 
-      <div className="page-stack-tight shadow-cart-dock z-10 shrink-0 border-t border-border bg-card-bg p-card-padding md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
-        {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
+      <div className="page-stack-tight shadow-cart-dock z-10 shrink-0 border-t border-border bg-card-bg p-card-padding">
         {requirementMessage && items.length > 0 && (
-          <p className="rounded-card bg-warning-bg px-3 py-2 text-label font-medium text-warning">
+          <button
+            type="button"
+            onClick={openRequirementDialog}
+            className="w-full rounded-card bg-warning-bg px-3 py-2 text-left text-label font-medium text-warning transition-colors duration-[var(--motion-fast)] hover:bg-warning-bg/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-warning/30"
+          >
             {requirementMessage}
-          </p>
+          </button>
         )}
         <Button
           onClick={onPay}
@@ -448,7 +455,7 @@ const CartArea = ({
           data-onboarding-target="pay-button"
           className="w-full whitespace-normal text-center text-title tabular-nums leading-6"
         >
-          {t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })}
+          {`${t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })} • ${totalItems}`}
         </Button>
       </div>
 

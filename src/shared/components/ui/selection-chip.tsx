@@ -21,7 +21,7 @@ export function SelectionChip({
           "transition-colors duration-[var(--motion-fast)]",
           active
             ? "border-selection-active-border bg-selection-active-bg text-selection-active-text"
-            : "border-selection-border text-selection-text hover:border-selection-border-hover",
+            : "border-selection-border bg-surface-hover text-selection-text hover:border-selection-border-hover hover:bg-surface",
         className,
       )}
       {...props}

@@ -1,15 +1,13 @@
 import { useEffect, type RefObject } from "react";
-import { LuBike, LuKeyboard } from "react-icons/lu";
+import { LuBike, LuKeyboard, LuX } from "react-icons/lu";
 import {
   Dialog,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
 import { Label } from "@/shared/components/ui/label";
-import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { AlphanumericKeypad } from "@/shared/components/ui/alphanumeric-keypad";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -79,11 +77,21 @@ export function DeliveryDetailsDialog({
       onClose={onClose}
       className={cn(isDeliveryKeypadOpen ? "max-w-5xl" : "max-w-lg")}
     >
-      <DialogHeader>
-        <DialogTitle>{t("pos.orderType.delivery")}</DialogTitle>
-        <DialogDescription>
-          {t("pos.deliveryDialog.description")}
-        </DialogDescription>
+      <DialogHeader className="flex flex-row items-start justify-between gap-3">
+        <div>
+          <DialogTitle>{t("pos.orderType.delivery")}</DialogTitle>
+          <DialogDescription>
+            {t("pos.deliveryDialog.description")}
+          </DialogDescription>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={t("common.close")}
+          className="mt-0.5 shrink-0 rounded-full p-1 text-text-tertiary transition-colors duration-[var(--motion-fast)] hover:bg-surface hover:text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+        >
+          <LuX size={18} />
+        </button>
       </DialogHeader>
 
       <div
@@ -94,7 +102,7 @@ export function DeliveryDetailsDialog({
         )}
       >
         <div className={cn("page-stack-tight min-w-0", isDeliveryKeypadOpen && "md:gap-4")}>
-          <Card variant="muted" padding="sm" className="page-stack-tight">
+          <Card variant="default" padding="sm" className="page-stack-tight">
             <div className="flex items-center justify-between gap-3">
               <Label className="uppercase tracking-[0.08em] text-text-tertiary">
                 {t("pos.cart.deliveryPlatform")}
@@ -110,7 +118,7 @@ export function DeliveryDetailsDialog({
               role="radiogroup"
               aria-label={t("pos.cart.deliveryPlatform")}
               aria-describedby={!hasSelectedPlatform ? platformHelpId : undefined}
-              className="grid grid-cols-2 gap-3"
+              className="grid grid-cols-3 gap-3"
             >
               {deliveryPlatforms.map((platform) => {
                 const selected = deliveryPlatform === platform;
@@ -123,7 +131,7 @@ export function DeliveryDetailsDialog({
                     aria-checked={selected}
                     onClick={() => handlePlatformSelect(platform)}
                     className={cn(
-                      "justify-center text-center",
+                      "h-16 justify-center text-center",
                       selected && "ring-2 ring-accent/20"
                     )}
                   >
@@ -140,7 +148,8 @@ export function DeliveryDetailsDialog({
             )}
           </Card>
 
-          <Card variant="default" padding="sm" className="page-stack-tight">
+          {hasSelectedPlatform && !isDeliveryKeypadOpen && (
+          <Card variant="muted" padding="sm" className="page-stack-tight">
             <div className="flex items-center justify-between gap-3">
               <Label htmlFor={orderNumberInputId}>
                 {t("pos.cart.deliveryOrderNumber")}
@@ -191,10 +200,25 @@ export function DeliveryDetailsDialog({
               {t("pos.cart.deliveryOrderNumberHelp")}
             </p>
           </Card>
+          )}
 
-          <Card variant="muted" padding="sm" className="flex items-center gap-2 text-body-sm text-text-secondary">
-            <LuBike className="h-4 w-4 shrink-0 text-text-tertiary" />
-            <span>{summaryText}</span>
+          <Card
+            variant="muted"
+            padding="sm"
+            className={cn(
+              "flex items-center gap-2",
+              hasSelectedPlatform && hasOrderNumber && "border-success/30 bg-success-bg"
+            )}
+          >
+            <LuBike className={cn("h-4 w-4 shrink-0", hasSelectedPlatform && hasOrderNumber ? "text-success" : "text-text-tertiary")} />
+            <span className={cn("text-body-sm", hasSelectedPlatform && hasOrderNumber ? "text-success" : "text-text-secondary")}>
+              {summaryText}
+            </span>
+            {hasSelectedPlatform && hasOrderNumber && (
+              <span className="ml-auto rounded-full border border-success/30 bg-success-bg px-2 py-0.5 text-caption text-success">
+                พร้อม
+              </span>
+            )}
           </Card>
         </div>
 
@@ -205,16 +229,12 @@ export function DeliveryDetailsDialog({
               onChange={onDeliveryOrderNumberChange}
               onDone={onClose}
               onRequestDeviceKeyboard={onOpenDeviceKeyboard}
+              label={t("pos.cart.deliveryOrderNumber")}
+              placeholder={t("pos.cart.deliveryOrderNumberPlaceholder")}
             />
           </div>
         )}
       </div>
-
-      <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
-          {t("common.close")}
-        </Button>
-      </DialogFooter>
     </Dialog>
   );
 }
