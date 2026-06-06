@@ -78,7 +78,7 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
         variant="segmented"
         className="min-w-0"
       >
-        <TabList fullWidth>
+        <TabList fullWidth aria-label={t("transaction.filter.statusLabel")}>
           {items.map((item) => (
             <Tab key={item.key} value={item.key} className="gap-1.5">
               <span>{item.label}</span>

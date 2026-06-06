@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { format, formatDistanceToNow, parseISO } from "date-fns";
-import { LuReceipt } from "react-icons/lu";
+import { LuArrowRight, LuReceipt } from "react-icons/lu";
 import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
 import { type FlowStatus } from "@/features/transaction/components/transaction-card";
 import TransactionFilter, {
@@ -10,6 +10,7 @@ import TransactionFilter, {
 import { PageHeader } from "@/shared/components/ui/page-header";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Badge } from "@/shared/components/ui/badge";
+import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import {
   DataTable,
@@ -18,6 +19,7 @@ import {
   type SortingState,
 } from "@/shared/components/ui/data-table";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { MessageKey } from "@/shared/i18n/messages";
 
 interface TransactionProduct {
   name?: string;
@@ -29,6 +31,8 @@ interface TransactionListItem {
   id: string;
   orderNumber: string;
   status: string;
+  type?: string;
+  orderType?: string;
   createdAt: string;
   totalAmount?: number;
   products?: TransactionProduct[];
@@ -71,12 +75,148 @@ const flowVariant = (
   }
 };
 
+const flowLabelKey = (flow: FlowStatus): MessageKey => {
+  switch (flow) {
+    case "DONE":
+      return "transaction.filter.done";
+    case "IN_PROGRESS":
+      return "transaction.filter.inProgress";
+    case "CANCELLED":
+      return "transaction.filter.cancelled";
+  }
+};
+
+const orderTypeLabelKey = (value?: string): MessageKey => {
+  switch (value) {
+    case "DINE_IN":
+      return "transaction.card.orderType.dineIn";
+    case "TOGO":
+      return "transaction.card.orderType.togo";
+    case "DELIVERY":
+      return "transaction.card.orderType.delivery";
+    default:
+      return "transaction.card.orderType.default";
+  }
+};
+
+const getItemSummary = (tx: TransactionListItem) => {
+  const items = tx.products ?? [];
+  const totalQty = items.reduce((sum, item) => sum + (item.quantity ?? 0), 0);
+  const productCount = items.length;
+
+  return { totalQty, productCount };
+};
+
+const OverviewTile = ({
+  label,
+  value,
+  tone = "default",
+}: {
+  label: string;
+  value: number;
+  tone?: "default" | "warning" | "success" | "danger";
+}) => {
+  const toneClass = {
+    default: "text-text-primary",
+    warning: "text-warning",
+    success: "text-success",
+    danger: "text-danger",
+  }[tone];
+
+  return (
+    <Card padding="none" className="px-4 py-3">
+      <p className="text-label text-text-tertiary">{label}</p>
+      <p className={`mt-1 text-title font-semibold tabular-nums ${toneClass}`}>
+        {value}
+      </p>
+    </Card>
+  );
+};
+
+const MobileTransactionCard = ({
+  tx,
+  storeId,
+  onMarkReady,
+  onCancel,
+  isUpdating,
+}: {
+  tx: TransactionListItem;
+  storeId: string;
+  onMarkReady: (tx: TransactionListItem) => void;
+  onCancel: (tx: TransactionListItem) => void;
+  isUpdating: boolean;
+}) => {
+  const { t } = useTranslation();
+  const flow = getFlowStatus(tx.status);
+  const date = parseISO(tx.createdAt);
+  const { totalQty, productCount } = getItemSummary(tx);
+  const itemSummary =
+    productCount > 0
+      ? t("transaction.list.itemsSuffix", {
+          items: totalQty,
+          products: productCount,
+        })
+      : t("transaction.card.itemCount", { count: totalQty });
+
+  return (
+    <Card padding="none" className="overflow-hidden">
+      <div className="space-y-3 px-4 py-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="text-body font-semibold text-text-primary">#{tx.orderNumber}</p>
+              <Badge variant={flowVariant(flow)} size="md">
+                {t(flowLabelKey(flow))}
+              </Badge>
+            </div>
+            <p className="mt-1 text-body-sm text-text-secondary">
+              {t(orderTypeLabelKey(tx.type ?? tx.orderType))} · {itemSummary}
+            </p>
+            <p className="mt-0.5 text-label tabular-nums text-text-tertiary">
+              {formatDistanceToNow(date, { addSuffix: true })}
+            </p>
+          </div>
+          <p className="shrink-0 text-title font-semibold tabular-nums text-text-primary">
+            {formatCurrency(tx.totalAmount ?? 0)}
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {flow === "IN_PROGRESS" && (
+            <>
+              <Button size="sm" onClick={() => onMarkReady(tx)} disabled={isUpdating}>
+                {t("transaction.list.quickAction.markReady")}
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => onCancel(tx)}
+                disabled={isUpdating}
+                className="text-danger hover:text-danger"
+              >
+                {t("transaction.list.quickAction.cancel")}
+              </Button>
+            </>
+          )}
+          <Link
+            to={`/store/${storeId}/transactions/${tx.id}`}
+            className="ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-button px-3 text-button-sm font-button text-accent transition-colors duration-[var(--motion-fast)] hover:bg-button-ghost-bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          >
+            {t("transaction.list.viewDetails")}
+            <LuArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
 const TransactionListPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { transactions, isLoading } = useTransactionService();
+  const { transactions, isLoading, updateTransaction, isUpdating, refetch } = useTransactionService();
 
   const [filter, setFilter] = useState<{
     search: string;
@@ -232,6 +372,22 @@ const TransactionListPage = () => {
   );
 
   const hasAny = filteredTransactions.length > 0;
+  const hasActiveFilters = filter.search.trim().length > 0 || filter.status !== "ALL";
+  const emptyTitle = hasActiveFilters
+    ? t("transaction.empty.filteredTitle")
+    : t("transaction.empty.noOrdersTitle");
+  const emptyDescription = hasActiveFilters
+    ? t("transaction.empty.filteredDescription")
+    : t("transaction.empty.noOrdersDescription");
+  const storeId = id ?? "";
+
+  const handleQuickStatusUpdate = async (
+    tx: TransactionListItem,
+    status: "READY" | "CANCELLED",
+  ) => {
+    await updateTransaction({ id: tx.id, payload: { status } });
+    await refetch();
+  };
 
   return (
     <div className="space-y-5">
@@ -240,17 +396,28 @@ const TransactionListPage = () => {
         subtitle={t("transaction.subtitle")}
       />
 
+      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <OverviewTile label={t("transaction.filter.all")} value={counts.all} />
+        <OverviewTile
+          label={t("transaction.filter.inProgress")}
+          value={counts.inProgress}
+          tone="warning"
+        />
+        <OverviewTile
+          label={t("transaction.filter.done")}
+          value={counts.done}
+          tone="success"
+        />
+        <OverviewTile
+          label={t("transaction.filter.cancelled")}
+          value={counts.cancelled}
+          tone="danger"
+        />
+      </section>
+
       <TransactionFilter counts={counts} onFilterChange={setFilter} />
 
-      {!isLoading && !hasAny ? (
-        <Card padding="none" className="overflow-hidden">
-          <EmptyState
-            icon={<LuReceipt size={32} />}
-            title={t("transaction.empty.title")}
-            description={t("transaction.empty.description")}
-          />
-        </Card>
-      ) : (
+      {isLoading ? (
         <Card padding="none" className="overflow-hidden">
           <DataTable<TransactionListItem>
             data={filteredTransactions}
@@ -264,6 +431,42 @@ const TransactionListPage = () => {
             isLoading={isLoading}
           />
         </Card>
+      ) : !hasAny ? (
+        <Card padding="none" className="overflow-hidden">
+          <EmptyState
+            icon={<LuReceipt size={32} />}
+            title={emptyTitle}
+            description={emptyDescription}
+          />
+        </Card>
+      ) : (
+        <>
+          <div className="space-y-3 md:hidden">
+            {filteredTransactions.map((tx) => (
+              <MobileTransactionCard
+                key={tx.id}
+                tx={tx}
+                storeId={storeId}
+                onMarkReady={(nextTx) => handleQuickStatusUpdate(nextTx, "READY")}
+                onCancel={(nextTx) => handleQuickStatusUpdate(nextTx, "CANCELLED")}
+                isUpdating={isUpdating}
+              />
+            ))}
+          </div>
+          <Card padding="none" className="hidden overflow-hidden md:block">
+            <DataTable<TransactionListItem>
+              data={filteredTransactions}
+              columns={columns}
+              sorting={sorting}
+              onSortingChange={setSorting}
+              onRowClick={(row) =>
+                navigate(`/store/${id}/transactions/${row.id}`)
+              }
+              getRowId={(row) => row.id}
+              isLoading={isLoading}
+            />
+          </Card>
+        </>
       )}
     </div>
   );
