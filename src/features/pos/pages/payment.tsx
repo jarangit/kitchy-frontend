@@ -85,7 +85,9 @@ const PaymentPage = () => {
       ? t("pos.payment.selectTableFirst")
       : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
         ? t("pos.payment.selectPlatformFirst")
-        : null;
+        : paymentMethod === "CASH" && receivedAmount.trim().length > 0 && Number(receivedAmount) < subtotal
+          ? t("pos.payment.insufficientCash")
+          : null;
 
   const handleCancel = () => {
     navigate(`/store/${id}/pos`);
@@ -155,60 +157,66 @@ const PaymentPage = () => {
     <div className="flex h-full min-h-0 flex-col bg-bg">
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="mx-auto grid min-h-full max-w-6xl gap-4 p-4 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-0">
-          <div className="min-h-0 lg:border-r lg:border-border lg:pr-4">
+          <div className="order-2 min-h-0 lg:order-1 lg:border-r lg:border-border lg:pr-4">
             <OrderSummary items={items} subtotal={subtotal} />
           </div>
 
-          <div className="min-h-0 lg:pl-4">
+          <div className="order-1 min-h-0 lg:order-2 lg:pl-4">
             <div className="flex min-h-full flex-col lg:sticky lg:top-4">
-              <Card as="section" padding="sm" className="space-y-4">
-                <div>
+              <Card as="section" padding="sm" className="space-y-5">
+                <div className="flex items-center justify-between gap-3">
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={handleCancel}
-                    className="gap-1.5"
+                    className="-ml-2 gap-1.5 text-text-secondary"
                   >
                     <LuArrowLeft size={18} />
                     {t("pos.payment.backToPos")}
                   </Button>
                 </div>
 
-                <div className="space-y-1">
+                <div className="space-y-3">
                   <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
                     {t("pos.payment.title")}
                   </p>
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h1 className="text-title text-text-primary">{t("pos.payment.method")}</h1>
-                      <p className="mt-1 text-body text-text-secondary">{nextStepHint}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-caption text-text-secondary">{t("pos.receipt.total")}</p>
-                      <p className="text-heading font-semibold tabular-nums text-text-primary">
-                        ฿{subtotal.toFixed(2)}
-                      </p>
-                    </div>
+                  <div className="rounded-card border border-accent/20 bg-accent/5 px-4 py-4">
+                    <p className="text-body-sm font-medium text-text-secondary">
+                      {t("pos.payment.amountDue")}
+                    </p>
+                    <p className="mt-1 text-display font-semibold tabular-nums text-text-primary">
+                      ฿{subtotal.toFixed(2)}
+                    </p>
+                    {orderMeta.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {orderMeta.map((value) => (
+                          <span
+                            key={value}
+                            className="inline-flex rounded-full border border-card-border bg-card-bg px-3 py-1.5 text-label text-text-secondary"
+                          >
+                            {value}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2 border-t border-border pt-4">
-                  {orderMeta.map((value) => (
-                    <span
-                      key={value}
-                      className="inline-flex rounded-full border border-card-border bg-bg px-3 py-1.5 text-label text-text-secondary"
-                    >
-                      {value}
-                    </span>
-                  ))}
+                <div className="space-y-3">
+                  <div className="mb-3">
+                    <h1 className="text-title text-text-primary">{t("pos.payment.method")}</h1>
+                    <p className="mt-1 text-body text-text-secondary">{nextStepHint}</p>
+                  </div>
+                  <PaymentMethodSelector
+                    selected={paymentMethod}
+                    onSelect={setPaymentMethod}
+                    compact
+                    ariaLabel={t("pos.payment.methodLabel")}
+                  />
                 </div>
 
-                <div className="border-t border-border pt-4">
-                  <PaymentMethodSelector selected={paymentMethod} onSelect={setPaymentMethod} compact />
-                </div>
-
-                <div className="border-t border-border pt-4">
+                <div>
                   {paymentMethod === "CASH" && (
                     <CashPaymentSection
                       subtotal={subtotal}
@@ -225,19 +233,19 @@ const PaymentPage = () => {
                   )}
                 </div>
 
-                <div className="border-t border-border pt-4">
-                    <div className="space-y-3">
-                      {(errorMessage || validationMessage) && (
-                        <InlineAlert tone="danger">
-                          {errorMessage ?? validationMessage}
-                        </InlineAlert>
-                      )}
+                <div className="sticky bottom-0 -mx-3 -mb-3 border-t border-border bg-card-bg px-3 py-3 sm:static sm:mx-0 sm:mb-0 sm:px-0 sm:pb-0">
+                  <div className="space-y-3">
+                    {(errorMessage || validationMessage) && (
+                      <InlineAlert tone={errorMessage ? "danger" : "warning"}>
+                        {errorMessage ?? validationMessage}
+                      </InlineAlert>
+                    )}
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
                       <Button
-                        variant="secondary"
+                        variant="ghost"
                         onClick={handleCancel}
-                        className="flex-1 whitespace-normal"
+                        className="hidden flex-1 whitespace-normal sm:inline-flex"
                         disabled={isProcessing}
                       >
                         {t("common.cancel")}
@@ -245,13 +253,13 @@ const PaymentPage = () => {
                       <Button
                         onClick={handleConfirmPayment}
                         disabled={!canConfirm || isProcessing}
+                        loading={isProcessing}
+                        loadingText={t("pos.payment.processing")}
                         className="flex-[2] whitespace-normal text-center text-title leading-6"
                       >
-                        {isProcessing
-                          ? t("pos.payment.processing")
-                          : t("pos.payment.payAmount", {
-                              amount: `฿${subtotal.toFixed(2)}`,
-                            })}
+                        {t("pos.payment.payAmount", {
+                          amount: `฿${subtotal.toFixed(2)}`,
+                        })}
                       </Button>
                     </div>
                   </div>

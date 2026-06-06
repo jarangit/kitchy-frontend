@@ -17,13 +17,18 @@ const QrPaymentSection = ({ subtotal, className, embedded = false }: Props) => {
       <h3 className="text-title text-text-primary">
         {t("pos.payment.qrTitle")}
       </h3>
-      <div className="mx-auto flex h-60 w-full max-w-[15rem] flex-col items-center justify-center gap-4 rounded-card border border-border px-4 text-text-tertiary">
+      <div className="mx-auto flex h-48 w-full max-w-[13rem] flex-col items-center justify-center gap-3 rounded-card border border-border bg-surface px-4 text-text-tertiary sm:h-56 sm:max-w-[15rem]">
         <LuQrCode size={48} />
         <span className="text-body-sm">{t("pos.payment.qrPlaceholder")}</span>
       </div>
-      <p className="break-words text-body text-text-secondary tabular-nums">
-        {t("pos.payment.scanToPay", { amount: `฿${subtotal.toFixed(2)}` })}
-      </p>
+      <div className="mx-auto max-w-sm space-y-2">
+        <p className="break-words text-body font-semibold text-text-primary tabular-nums">
+          {t("pos.payment.scanToPay", { amount: `฿${subtotal.toFixed(2)}` })}
+        </p>
+        <p className="text-body-sm leading-6 text-text-secondary">
+          {t("pos.payment.qrConfirmHint")}
+        </p>
+      </div>
     </>
   );
 
