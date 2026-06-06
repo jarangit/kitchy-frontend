@@ -322,6 +322,7 @@ export const enMessages = {
   "pos.header.network.poor": "Internet unstable",
 
   "pos.cart.title": "Cart",
+  "pos.cart.allCategories": "All",
   "pos.cart.clearAll": "Clear All",
   "pos.cart.orderType": "Order Type",
   "pos.cart.table": "Table",
@@ -338,6 +339,15 @@ export const enMessages = {
   "pos.cart.emptyTitle": "Cart is empty",
   "pos.cart.emptyDescription": "Tap a product to add it",
   "pos.cart.pay": "Pay {amount}",
+  "pos.cart.mobileOpen": "View cart / Pay",
+  "pos.cart.itemCount": "{count} items",
+  "pos.cart.total": "Total",
+  "pos.cart.categoriesLabel": "Product categories",
+  "pos.cart.selectTableBeforePay": "Select a table before payment",
+  "pos.cart.selectDeliveryPlatformBeforePay": "Select a delivery platform before payment",
+  "pos.cart.removeItem": "Remove item",
+  "pos.cart.decreaseQuantity": "Decrease quantity",
+  "pos.cart.increaseQuantity": "Increase quantity",
 
   "pos.orderType.dine_in": "Dine In",
   "pos.orderType.togo": "To Go",

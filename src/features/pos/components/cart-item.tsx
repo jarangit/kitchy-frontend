@@ -69,7 +69,7 @@ const CartItem = ({
                     : onUpdateQuantity(item.cartItemId, item.quantity - 1)
                 }
                 className="h-9 w-9 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-                aria-label={item.quantity <= 1 ? "Remove item" : "Decrease quantity"}
+                aria-label={item.quantity <= 1 ? t("pos.cart.removeItem") : t("pos.cart.decreaseQuantity")}
               >
                 <span className="text-label font-semibold leading-none">-</span>
               </Button>
@@ -82,7 +82,7 @@ const CartItem = ({
                 size="icon"
                 onClick={() => onUpdateQuantity(item.cartItemId, item.quantity + 1)}
                 className="h-9 w-9 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-                aria-label="Increase quantity"
+                aria-label={t("pos.cart.increaseQuantity")}
               >
                 <LuPlus size={16} />
               </Button>

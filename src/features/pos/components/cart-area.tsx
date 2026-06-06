@@ -233,6 +233,14 @@ const CartArea = ({
     }
   }
 
+  const requirementMessage =
+    orderType === "DINE_IN" && !tableNumber
+      ? t("pos.cart.selectTableBeforePay")
+      : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
+        ? t("pos.cart.selectDeliveryPlatformBeforePay")
+        : null;
+  const canPay = items.length > 0 && requirementMessage === null;
+
   return (
     <div className="flex h-full max-h-full w-full min-h-0 flex-col overflow-hidden border-l border-border bg-card-bg">
       <div
@@ -272,6 +280,12 @@ const CartArea = ({
           </div>
         </div>
 
+        {requirementMessage && (
+          <p className="mt-2 rounded-full bg-warning-bg px-3 py-1.5 text-label font-medium text-warning">
+            {requirementMessage}
+          </p>
+        )}
+
         {isConfigExpanded && (
           <div className="page-stack-tight mt-4">
             <div>
@@ -286,12 +300,12 @@ const CartArea = ({
                       key={value}
                       active={orderType === value}
                       onClick={() => handleOrderTypeChange(value)}
-                      className="justify-center px-0"
+                      className="h-auto min-h-16 flex-col gap-1 px-2 py-2"
                       aria-label={label}
                       title={label}
                     >
                       <Icon className="h-5 w-5" aria-hidden="true" />
-                      <span className="sr-only">{label}</span>
+                      <span className="text-label leading-4">{label}</span>
                     </SelectionChip>
                   );
                 })}
@@ -422,9 +436,14 @@ const CartArea = ({
 
       <div className="page-stack-tight shadow-cart-dock z-10 shrink-0 border-t border-border bg-card-bg p-card-padding md:fixed md:bottom-0 md:right-0 md:w-[var(--pos-cart-width)] md:max-w-[var(--pos-cart-width)] md:min-w-[var(--pos-cart-width)] md:border-l md:border-border">
         {items.length > 0 && <CartSummary subtotal={subtotal} totalItems={totalItems} />}
+        {requirementMessage && items.length > 0 && (
+          <p className="rounded-card bg-warning-bg px-3 py-2 text-label font-medium text-warning">
+            {requirementMessage}
+          </p>
+        )}
         <Button
           onClick={onPay}
-          disabled={items.length === 0}
+          disabled={!canPay}
           size="lg"
           data-onboarding-target="pay-button"
           className="w-full whitespace-normal text-center text-title tabular-nums leading-6"

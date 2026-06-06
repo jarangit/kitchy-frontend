@@ -320,6 +320,7 @@ export const thMessages = {
   "pos.header.network.poor": "อินเทอร์เน็ตไม่เสถียร",
 
   "pos.cart.title": "ตะกร้า",
+  "pos.cart.allCategories": "ทั้งหมด",
   "pos.cart.clearAll": "ล้างทั้งหมด",
   "pos.cart.orderType": "ประเภทออเดอร์",
   "pos.cart.table": "โต๊ะ",
@@ -336,6 +337,15 @@ export const thMessages = {
   "pos.cart.emptyTitle": "ตะกร้าว่าง",
   "pos.cart.emptyDescription": "แตะสินค้าเพื่อเพิ่มลงตะกร้า",
   "pos.cart.pay": "ชำระ {amount}",
+  "pos.cart.mobileOpen": "ดูตะกร้า / ชำระเงิน",
+  "pos.cart.itemCount": "{count} รายการ",
+  "pos.cart.total": "รวม",
+  "pos.cart.categoriesLabel": "หมวดหมู่สินค้า",
+  "pos.cart.selectTableBeforePay": "เลือกโต๊ะก่อนชำระเงิน",
+  "pos.cart.selectDeliveryPlatformBeforePay": "เลือกแพลตฟอร์มเดลิเวอรีก่อนชำระเงิน",
+  "pos.cart.removeItem": "ลบสินค้า",
+  "pos.cart.decreaseQuantity": "ลดจำนวน",
+  "pos.cart.increaseQuantity": "เพิ่มจำนวน",
 
   "pos.orderType.dine_in": "ทานที่ร้าน",
   "pos.orderType.togo": "กลับบ้าน",

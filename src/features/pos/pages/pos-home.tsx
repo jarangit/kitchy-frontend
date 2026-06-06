@@ -1,5 +1,6 @@
 import { useMemo, useState, type CSSProperties } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { LuX } from "react-icons/lu";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
@@ -7,15 +8,19 @@ import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
 import { PosCoachOverlay } from "@/features/onboarding/components/pos-coach-overlay";
+import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 const PosHomePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const cartRailStyle = {
     "--pos-cart-width": "460px",
   } as CSSProperties;
   const [selectedCategory, setSelectedCategory] = useState("ALL");
+  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
 
   const {
     productsQuery,
@@ -51,8 +56,15 @@ const PosHomePage = () => {
 
   const isProductsLoading =
     selectedCategory === "ALL" ? productsQueryLoading : productsByCategoryLoading;
+  const mobileRequirementMessage =
+    cart.orderType === "DINE_IN" && !cart.tableNumber
+      ? t("pos.cart.selectTableBeforePay")
+      : cart.orderType === "DELIVERY" && cart.deliveryPlatform.trim().length === 0
+        ? t("pos.cart.selectDeliveryPlatformBeforePay")
+        : null;
 
   const handlePay = () => {
+    setIsMobileCartOpen(false);
     navigate(`/store/${id}/pos/payment`);
   };
 
@@ -73,7 +85,7 @@ const PosHomePage = () => {
       {/* Main content */}
       <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Product area */}
-        <div className="page-stack-tight flex min-w-0 flex-1 overflow-hidden p-card-padding">
+        <div className="page-stack-tight flex min-w-0 flex-1 overflow-hidden p-card-padding pb-32 md:pb-card-padding">
           <CategoryTabs
             categories={categories}
             selected={selectedCategory}
@@ -130,6 +142,72 @@ const PosHomePage = () => {
           />
         </div>
       </div>
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card-bg p-4 shadow-cart-dock md:hidden">
+        {cart.totalItems > 0 && (
+          <div className="mb-3 flex items-center justify-between gap-3 text-body-sm text-text-secondary">
+            <span>{t("pos.cart.itemCount", { count: String(cart.totalItems) })}</span>
+            <span className="font-semibold tabular-nums text-text-primary">
+              ฿{cart.subtotal.toFixed(2)}
+            </span>
+          </div>
+        )}
+        {mobileRequirementMessage && cart.totalItems > 0 && (
+          <p className="mb-3 rounded-card bg-warning-bg px-3 py-2 text-label font-medium text-warning">
+            {mobileRequirementMessage}
+          </p>
+        )}
+        <Button
+          size="lg"
+          className="w-full whitespace-normal text-center text-title tabular-nums leading-6"
+          disabled={cart.totalItems === 0}
+          onClick={() => setIsMobileCartOpen(true)}
+        >
+          {cart.totalItems > 0
+            ? t("pos.cart.mobileOpen")
+            : t("pos.cart.pay", { amount: `฿${cart.subtotal.toFixed(2)}` })}
+        </Button>
+      </div>
+
+      {isMobileCartOpen && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-bg md:hidden" role="dialog" aria-modal="true" aria-label={t("pos.cart.title")}>
+          <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border bg-card-bg px-4 py-3">
+            <div>
+              <p className="text-label text-text-tertiary">{t("pos.cart.title")}</p>
+              <p className="text-body font-semibold text-text-primary">
+                {t("pos.cart.itemCount", { count: String(cart.totalItems) })}
+              </p>
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileCartOpen(false)}
+              aria-label={t("common.close")}
+            >
+              <LuX className="h-5 w-5" aria-hidden="true" />
+            </Button>
+          </div>
+          <div className="min-h-0 flex-1">
+            <CartArea
+              items={cart.items}
+              subtotal={cart.subtotal}
+              onUpdateQuantity={cart.updateQuantity}
+              onRemoveItem={cart.removeItem}
+              onUpdateItemNote={cart.setItemNote}
+              onClearCart={cart.clearCart}
+              onPay={handlePay}
+              orderType={cart.orderType}
+              tableNumber={cart.tableNumber}
+              deliveryPlatform={cart.deliveryPlatform}
+              deliveryOrderNumber={cart.deliveryOrderNumber}
+              onOrderTypeChange={cart.setOrderType}
+              onTableNumberChange={cart.setTableNumber}
+              onDeliveryPlatformChange={cart.setDeliveryPlatform}
+              onDeliveryOrderNumberChange={cart.setDeliveryOrderNumber}
+            />
+          </div>
+        </div>
+      )}
       <PosCoachOverlay
         cartItemCount={cart.totalItems}
         subtotal={cart.subtotal}
