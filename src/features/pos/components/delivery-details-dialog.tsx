@@ -49,6 +49,8 @@ export function DeliveryDetailsDialog({
   const { t } = useTranslation();
   const hasSelectedPlatform = deliveryPlatform.trim().length > 0;
   const hasOrderNumber = deliveryOrderNumber.trim().length > 0;
+  const platformHelpId = "delivery-platform-help";
+  const orderNumberInputId = "deliveryOrderNumberDialog";
   const summaryText = hasSelectedPlatform
     ? hasOrderNumber
       ? `${deliveryPlatform.trim()} • ${deliveryOrderNumber.trim()}`
@@ -86,38 +88,61 @@ export function DeliveryDetailsDialog({
 
       <div
         className={cn(
-          "page-stack-tight",
-          isDeliveryKeypadOpen &&
-            "grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_380px]",
+          isDeliveryKeypadOpen
+            ? "grid grid-cols-1 items-start gap-4 md:grid-cols-[minmax(0,1fr)_360px]"
+            : "page-stack-tight",
         )}
       >
-        <div className={cn("page-stack-tight min-w-0", isDeliveryKeypadOpen && "lg:gap-4")}> 
-          <div>
-            <Label className="mb-2 uppercase tracking-[0.08em] text-text-tertiary">
-              {t("pos.cart.deliveryPlatform")}
-            </Label>
-            <div className="grid grid-cols-2 gap-3">
-              {deliveryPlatforms.map((platform) => (
-                <SelectionChip
-                  key={platform}
-                  active={deliveryPlatform === platform}
-                  onClick={() => handlePlatformSelect(platform)}
-                  className="justify-center text-center"
-                >
-                  {platform}
-                </SelectionChip>
-              ))}
-            </div>
-            {!hasSelectedPlatform && (
-                <p className="mt-2 text-label text-danger">
-                  {t("pos.deliveryDialog.platformRequired")}
-                </p>
-            )}
-          </div>
-
-          <div>
+        <div className={cn("page-stack-tight min-w-0", isDeliveryKeypadOpen && "md:gap-4")}>
+          <Card variant="muted" padding="sm" className="page-stack-tight">
             <div className="flex items-center justify-between gap-3">
-              <Label htmlFor="deliveryOrderNumberDialog">
+              <Label className="uppercase tracking-[0.08em] text-text-tertiary">
+                {t("pos.cart.deliveryPlatform")}
+              </Label>
+              <span className="text-label text-text-tertiary">
+                {hasSelectedPlatform
+                  ? deliveryPlatform.trim()
+                  : t("pos.deliveryDialog.platformRequired")}
+              </span>
+            </div>
+
+            <div
+              role="radiogroup"
+              aria-label={t("pos.cart.deliveryPlatform")}
+              aria-describedby={!hasSelectedPlatform ? platformHelpId : undefined}
+              className="grid grid-cols-2 gap-3"
+            >
+              {deliveryPlatforms.map((platform) => {
+                const selected = deliveryPlatform === platform;
+
+                return (
+                  <SelectionChip
+                    key={platform}
+                    active={selected}
+                    role="radio"
+                    aria-checked={selected}
+                    onClick={() => handlePlatformSelect(platform)}
+                    className={cn(
+                      "justify-center text-center",
+                      selected && "ring-2 ring-accent/20"
+                    )}
+                  >
+                    {platform}
+                  </SelectionChip>
+                );
+              })}
+            </div>
+
+            {!hasSelectedPlatform && (
+              <p id={platformHelpId} className="text-label text-danger">
+                {t("pos.deliveryDialog.platformRequired")}
+              </p>
+            )}
+          </Card>
+
+          <Card variant="default" padding="sm" className="page-stack-tight">
+            <div className="flex items-center justify-between gap-3">
+              <Label htmlFor={orderNumberInputId}>
                 {t("pos.cart.deliveryOrderNumber")}
               </Label>
               <span className="text-label text-text-tertiary">
@@ -127,7 +152,7 @@ export function DeliveryDetailsDialog({
 
             {isDeviceKeyboardEnabled ? (
               <input
-                id="deliveryOrderNumberDialog"
+                id={orderNumberInputId}
                 ref={deliveryOrderInputRef}
                 value={deliveryOrderNumber}
                 onChange={(event) =>
@@ -142,7 +167,7 @@ export function DeliveryDetailsDialog({
               />
             ) : (
               <button
-                id="deliveryOrderNumberDialog"
+                id={orderNumberInputId}
                 type="button"
                 onClick={onOpenCustomKeypad}
                 aria-haspopup="dialog"
@@ -156,8 +181,7 @@ export function DeliveryDetailsDialog({
                       : "text-input text-input-placeholder"
                   }
                 >
-                  {deliveryOrderNumber ||
-                    t("pos.cart.deliveryOrderNumberPlaceholder")}
+                  {deliveryOrderNumber || t("pos.cart.deliveryOrderNumberPlaceholder")}
                 </span>
                 <LuKeyboard className="h-5 w-5 shrink-0 text-text-tertiary" />
               </button>
@@ -166,18 +190,16 @@ export function DeliveryDetailsDialog({
             <p className="mt-2 text-label text-text-tertiary">
               {t("pos.cart.deliveryOrderNumberHelp")}
             </p>
-          </div>
+          </Card>
 
-          <div>
-            <Card variant="muted" padding="sm" className="flex items-center gap-2 text-body-sm text-text-secondary">
-              <LuBike className="h-4 w-4 shrink-0 text-text-tertiary" />
-              <span>{summaryText}</span>
-            </Card>
-          </div>
+          <Card variant="muted" padding="sm" className="flex items-center gap-2 text-body-sm text-text-secondary">
+            <LuBike className="h-4 w-4 shrink-0 text-text-tertiary" />
+            <span>{summaryText}</span>
+          </Card>
         </div>
 
         {isDeliveryKeypadOpen && (
-          <div className="min-w-0 lg:sticky lg:top-0">
+          <div className="min-w-0 self-start md:sticky md:top-0">
             <AlphanumericKeypad
               value={deliveryOrderNumber}
               onChange={onDeliveryOrderNumberChange}
