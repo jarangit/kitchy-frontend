@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/shared/components/ui/card";
+import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { IconTile } from "@/shared/components/ui/icon-tile";
 import { ErrorState } from "@/shared/components/ui/error-state";
@@ -49,7 +50,7 @@ const DashboardHeader = ({
   overviewLabel: string;
   storeName: string;
 }) => (
-  <header className="flex w-full flex-col gap-1 py-2">
+  <header className="flex w-full flex-col gap-1">
     <p className="text-label uppercase tracking-[0.08em] text-text-tertiary">{overviewLabel}</p>
     <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">
       {storeName}
@@ -85,12 +86,11 @@ const DailySummaryCard = ({
             {readyLabel}
           </h2>
         </div>
-        <Link
-          to={`/store/${storeId}/pos`}
-          className="inline-flex h-button-height-lg shrink-0 items-center justify-center gap-2 rounded-button bg-button-primary-bg px-7 text-button-lg font-button text-button-primary-text transition-colors duration-[var(--motion-fast)] hover:bg-button-primary-bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-        >
-          {posLabel}
-          <LuArrowRight size={18} aria-hidden="true" />
+        <Link to={`/store/${storeId}/pos`} className="inline-flex">
+          <Button variant="primary" size="lg" className="shrink-0">
+            {posLabel}
+            <LuArrowRight size={18} aria-hidden="true" />
+          </Button>
         </Link>
       </div>
 

@@ -15,7 +15,7 @@ const CategoryTabs = ({ categories, selected, onSelect }: Props) => {
       <TabList
         aria-label={t("pos.cart.categoriesLabel")}
         scrollable
-        className="gap-2 pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        className="gap-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       >
         <Tab value="ALL">{t("pos.cart.allCategories")}</Tab>
         {categories.map((cat) => (

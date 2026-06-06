@@ -35,10 +35,10 @@ const CashPaymentSection = ({
 
   const content = (
     <>
-      <h3 className="text-title text-text-primary">
+      <h3 className="text-subtitle text-text-primary">
         {t("pos.payment.cashTitle")}
       </h3>
-      <div className={embedded ? "space-y-4" : "space-y-5"}>
+      <div className={embedded ? "space-y-3" : "space-y-5"}>
         <Input
           label={t("pos.payment.receivedAmount")}
           type="number"
@@ -52,14 +52,14 @@ const CashPaymentSection = ({
           <p className="mb-2 text-label text-text-secondary">
             {t("pos.payment.quickAmounts")}
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="grid grid-cols-3 gap-3">
             {quickAmounts.map((amt) => (
               <Button
                 key={amt.value}
                 variant="secondary"
                 size="sm"
                 onClick={() => onReceivedAmountChange(String(amt.value))}
-                className="whitespace-normal text-center"
+                className="w-full whitespace-normal text-center"
               >
                 {amt.label}
               </Button>
