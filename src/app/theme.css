@@ -24,6 +24,8 @@
   --color-success: var(--color-success);
   --color-warning: var(--color-warning);
   --color-info: var(--color-info);
+  --color-bumped: var(--color-bumped);
+  --color-bumped-bg: var(--color-bumped-bg);
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-text-tertiary: var(--color-text-tertiary);

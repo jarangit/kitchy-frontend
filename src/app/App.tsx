@@ -6,6 +6,7 @@ import NotFoundPage from "@/shared/pages/not-found";
 import { IS_DEMO_MODE } from "@/shared/services/adapters/data-adapter";
 
 import { PosLayout } from "@/features/pos/components/pos-layout";
+import { KdsLayout } from "@/features/kds/components/kds-layout";
 
 // Layout
 import Layout from "@/shared/components/layout/layout";
@@ -135,9 +136,9 @@ function App() {
           path="/store/:id/kds"
           element={
             <ProtectedRoute>
-              <Layout>
+              <KdsLayout>
                 <KdsBoardPage />
-              </Layout>
+              </KdsLayout>
             </ProtectedRoute>
           }
         />

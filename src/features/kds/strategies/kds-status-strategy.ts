@@ -1,8 +1,7 @@
 /**
  * Strategy pattern for KDS card status transitions.
  *
- * Keyed by `KdsStatus` to centralise the "what comes next?" question that
- * was previously hard-coded inside `kds-order-card.tsx` and `useKds.ts`.
+ * Keyed by `KdsStatus` to centralise the "what comes next?" question.
  *
  * Designed so a future `COOKING` state can be inserted without touching
  * any consumer: add a row to `kdsStatusStrategies` and the UI adapts.
