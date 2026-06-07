@@ -12,7 +12,8 @@ const useClock = () => {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
-    const interval = window.setInterval(() => setNow(new Date()), 30_000);
+    const tick = () => setNow(new Date());
+    const interval = window.setInterval(tick, 1_000);
     return () => window.clearInterval(interval);
   }, []);
 
@@ -32,14 +33,13 @@ export function AppBar() {
     minute: "2-digit",
   });
   const dateLabel = now.toLocaleDateString(locale, {
-    weekday: "short",
     day: "numeric",
-    month: "short",
+    month: "numeric",
   });
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-bg/82 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72 relative">
-      <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-4 text-caption text-text-secondary sm:px-4 lg:px-6">
+      <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-2 text-caption text-text-secondary sm:px-4 sm:py-2.5 lg:px-6">
         {storeId ? (
           <Link
             to={`/store/${storeId}`}
@@ -70,6 +70,24 @@ export function AppBar() {
 
         <div className="flex shrink-0 items-center gap-2">
           <span
+            className="inline-flex min-h-7 items-center gap-2 rounded-full bg-surface pl-2.5 pr-3 leading-none transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover"
+            aria-label={`${timeLabel} ${dateLabel}`}
+            title={`${timeLabel} · ${dateLabel}`}
+          >
+            <LuClock3 size={13} className="text-text-tertiary" aria-hidden="true" />
+            <span className="font-mono text-body tabular-nums text-text-primary">
+              {timeLabel}
+            </span>
+            <span
+              className="hidden h-3 w-px bg-border lg:inline-block"
+              aria-hidden="true"
+            />
+            <span className="hidden text-caption text-text-tertiary lg:inline">
+              {dateLabel}
+            </span>
+          </span>
+
+          <span
             aria-label={isOnline ? t("appbar.online") : t("appbar.offline")}
             title={isOnline ? t("appbar.online") : t("appbar.offline")}
             className={cn(
@@ -78,12 +96,6 @@ export function AppBar() {
             )}
           >
             {isOnline ? <LuWifi size={13} /> : <LuWifiOff size={13} />}
-          </span>
-
-          <span className="inline-flex min-h-7 items-center gap-1 rounded-full bg-surface px-2.5 text-caption leading-none text-text-secondary">
-            <LuClock3 size={13} />
-            <span className="hidden lg:inline">{dateLabel}</span>
-            <span className="text-text-primary">{timeLabel}</span>
           </span>
         </div>
       </div>
