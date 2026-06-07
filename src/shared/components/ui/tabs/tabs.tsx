@@ -89,7 +89,7 @@ export function TabList({
         role="tablist"
         aria-label={ariaLabel}
         className={cn(
-          "bg-segment-bg border border-segment-border rounded-[1.25rem] p-1",
+          "bg-segment-bg border border-segment-border rounded-full p-1",
           fullWidth ? "grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:flex lg:gap-0" : "inline-flex flex-wrap gap-1",
           className,
         )}

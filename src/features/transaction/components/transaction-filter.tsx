@@ -66,23 +66,30 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
   }));
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:gap-4">
       <SearchInput
         value={search}
         onValueChange={handleSearchChange}
         placeholder={t("transaction.filter.searchPlaceholder")}
+        className="lg:min-w-[240px] lg:flex-1"
       />
       <Tabs
         value={status}
         onChange={(v) => handleStatusChange(v as TransactionFilterStatus)}
         variant="segmented"
-        className="min-w-0"
+        className="lg:shrink-0"
       >
-        <TabList fullWidth aria-label={t("transaction.filter.statusLabel")}>
+        <TabList aria-label={t("transaction.filter.statusLabel")}>
           {items.map((item) => (
-            <Tab key={item.key} value={item.key} className="gap-1.5">
-              <span>{item.label}</span>
-              <span className="tabular-nums text-text-tertiary">({item.count})</span>
+            <Tab
+              key={item.key}
+              value={item.key}
+              className="gap-1.5 whitespace-nowrap"
+            >
+              <span className="whitespace-nowrap">{item.label}</span>
+              <span className="tabular-nums whitespace-nowrap text-text-tertiary">
+                ({item.count})
+              </span>
             </Tab>
           ))}
         </TabList>

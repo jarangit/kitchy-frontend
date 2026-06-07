@@ -107,32 +107,6 @@ const getItemSummary = (tx: TransactionListItem) => {
   return { totalQty, productCount };
 };
 
-const OverviewTile = ({
-  label,
-  value,
-  tone = "default",
-}: {
-  label: string;
-  value: number;
-  tone?: "default" | "warning" | "success" | "danger";
-}) => {
-  const toneClass = {
-    default: "text-text-primary",
-    warning: "text-warning",
-    success: "text-success",
-    danger: "text-danger",
-  }[tone];
-
-  return (
-    <Card padding="none" className="px-4 py-3">
-      <p className="text-label text-text-tertiary">{label}</p>
-      <p className={`mt-1 text-title font-semibold tabular-nums ${toneClass}`}>
-        {value}
-      </p>
-    </Card>
-  );
-};
-
 const MobileTransactionCard = ({
   tx,
   storeId,
@@ -391,29 +365,7 @@ const TransactionListPage = () => {
 
   return (
     <div className="space-y-5">
-      <PageHeader
-        title={t("transaction.title")}
-        subtitle={t("transaction.subtitle")}
-      />
-
-      <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <OverviewTile label={t("transaction.filter.all")} value={counts.all} />
-        <OverviewTile
-          label={t("transaction.filter.inProgress")}
-          value={counts.inProgress}
-          tone="warning"
-        />
-        <OverviewTile
-          label={t("transaction.filter.done")}
-          value={counts.done}
-          tone="success"
-        />
-        <OverviewTile
-          label={t("transaction.filter.cancelled")}
-          value={counts.cancelled}
-          tone="danger"
-        />
-      </section>
+      <PageHeader title={t("transaction.title")} />
 
       <TransactionFilter counts={counts} onFilterChange={setFilter} />
 
