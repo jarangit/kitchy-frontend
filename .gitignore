@@ -30,3 +30,6 @@ dist-ssr
 # lock files
 package-lock.json
 yarn.lock
+
+*storybook.log
+storybook-static
