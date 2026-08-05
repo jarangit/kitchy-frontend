@@ -39,7 +39,11 @@ npm run dev
 npm run build
 npm run lint
 npm run preview
+npm run storybook
+npm run build-storybook
 ```
+
+Storybook runs on `http://localhost:6006`. Stories live next to their components as `*.stories.tsx` under `src/`, with a global light/dark theme toggle and providers (i18n, redux, router) wired in `.storybook/preview.tsx`.
 
 ## Routing
 
