@@ -1,0 +1,1 @@
+import{r as e,L as n}from"./iframe-Cl5EGQEc.js";const o=()=>{const t=e.useContext(n);if(!t)throw new Error("useLanguageContext must be used within LanguageProvider");return t},a=()=>o();export{a as u};

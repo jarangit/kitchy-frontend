@@ -62,7 +62,6 @@ export default function DemoTrialEntryPage() {
   const [selectedStorePreset, setSelectedStorePreset] = useState<DemoStorePreset | null>(null);
   const [isStarting, setIsStarting] = useState(false);
   const [startError, setStartError] = useState(false);
-  const selectedOption = STORE_PRESET_OPTIONS.find((option) => option.value === selectedStorePreset);
 
   const handleStartTrial = async () => {
     if (!selectedStorePreset) return;
@@ -118,15 +117,6 @@ export default function DemoTrialEntryPage() {
         </section>
 
         <section className="mx-auto flex w-full max-w-4xl flex-col gap-4 sm:gap-4 lg:gap-4.5 xl:gap-5">
-          <div className="mx-auto flex max-w-2xl flex-col items-center gap-1.5 text-center">
-            <h2 className="text-subtitle font-semibold text-text-primary">
-              {t("demo.trial.chooseStorePreset")}
-            </h2>
-            <p className="text-label leading-5 text-text-secondary sm:text-body-sm sm:leading-6">
-              {t("demo.trial.chooseStorePresetHint")}
-            </p>
-          </div>
-
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4 xl:gap-4">
             {STORE_PRESET_OPTIONS.map((option) => {
               const Icon = option.icon;
@@ -188,23 +178,6 @@ export default function DemoTrialEntryPage() {
                 </button>
               );
             })}
-          </div>
-
-          <div className="flex flex-col items-center gap-2 text-center sm:gap-2.5">
-            {selectedStorePreset ? (
-              <>
-                <p className="text-body-sm font-medium text-text-primary sm:text-body">
-                  {t("demo.trial.selectedPrefix")} {t(selectedOption?.labelKey ?? "demo.trial.storePreset.madeToOrder")}
-                </p>
-                <p className="max-w-2xl text-label leading-5 text-text-secondary sm:text-body-sm sm:leading-6">
-                  {t("demo.trial.chooseTypeHint")}
-                </p>
-              </>
-            ) : (
-              <p className="text-label leading-5 text-text-secondary sm:text-body-sm sm:leading-6">
-                {t("demo.trial.selectPrompt")}
-              </p>
-            )}
           </div>
 
           <Button

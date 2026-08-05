@@ -1,19 +1,13 @@
-import { Card, CardContent } from "@/shared/components/ui/card";
-import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
-import { IconTile } from "@/shared/components/ui/icon-tile";
 import { ErrorState } from "@/shared/components/ui/error-state";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
+import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { type ReactNode, useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  LuArrowRight,
-  LuChefHat,
-  LuClipboardCheck,
-  LuSettings,
-} from "react-icons/lu";
+import { LuArrowRight, LuChefHat, LuHistory, LuShoppingCart } from "react-icons/lu";
+import { cn } from "@/shared/utils/cn";
 
 /* ── Types ─────────────────────────────────────────────── */
 
@@ -43,145 +37,58 @@ const isSameCalendarDay = (dateValue: string | undefined, targetDate: Date): boo
 
 /* ── Sub-components ────────────────────────────────────── */
 
-const DashboardHeader = ({
-  overviewLabel,
-  storeName,
+const MetricLine = ({
+  label,
+  value,
+  highlight = false,
 }: {
-  overviewLabel: string;
-  storeName: string;
+  label: string;
+  value: string;
+  highlight?: boolean;
 }) => (
-  <header className="flex w-full flex-col gap-1">
-    <p className="text-label uppercase tracking-[0.08em] text-text-tertiary">{overviewLabel}</p>
-    <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">
-      {storeName}
-    </h1>
-  </header>
-);
-
-const DailySummaryCard = ({
-  storeId,
-  todayLabel,
-  posLabel,
-  readyLabel,
-  revenueLabel,
-  revenueValue,
-  ordersLabel,
-  ordersValue,
-}: {
-  storeId: string;
-  todayLabel: string;
-  posLabel: string;
-  readyLabel: string;
-  revenueLabel: string;
-  revenueValue: string;
-  ordersLabel: string;
-  ordersValue: number;
-}) => (
-  <Card>
-    <CardContent className="flex flex-col gap-6 p-0">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-        <div className="min-w-0">
-          <p className="text-label uppercase tracking-[0.08em] text-text-tertiary">{todayLabel}</p>
-          <h2 className="mt-2 max-w-2xl text-title font-semibold leading-tight tracking-tight text-text-primary sm:text-heading">
-            {readyLabel}
-          </h2>
-        </div>
-        <Link to={`/store/${storeId}/pos`} className="inline-flex">
-          <Button variant="primary" size="lg" className="shrink-0">
-            {posLabel}
-            <LuArrowRight size={18} aria-hidden="true" />
-          </Button>
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <MetricLine label={revenueLabel} value={revenueValue} />
-        <MetricLine label={ordersLabel} value={String(ordersValue)} />
-      </div>
-    </CardContent>
-  </Card>
-);
-
-const MetricLine = ({ label, value }: { label: string; value: string }) => (
   <div className="rounded-card border border-border bg-surface px-4 py-3">
     <p className="text-label text-text-tertiary">{label}</p>
-    <p className="mt-1 text-title font-semibold tabular-nums text-text-primary">{value}</p>
+    <p
+      className={cn(
+        "mt-1 text-title font-semibold tabular-nums text-text-primary",
+        highlight && "text-accent",
+      )}
+    >
+      {value}
+    </p>
   </div>
 );
 
-const WorkflowLink = ({
+const DashboardCard = ({
   icon,
-  label,
-  hint,
+  title,
   to,
+  footerLabel,
+  children,
 }: {
   icon: ReactNode;
-  label: string;
-  hint: string;
+  title: string;
   to: string;
+  footerLabel: string;
+  children?: ReactNode;
 }) => (
   <Link
     to={to}
-    className="group block rounded-card border border-card-border bg-card-bg p-4 transition-colors duration-[var(--motion-fast)] hover:border-border-hover hover:bg-card-bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+    className="group flex h-full flex-col rounded-card border border-border/70 bg-surface px-4 py-4 transition-colors duration-[var(--motion-fast)] hover:border-border hover:bg-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-5 sm:py-5"
   >
     <div className="flex items-start justify-between gap-4">
-      <IconTile size="md" tone="neutral" shape="square">
+      <span className="text-text-secondary transition-colors duration-[var(--motion-fast)] group-hover:text-text-primary">
         {icon}
-      </IconTile>
+      </span>
       <LuArrowRight
         className="h-4 w-4 shrink-0 text-text-tertiary transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5 group-hover:text-text-secondary"
         aria-hidden="true"
       />
     </div>
-    <div className="mt-4">
-      <p className="text-body font-semibold text-text-primary">{label}</p>
-      <p className="mt-1 text-body-sm leading-6 text-text-secondary">{hint}</p>
-    </div>
+    <h2 className="mt-3 text-body font-medium text-text-primary sm:text-subtitle">{title}</h2>
+    <div className="mt-3 flex-1">{children}</div>
+    <p className="mt-4 text-label text-text-secondary">{footerLabel}</p>
   </Link>
-);
-
-const ShortcutPanel = ({
-  title,
-  storeId,
-  ordersLabel,
-  ordersHint,
-  kdsLabel,
-  kdsHint,
-  settingsLabel,
-  settingsHint,
-}: {
-  title: string;
-  storeId: string;
-  ordersLabel: string;
-  ordersHint: string;
-  kdsLabel: string;
-  kdsHint: string;
-  settingsLabel: string;
-  settingsHint: string;
-}) => (
-  <section className="space-y-3">
-    <h2 className="text-subtitle font-semibold text-text-primary">{title}</h2>
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-      <WorkflowLink
-        icon={<LuClipboardCheck size={22} />}
-        label={ordersLabel}
-        hint={ordersHint}
-        to={`/store/${storeId}/transactions`}
-      />
-      <WorkflowLink
-        icon={<LuChefHat size={22} />}
-        label={kdsLabel}
-        hint={kdsHint}
-        to={`/store/${storeId}/kds`}
-      />
-      <WorkflowLink
-        icon={<LuSettings size={22} />}
-        label={settingsLabel}
-        hint={settingsHint}
-        to={`/store/${storeId}/settings`}
-      />
-    </div>
-  </section>
 );
 
 /* ── Page ──────────────────────────────────────────────── */
@@ -192,6 +99,7 @@ const StoreDashboardPage = () => {
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
     useStoreService({});
   const { ordersQuery } = useOrderService({});
+  const { count: pendingOrdersCount } = usePendingOrdersCount();
 
   const todayOrders = useMemo(
     () => {
@@ -213,15 +121,11 @@ const StoreDashboardPage = () => {
   if (storeFinOneLoading) {
     return (
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 py-6">
-        <div className="flex items-end justify-between gap-4">
-          <SkeletonCard className="h-16 w-full max-w-sm" />
-          <SkeletonCard className="hidden h-12 w-32 sm:block" />
-        </div>
-        <SkeletonCard className="h-64 w-full" />
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
-          <SkeletonCard className="h-36" />
-          <SkeletonCard className="h-36" />
-          <SkeletonCard className="h-36" />
+        <SkeletonCard className="h-16 w-full max-w-sm" />
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <SkeletonCard className="h-56" />
+          <SkeletonCard className="h-56" />
+          <SkeletonCard className="h-56" />
         </div>
       </div>
     );
@@ -242,32 +146,53 @@ const StoreDashboardPage = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 py-6 sm:gap-6 sm:py-8">
-      <DashboardHeader
-        overviewLabel={t("dashboard.storeOverview")}
-        storeName={storeName}
-      />
+      <header className="flex w-full flex-col gap-1">
+        <p className="text-label uppercase tracking-[0.08em] text-text-tertiary">
+          {t("dashboard.storeOverview")}
+        </p>
+        <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">
+          {storeName}
+        </h1>
+      </header>
 
-      <DailySummaryCard
-        storeId={id ?? ""}
-        todayLabel={t("dashboard.today")}
-        posLabel={t("dashboard.openPos")}
-        readyLabel={t("dashboard.readyForService")}
-        revenueLabel={t("dashboard.todayRevenue")}
-        revenueValue={`฿ ${formatCurrency(todayRevenue)}`}
-        ordersLabel={t("dashboard.todayOrders")}
-        ordersValue={todayOrderCount}
-      />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <DashboardCard
+          icon={<LuShoppingCart size={22} />}
+          title={t("dashboard.orders")}
+          to={`/store/${id}/pos`}
+          footerLabel={t("dashboard.openPos")}
+        >
+          <MetricLine label={t("dashboard.todayOrders")} value={String(todayOrderCount)} />
+        </DashboardCard>
 
-      <ShortcutPanel
-        title={t("dashboard.controlSection")}
-        storeId={id ?? ""}
-        ordersLabel={t("dashboard.orders")}
-        ordersHint={t("dashboard.ordersHint")}
-        kdsLabel={t("dashboard.kds")}
-        kdsHint={t("dashboard.kdsHint")}
-        settingsLabel={t("dashboard.settings")}
-        settingsHint={t("dashboard.settingsHint")}
-      />
+        <DashboardCard
+          icon={<LuChefHat size={22} />}
+          title={t("dashboard.kitchen")}
+          to={`/store/${id}/kds`}
+          footerLabel={t("dashboard.openKds")}
+        >
+          <MetricLine
+            label={t("dashboard.pendingInKitchen")}
+            value={String(pendingOrdersCount)}
+            highlight={pendingOrdersCount > 0}
+          />
+        </DashboardCard>
+
+        <DashboardCard
+          icon={<LuHistory size={22} />}
+          title={t("dashboard.summaryHistory")}
+          to={`/store/${id}/transactions`}
+          footerLabel={t("dashboard.viewHistory")}
+        >
+          <div className="flex flex-col gap-3">
+            <MetricLine
+              label={t("dashboard.todayRevenue")}
+              value={`฿ ${formatCurrency(todayRevenue)}`}
+            />
+            <MetricLine label={t("dashboard.todayOrders")} value={String(todayOrderCount)} />
+          </div>
+        </DashboardCard>
+      </div>
     </div>
   );
 };

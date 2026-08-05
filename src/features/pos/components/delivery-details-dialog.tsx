@@ -10,6 +10,7 @@ import { SelectionChip } from "@/shared/components/ui/selection-chip";
 import { Label } from "@/shared/components/ui/label";
 import { Card } from "@/shared/components/ui/card";
 import { AlphanumericKeypad } from "@/shared/components/ui/alphanumeric-keypad";
+import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
@@ -27,6 +28,10 @@ interface Props {
   onOpenCustomKeypad: () => void;
   onOpenDeviceKeyboard: () => void;
   onCloseKeypad: () => void;
+  autoOpenOrderNumberOnPlatformSelect?: boolean;
+  onKeypadDone?: () => void;
+  onConfirm?: () => void;
+  confirmLabel?: string;
 }
 
 export function DeliveryDetailsDialog({
@@ -43,6 +48,10 @@ export function DeliveryDetailsDialog({
   onOpenCustomKeypad,
   onOpenDeviceKeyboard,
   onCloseKeypad,
+  autoOpenOrderNumberOnPlatformSelect = true,
+  onKeypadDone,
+  onConfirm,
+  confirmLabel,
 }: Props) {
   const { t } = useTranslation();
   const hasSelectedPlatform = deliveryPlatform.trim().length > 0;
@@ -68,7 +77,9 @@ export function DeliveryDetailsDialog({
 
   const handlePlatformSelect = (platform: string) => {
     onDeliveryPlatformChange(platform);
-    onOpenCustomKeypad();
+    if (autoOpenOrderNumberOnPlatformSelect) {
+      onOpenCustomKeypad();
+    }
   };
 
   return (
@@ -227,7 +238,7 @@ export function DeliveryDetailsDialog({
             <AlphanumericKeypad
               value={deliveryOrderNumber}
               onChange={onDeliveryOrderNumberChange}
-              onDone={onClose}
+              onDone={onKeypadDone ?? onClose}
               onRequestDeviceKeyboard={onOpenDeviceKeyboard}
               label={t("pos.cart.deliveryOrderNumber")}
               placeholder={t("pos.cart.deliveryOrderNumberPlaceholder")}
@@ -235,6 +246,14 @@ export function DeliveryDetailsDialog({
           </div>
         )}
       </div>
+
+      {onConfirm && (
+        <div className="mt-5 flex justify-end">
+          <Button type="button" onClick={onConfirm} disabled={!hasSelectedPlatform}>
+            {confirmLabel ?? t("common.confirm")}
+          </Button>
+        </div>
+      )}
     </Dialog>
   );
 }

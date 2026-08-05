@@ -16,10 +16,12 @@ import TablePickerDialog from "./table-picker-dialog";
 import ItemNoteDialog from "./item-note-dialog";
 import { DeliveryDetailsDialog } from "./delivery-details-dialog";
 import { Button } from "@/shared/components/ui/button";
+import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
 import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n/presets";
+import { cn } from "@/shared/utils/cn";
 
 const ORDER_TYPE_VALUES: OrderType[] = ["DINE_IN", "TOGO", "DELIVERY"];
 
@@ -33,6 +35,21 @@ const ORDER_TYPE_ICONS = {
   DINE_IN: LuUtensilsCrossed,
   TOGO: LuPackage,
   DELIVERY: LuBike,
+} as const;
+
+const ORDER_TYPE_STYLES = {
+  DINE_IN: {
+    badge: "border-emerald-600 bg-emerald-600 text-white",
+    activeChip: "border-emerald-300 bg-emerald-50 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50",
+  },
+  TOGO: {
+    badge: "border-amber-500 bg-amber-500 text-white",
+    activeChip: "border-amber-300 bg-amber-50 text-amber-700 hover:border-amber-300 hover:bg-amber-50",
+  },
+  DELIVERY: {
+    badge: "border-sky-600 bg-sky-600 text-white",
+    activeChip: "border-sky-300 bg-sky-50 text-sky-700 hover:border-sky-300 hover:bg-sky-50",
+  },
 } as const;
 
 const hasQuickNotes = (value: unknown): value is string[] => {
@@ -104,6 +121,8 @@ const CartArea = ({
   const [isDeviceKeyboardEnabled, setIsDeviceKeyboardEnabled] = useState(false);
   const [isConfigExpanded, setIsConfigExpanded] = useState(false);
   const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
+  const [isOrderTypeGateOpen, setIsOrderTypeGateOpen] = useState(false);
+  const [pendingPayOrderType, setPendingPayOrderType] = useState<OrderType | null>(null);
   const deliveryOrderInputRef = useRef<HTMLInputElement | null>(null);
   const firstDeliveryPlatform = deliveryPlatforms[0] ?? "";
 
@@ -182,21 +201,38 @@ const CartArea = ({
     setIsConfigExpanded((current) => !current);
   };
 
-  const handleOrderTypeChange = (nextType: OrderType) => {
-    onOrderTypeChange(nextType);
+  const openOrderTypeRequirements = (nextType: OrderType, source: "config" | "pay") => {
     if (nextType === "DINE_IN") {
       setIsTableDialogOpen(true);
     }
+
     if (nextType === "DELIVERY") {
-      ensureDeliveryPlatformSelected();
-      setIsDeliveryKeypadOpen(true);
+      if (source === "config") {
+        ensureDeliveryPlatformSelected();
+        setIsDeliveryKeypadOpen(true);
+      } else {
+        setIsDeliveryKeypadOpen(false);
+      }
       setIsDeviceKeyboardEnabled(false);
       setIsDeliveryDialogOpen(true);
     }
+
     if (nextType !== "DELIVERY") {
       setIsDeliveryKeypadOpen(false);
       setIsDeviceKeyboardEnabled(false);
     }
+  };
+
+  const handleOrderTypeChange = (nextType: OrderType, source: "config" | "pay" = "config") => {
+    onOrderTypeChange(nextType);
+    openOrderTypeRequirements(nextType, source);
+  };
+
+  const continueToPayment = () => {
+    setPendingPayOrderType(null);
+    window.setTimeout(() => {
+      onPay();
+    }, 0);
   };
 
   const openDeviceKeyboard = () => {
@@ -217,7 +253,7 @@ const CartArea = ({
   const ActiveOrderTypeIcon = ORDER_TYPE_ICONS[orderType];
   const orderTypeLabel = t(ORDER_TYPE_LABEL_KEYS[orderType]);
   const deliveryOrderNumberValue = deliveryOrderNumber.trim();
-  const summaryParts = [orderTypeLabel];
+  const summaryParts: string[] = [];
 
   if (orderType === "DINE_IN") {
     summaryParts.push(tableNumber ?? t("pos.cart.tableNotSelected"));
@@ -238,7 +274,7 @@ const CartArea = ({
       : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
         ? t("pos.cart.selectDeliveryPlatformBeforePay")
         : null;
-  const canPay = items.length > 0 && requirementMessage === null;
+  const canPay = items.length > 0;
   const openRequirementDialog = () => {
     if (orderType === "DINE_IN" && !tableNumber) {
       setIsTableDialogOpen(true);
@@ -248,6 +284,47 @@ const CartArea = ({
     if (orderType === "DELIVERY" && deliveryPlatform.trim().length === 0) {
       setIsDeliveryDialogOpen(true);
     }
+  };
+
+  const handlePayClick = () => {
+    if (!canPay) return;
+
+    if (requirementMessage === null) {
+      onPay();
+      return;
+    }
+
+    setIsOrderTypeGateOpen(true);
+  };
+
+  const handleOrderTypeGateSelect = (nextType: OrderType) => {
+    setIsOrderTypeGateOpen(false);
+
+    if (nextType === "TOGO") {
+      onOrderTypeChange(nextType);
+      continueToPayment();
+      return;
+    }
+
+    setPendingPayOrderType(nextType);
+    handleOrderTypeChange(nextType, "pay");
+  };
+
+  const handleTableDialogClose = () => {
+    setIsTableDialogOpen(false);
+    setPendingPayOrderType(null);
+  };
+
+  const handleDeliveryDialogClose = () => {
+    closeDeliveryKeypad();
+    setIsDeliveryDialogOpen(false);
+    setPendingPayOrderType(null);
+  };
+
+  const handleDeliveryPayConfirm = () => {
+    closeDeliveryKeypad();
+    setIsDeliveryDialogOpen(false);
+    continueToPayment();
   };
 
   return (
@@ -263,11 +340,19 @@ const CartArea = ({
           event.preventDefault();
           toggleConfigExpanded();
         }}
-      >
+        >
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
-            <ActiveOrderTypeIcon className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
-            <p className="truncate">{summaryParts.join(" • ")}</p>
+            <span
+              className={cn(
+                "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-label font-medium",
+                ORDER_TYPE_STYLES[orderType].badge,
+              )}
+            >
+              <ActiveOrderTypeIcon className="h-3.5 w-3.5" aria-hidden="true" />
+              {orderTypeLabel}
+            </span>
+            {summaryParts.length > 0 && <p className="truncate">{summaryParts.join(" • ")}</p>}
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
@@ -317,7 +402,10 @@ const CartArea = ({
                       key={value}
                       active={orderType === value}
                       onClick={() => handleOrderTypeChange(value)}
-                      className="h-auto min-h-16 flex-col gap-1 px-2 py-2"
+                      className={cn(
+                        "h-auto min-h-16 flex-col gap-1 px-2 py-2",
+                        orderType === value && ORDER_TYPE_STYLES[value].activeChip,
+                      )}
                       aria-label={label}
                       title={label}
                     >
@@ -449,29 +537,67 @@ const CartArea = ({
           </button>
         )}
         <Button
-          onClick={onPay}
+          onClick={handlePayClick}
           disabled={!canPay}
           size="lg"
           data-onboarding-target="pay-button"
           className="w-full whitespace-normal text-center text-title tabular-nums leading-6"
         >
-          {`${t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })} • ${totalItems}`}
+          {`${t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })} • ${t("pos.cart.itemCount", { count: String(totalItems) })}`}
         </Button>
       </div>
 
+      <Dialog
+        open={isOrderTypeGateOpen}
+        onClose={() => setIsOrderTypeGateOpen(false)}
+        className="max-w-xl"
+      >
+        <DialogHeader>
+          <DialogTitle>{t("pos.cart.orderType")}</DialogTitle>
+          <DialogDescription>{t("pos.cart.chooseOrderTypeBeforePay")}</DialogDescription>
+        </DialogHeader>
+
+        <div className="page-grid grid grid-cols-1 sm:grid-cols-3">
+          {ORDER_TYPE_VALUES.map((value) => {
+            const Icon = ORDER_TYPE_ICONS[value];
+            const label = t(ORDER_TYPE_LABEL_KEYS[value]);
+            const active = orderType === value;
+
+            return (
+              <SelectionChip
+                key={value}
+                active={active}
+                onClick={() => handleOrderTypeGateSelect(value)}
+                className={cn(
+                  "h-auto min-h-24 flex-col gap-2 px-3 py-4",
+                  active && ORDER_TYPE_STYLES[value].activeChip,
+                )}
+                aria-label={label}
+                title={label}
+              >
+                <Icon className="h-5 w-5" aria-hidden="true" />
+                <span className="text-body-sm leading-5">{label}</span>
+              </SelectionChip>
+            );
+          })}
+        </div>
+      </Dialog>
+
       <TablePickerDialog
         open={isTableDialogOpen}
-        onClose={() => setIsTableDialogOpen(false)}
+        onClose={handleTableDialogClose}
         tableNumber={tableNumber}
-        onSelect={onTableNumberChange}
+        onSelect={(table) => {
+          onTableNumberChange(table);
+          if (pendingPayOrderType === "DINE_IN") {
+            continueToPayment();
+          }
+        }}
       />
 
       <DeliveryDetailsDialog
         open={isDeliveryDialogOpen}
-        onClose={() => {
-          closeDeliveryKeypad();
-          setIsDeliveryDialogOpen(false);
-        }}
+        onClose={handleDeliveryDialogClose}
         deliveryPlatforms={deliveryPlatforms}
         deliveryPlatform={deliveryPlatform}
         deliveryOrderNumber={deliveryOrderNumber}
@@ -483,6 +609,10 @@ const CartArea = ({
         onOpenCustomKeypad={openCustomKeypad}
         onOpenDeviceKeyboard={openDeviceKeyboard}
         onCloseKeypad={closeDeliveryKeypad}
+        autoOpenOrderNumberOnPlatformSelect={pendingPayOrderType !== "DELIVERY"}
+        onKeypadDone={pendingPayOrderType === "DELIVERY" ? closeDeliveryKeypad : undefined}
+        onConfirm={pendingPayOrderType === "DELIVERY" ? handleDeliveryPayConfirm : undefined}
+        confirmLabel={pendingPayOrderType === "DELIVERY" ? t("pos.payment.continueToPayment") : undefined}
       />
 
       <ItemNoteDialog

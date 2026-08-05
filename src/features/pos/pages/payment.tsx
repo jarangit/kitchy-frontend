@@ -167,55 +167,72 @@ const PaymentPage = () => {
   }
 
   return (
-    <div className="flex h-full min-h-0 flex-col bg-bg">
+    <div className="flex h-full min-h-0 flex-1 flex-col bg-bg">
       <div className="min-h-0 flex-1 overflow-y-auto [-webkit-overflow-scrolling:touch]">
         {step === "SUMMARY" ? (
-          <div className="mx-auto flex min-h-full max-w-4xl flex-col p-4">
-            <Card as="section" padding="none" className="flex flex-col">
-              <div className="shrink-0 border-b border-border p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleCancel}
-                    className="-ml-2 gap-1.5 text-text-secondary"
-                  >
-                    <LuArrowLeft size={18} />
-                    {t("pos.payment.backToPos")}
-                  </Button>
-                  <span className="rounded-full bg-bg px-3 py-1.5 text-caption text-text-tertiary">
-                    {t("pos.payment.stepSummary")}
-                  </span>
-                </div>
+          <div className="mx-auto flex min-h-full w-full max-w-6xl flex-col p-4">
+            <Card as="section" padding="none" className="flex min-h-full flex-1 flex-col overflow-hidden">
+              <div className="grid min-h-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_320px]">
+                <section className="flex flex-col">
+                  <div className="shrink-0 border-b border-border p-4">
+                    <div className="flex items-start justify-between gap-4">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleCancel}
+                        className="-ml-2 gap-1.5 text-text-secondary"
+                      >
+                        <LuArrowLeft size={18} />
+                        {t("pos.payment.backToPos")}
+                      </Button>
+                      <span className="rounded-full bg-bg px-3 py-1.5 text-caption text-text-tertiary">
+                        {t("pos.payment.stepSummary")}
+                      </span>
+                    </div>
 
-                <div className="mt-4 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(220px,280px)] md:items-end">
-                  <div className="min-w-0">
-                    <h1 className="text-title text-text-primary">{t("pos.payment.reviewTitle")}</h1>
-                    <p className="mt-1 text-body-sm leading-6 text-text-secondary">
-                      {t("pos.payment.orderSummary")}
-                    </p>
+                    <div className="mt-4 min-w-0">
+                      <h1 className="text-title text-text-primary">{t("pos.payment.reviewTitle")}</h1>
+                      <p className="mt-1 text-body-sm leading-6 text-text-secondary">
+                        {t("pos.payment.orderSummary")}
+                      </p>
 
-                    {orderMeta.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {orderMeta.map((value) => (
-                          <span
-                            key={value}
-                            className="inline-flex rounded-full border border-card-border bg-bg px-3 py-1.5 text-label text-text-secondary"
-                          >
-                            {value}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                      {orderMeta.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {orderMeta.map((value) => (
+                            <span
+                              key={value}
+                              className="inline-flex rounded-full border border-card-border bg-bg px-3 py-1.5 text-label text-text-secondary"
+                            >
+                              {value}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="rounded-card border border-card-border bg-bg p-3">
-                    <div className="mb-3 flex items-center justify-between gap-3">
-                      <span className="text-label text-text-secondary">{t("pos.receipt.total")}</span>
-                      <span className="text-title tabular-nums text-text-primary">
-                        ฿{subtotal.toFixed(2)}
-                      </span>
+                  <div className="min-h-0 flex-1 p-4">
+                    <OrderSummary items={items} subtotal={subtotal} />
+                  </div>
+                </section>
+
+                <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg/92 p-4 backdrop-blur-xl lg:border-l lg:border-t-0">
+                  <div>
+                    <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
+                      {t("pos.payment.title")}
+                    </p>
+                    <h1 className="mt-1 text-subtitle text-text-primary">{t("pos.payment.stepSummary")}</h1>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="rounded-card border border-card-border bg-bg p-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-label text-text-secondary">{t("pos.receipt.total")}</span>
+                        <span className="text-title tabular-nums text-text-primary">
+                          ฿{subtotal.toFixed(2)}
+                        </span>
+                      </div>
                     </div>
                     <Button
                       onClick={() => setStep("PAYMENT")}
@@ -225,20 +242,16 @@ const PaymentPage = () => {
                       {t("pos.payment.continueToPayment")}
                     </Button>
                   </div>
-                </div>
-              </div>
-
-              <div className="p-4">
-                <OrderSummary items={items} subtotal={subtotal} />
+                </aside>
               </div>
             </Card>
           </div>
         ) : (
-          <div className="mx-auto flex min-h-full max-w-6xl flex-col p-4">
+          <div className="mx-auto flex min-h-full w-full max-w-6xl flex-col p-4">
             <Card
               as="section"
               padding="none"
-              className="grid grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_320px]"
+              className="grid min-h-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_320px]"
             >
               <section className="flex flex-col">
                 <div className="shrink-0 border-b border-border p-4">
@@ -284,7 +297,7 @@ const PaymentPage = () => {
                 </div>
               </section>
 
-              <aside className="flex flex-col justify-between gap-4 border-t border-border bg-card-bg/92 p-4 backdrop-blur-xl lg:border-l lg:border-t-0">
+              <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg/92 p-4 backdrop-blur-xl lg:border-l lg:border-t-0">
                 <div className="space-y-4">
                   <div>
                     <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">

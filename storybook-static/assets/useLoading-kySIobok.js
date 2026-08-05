@@ -1,0 +1,1 @@
+import{s,a as i}from"./iframe-Cl5EGQEc.js";import{u as t,a as n}from"./hooks-BV4gm7oS.js";function g(){const a=t();return{isLoading:n(o=>o.loading.isLoading),startLoading:()=>a(i()),stopLoading:()=>a(s())}}export{g as u};

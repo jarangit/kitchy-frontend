@@ -43,10 +43,9 @@ const PaymentSuccessPage = () => {
   };
 
   return (
-    <div className="min-h-0 flex-1 overflow-y-auto [-webkit-overflow-scrolling:touch]">
-      <div className="mx-auto max-w-6xl px-4 py-6">
-        <Card padding="none" className="overflow-hidden">
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_320px]">
+    <div className="min-h-0 flex flex-1 overflow-y-auto [-webkit-overflow-scrolling:touch]">
+      <div className="mx-auto flex min-h-full w-full max-w-6xl flex-1 px-4 py-6">
+        <Card padding="none" className="grid min-h-full w-full flex-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_320px]">
             <section className="order-2 bg-bg p-4 lg:order-1">
               <div className="mx-auto max-w-md">
                 <p className="mb-3 text-label text-text-secondary">
@@ -60,7 +59,7 @@ const PaymentSuccessPage = () => {
               </div>
             </section>
 
-            <aside className="order-1 border-b border-border bg-card-bg p-4 lg:sticky lg:top-6 lg:order-2 lg:border-b-0 lg:border-l">
+            <aside className="order-1 flex min-h-full flex-col justify-between gap-5 border-b border-border bg-card-bg p-4 lg:sticky lg:top-6 lg:order-2 lg:border-b-0 lg:border-l">
               <div className="space-y-5">
                 <div className="text-center">
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-success-bg text-success animate-check">
@@ -81,7 +80,9 @@ const PaymentSuccessPage = () => {
                   </p>
                   <p className="mt-1 text-label text-text-tertiary">{formattedDate}</p>
                 </div>
+              </div>
 
+              <div className="space-y-3">
                 <div className="rounded-card bg-bg px-4 py-3">
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-label text-text-secondary">{t("pos.receipt.total")}</span>
@@ -108,7 +109,6 @@ const PaymentSuccessPage = () => {
                 </div>
               </div>
             </aside>
-          </div>
         </Card>
       </div>
     </div>
