@@ -15,15 +15,18 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Loading: Story = {
+  args: {},
   render: () => {
     const { isLoading, startLoading, stopLoading } = useLoading();
 
     useEffect(() => {
       startLoading();
-      return () => stopLoading();
+      return () => {
+        stopLoading();
+      };
     }, [startLoading, stopLoading]);
 
-    if (!isLoading) return null;
+    if (!isLoading) return <div />;
 
     return <LoadingOverlay />;
   },

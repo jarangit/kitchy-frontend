@@ -10,12 +10,17 @@ const meta = {
   parameters: {
     layout: "padded",
   },
+  args: {
+    variant: "display",
+    label: "Setting",
+  },
 } satisfies Meta<typeof SettingRow>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Display: Story = {
+  args: {},
   render: () => (
     <div className="mx-auto max-w-xl">
       <SettingRow
@@ -29,6 +34,7 @@ export const Display: Story = {
 };
 
 export const Link: Story = {
+  args: {},
   render: () => (
     <div className="mx-auto max-w-xl">
       <SettingRow
@@ -44,6 +50,7 @@ export const Link: Story = {
 };
 
 export const Action: Story = {
+  args: {},
   render: () => (
     <div className="mx-auto max-w-xl">
       <SettingRow
@@ -58,6 +65,7 @@ export const Action: Story = {
 };
 
 export const Control: Story = {
+  args: {},
   render: () => {
     const [checked, setChecked] = useState(true);
     return (
@@ -74,6 +82,7 @@ export const Control: Story = {
 };
 
 export const Editable: Story = {
+  args: {},
   render: () => {
     const [name, setName] = useState("Kitchy Coffee");
     return (
@@ -90,6 +99,7 @@ export const Editable: Story = {
 };
 
 export const Grouped: Story = {
+  args: {},
   render: () => (
     <div className="mx-auto max-w-xl">
       <SettingGroup title="General" description="Basic store information.">

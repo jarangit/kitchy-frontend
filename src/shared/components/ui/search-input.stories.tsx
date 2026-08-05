@@ -9,6 +9,8 @@ const meta = {
     layout: "centered",
   },
   args: {
+    value: "",
+    onValueChange: () => {},
     placeholder: "Search products...",
   },
 } satisfies Meta<typeof SearchInput>;
@@ -17,6 +19,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Empty: Story = {
+  args: {},
   render: (args) => {
     const [value, setValue] = useState("");
     return <SearchInput {...args} value={value} onValueChange={setValue} />;
@@ -24,7 +27,7 @@ export const Empty: Story = {
 };
 
 export const WithValue: Story = {
-  args: { value: "Iced latte" },
+  args: { value: "Iced latte", onValueChange: () => {} },
   render: (args) => {
     const [value, setValue] = useState(args.value ?? "");
     return <SearchInput {...args} value={value} onValueChange={setValue} />;

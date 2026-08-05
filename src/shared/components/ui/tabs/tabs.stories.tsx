@@ -9,6 +9,11 @@ const meta = {
   parameters: {
     layout: "padded",
   },
+  args: {
+    value: "pending",
+    onChange: () => {},
+    children: null,
+  },
 } satisfies Meta<typeof Tabs>;
 
 export default meta;
@@ -48,14 +53,17 @@ const SegmentedTabsExample = () => {
 };
 
 export const Chip: Story = {
+  args: {},
   render: () => <ChipTabsExample />,
 };
 
 export const Segmented: Story = {
+  args: {},
   render: () => <SegmentedTabsExample />,
 };
 
 export const WithIcons: Story = {
+  args: {},
   render: () => {
     const [value, setValue] = useState("orders");
     return (

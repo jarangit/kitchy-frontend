@@ -68,16 +68,22 @@ const meta = {
   parameters: {
     layout: "padded",
   },
+  args: {
+    data,
+    columns,
+  },
 } satisfies Meta<typeof DataTable<OrderRow>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  args: {},
   render: () => <DataTable data={data} columns={columns} />,
 };
 
 export const Sortable: Story = {
+  args: {},
   render: () => {
     const [sorting, setSorting] = useState<SortingState>([]);
     return (
@@ -92,6 +98,7 @@ export const Sortable: Story = {
 };
 
 export const ClickableRows: Story = {
+  args: {},
   render: () => (
     <DataTable
       data={data}
@@ -103,12 +110,14 @@ export const ClickableRows: Story = {
 };
 
 export const Loading: Story = {
+  args: {},
   render: () => (
     <DataTable data={[]} columns={columns} isLoading loadingRowCount={5} />
   ),
 };
 
 export const Empty: Story = {
+  args: {},
   render: () => (
     <DataTable
       data={[]}

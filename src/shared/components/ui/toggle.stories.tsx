@@ -10,6 +10,8 @@ const meta = {
   },
   args: {
     label: "Notifications",
+    checked: false,
+    onChange: () => {},
   },
   argTypes: {
     checked: { control: "boolean" },
@@ -32,6 +34,7 @@ export const Disabled: Story = {
 };
 
 export const Interactive: Story = {
+  args: {},
   render: (args) => {
     const [checked, setChecked] = useState(false);
     return (

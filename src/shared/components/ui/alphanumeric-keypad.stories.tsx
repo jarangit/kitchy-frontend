@@ -17,6 +17,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  args: {
+    value: "",
+    onChange: () => {},
+    onDone: () => {},
+  },
   render: (args) => {
     const [value, setValue] = useState("");
     return (
@@ -33,6 +38,11 @@ export const Basic: Story = {
 };
 
 export const WithDeviceKeyboard: Story = {
+  args: {
+    value: "",
+    onChange: () => {},
+    onDone: () => {},
+  },
   render: (args) => {
     const [value, setValue] = useState("");
     return (

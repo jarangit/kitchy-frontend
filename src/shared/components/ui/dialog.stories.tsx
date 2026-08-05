@@ -18,6 +18,7 @@ const meta = {
   args: {
     open: true,
     onClose: () => {},
+    children: null,
   },
   argTypes: {
     open: { control: "boolean" },
@@ -28,6 +29,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  args: {},
   render: (args) => (
     <Dialog {...args}>
       <DialogHeader>
@@ -48,7 +50,7 @@ export const Basic: Story = {
 };
 
 export const Interactive: Story = {
-  args: { open: false },
+  args: { open: false, children: null },
   render: (args) => {
     const [open, setOpen] = useState(args.open);
     return (
