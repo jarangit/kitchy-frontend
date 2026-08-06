@@ -10,10 +10,10 @@ interface InlineAlertProps extends HTMLAttributes<HTMLDivElement> {
 
 const toneStyles: Record<InlineAlertTone, string> = {
   default: "border-border bg-surface-muted text-text-secondary",
-  danger: "border-danger/30 bg-danger/10 text-danger",
-  warning: "border-warning/30 bg-warning-bg text-warning",
-  success: "border-success/30 bg-success-bg text-success",
-  info: "border-info/30 bg-info-bg text-info",
+  danger: "border-danger-border bg-danger-bg text-danger",
+  warning: "border-warning-border bg-warning-bg text-warning",
+  success: "border-success-border bg-success-bg text-success",
+  info: "border-info-border bg-info-bg text-info",
 };
 
 export function InlineAlert({

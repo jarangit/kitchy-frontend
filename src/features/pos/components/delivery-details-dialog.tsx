@@ -218,7 +218,7 @@ export function DeliveryDetailsDialog({
             padding="sm"
             className={cn(
               "flex items-center gap-2",
-              hasSelectedPlatform && hasOrderNumber && "border-success/30 bg-success-bg"
+              hasSelectedPlatform && hasOrderNumber && "border-success-border bg-success-bg"
             )}
           >
             <LuBike className={cn("h-4 w-4 shrink-0", hasSelectedPlatform && hasOrderNumber ? "text-success" : "text-text-tertiary")} />
@@ -226,7 +226,7 @@ export function DeliveryDetailsDialog({
               {summaryText}
             </span>
             {hasSelectedPlatform && hasOrderNumber && (
-              <span className="ml-auto rounded-full border border-success/30 bg-success-bg px-2 py-0.5 text-caption text-success">
+              <span className="ml-auto rounded-full border border-success-border bg-success-bg px-2 py-0.5 text-caption text-success">
                 พร้อม
               </span>
             )}

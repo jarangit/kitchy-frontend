@@ -37,21 +37,21 @@ const STORE_PRESET_OPTIONS: Array<{
     icon: LuCoffee,
     labelKey: "demo.trial.storePreset.cafe",
     descriptionKey: "demo.trial.storePreset.cafeDescription",
-    iconClassName: "bg-accent/8 text-accent",
+    iconClassName: "bg-accent-bg text-accent",
   },
   {
     value: "FAST_FOOD",
     icon: LuSandwich,
     labelKey: "demo.trial.storePreset.fastFood",
     descriptionKey: "demo.trial.storePreset.fastFoodDescription",
-    iconClassName: "bg-accent/8 text-accent",
+    iconClassName: "bg-accent-bg text-accent",
   },
   {
     value: "MADE_TO_ORDER",
     icon: LuSoup,
     labelKey: "demo.trial.storePreset.madeToOrder",
     descriptionKey: "demo.trial.storePreset.madeToOrderDescription",
-    iconClassName: "bg-accent/8 text-accent",
+    iconClassName: "bg-accent-bg text-accent",
   },
 ];
 
@@ -133,7 +133,7 @@ export default function DemoTrialEntryPage() {
                     "hover:border-border-hover hover:bg-card-bg-hover",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                     "disabled:cursor-not-allowed disabled:opacity-60",
-                    selected && "border-accent bg-accent/8 shadow-sm",
+                    selected && "border-accent bg-accent-bg shadow-sm",
                   )}
                   aria-pressed={selected}
                   aria-label={`${selected ? `${t("demo.trial.selectedBadge")} ` : ""}${t(option.labelKey)}`}
@@ -152,7 +152,7 @@ export default function DemoTrialEntryPage() {
                     <div
                       className={cn(
                         "flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-[var(--motion-fast)] xl:h-14 xl:w-14",
-                        selected ? "bg-accent/10 text-accent" : option.iconClassName,
+                        selected ? "bg-accent-bg text-accent" : option.iconClassName,
                       )}
                     >
                       <Icon size={18} />
@@ -169,7 +169,7 @@ export default function DemoTrialEntryPage() {
                         {t(option.descriptionKey)}
                       </p>
                       {selected && (
-                        <span className="mt-1 rounded-full bg-accent/10 px-2 py-0.5 text-label font-medium text-accent">
+                        <span className="mt-1 rounded-full bg-accent-bg px-2 py-0.5 text-label font-medium text-accent">
                           {t("demo.trial.selectedBadge")}
                         </span>
                       )}

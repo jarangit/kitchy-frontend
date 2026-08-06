@@ -531,7 +531,7 @@ const CartArea = ({
           <button
             type="button"
             onClick={openRequirementDialog}
-            className="w-full rounded-card bg-warning-bg px-3 py-2 text-left text-label font-medium text-warning transition-colors duration-[var(--motion-fast)] hover:bg-warning-bg/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-warning/30"
+            className="w-full rounded-card bg-warning-bg px-3 py-2 text-left text-label font-medium text-warning transition-colors duration-[var(--motion-fast)] hover:bg-warning-border focus:outline-none focus-visible:ring-2 focus-visible:ring-warning/30"
           >
             {requirementMessage}
           </button>

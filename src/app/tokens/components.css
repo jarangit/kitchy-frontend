@@ -28,7 +28,6 @@
   --color-button-ghost-bg: transparent;
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-button-ghost-text: var(--color-text-primary);
-
   --radius-button: var(--radius-xl);
   --spacing-button-height-sm: 44px;
   --spacing-button-height-md: 52px;
@@ -94,6 +93,13 @@
   --color-badge-accent-bg: var(--color-accent-bg);
   --color-badge-accent-text: var(--color-accent-text);
 
+  /* ── Status borders ── */
+  /* Solid 100-scale tones, darker than their 50-scale bg tints. */
+  --color-success-border: var(--green-100);
+  --color-warning-border: var(--yellow-100);
+  --color-danger-border: var(--red-100);
+  --color-info-border: var(--blue-100);
+
   /* ── ChipTab ── */
   --color-chip-active-bg: var(--color-primary);
   --color-chip-active-text: var(--color-text-inverse);
@@ -133,7 +139,7 @@
 
   /* ── Dialog ── */
   --color-dialog-bg: var(--color-surface);
-  --color-dialog-border: transparent;          /* Newsroom: no visible border */
+  --color-dialog-border: var(--color-border);   /* solid border, no transparency */
   --radius-dialog: var(--radius-xl);           /* Slightly larger for premium feel */
   --spacing-dialog-padding: var(--space-5);
   --color-dialog-overlay: var(--color-overlay);
@@ -213,4 +219,10 @@
   --color-badge-warning-text: #fcd34d;
   --color-badge-info-text: #93c5fd;
   --color-badge-accent-text: #FFB3C6;
+
+  /* Status borders — dark mode: composite of status color over surface. */
+  --color-success-border: #205935;
+  --color-warning-border: #6A4B18;
+  --color-danger-border: #682C2C;
+  --color-info-border: #29426A;
 }

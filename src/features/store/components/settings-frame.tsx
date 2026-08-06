@@ -47,7 +47,7 @@ export function SettingsFrame({ children, wide = false }: Props) {
   return (
     <div className="min-h-screen bg-bg text-text-primary">
       {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-border bg-bg/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-border bg-bg">
         <div className="flex h-14 items-center gap-3 px-4 sm:px-6">
           <IconButton
             onClick={handleClose}

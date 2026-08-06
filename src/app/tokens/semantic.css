@@ -10,9 +10,9 @@
   --color-bg: var(--gray-100);           /* #F5F5F7 — Newsroom page background */
   --color-surface: var(--gray-0);        /* #FFFFFF — white cards on gray bg */
   --color-surface-hover: var(--gray-100); /* #F5F5F7 — subtle hover on white cards */
-  --color-surface-muted: rgba(29, 29, 31, 0.04);
-  --color-surface-muted-hover: rgba(29, 29, 31, 0.08);
-  --color-overlay: rgba(29, 29, 31, 0.55);
+  --color-surface-muted: #F6F6F7;        /* 4% gray-900 over white — solid */
+  --color-surface-muted-hover: #EDEDEF;  /* 8% gray-900 over white — solid */
+  --color-overlay: rgba(29, 29, 31, 0.55); /* scrim — intentionally translucent */
 
   /* Text — solid Newsroom grays, no alpha */
   --color-text-primary: var(--gray-900);   /* #1D1D1F */
@@ -27,30 +27,30 @@
   /* Action — dark primary (Newsroom DNA) */
   --color-primary: var(--gray-900);      /* #1D1D1F */
   --color-primary-hover: var(--gray-800); /* #2C2C2E */
-  --color-primary-bg: rgba(29, 29, 31, 0.06);
+  --color-primary-bg: #F1F1F3;           /* 6% gray-900 over white — solid */
 
   /* Accent — warm coral pink, paired with dark primary */
   --color-accent: #FF3B6F;
   --color-accent-hover: #E62E5F;
-  --color-accent-bg: rgba(255, 59, 111, 0.10);
-  --color-accent-border: rgba(255, 59, 111, 0.32);
+  --color-accent-bg: #FFEBF1;            /* 10% accent over white — solid */
+  --color-accent-border: #FFC0D1;        /* 32% accent over white — solid */
   --color-accent-text: #C91F4D; /* AA-readable on white surfaces */
 
-  /* Status */
+  /* Status — solid tints (10% over white); text stays on the 700 base hue */
   --color-success: #15803d;
-  --color-success-bg: rgba(21, 128, 61, 0.1);
+  --color-success-bg: var(--green-50);
   --color-danger: #b91c1c;
   --color-danger-hover: #991b1b;
-  --color-danger-bg: rgba(185, 28, 28, 0.08);
+  --color-danger-bg: var(--red-50);
   --color-warning: #b45309;
-  --color-warning-bg: rgba(180, 83, 9, 0.1);
+  --color-warning-bg: var(--yellow-50);
   --color-info: #1d4ed8;
-  --color-info-bg: rgba(29, 78, 216, 0.08);
+  --color-info-bg: var(--blue-50);
 
   /* Bumped — KDS confirmation state shown briefly after a BUMP click,
      before the order slides out of the Expediter view. */
   --color-bumped: #5a1e9e;
-  --color-bumped-bg: rgba(90, 30, 158, 0.12);
+  --color-bumped-bg: #EBE4F3;            /* 12% bumped over white — solid */
 }
 
 /* ── Semantic Colors: Dark Mode ── */
@@ -59,9 +59,9 @@
   --color-bg: #141416;
   --color-surface: #1F1F21;
   --color-surface-hover: #2A2A2C;
-  --color-surface-muted: rgba(255, 255, 255, 0.06);
-  --color-surface-muted-hover: rgba(255, 255, 255, 0.1);
-  --color-overlay: rgba(0, 0, 0, 0.65);
+  --color-surface-muted: #2C2C2E;        /* 6% white over surface — solid */
+  --color-surface-muted-hover: #353537;  /* 10% white over surface — solid */
+  --color-overlay: rgba(0, 0, 0, 0.65);  /* scrim — intentionally translucent */
 
   --color-text-primary: #F5F5F7;
   --color-text-secondary: #AEAEB2;
@@ -77,30 +77,29 @@
      don't read as jarring white blocks on dark bg. */
   --color-primary: #3A3A3C;
   --color-primary-hover: #48484A;
-  --color-primary-bg: rgba(58, 58, 60, 0.32);
+  --color-primary-bg: #282829;           /* 32% primary over surface — solid */
 
   /* Accent — brighter coral for dark surfaces */
   --color-accent: #FF5C85;
   --color-accent-hover: #FF7A9C;
-  --color-accent-bg: rgba(255, 92, 133, 0.24);
-  --color-accent-border: rgba(255, 92, 133, 0.40);
+  --color-accent-bg: #552E37;            /* 24% accent over surface — solid */
+  --color-accent-border: #793748;        /* 40% accent over surface — solid */
   --color-accent-text: #FFB3C6;
 
-  /* Status — mid-500 shades: saturated enough to not wash out to white
-     on dark surfaces, bright enough to read on alpha-tinted backgrounds. */
+  /* Status — solid tints (22% over surface); text stays on the 300 base hue */
   --color-success: #22c55e;
   --color-danger: #ef4444;
   --color-danger-hover: #dc2626;
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
 
-  --color-success-bg: rgba(34, 197, 94, 0.22);
-  --color-danger-bg: rgba(239, 68, 68, 0.22);
-  --color-warning-bg: rgba(245, 158, 11, 0.22);
-  --color-info-bg: rgba(59, 130, 246, 0.22);
+  --color-success-bg: #20442D;
+  --color-danger-bg: #4D2727;
+  --color-warning-bg: #4E3B1B;
+  --color-info-bg: #25354E;
 
   --color-bumped: #7c3aed;
-  --color-bumped-bg: rgba(124, 58, 237, 0.22);
+  --color-bumped-bg: #33254C;            /* 22% bumped over surface — solid */
 }
 
 /* ── Semantic Typography ── */

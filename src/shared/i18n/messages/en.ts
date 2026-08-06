@@ -516,8 +516,6 @@ export const enMessages = {
   "kds.status.pending": "Pending",
   "kds.status.ready": "Ready",
   "kds.status.served": "Served",
-  "serve.toast.title": "{context} is ready",
-  "serve.toast.body": "{product} x{quantity} is done in the kitchen",
   "serve.action.view": "View list",
   "serve.action.acknowledge": "Acknowledge",
   "serve.action.openKds": "Open KDS",

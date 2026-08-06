@@ -248,7 +248,7 @@ export function SettingGroup({
           )}
         </div>
       )}
-      <div className="divide-y divide-border/60 overflow-hidden rounded-card bg-surface">
+      <div className="divide-y divide-border overflow-hidden rounded-card bg-surface">
         {children}
       </div>
     </section>

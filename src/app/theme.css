@@ -36,6 +36,10 @@
   --color-danger-bg: var(--color-danger-bg);
   --color-warning-bg: var(--color-warning-bg);
   --color-info-bg: var(--color-info-bg);
+  --color-success-border: var(--color-success-border);
+  --color-warning-border: var(--color-warning-border);
+  --color-danger-border: var(--color-danger-border);
+  --color-info-border: var(--color-info-border);
 
   /* ── Component Colors (Layer 3) ── */
   /* Button */
@@ -415,10 +419,8 @@
 }
 
 .shadow-cart-dock {
-  background: color-mix(in srgb, var(--color-card-bg) 78%, transparent);
+  background: var(--color-card-bg);
   box-shadow: 0 -10px 24px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(18px) saturate(1.25);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
 }
 
 @media (min-width: 640px) {

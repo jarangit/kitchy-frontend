@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuCheck, LuChefHat, LuExternalLink, LuX } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
@@ -17,7 +17,6 @@ import {
   readReadyToServeDismissed,
   writeReadyToServeDismissed,
 } from "@/features/kds/utils/ready-to-serve-dismissed";
-import { toast } from "@/shared/services/toast-service";
 
 const getItemContext = (item: ReadyToServeItem) => {
   if (item.orderType === "DINE_IN" && item.tableNumber) {
@@ -43,11 +42,9 @@ export function ReadyToServeNotifier() {
     readReadyToServeDismissed(storeId)
   );
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const previousIdsRef = useRef<Set<string> | null>(null);
 
   useEffect(() => {
     setDismissed(readReadyToServeDismissed(storeId));
-    previousIdsRef.current = null;
   }, [storeId]);
 
   const visibleItems = useMemo(
@@ -56,33 +53,8 @@ export function ReadyToServeNotifier() {
   );
 
   useEffect(() => {
-    const visibleIds = new Set(visibleItems.map((item) => item.id));
-    if (previousIdsRef.current == null) {
-      previousIdsRef.current = visibleIds;
-      return;
-    }
-
-    const newest = visibleItems.find((item) => !previousIdsRef.current?.has(item.id));
-    if (newest) {
-      toast.success({
-        title: t("serve.toast.title", { context: getItemContext(newest) }),
-        description: t("serve.toast.body", {
-          product: newest.productName,
-          quantity: String(newest.quantity),
-        }),
-        action: {
-          label: t("serve.action.view"),
-          onClick: () => setDrawerOpen(true),
-        },
-      });
-    }
-    previousIdsRef.current = visibleIds;
-  }, [t, visibleItems]);
-
-  useEffect(() => {
     return appBus.on("ui:readyToServeRequested", () => {
       setDrawerOpen(true);
-      toast.dismiss();
     });
   }, []);
 

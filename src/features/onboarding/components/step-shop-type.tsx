@@ -51,7 +51,7 @@ export function StepShopType({ onSubmit }: Props) {
                 "transition-colors duration-[var(--motion-fast)]",
                 "text-body text-text-primary",
                 selected
-                  ? "border-accent bg-accent/10 ring-2 ring-accent/30"
+                  ? "border-accent bg-accent-bg ring-2 ring-accent/30"
                   : "border-card-border bg-card-bg hover:bg-card-bg-hover",
               )}
               aria-pressed={selected}

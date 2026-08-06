@@ -41,7 +41,7 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
               "hover:-translate-y-[1px] hover:border-border-hover hover:text-text-primary",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
               tableNumber === table
-                ? "accent-inset-ring border-accent bg-accent/5 text-accent"
+                ? "accent-inset-ring border-accent bg-accent-bg text-accent"
                 : "border-card-border"
             )}
             aria-pressed={tableNumber === table}

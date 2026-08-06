@@ -514,8 +514,6 @@ export const thMessages = {
   "kds.status.pending": "กำลังทำ",
   "kds.status.ready": "พร้อมเสิร์ฟ",
   "kds.status.served": "เสิร์ฟแล้ว",
-  "serve.toast.title": "{context} พร้อมเสิร์ฟ",
-  "serve.toast.body": "{product} x{quantity} เสร็จจากครัวแล้ว",
   "serve.action.view": "ดูรายการ",
   "serve.action.acknowledge": "รับทราบ",
   "serve.action.openKds": "เปิด KDS",

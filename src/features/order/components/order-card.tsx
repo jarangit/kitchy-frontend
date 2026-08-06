@@ -92,7 +92,7 @@ const OrderCard = ({
       className={cn(
         "relative flex h-full w-full flex-col justify-between gap-3",
         "transition-opacity duration-300",
-        highlightWaiting && "border-warning/30 bg-warning-bg/40",
+        highlightWaiting && "border-warning-border bg-warning-bg",
         isFading ? "opacity-0" : "opacity-100",
       )}
     >

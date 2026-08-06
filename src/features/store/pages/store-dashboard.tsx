@@ -5,9 +5,10 @@ import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { type ReactNode, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { LuArrowRight, LuChefHat, LuHistory, LuShoppingCart } from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
+import { Button } from "@/shared/components/ui/button";
 
 /* ── Types ─────────────────────────────────────────────── */
 
@@ -74,7 +75,7 @@ const DashboardCard = ({
 }) => (
   <Link
     to={to}
-    className="group flex h-full flex-col rounded-card border border-border/70 bg-surface px-4 py-4 transition-colors duration-[var(--motion-fast)] hover:border-border hover:bg-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-5 sm:py-5"
+    className="group flex h-full flex-col rounded-card border border-border bg-surface px-4 py-4 transition-colors duration-[var(--motion-fast)] hover:border-border-hover hover:bg-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-5 sm:py-5"
   >
     <div className="flex items-start justify-between gap-4">
       <span className="text-text-secondary transition-colors duration-[var(--motion-fast)] group-hover:text-text-primary">
@@ -95,6 +96,7 @@ const DashboardCard = ({
 
 const StoreDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
     useStoreService({});
@@ -145,14 +147,25 @@ const StoreDashboardPage = () => {
   const storeName = storeFinOneQuery?.name ?? "";
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 py-6 sm:gap-6 sm:py-8">
-      <header className="flex w-full flex-col gap-1">
-        <p className="text-label uppercase tracking-[0.08em] text-text-tertiary">
-          {t("dashboard.storeOverview")}
-        </p>
-        <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">
-          {storeName}
-        </h1>
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 sm:gap-6">
+      <header className="flex w-full items-start justify-between gap-4">
+        <div className="flex min-w-0 flex-col gap-1">
+          <p className="text-label uppercase tracking-[0.08em] text-text-tertiary">
+            {t("dashboard.storeOverview")}
+          </p>
+          <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">
+            {storeName}
+          </h1>
+        </div>
+
+        <Button
+          size="lg"
+          onClick={() => navigate(`/store/${id}/pos`)}
+          className="shrink-0 shadow-lg"
+        >
+          <LuShoppingCart size={20} aria-hidden="true" />
+          {t("dashboard.openPos")}
+        </Button>
       </header>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

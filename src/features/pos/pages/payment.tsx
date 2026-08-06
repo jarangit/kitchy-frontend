@@ -170,10 +170,10 @@ const PaymentPage = () => {
     <div className="flex h-full min-h-0 flex-1 flex-col bg-bg">
       <div className="min-h-0 flex-1 overflow-y-auto [-webkit-overflow-scrolling:touch]">
         {step === "SUMMARY" ? (
-          <div className="mx-auto flex min-h-full w-full max-w-6xl flex-col p-4">
-            <Card as="section" padding="none" className="flex min-h-full flex-1 flex-col overflow-hidden">
-              <div className="grid min-h-full flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_320px]">
-                <section className="flex flex-col">
+          <div className="mx-auto flex h-full w-full max-w-6xl flex-col p-4">
+            <Card as="section" padding="none" className="flex min-h-0 flex-1 flex-col overflow-hidden">
+              <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_320px]">
+                <section className="flex min-h-0 flex-col">
                   <div className="shrink-0 border-b border-border p-4">
                     <div className="flex items-start justify-between gap-4">
                       <Button
@@ -212,12 +212,12 @@ const PaymentPage = () => {
                     </div>
                   </div>
 
-                  <div className="min-h-0 flex-1 p-4">
+                  <div className="min-h-0 flex-1 overflow-y-auto p-4 [-webkit-overflow-scrolling:touch]">
                     <OrderSummary items={items} subtotal={subtotal} />
                   </div>
                 </section>
 
-                <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg/92 p-4 backdrop-blur-xl lg:border-l lg:border-t-0">
+                <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg p-4 lg:border-l lg:border-t-0">
                   <div>
                     <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
                       {t("pos.payment.title")}
@@ -297,7 +297,7 @@ const PaymentPage = () => {
                 </div>
               </section>
 
-              <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg/92 p-4 backdrop-blur-xl lg:border-l lg:border-t-0">
+              <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg p-4 lg:border-l lg:border-t-0">
                 <div className="space-y-4">
                   <div>
                     <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
@@ -355,14 +355,6 @@ const PaymentPage = () => {
                     className="h-16 w-full whitespace-normal text-center text-title leading-6"
                   >
                     {confirmLabel}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => setStep("SUMMARY")}
-                    className="w-full whitespace-normal"
-                    disabled={isProcessing}
-                  >
-                    {t("pos.payment.backToSummary")}
                   </Button>
                 </div>
               </aside>

@@ -78,7 +78,7 @@ const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
 
   if (isBumped) {
     return (
-      <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-bumped/40 bg-bumped text-text-inverse shadow-sm">
+      <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-bumped bg-bumped text-text-inverse shadow-sm">
         <div className="flex flex-col gap-2 px-4 pb-4 pt-4">
           <p className="font-mono text-title font-bold italic tracking-tight text-text-inverse/95">
             *** {t("kds.bumped.label")} ***
@@ -90,7 +90,7 @@ const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
             {timeLabel}
           </p>
         </div>
-        <div className="flex-1 bg-card-bg/95 px-4 py-3 opacity-50">
+        <div className="flex-1 bg-card-bg px-4 py-3 opacity-50">
           <ul className="flex flex-col gap-2">
             {group.items.map((item) => (
               <li key={item.orderStationItemId} className="min-w-0">

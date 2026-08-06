@@ -20,7 +20,7 @@ const PosHomePage = () => {
     "--pos-cart-width": "460px",
   } as CSSProperties;
   const [selectedCategory, setSelectedCategory] = useState("ALL");
-  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+  const [isCartPanelOpen, setIsCartPanelOpen] = useState(false);
 
   const {
     productsQuery,
@@ -64,7 +64,7 @@ const PosHomePage = () => {
         : null;
 
   const handlePay = () => {
-    setIsMobileCartOpen(false);
+    setIsCartPanelOpen(false);
     navigate(`/store/${id}/pos/payment`);
   };
 
@@ -118,9 +118,9 @@ const PosHomePage = () => {
           </div>
         </div>
 
-        {/* iPad-first cart rail */}
+        {/* Desktop cart rail */}
         <div
-          className="hidden min-h-0 w-[var(--pos-cart-width)] shrink-0 border-l border-card-border md:flex"
+          className="hidden min-h-0 w-[var(--pos-cart-width)] shrink-0 border-l border-card-border lg:flex"
           style={cartRailStyle}
         >
           <CartArea
@@ -142,7 +142,7 @@ const PosHomePage = () => {
           />
         </div>
       </div>
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card-bg p-4 shadow-cart-dock md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card-bg p-4 shadow-cart-dock lg:hidden">
         {cart.totalItems > 0 && (
           <div className="mb-3 flex items-center justify-between gap-3 text-body-sm text-text-secondary">
             <span>{t("pos.cart.itemCount", { count: String(cart.totalItems) })}</span>
@@ -160,7 +160,7 @@ const PosHomePage = () => {
           size="lg"
           className="w-full whitespace-normal text-center text-title tabular-nums leading-6"
           disabled={cart.totalItems === 0}
-          onClick={() => setIsMobileCartOpen(true)}
+          onClick={() => setIsCartPanelOpen(true)}
         >
           {cart.totalItems > 0
             ? t("pos.cart.mobileOpen")
@@ -168,8 +168,8 @@ const PosHomePage = () => {
         </Button>
       </div>
 
-      {isMobileCartOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-bg md:hidden" role="dialog" aria-modal="true" aria-label={t("pos.cart.title")}>
+      {isCartPanelOpen && (
+        <div className="fixed inset-0 z-50 flex flex-col bg-bg lg:hidden" role="dialog" aria-modal="true" aria-label={t("pos.cart.title")}>
           <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border bg-card-bg px-4 py-3">
             <div>
               <p className="text-label text-text-tertiary">{t("pos.cart.title")}</p>
@@ -181,7 +181,7 @@ const PosHomePage = () => {
               type="button"
               variant="ghost"
               size="icon"
-              onClick={() => setIsMobileCartOpen(false)}
+              onClick={() => setIsCartPanelOpen(false)}
               aria-label={t("common.close")}
             >
               <LuX className="h-5 w-5" aria-hidden="true" />

@@ -54,7 +54,7 @@ export default function UserDashboard() {
 
   return (
     <div className="min-h-screen bg-bg">
-      <header className="sticky top-0 z-10 border-b border-border/60 bg-bg/95 backdrop-blur-xl">
+      <header className="sticky top-0 z-10 border-b border-border bg-bg">
         <div className="page-inline mx-auto flex min-h-14 max-w-6xl flex-wrap items-center justify-between gap-4 py-2">
           <div className="flex min-w-0 items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface">
@@ -145,7 +145,7 @@ export default function UserDashboard() {
                     aria-disabled="true"
                     className="text-left"
                   >
-                    <Card className="flex min-h-44 items-center justify-center border-dashed border-border/60 bg-bg text-center">
+                    <Card className="flex min-h-44 items-center justify-center border-dashed border-border bg-bg text-center">
                       <CardContent className="flex flex-col items-center gap-3 py-8">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
                           <LuPlus size={18} />

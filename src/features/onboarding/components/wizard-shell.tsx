@@ -32,7 +32,7 @@ export function WizardShell({
 
   return (
     <div className="flex min-h-screen flex-col bg-bg">
-      <header className="flex h-16 items-center justify-between border-b border-border/60 bg-bg/95 px-5 backdrop-blur-xl">
+      <header className="flex h-16 items-center justify-between border-b border-border bg-bg px-5">
         <div className="w-28">
           {onBack ? (
             <Button
@@ -69,7 +69,7 @@ export function WizardShell({
         <div className="w-full max-w-md">{children}</div>
       </main>
 
-      <footer className="flex h-16 items-center justify-center border-t border-border/60 bg-bg/95 backdrop-blur-xl">
+      <footer className="flex h-16 items-center justify-center border-t border-border bg-bg">
         <ProgressDots total={totalSteps} current={stepIndex} />
       </footer>
     </div>

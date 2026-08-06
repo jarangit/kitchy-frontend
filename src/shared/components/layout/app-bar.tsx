@@ -38,7 +38,7 @@ export function AppBar() {
   });
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/70 bg-bg/82 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/72 relative">
+    <header className="sticky top-0 z-40 border-b border-border bg-bg relative">
       <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-2 text-caption text-text-secondary sm:px-4 sm:py-2.5 lg:px-6">
         {storeId ? (
           <Link

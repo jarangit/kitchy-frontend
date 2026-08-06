@@ -19,7 +19,7 @@ const Layout = ({ children, noPadding, hideSidebar, hideAppBar }: Props) => {
       {!hideSidebar && <Sidebar />}
       <div className={cn("flex min-w-0 flex-grow flex-col transition-all duration-300", hideSidebar ? "h-full min-h-0 overflow-hidden" : "min-h-screen")}>
         {!hideAppBar && <AppBar />}
-        <main className={cn("flex min-h-0 flex-1 flex-col", hideSidebar && "overflow-hidden", !noPadding && "page-shell", !hideSidebar && "pb-28")}>{children}</main>
+        <main className={cn("flex min-h-0 flex-1 flex-col", hideSidebar && "overflow-hidden", !noPadding && "page-shell", !hideSidebar && "pb-36!")}>{children}</main>
       </div>
     </div>
   );

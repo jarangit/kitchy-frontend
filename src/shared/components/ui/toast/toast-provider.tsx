@@ -16,27 +16,27 @@ const MAX_VISIBLE_TOASTS = 3;
 
 const variantStyles: Record<ToastVariant, { shell: string; icon: string; iconNode: React.ReactNode }> = {
   default: {
-    shell: "border-border bg-surface ring-border/40",
+    shell: "border-border bg-surface",
     icon: "bg-surface-hover text-text-secondary",
     iconNode: <LuBell size={20} />,
   },
   success: {
-    shell: "border-success/30 bg-surface ring-success/10",
+    shell: "border-success-border bg-surface",
     icon: "bg-success-bg text-success",
     iconNode: <LuCheck size={20} />,
   },
   warning: {
-    shell: "border-warning/30 bg-surface ring-warning/10",
+    shell: "border-warning-border bg-surface",
     icon: "bg-warning-bg text-warning",
     iconNode: <LuTriangleAlert size={20} />,
   },
   error: {
-    shell: "border-danger/30 bg-surface ring-danger/10",
+    shell: "border-danger-border bg-surface",
     icon: "bg-danger-bg text-danger",
     iconNode: <LuX size={20} />,
   },
   info: {
-    shell: "border-info/30 bg-surface ring-info/10",
+    shell: "border-info-border bg-surface",
     icon: "bg-info-bg text-info",
     iconNode: <LuInfo size={20} />,
   },
@@ -56,7 +56,7 @@ function ToastItem({ record, onDismiss }: { record: ToastRecord; onDismiss: (id:
   }, [record.durationMs, record.id, onDismiss]);
 
   return (
-    <div className={cn("rounded-card border p-4 shadow-xl ring-1", styles.shell)}>
+    <div className={cn("rounded-card border p-4 shadow-xl", styles.shell)}>
       <div className="flex items-start gap-3">
         <span className={cn("mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full", styles.icon)}>
           {styles.iconNode}
