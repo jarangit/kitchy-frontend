@@ -6,45 +6,46 @@
 
 /* ── Semantic Colors ── */
 :root {
-  /* Surfaces — warm gray page, white cards */
-  --color-bg: var(--gray-100);           /* #F5F5F7 — Newsroom page background */
-  --color-surface: var(--gray-0);        /* #FFFFFF — white cards on gray bg */
-  --color-surface-hover: var(--gray-100); /* #F5F5F7 — subtle hover on white cards */
-  --color-surface-muted: #F6F6F7;        /* 4% gray-900 over white — solid */
-  --color-surface-muted-hover: #EDEDEF;  /* 8% gray-900 over white — solid */
-  --color-overlay: rgba(29, 29, 31, 0.55); /* scrim — intentionally translucent */
+  /* Surfaces — clean off-white app chrome like the reference dashboard */
+  --color-bg: var(--gray-50);
+  --color-surface: var(--gray-0);
+  --color-surface-hover: var(--gray-50);
+  --color-surface-muted: var(--gray-100);
+  --color-surface-muted-hover: var(--gray-200);
+  --color-overlay: rgba(8, 9, 6, 0.56);
 
-  /* Text — solid Newsroom grays, no alpha */
-  --color-text-primary: var(--gray-900);   /* #1D1D1F */
-  --color-text-secondary: var(--gray-600); /* #6E6E73 */
-  --color-text-tertiary: var(--gray-500);  /* #86868B */
-  --color-text-inverse: var(--gray-0);     /* #FFFFFF */
+  /* Text — almost-black titles with softer slate secondary text */
+  --color-text-primary: var(--gray-900);
+  --color-text-secondary: var(--gray-600);
+  --color-text-tertiary: var(--gray-600);
+  --color-text-inverse: var(--gray-0);
+  --color-on-primary: var(--lime-500);
 
-  /* Border — very subtle, Newsroom style */
-  --color-border: var(--gray-200);       /* #E5E5EA */
-  --color-border-hover: var(--gray-300); /* #D1D1D6 */
+  /* Border */
+  --color-border: var(--gray-200);
+  --color-border-hover: var(--gray-300);
 
-  /* Action — dark primary (Newsroom DNA) */
-  --color-primary: var(--gray-900);      /* #1D1D1F */
-  --color-primary-hover: var(--gray-800); /* #2C2C2E */
-  --color-primary-bg: #F1F1F3;           /* 6% gray-900 over white — solid */
+  /* Action — near-black is the main emphasis for buttons and hard section anchors */
+  --color-primary: var(--gray-900);
+  --color-primary-hover: var(--gray-800);
+  --color-primary-bg: var(--gray-100);
 
-  /* Accent — warm coral pink, paired with dark primary */
-  --color-accent: #FF3B6F;
-  --color-accent-hover: #E62E5F;
-  --color-accent-bg: #FFEBF1;            /* 10% accent over white — solid */
-  --color-accent-border: #FFC0D1;        /* 32% accent over white — solid */
-  --color-accent-text: #C91F4D; /* AA-readable on white surfaces */
+  /* Accent stays lime for selections, indicators, and highlights */
+  --color-accent: var(--lime-500);
+  --color-accent-hover: var(--lime-600);
+  --color-accent-bg: var(--lime-50);
+  --color-accent-border: var(--lime-200);
+  --color-accent-text: var(--gray-900);
 
-  /* Status — solid tints (10% over white); text stays on the 700 base hue */
-  --color-success: #15803d;
+  /* Status — aligned with the muted system palette and kept contrast-safe */
+  --color-success: var(--green-700);
   --color-success-bg: var(--green-50);
-  --color-danger: #b91c1c;
-  --color-danger-hover: #991b1b;
+  --color-danger: var(--red-700);
+  --color-danger-hover: var(--red-600);
   --color-danger-bg: var(--red-50);
-  --color-warning: #b45309;
+  --color-warning: var(--yellow-700);
   --color-warning-bg: var(--yellow-50);
-  --color-info: #1d4ed8;
+  --color-info: var(--blue-700);
   --color-info-bg: var(--blue-50);
 
   /* Bumped — KDS confirmation state shown briefly after a BUMP click,
@@ -65,7 +66,7 @@
 
   --color-text-primary: #F5F5F7;
   --color-text-secondary: #AEAEB2;
-  --color-text-tertiary: #86868B;
+  --color-text-tertiary: #AEAEB2;
   /* Text on primary surfaces (button-primary, chip-active, etc.) stays light
      because dark-mode primary is a mid-gray, not near-white. */
   --color-text-inverse: #F5F5F7;
@@ -75,28 +76,29 @@
 
   /* Primary — mid-gray in dark mode (not near-white) so active states
      don't read as jarring white blocks on dark bg. */
-  --color-primary: #3A3A3C;
-  --color-primary-hover: #48484A;
-  --color-primary-bg: #282829;           /* 32% primary over surface — solid */
+  --color-primary: #080906;
+  --color-primary-hover: #1E2029;
+  --color-primary-bg: #1A1C1A;
+  --color-on-primary: #D1EF57;
 
-  /* Accent — brighter coral for dark surfaces */
-  --color-accent: #FF5C85;
-  --color-accent-hover: #FF7A9C;
-  --color-accent-bg: #552E37;            /* 24% accent over surface — solid */
-  --color-accent-border: #793748;        /* 40% accent over surface — solid */
-  --color-accent-text: #FFB3C6;
+  /* Accent — same brand family, tuned for dark surfaces */
+  --color-accent: #D1EF57;
+  --color-accent-hover: #E4F38D;
+  --color-accent-bg: #2E3518;
+  --color-accent-border: #495823;
+  --color-accent-text: #EDF7B8;
 
-  /* Status — solid tints (22% over surface); text stays on the 300 base hue */
-  --color-success: #22c55e;
-  --color-danger: #ef4444;
-  --color-danger-hover: #dc2626;
-  --color-warning: #f59e0b;
-  --color-info: #3b82f6;
+  /* Status — brighter references for dark surfaces, from the same muted families */
+  --color-success: var(--green-500);
+  --color-danger: var(--red-500);
+  --color-danger-hover: var(--red-600);
+  --color-warning: var(--yellow-500);
+  --color-info: var(--blue-500);
 
-  --color-success-bg: #20442D;
-  --color-danger-bg: #4D2727;
-  --color-warning-bg: #4E3B1B;
-  --color-info-bg: #25354E;
+  --color-success-bg: #26301A;
+  --color-danger-bg: #3D2622;
+  --color-warning-bg: #3C3120;
+  --color-info-bg: #26303D;
 
   --color-bumped: #7c3aed;
   --color-bumped-bg: #33254C;            /* 22% bumped over surface — solid */

@@ -14,7 +14,7 @@
   /* ── Button ── */
   --color-button-primary-bg: var(--color-primary);
   --color-button-primary-bg-hover: var(--color-primary-hover);
-  --color-button-primary-text: var(--color-text-inverse);
+  --color-button-primary-text: var(--color-on-primary);
 
   --color-button-secondary-bg: var(--color-surface);
   --color-button-secondary-bg-hover: var(--color-surface-hover);
@@ -102,7 +102,7 @@
 
   /* ── ChipTab ── */
   --color-chip-active-bg: var(--color-primary);
-  --color-chip-active-text: var(--color-text-inverse);
+  --color-chip-active-text: var(--color-on-primary);
   --color-chip-inactive-bg: var(--color-surface);
   --color-chip-inactive-text: var(--color-text-secondary);
   --color-chip-inactive-bg-hover: var(--color-surface-hover);
@@ -118,7 +118,7 @@
   --color-segment-bg: var(--color-surface);
   --color-segment-border: var(--color-border);
   --color-segment-active-bg: var(--color-primary);
-  --color-segment-active-text: var(--color-text-inverse);
+  --color-segment-active-text: var(--color-on-primary);
   --color-segment-inactive-text: var(--color-text-secondary);
   --color-segment-inactive-text-hover: var(--color-text-primary);
   --radius-segment: var(--radius-lg);
@@ -148,18 +148,17 @@
   --font-size-dialog-desc: var(--text-body-sm-size);
 
   /* ── Accent surface text ── */
-  /* Text color used on top of --color-accent backgrounds (badges, pills).
-     Accent is dark-coral in both themes, so white is readable in both. */
-  --color-on-accent: #FFFFFF;
+  /* Text color used on top of accent fills in this lime theme. */
+  --color-on-accent: var(--gray-900);
 
   /* ── Sidebar ── */
-  --color-sidebar-bg: color-mix(in srgb, var(--color-bg) 88%, white);
+  --color-sidebar-bg: #232235;
   --color-sidebar-border: var(--color-border);
   --spacing-sidebar-width: 84px;
-  --color-sidebar-active-bg: var(--color-surface);
-  --color-sidebar-active-text: var(--color-text-primary);
-  --color-sidebar-text: var(--color-text-secondary);
-  --color-sidebar-hover-bg: var(--color-surface);
+  --color-sidebar-active-bg: var(--color-accent);
+  --color-sidebar-active-text: var(--color-accent-text);
+  --color-sidebar-text: color-mix(in srgb, var(--gray-0) 78%, transparent);
+  --color-sidebar-hover-bg: color-mix(in srgb, var(--gray-0) 8%, transparent);
 
   /* ── Select ── */
   --color-select-bg: var(--color-surface);
@@ -198,8 +197,8 @@
 [data-theme="dark"] {
   --color-card-border: var(--color-border);
   --color-dialog-border: var(--color-border);
-  --color-sidebar-bg: #0F0F11;
-  --color-sidebar-active-bg: var(--color-surface-hover);
+  --color-sidebar-bg: #171821;
+  --color-sidebar-active-bg: var(--color-accent);
   --color-button-secondary-bg: var(--color-surface);
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-dialog-bg: var(--color-surface);
@@ -218,7 +217,7 @@
   --color-badge-danger-text: #fca5a5;
   --color-badge-warning-text: #fcd34d;
   --color-badge-info-text: #93c5fd;
-  --color-badge-accent-text: #FFB3C6;
+  --color-badge-accent-text: var(--color-accent-text);
 
   /* Status borders — dark mode: composite of status color over surface. */
   --color-success-border: #205935;

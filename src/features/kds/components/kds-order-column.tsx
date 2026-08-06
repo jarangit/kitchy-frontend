@@ -113,20 +113,20 @@ const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
   return (
     <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-card-border bg-card-bg shadow-sm transition-all duration-[var(--motion-normal)]">
       {/* ── Header with order info ── */}
-      <div className="flex flex-col gap-1.5 bg-primary px-4 pb-4 pt-4 text-text-inverse">
+      <div className="flex flex-col gap-1.5 bg-primary px-4 pb-4 pt-4 text-on-primary">
         <div className="flex items-start justify-between gap-2">
           <p className="font-mono text-title font-bold leading-tight tracking-tight">
             {group.orderNumber}
           </p>
-          <LuUtensilsCrossed size={18} className="shrink-0 text-text-inverse/90" />
+          <LuUtensilsCrossed size={18} className="shrink-0 text-on-primary/90" />
         </div>
         {sourceLabel && (
-          <p className="text-caption font-semibold uppercase tracking-[0.04em] text-text-inverse/90">
+          <p className="text-caption font-semibold uppercase tracking-[0.04em] text-on-primary/90">
             {sourceLabel}
           </p>
         )}
         {group.orderType === "DELIVERY" && group.deliveryOrderNumber && (
-          <p className="font-mono text-caption font-semibold tabular-nums text-text-inverse/85">
+          <p className="font-mono text-caption font-semibold tabular-nums text-on-primary/85">
             {t("kds.card.deliveryOrderNumber", {
               orderNumber: group.deliveryOrderNumber,
             })}

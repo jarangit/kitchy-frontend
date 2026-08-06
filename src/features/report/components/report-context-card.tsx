@@ -40,7 +40,7 @@ const ReportContextCard = ({
                   className="flex items-center justify-between gap-3 py-2 border-b border-border last:border-0"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <span className="w-6 h-6 rounded-full bg-primary text-text-inverse text-caption font-semibold flex items-center justify-center shrink-0">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary text-caption font-semibold">
                       {idx + 1}
                     </span>
                     <span className="text-body-sm font-medium text-text-primary truncate">
