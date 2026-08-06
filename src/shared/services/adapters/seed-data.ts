@@ -74,6 +74,7 @@ const STORE_NAMES: Record<DemoStorePreset, string> = {
 const createSeedStore = (preset: DemoStorePreset): IStore => ({
   id: DEMO_STORE_ID,
   name: STORE_NAMES[preset],
+  orderLimit: 20,
   userId: "1",
   createdAt: twoHoursAgo,
   updatedAt: now,

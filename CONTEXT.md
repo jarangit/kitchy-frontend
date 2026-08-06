@@ -96,6 +96,10 @@ _Avoid_: Shop Type, Store, Order Type
 The operational configuration area for a Store. Settings are grouped into control-panel sections such as kitchen, sales, payments, store, devices, safety, and system.
 _Avoid_: Onboarding when you mean ongoing configuration
 
+**Order Limit**:
+A store-wide threshold for how many active orders the kitchen should handle before the KDS is considered busy.
+_Avoid_: Capacity when you mean this configurable store setting
+
 **Control Panel Section**:
 One major grouping inside Settings used to organize configuration topics. Examples include kitchen, sales, payments, store, devices, safety, and system.
 _Avoid_: Page when you mean the domain grouping itself

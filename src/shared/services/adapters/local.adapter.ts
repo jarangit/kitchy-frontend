@@ -241,7 +241,14 @@ export const localAdapter: DataAdapter = {
   async createStore(dto: ICreateStore) {
     await delay();
     const stores = get<IStore[]>(KEYS.stores, [getSeedStore()]);
-    const store: IStore = { id: genId(), name: dto.name, userId: dto.userId, createdAt: now(), updatedAt: now() };
+    const store: IStore = {
+      id: genId(),
+      name: dto.name,
+      orderLimit: 20,
+      userId: dto.userId,
+      createdAt: now(),
+      updatedAt: now(),
+    };
     stores.push(store);
     set(KEYS.stores, stores);
     return store;

@@ -50,7 +50,7 @@ type EditableProps = BaseProps & {
   onSave: (next: string) => void;
   placeholder?: string;
   emptyLabel?: string;
-  type?: "text" | "tel" | "email";
+  type?: "text" | "tel" | "email" | "number";
 };
 
 type Props =

@@ -94,7 +94,10 @@ export const enMessages = {
   "settings.cp.sales.default.togo": "To go",
 
   // Kitchen
-  "settings.cp.kitchen.description": "Manage kitchen and stations",
+  "settings.cp.kitchen.description": "Manage kitchen, stations, and order limit",
+  "settings.cp.kitchen.orderLimit.label": "Order limit",
+  "settings.cp.kitchen.orderLimit.hint": "Store-wide limit for active orders shown on KDS",
+  "settings.cp.kitchen.orderLimit.placeholder": "20",
   "settings.cp.kitchen.manage": "Go to stations",
   "settings.cp.kitchen.categories": "Go to categories",
   "settings.cp.kitchen.products": "Go to products",
@@ -502,6 +505,11 @@ export const enMessages = {
   "kds.bumped.label": "BUMPED",
   "kds.stats.ordersLabel": "Orders",
   "kds.stats.itemsLabel": "Items",
+  "kds.stats.limitLabel": "Order limit",
+  "kds.stats.level.normal": "Normal",
+  "kds.stats.level.busy": "Busy",
+  "kds.stats.level.veryBusy": "Very busy",
+  "kds.stats.overLimit": "Over limit",
   "kds.empty.noStationTitle": "No station found",
   "kds.empty.noStationDescription": "Please create a station to use KDS in single-station mode.",
   "kds.empty.pendingTitle": "All caught up",

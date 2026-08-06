@@ -92,7 +92,10 @@ export const thMessages = {
   "settings.cp.sales.default.togo": "กลับบ้าน",
 
   // Kitchen
-  "settings.cp.kitchen.description": "จัดการครัว/สเตชันของร้าน",
+  "settings.cp.kitchen.description": "จัดการครัว/สเตชัน และลิมิตออเดอร์ของร้าน",
+  "settings.cp.kitchen.orderLimit.label": "ลิมิตออเดอร์",
+  "settings.cp.kitchen.orderLimit.hint": "ลิมิตทั้งร้านสำหรับออเดอร์ที่แสดงใน KDS",
+  "settings.cp.kitchen.orderLimit.placeholder": "20",
   "settings.cp.kitchen.manage": "ไปที่สเตชัน",
   "settings.cp.kitchen.categories": "ไปที่หมวดหมู่",
   "settings.cp.kitchen.products": "ไปที่สินค้า",
@@ -500,6 +503,11 @@ export const thMessages = {
   "kds.bumped.label": "เสร็จแล้ว",
   "kds.stats.ordersLabel": "ออเดอร์",
   "kds.stats.itemsLabel": "รายการ",
+  "kds.stats.limitLabel": "ลิมิตออเดอร์",
+  "kds.stats.level.normal": "ปกติ",
+  "kds.stats.level.busy": "ยุ่ง",
+  "kds.stats.level.veryBusy": "ยุ่งมาก",
+  "kds.stats.overLimit": "เกินลิมิต",
   "kds.empty.noStationTitle": "ยังไม่มีสเตชัน",
   "kds.empty.noStationDescription": "กรุณาสร้างสเตชันเพื่อใช้ KDS ในโหมดสเตชันเดียว",
   "kds.empty.pendingTitle": "ไม่มีออเดอร์ค้าง",

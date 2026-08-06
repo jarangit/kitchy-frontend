@@ -3,11 +3,14 @@ import { useKds } from "@/features/kds/hooks/useKds";
 import KdsOrderColumn from "@/features/kds/components/kds-order-column";
 import KdsStatsBar from "@/features/kds/components/kds-stats-bar";
 import { useStationService } from "@/features/station/hooks/useStation";
+import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { LuUtensilsCrossed } from "react-icons/lu";
+
+const DEFAULT_ORDER_LIMIT = 20;
 
 const useDragScroll = (ref: React.RefObject<HTMLElement | null>) => {
   useEffect(() => {
@@ -62,7 +65,7 @@ const useDragScroll = (ref: React.RefObject<HTMLElement | null>) => {
       el.removeEventListener("touchend", onUp);
       el.removeEventListener("touchcancel", onUp);
     };
-  }, []);
+  }, [ref]);
 };
 
 const KdsBoardPage = () => {
@@ -70,6 +73,7 @@ const KdsBoardPage = () => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   useDragScroll(scrollRef);
   const { stationsQuery } = useStationService({});
+  const { storeFinOneQuery } = useStoreService({});
   const stations = useMemo(() => stationsQuery ?? [], [stationsQuery]);
   const [activeStationId, setActiveStationId] = useState<string | null>(null);
   const activeStation = useMemo(() => {
@@ -79,6 +83,7 @@ const KdsBoardPage = () => {
 
   const { pendingGroups, isLoading, isUpdating, bumpAndRemove, bumpedOrderId } =
     useKds(activeStation?.id);
+  const orderLimit = storeFinOneQuery?.orderLimit ?? DEFAULT_ORDER_LIMIT;
 
   const handleBump = (group: Parameters<typeof bumpAndRemove>[0]) => {
     void bumpAndRemove(group);
@@ -119,7 +124,7 @@ const KdsBoardPage = () => {
         </div>
       ) : (
         <>
-          <KdsStatsBar groups={pendingGroups} />
+          <KdsStatsBar groups={pendingGroups} orderLimit={orderLimit} />
           {pendingGroups.length === 0 ? (
             <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
               <EmptyState

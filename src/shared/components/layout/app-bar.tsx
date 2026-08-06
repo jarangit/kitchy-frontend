@@ -7,6 +7,10 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
 import { cn } from "@/shared/utils/cn";
 import { AppBarNotch } from "@/shared/components/layout/app-bar-notch";
+import { getBusyProgressState } from "@/shared/components/ui/busy-progress.utils";
+import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
+import { useStoreService } from "@/features/store/hooks/useStoreService";
+import { Pill } from "@/shared/components/ui/pill";
 
 const useClock = () => {
   const [now, setNow] = useState(() => new Date());
@@ -26,6 +30,8 @@ export function AppBar() {
   const isOnline = useNetworkStatus();
   const storeId = useAppSelector((state) => state.currentStore.storeId);
   const storeName = useAppSelector((state) => state.currentStore.storeName);
+  const { count: pendingOrdersCount } = usePendingOrdersCount();
+  const { storeFinOneQuery } = useStoreService({});
 
   const locale = language === "th" ? "th-TH" : "en-US";
   const timeLabel = now.toLocaleTimeString(locale, {
@@ -36,6 +42,21 @@ export function AppBar() {
     day: "numeric",
     month: "numeric",
   });
+  const orderLimit = storeFinOneQuery?.orderLimit ?? 20;
+  const { state } = getBusyProgressState(pendingOrdersCount, orderLimit);
+  const busyLabelKey =
+    state === "veryBusy"
+      ? "kds.stats.level.veryBusy"
+      : state === "busy"
+        ? "kds.stats.level.busy"
+        : "kds.stats.level.normal";
+  const busyLabel = t(busyLabelKey);
+  const busyClassName =
+    state === "veryBusy"
+      ? "bg-danger-bg text-danger"
+      : state === "busy"
+        ? "bg-warning-bg text-warning"
+        : "bg-success-bg text-success";
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg relative">
@@ -69,8 +90,9 @@ export function AppBar() {
         <AppBarNotch />
 
         <div className="flex shrink-0 items-center gap-2">
-          <span
-            className="inline-flex min-h-7 items-center gap-2 rounded-full bg-surface pl-2.5 pr-3 leading-none transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover"
+          <Pill
+            variant="surface"
+            className="items-center gap-2 px-3.5 hover:bg-surface-hover"
             aria-label={`${timeLabel} ${dateLabel}`}
             title={`${timeLabel} · ${dateLabel}`}
           >
@@ -85,7 +107,16 @@ export function AppBar() {
             <span className="hidden text-caption text-text-tertiary lg:inline">
               {dateLabel}
             </span>
-          </span>
+          </Pill>
+
+          <Pill
+            variant={state === "veryBusy" ? "danger" : state === "busy" ? "warning" : "success"}
+            className={cn("min-w-[72px] justify-center px-2 hover:opacity-90", busyClassName)}
+            aria-label={busyLabel}
+            title={busyLabel}
+          >
+            <span className="text-caption font-medium">{busyLabel}</span>
+          </Pill>
 
           <span
             aria-label={isOnline ? t("appbar.online") : t("appbar.offline")}

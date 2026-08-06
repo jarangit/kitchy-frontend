@@ -5,4 +5,5 @@ export interface ICreateStore {
 
 export interface IUpdateStore {
   name: string;
+  orderLimit?: number;
 }
