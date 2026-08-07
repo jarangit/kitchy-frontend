@@ -17,7 +17,7 @@ const now = new Date().toISOString();
 const hourAgo = new Date(Date.now() - 3600_000).toISOString();
 const twoHoursAgo = new Date(Date.now() - 7200_000).toISOString();
 
-export const DEMO_SEED_VERSION = "2026-06-pos-demo-v4";
+export const DEMO_SEED_VERSION = "2026-08-cafe-images-v5";
 export const DEMO_STORE_PRESET_STORAGE_KEY = "demo:store-preset";
 export const DEMO_STORE_ID = "store-001";
 export const DEMO_STORE_NAME = "ร้านกิจจี้ Demo";
@@ -88,6 +88,7 @@ const createMenu = (
   categoryId: string,
   categoryName: string,
   isBestSeller = false,
+  imageUrl?: string,
 ): IMenu => ({
   id,
   name,
@@ -95,6 +96,7 @@ const createMenu = (
   isBestSeller,
   price,
   cost,
+  imageUrl,
   categoryId,
   categoryName,
   stationId: DEMO_STATION_ID,
@@ -147,38 +149,30 @@ const createTransaction = (
 function createCafeBundle(): DemoSeedBundle {
   const categories: CategoryModel[] = [
     { id: "cat-001", name: "กาแฟ", isActive: true, sortOrder: 1, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-002", name: "ชา/มัทฉะ", isActive: true, sortOrder: 2, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-002", name: "นอนคอฟฟี่", isActive: true, sortOrder: 2, createdAt: twoHoursAgo, updatedAt: now },
     { id: "cat-003", name: "เบเกอรี", isActive: true, sortOrder: 3, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-004", name: "บรันช์", isActive: true, sortOrder: 4, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-005", name: "เค้ก/ของหวาน", isActive: true, sortOrder: 5, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-006", name: "โซดา/ผลไม้", isActive: true, sortOrder: 6, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-007", name: "ซิกเนเจอร์", isActive: true, sortOrder: 7, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-008", name: "เมล็ดกาแฟ/ของฝาก", isActive: true, sortOrder: 8, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-004", name: "เค้ก / ของหวาน", isActive: true, sortOrder: 4, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-005", name: "เครื่องดื่มผลไม้", isActive: true, sortOrder: 5, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-006", name: "ซิกเนเจอร์", isActive: true, sortOrder: 6, createdAt: twoHoursAgo, updatedAt: now },
   ];
 
   const products: IMenu[] = [
-    createMenu("prod-001", "อเมริกาโน่เย็น", 70, 18, "cat-001", "กาแฟ", true),
-    createMenu("prod-002", "ลาเต้เย็น", 85, 25, "cat-001", "กาแฟ", true),
-    createMenu("prod-003", "คาปูชิโน่เย็น", 85, 25, "cat-001", "กาแฟ"),
-    createMenu("prod-004", "เอสเพรสโซ่ส้ม", 95, 29, "cat-001", "กาแฟ"),
-    createMenu("prod-005", "มัทฉะลาเต้", 95, 32, "cat-002", "ชา/มัทฉะ", true),
-    createMenu("prod-006", "ชาไทยนมสด", 75, 20, "cat-002", "ชา/มัทฉะ"),
-    createMenu("prod-007", "พีชอู่หลง", 80, 22, "cat-002", "ชา/มัทฉะ"),
-    createMenu("prod-008", "ครัวซองต์เนยสด", 75, 28, "cat-003", "เบเกอรี", true),
-    createMenu("prod-009", "ครอฟเฟิลน้ำผึ้ง", 95, 34, "cat-003", "เบเกอรี"),
-    createMenu("prod-010", "มัฟฟินช็อกโกแลต", 65, 24, "cat-003", "เบเกอรี"),
-    createMenu("prod-011", "แซนด์วิชแฮมชีส", 129, 48, "cat-004", "บรันช์", true),
-    createMenu("prod-012", "โทสต์อะโวคาโด", 159, 58, "cat-004", "บรันช์"),
-    createMenu("prod-013", "พาสต้าเพสโต้ไก่", 189, 70, "cat-004", "บรันช์"),
-    createMenu("prod-014", "ชีสเค้กหน้าไหม้", 115, 42, "cat-005", "เค้ก/ของหวาน", true),
-    createMenu("prod-015", "เค้กแครอท", 110, 40, "cat-005", "เค้ก/ของหวาน"),
-    createMenu("prod-016", "บราวนี่วอลนัต", 85, 31, "cat-005", "เค้ก/ของหวาน"),
-    createMenu("prod-017", "ยูซุโซดา", 79, 19, "cat-006", "โซดา/ผลไม้"),
-    createMenu("prod-018", "สตรอว์เบอร์รีโซดา", 79, 19, "cat-006", "โซดา/ผลไม้"),
-    createMenu("prod-019", "Cold Brew Tonic", 105, 31, "cat-007", "ซิกเนเจอร์", true),
-    createMenu("prod-020", "Dirty Coffee", 115, 35, "cat-007", "ซิกเนเจอร์"),
-    createMenu("prod-021", "House Blend 250g", 320, 140, "cat-008", "เมล็ดกาแฟ/ของฝาก"),
-    createMenu("prod-022", "Drip Bag Set", 180, 75, "cat-008", "เมล็ดกาแฟ/ของฝาก"),
+    createMenu("prod-001", "เอสเปรสโซ่ร้อน", 65, 18, "cat-001", "กาแฟ", true, "/images/cafe/mehmet-talha-onuk-MBeY2m00Ybc-unsplash.jpg"),
+    createMenu("prod-002", "ลาเต้ร้อน", 85, 28, "cat-001", "กาแฟ", true, "/images/cafe/katya-azimova-_AeS7M_P03o-unsplash.jpg"),
+    createMenu("prod-003", "คาปูชิโน่ร้อน", 90, 30, "cat-001", "กาแฟ", false, "/images/cafe/jonas-jacobsson-RFHFV7lVQBY-unsplash.jpg"),
+    createMenu("prod-004", "มัทฉะลาเต้เย็น", 105, 36, "cat-002", "นอนคอฟฟี่", true, "/images/cafe/gaia-co-VKWjhlgFFwc-unsplash.jpg"),
+    createMenu("prod-005", "มัทฉะมะพร้าวเย็น", 115, 40, "cat-002", "นอนคอฟฟี่", false, "/images/cafe/victor-rutka-4FujjkcI40g-unsplash.jpg"),
+    createMenu("prod-006", "โอรีโอ้ช็อกโก้เฟรปเป้", 129, 46, "cat-002", "นอนคอฟฟี่", true, "/images/cafe/nataliya-melnychuk-Li2zmWtG8Ns-unsplash.jpg"),
+    createMenu("prod-007", "ครัวซองต์เนยสด", 79, 26, "cat-003", "เบเกอรี", true, "/images/cafe/olga-petnyunene-VgsizSk7py0-unsplash.jpg"),
+    createMenu("prod-008", "ครัวซองต์สตรอว์เบอร์รี", 95, 33, "cat-003", "เบเกอรี", false, "/images/cafe/olena-bohovyk-ld4DOEligUw-unsplash.jpg"),
+    createMenu("prod-009", "อัลมอนด์ครัวซองต์", 105, 37, "cat-003", "เบเกอรี", true, "/images/cafe/tkhao-khoang-AidLjZx4rs4-unsplash.jpg"),
+    createMenu("prod-010", "โดนัทเคลือบน้ำตาล", 69, 22, "cat-003", "เบเกอรี", false, "/images/cafe/heather-ford-POM4KxWZcG8-unsplash.jpg"),
+    createMenu("prod-011", "เค้กมอคค่าเลเยอร์", 135, 49, "cat-004", "เค้ก / ของหวาน", true, "/images/cafe/anthony-espinosa-6iqpLKqeaE0-unsplash.jpg"),
+    createMenu("prod-012", "ช็อกโกแลตชีสเค้ก", 145, 54, "cat-004", "เค้ก / ของหวาน", false, "/images/cafe/allen-rad-JBIK4QZOFfc-unsplash.jpg"),
+    createMenu("prod-013", "เค้กเบอร์รีโยเกิร์ต", 139, 51, "cat-004", "เค้ก / ของหวาน", false, "/images/cafe/diliara-garifullina-I48gnI1Qs5o-unsplash.jpg"),
+    createMenu("prod-014", "ส้มโทนิคเย็น", 95, 26, "cat-005", "เครื่องดื่มผลไม้", true, "/images/cafe/abhishek-hajare-JWfcm1stQuo-unsplash.jpg"),
+    createMenu("prod-015", "พิงก์สตรอว์เบอร์รีฟิซ", 109, 34, "cat-006", "ซิกเนเจอร์", true, "/images/cafe/great-cocktails-9PyQwwmZxpI-unsplash.jpg"),
+    createMenu("prod-016", "ไอซ์สตรอว์เบอร์รีคูลเลอร์", 119, 38, "cat-006", "ซิกเนเจอร์", false, "/images/cafe/cristian-cristian-0SwrXvH3rL0-unsplash.jpg"),
   ];
 
   const orders = [
@@ -190,11 +184,11 @@ function createCafeBundle(): DemoSeedBundle {
   ];
 
   const orderMeta: DemoOrderMeta[] = [
-    { id: "order-001", storeId: DEMO_STORE_ID, tableNumber: "A2", products: [{ productId: "prod-002", quantity: 1 }, { productId: "prod-014", quantity: 1 }] },
-    { id: "order-002", storeId: DEMO_STORE_ID, customerName: "Mint", products: [{ productId: "prod-011", quantity: 1 }, { productId: "prod-017", quantity: 1 }] },
-    { id: "order-003", storeId: DEMO_STORE_ID, tableNumber: "B1", products: [{ productId: "prod-019", quantity: 1 }, { productId: "prod-008", quantity: 2 }] },
-    { id: "order-004", storeId: DEMO_STORE_ID, deliveryPlatform: "GrabFood", deliveryOrderNumber: "GF-CF-304", products: [{ productId: "prod-013", quantity: 1 }, { productId: "prod-018", quantity: 1, note: "หวานน้อย" }] },
-    { id: "order-005", storeId: DEMO_STORE_ID, products: [{ productId: "prod-020", quantity: 1 }] },
+    { id: "order-001", storeId: DEMO_STORE_ID, tableNumber: "A2", products: [{ productId: "prod-002", quantity: 1 }, { productId: "prod-011", quantity: 1 }] },
+    { id: "order-002", storeId: DEMO_STORE_ID, customerName: "Mint", products: [{ productId: "prod-004", quantity: 1 }, { productId: "prod-010", quantity: 1 }] },
+    { id: "order-003", storeId: DEMO_STORE_ID, tableNumber: "B1", products: [{ productId: "prod-015", quantity: 1 }, { productId: "prod-009", quantity: 1 }, { productId: "prod-013", quantity: 1 }] },
+    { id: "order-004", storeId: DEMO_STORE_ID, deliveryPlatform: "GrabFood", deliveryOrderNumber: "GF-CF-304", products: [{ productId: "prod-016", quantity: 1, note: "หวานน้อย" }, { productId: "prod-008", quantity: 1 }] },
+    { id: "order-005", storeId: DEMO_STORE_ID, products: [{ productId: "prod-001", quantity: 1 }, { productId: "prod-007", quantity: 1 }] },
   ];
 
   const orderStationItems: IOrderStationItemDto[] = [
@@ -205,7 +199,7 @@ function createCafeBundle(): DemoSeedBundle {
         id: "oi-001",
         quantity: 1,
         notes: null,
-        product: { id: "prod-002", name: "ลาเต้เย็น" },
+        product: { id: "prod-002", name: "ลาเต้ร้อน" },
         order: { id: "order-001", orderNumber: "301", status: "COMPLETED", orderType: "DINE_IN", tableNumber: "A2", createdAt: twoHoursAgo },
       },
     },
@@ -214,9 +208,9 @@ function createCafeBundle(): DemoSeedBundle {
       status: "pending",
       orderItem: {
         id: "oi-002",
-        quantity: 2,
+        quantity: 1,
         notes: null,
-        product: { id: "prod-008", name: "ครัวซองต์เนยสด" },
+        product: { id: "prod-009", name: "อัลมอนด์ครัวซองต์" },
         order: { id: "order-003", orderNumber: "303", status: "PREPARING", orderType: "DINE_IN", tableNumber: "B1", createdAt: hourAgo },
       },
     },
@@ -227,7 +221,7 @@ function createCafeBundle(): DemoSeedBundle {
         id: "oi-003",
         quantity: 1,
         notes: "หวานน้อย",
-        product: { id: "prod-018", name: "สตรอว์เบอร์รีโซดา" },
+        product: { id: "prod-016", name: "ไอซ์สตรอว์เบอร์รีคูลเลอร์" },
         order: { id: "order-004", orderNumber: "304", status: "PENDING", orderType: "DELIVERY", deliveryPlatform: "GrabFood", deliveryOrderNumber: "GF-CF-304", createdAt: now },
       },
     },
@@ -235,12 +229,12 @@ function createCafeBundle(): DemoSeedBundle {
 
   const transactions = [
     createTransaction("txn-301", "order-001", "301", "CASH", [
-      { productId: "prod-002", name: "ลาเต้เย็น", price: 85, quantity: 1, total: 85 },
-      { productId: "prod-014", name: "ชีสเค้กหน้าไหม้", price: 115, quantity: 1, total: 115 },
+      { productId: "prod-002", name: "ลาเต้ร้อน", price: 85, quantity: 1, total: 85 },
+      { productId: "prod-011", name: "เค้กมอคค่าเลเยอร์", price: 135, quantity: 1, total: 135 },
     ], twoHoursAgo),
     createTransaction("txn-302", "order-002", "302", "QR", [
-      { productId: "prod-011", name: "แซนด์วิชแฮมชีส", price: 129, quantity: 1, total: 129 },
-      { productId: "prod-017", name: "ยูซุโซดา", price: 79, quantity: 1, total: 79 },
+      { productId: "prod-004", name: "มัทฉะลาเต้เย็น", price: 105, quantity: 1, total: 105 },
+      { productId: "prod-010", name: "โดนัทเคลือบน้ำตาล", price: 69, quantity: 1, total: 69 },
     ], hourAgo),
   ];
 

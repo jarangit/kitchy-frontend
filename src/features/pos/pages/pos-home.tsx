@@ -103,10 +103,11 @@ const PosHomePage = () => {
               <ProductGrid
                 products={
                   filteredProducts?.map(
-                    (p: { id: string; name: string; price?: number }) => ({
+                    (p: { id: string; name: string; price?: number; imageUrl?: string }) => ({
                       id: String(p.id),
                       name: p.name,
                       price: p.price ?? 0,
+                      imageUrl: p.imageUrl,
                     })
                   ) || []
                 }
