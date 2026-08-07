@@ -19,7 +19,7 @@
   --color-text-secondary: var(--gray-600);
   --color-text-tertiary: var(--gray-600);
   --color-text-inverse: var(--gray-0);
-  --color-on-primary: var(--lime-500);
+  --color-on-primary: var(--gray-0);
 
   /* Border */
   --color-border: var(--gray-200);
@@ -32,10 +32,12 @@
 
   /* Accent stays lime for selections, indicators, and highlights */
   --color-accent: var(--lime-500);
+  --color-accent-fill: var(--lime-500);
   --color-accent-hover: var(--lime-600);
   --color-accent-bg: var(--lime-50);
   --color-accent-border: var(--lime-200);
   --color-accent-text: var(--gray-900);
+  --color-accent-strong: var(--lime-700);
 
   /* Status — aligned with the muted system palette and kept contrast-safe */
   --color-success: var(--green-700);
@@ -79,14 +81,16 @@
   --color-primary: #080906;
   --color-primary-hover: #1E2029;
   --color-primary-bg: #1A1C1A;
-  --color-on-primary: #D1EF57;
+  --color-on-primary: #F5F5F7;
 
   /* Accent — same brand family, tuned for dark surfaces */
   --color-accent: #D1EF57;
+  --color-accent-fill: #D1EF57;
   --color-accent-hover: #E4F38D;
   --color-accent-bg: #2E3518;
   --color-accent-border: #495823;
   --color-accent-text: #EDF7B8;
+  --color-accent-strong: #E4F38D;
 
   /* Status — brighter references for dark surfaces, from the same muted families */
   --color-success: var(--green-500);

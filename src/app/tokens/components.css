@@ -155,7 +155,7 @@
   --color-sidebar-bg: #232235;
   --color-sidebar-border: var(--color-border);
   --spacing-sidebar-width: 84px;
-  --color-sidebar-active-bg: var(--color-accent);
+  --color-sidebar-active-bg: var(--color-accent-fill);
   --color-sidebar-active-text: var(--color-accent-text);
   --color-sidebar-text: color-mix(in srgb, var(--gray-0) 78%, transparent);
   --color-sidebar-hover-bg: color-mix(in srgb, var(--gray-0) 8%, transparent);
@@ -198,7 +198,7 @@
   --color-card-border: var(--color-border);
   --color-dialog-border: var(--color-border);
   --color-sidebar-bg: #171821;
-  --color-sidebar-active-bg: var(--color-accent);
+  --color-sidebar-active-bg: var(--color-accent-fill);
   --color-button-secondary-bg: var(--color-surface);
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-dialog-bg: var(--color-surface);

@@ -105,7 +105,7 @@ const Sidebar = () => {
   const itemClass =
     "group relative flex h-10 w-10 shrink-0 origin-bottom items-center justify-center rounded-[1rem] text-[18px] transition-all duration-200 ease-out hover:-translate-y-2.5 hover:scale-115 focus-visible:-translate-y-2.5 focus-visible:scale-115 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white/30 sm:h-14 sm:w-14 sm:rounded-[1.35rem] sm:text-[22px]";
   const activeClass =
-    "border border-accent/25 bg-accent/10 text-accent shadow-[0_16px_36px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.75)] backdrop-blur-2xl";
+    "border border-accent/25 bg-accent/10 text-accent-text shadow-[0_16px_36px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.75)] backdrop-blur-2xl";
   const inactiveClass =
     "text-text-secondary/75 hover:bg-white/45 hover:text-text-primary hover:shadow-[0_12px_28px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.55)] dark:hover:bg-white/10";
 

@@ -47,12 +47,12 @@ const MetricLine = ({
   value: string;
   highlight?: boolean;
 }) => (
-  <div className="rounded-card border border-border bg-surface px-4 py-3">
+  <div className="rounded-card bg-surface-muted px-4 py-3">
     <p className="text-label text-text-tertiary">{label}</p>
     <p
       className={cn(
         "mt-1 text-title font-semibold tabular-nums text-text-primary",
-        highlight && "text-accent",
+        highlight && "text-accent-text",
       )}
     >
       {value}
@@ -75,10 +75,10 @@ const DashboardCard = ({
 }) => (
   <Link
     to={to}
-    className="group flex h-full flex-col rounded-card border border-border bg-surface px-4 py-4 transition-colors duration-[var(--motion-fast)] hover:border-border-hover hover:bg-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-5 sm:py-5"
+    className="group flex h-full flex-col rounded-card border border-card-border bg-surface px-4 py-4 shadow-xs transition-all duration-[var(--motion-fast)] hover:border-border-hover hover:bg-card-bg-hover hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-5 sm:py-5"
   >
     <div className="flex items-start justify-between gap-4">
-      <span className="text-text-secondary transition-colors duration-[var(--motion-fast)] group-hover:text-text-primary">
+      <span className="rounded-full bg-surface-muted p-2 text-text-secondary transition-colors duration-[var(--motion-fast)] group-hover:text-text-primary">
         {icon}
       </span>
       <LuArrowRight
@@ -156,12 +156,15 @@ const StoreDashboardPage = () => {
           <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">
             {storeName}
           </h1>
+          <p className="text-body-sm text-text-secondary">
+            {t("dashboard.todayOrders")} · {t("dashboard.pendingInKitchen")} · {t("dashboard.summaryHistory")}
+          </p>
         </div>
 
         <Button
           size="lg"
           onClick={() => navigate(`/store/${id}/pos`)}
-          className="shrink-0 shadow-lg"
+          className="shrink-0"
         >
           <LuShoppingCart size={20} aria-hidden="true" />
           {t("dashboard.openPos")}

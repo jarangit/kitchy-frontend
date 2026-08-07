@@ -174,7 +174,7 @@ const MobileTransactionCard = ({
           )}
           <Link
             to={`/store/${storeId}/transactions/${tx.id}`}
-            className="ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-button px-3 text-button-sm font-button text-accent transition-colors duration-[var(--motion-fast)] hover:bg-button-ghost-bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-button px-3 text-button-sm font-button text-text-primary transition-colors duration-[var(--motion-fast)] hover:bg-button-ghost-bg-hover hover:text-accent-text focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             {t("transaction.list.viewDetails")}
             <LuArrowRight size={16} aria-hidden="true" />

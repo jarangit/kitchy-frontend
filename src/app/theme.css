@@ -14,10 +14,12 @@
   --color-primary-hover: var(--color-primary-hover);
   --color-primary-bg: var(--color-primary-bg);
   --color-accent: var(--color-accent);
+  --color-accent-fill: var(--color-accent-fill);
   --color-accent-hover: var(--color-accent-hover);
   --color-accent-bg: var(--color-accent-bg);
   --color-accent-border: var(--color-accent-border);
   --color-accent-text: var(--color-accent-text);
+  --color-accent-strong: var(--color-accent-strong);
   --color-on-accent: var(--color-on-accent);
   --color-on-primary: var(--color-on-primary);
   --color-danger: var(--color-danger);

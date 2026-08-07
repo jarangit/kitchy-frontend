@@ -141,7 +141,7 @@ export default function DemoTrialEntryPage() {
                   <span
                     className={cn(
                       "absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border border-card-border bg-card-bg text-text-tertiary transition-colors duration-[var(--motion-fast)]",
-                      selected && "border-accent bg-accent text-white",
+                      selected && "border-accent bg-accent text-on-accent",
                     )}
                     aria-hidden="true"
                   >
@@ -152,7 +152,7 @@ export default function DemoTrialEntryPage() {
                     <div
                       className={cn(
                         "flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-[var(--motion-fast)] xl:h-14 xl:w-14",
-                        selected ? "bg-accent-bg text-accent" : option.iconClassName,
+                        selected ? "bg-accent-bg text-accent-text" : option.iconClassName,
                       )}
                     >
                       <Icon size={18} />
@@ -161,7 +161,7 @@ export default function DemoTrialEntryPage() {
                     <div className="flex flex-col items-center gap-1">
                       <p className={cn(
                         "text-body font-medium text-text-primary transition-colors duration-[var(--motion-fast)] sm:text-subtitle",
-                        selected && "text-accent",
+                        selected && "text-accent-text",
                       )}>
                         {t(option.labelKey)}
                       </p>
@@ -169,7 +169,7 @@ export default function DemoTrialEntryPage() {
                         {t(option.descriptionKey)}
                       </p>
                       {selected && (
-                        <span className="mt-1 rounded-full bg-accent-bg px-2 py-0.5 text-label font-medium text-accent">
+                        <span className="mt-1 rounded-full bg-accent-bg px-2 py-0.5 text-label font-medium text-accent-text">
                           {t("demo.trial.selectedBadge")}
                         </span>
                       )}

@@ -237,7 +237,7 @@ const ProductListTemplate = () => {
                   <button
                     type="button"
                     onClick={handleClearFilters}
-                    className="text-label text-accent hover:underline"
+                    className="text-label text-text-primary hover:text-accent-text hover:underline"
                   >
                     {t("settings.products.clearFilters")}
                   </button>

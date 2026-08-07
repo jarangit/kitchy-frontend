@@ -163,7 +163,7 @@ const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
                 </span>
               </div>
               {item.note && (
-                <p className="mt-0.5 pl-6 text-caption italic leading-snug text-accent">
+                <p className="mt-0.5 pl-6 text-caption italic leading-snug text-text-secondary">
                   {item.note}
                 </p>
               )}

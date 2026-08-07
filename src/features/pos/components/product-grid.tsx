@@ -72,7 +72,7 @@ const ProductGrid = ({
                 <div
                   className={cn(
                     "mb-4 flex h-16 w-16 items-center justify-center rounded-full text-title",
-                    isSelected ? "bg-accent-bg text-accent" : "bg-surface text-text-secondary",
+                    isSelected ? "bg-accent-bg text-accent-text" : "bg-surface text-text-secondary",
                   )}
                 >
                   {product.name.charAt(0).toUpperCase()}
