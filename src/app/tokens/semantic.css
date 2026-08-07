@@ -130,7 +130,7 @@
   --text-subtitle-weight: var(--weight-medium); /* 500 — calmer than semibold */
   --text-subtitle-leading: var(--leading-snug);
 
-  /* Body — default body text */
+  /* Body — default body text for dense operational screens */
   --text-body-size:       var(--size-base);
   --text-body-weight:     var(--weight-regular);
   --text-body-leading:    var(--leading-normal);

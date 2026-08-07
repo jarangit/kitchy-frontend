@@ -171,8 +171,8 @@
 
   /* ── Page chrome ── */
   --spacing-page-padding-x: var(--space-5);
-  --spacing-page-padding-x-sm: var(--space-5);
-  --spacing-page-padding-x-lg: var(--space-6);
+  --spacing-page-padding-x-sm: var(--space-6);
+  --spacing-page-padding-x-lg: var(--space-7);
   --spacing-page-padding-y: var(--space-5);
   --spacing-page-padding-y-sm: var(--space-6);
   --spacing-page-padding-y-lg: var(--space-7);
