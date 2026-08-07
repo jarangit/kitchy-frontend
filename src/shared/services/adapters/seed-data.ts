@@ -17,7 +17,7 @@ const now = new Date().toISOString();
 const hourAgo = new Date(Date.now() - 3600_000).toISOString();
 const twoHoursAgo = new Date(Date.now() - 7200_000).toISOString();
 
-export const DEMO_SEED_VERSION = "2026-08-cafe-images-v5";
+export const DEMO_SEED_VERSION = "2026-08-demo-images-v7";
 export const DEMO_STORE_PRESET_STORAGE_KEY = "demo:store-preset";
 export const DEMO_STORE_ID = "store-001";
 export const DEMO_STORE_NAME = "ร้านกิจจี้ Demo";
@@ -353,51 +353,29 @@ function createFastFoodBundle(): DemoSeedBundle {
 
 function createMadeToOrderBundle(): DemoSeedBundle {
   const categories: CategoryModel[] = [
-    { id: "cat-001", name: "อาหารจานเดียว", isActive: true, sortOrder: 1, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-002", name: "เมนูเส้น", isActive: true, sortOrder: 2, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-003", name: "ของกินเล่น", isActive: true, sortOrder: 3, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-004", name: "ต้ม/แกง", isActive: true, sortOrder: 4, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-005", name: "ย่าง/ทอด", isActive: true, sortOrder: 5, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-006", name: "เครื่องดื่มชา/กาแฟ", isActive: true, sortOrder: 6, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-007", name: "เครื่องดื่มสดชื่น", isActive: true, sortOrder: 7, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-008", name: "ของหวาน/เมนูพิเศษ", isActive: true, sortOrder: 8, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-001", name: "จานเดียว", isActive: true, sortOrder: 1, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-002", name: "เส้น", isActive: true, sortOrder: 2, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-003", name: "ต้ม / แกง", isActive: true, sortOrder: 3, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-004", name: "ย่าง / ทอด", isActive: true, sortOrder: 4, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-005", name: "กับข้าว", isActive: true, sortOrder: 5, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-006", name: "ทานเล่น", isActive: true, sortOrder: 6, createdAt: twoHoursAgo, updatedAt: now },
   ];
 
   const products: IMenu[] = [
-    createMenu("prod-001", "ข้าวกะเพราหมูสับ", 69, 25, "cat-001", "อาหารจานเดียว", true),
-    createMenu("prod-002", "ข้าวกะเพราไก่กรอบ", 79, 30, "cat-001", "อาหารจานเดียว", true),
-    createMenu("prod-003", "ข้าวผัดหมู", 72, 28, "cat-001", "อาหารจานเดียว"),
-    createMenu("prod-004", "ข้าวผัดกุ้ง", 89, 35, "cat-001", "อาหารจานเดียว"),
-    createMenu("prod-005", "ข้าวคะน้าหมูกรอบ", 85, 32, "cat-001", "อาหารจานเดียว"),
-    createMenu("prod-006", "ข้าวกระเทียมหมู", 75, 27, "cat-001", "อาหารจานเดียว"),
-    createMenu("prod-007", "ข้าวไข่ข้นกุ้ง", 99, 40, "cat-001", "อาหารจานเดียว"),
-    createMenu("prod-008", "ผัดไทยกุ้งสด", 89, 34, "cat-002", "เมนูเส้น", true),
-    createMenu("prod-009", "ราดหน้าหมู", 75, 29, "cat-002", "เมนูเส้น"),
-    createMenu("prod-010", "ผัดซีอิ๊วไก่", 75, 28, "cat-002", "เมนูเส้น"),
-    createMenu("prod-011", "ก๋วยเตี๋ยวคั่วไก่", 82, 31, "cat-002", "เมนูเส้น"),
-    createMenu("prod-012", "สุกี้แห้งทะเล", 95, 38, "cat-002", "เมนูเส้น"),
-    createMenu("prod-013", "ปอเปี๊ยะทอด", 69, 24, "cat-003", "ของกินเล่น"),
-    createMenu("prod-014", "นักเก็ตไก่", 79, 28, "cat-003", "ของกินเล่น"),
-    createMenu("prod-015", "เฟรนช์ฟรายส์", 59, 20, "cat-003", "ของกินเล่น"),
-    createMenu("prod-016", "หมูสะเต๊ะ", 95, 38, "cat-003", "ของกินเล่น"),
-    createMenu("prod-017", "ต้มยำกุ้ง", 129, 52, "cat-004", "ต้ม/แกง", true),
-    createMenu("prod-018", "ต้มข่าไก่", 115, 45, "cat-004", "ต้ม/แกง"),
-    createMenu("prod-019", "แกงเขียวหวานไก่", 99, 37, "cat-004", "ต้ม/แกง"),
-    createMenu("prod-020", "แกงจืดเต้าหู้หมูสับ", 89, 31, "cat-004", "ต้ม/แกง"),
-    createMenu("prod-021", "คอหมูย่าง", 129, 49, "cat-005", "ย่าง/ทอด", true),
-    createMenu("prod-022", "ไก่ย่างน้ำจิ้มแจ่ว", 119, 46, "cat-005", "ย่าง/ทอด"),
-    createMenu("prod-023", "ปีกไก่ทอดน้ำปลา", 109, 40, "cat-005", "ย่าง/ทอด"),
-    createMenu("prod-024", "หมูแดดเดียว", 105, 41, "cat-005", "ย่าง/ทอด"),
-    createMenu("prod-025", "ชาเย็น", 45, 12, "cat-006", "เครื่องดื่มชา/กาแฟ", true),
-    createMenu("prod-026", "ชาเขียวนม", 50, 14, "cat-006", "เครื่องดื่มชา/กาแฟ"),
-    createMenu("prod-027", "กาแฟเย็น", 55, 18, "cat-006", "เครื่องดื่มชา/กาแฟ"),
-    createMenu("prod-028", "โกโก้เย็น", 59, 20, "cat-006", "เครื่องดื่มชา/กาแฟ"),
-    createMenu("prod-029", "น้ำมะนาว", 39, 10, "cat-007", "เครื่องดื่มสดชื่น"),
-    createMenu("prod-030", "ชามะนาว", 45, 13, "cat-007", "เครื่องดื่มสดชื่น"),
-    createMenu("prod-031", "อัญชันมะนาวโซดา", 49, 16, "cat-007", "เครื่องดื่มสดชื่น"),
-    createMenu("prod-032", "ข้าวเหนียวมะม่วง", 89, 36, "cat-008", "ของหวาน/เมนูพิเศษ", true),
-    createMenu("prod-033", "ไอศกรีมกะทิ", 49, 17, "cat-008", "ของหวาน/เมนูพิเศษ"),
-    createMenu("prod-034", "โทสต์เนยนม", 79, 29, "cat-008", "ของหวาน/เมนูพิเศษ"),
+    createMenu("prod-001", "ข้าวกะเพราหมูสับไข่ดาว", 79, 29, "cat-001", "จานเดียว", true, "/images/thai-food/vicky-ng-NT5oqzp-050-unsplash.jpg"),
+    createMenu("prod-002", "ข้าวผัดกุ้ง", 89, 34, "cat-001", "จานเดียว", false, "/images/thai-food/yosuke-ota-R6x3ak8nWLQ-unsplash.jpg"),
+    createMenu("prod-003", "ข้าวแกงเขียวหวาน", 95, 36, "cat-001", "จานเดียว", false, "/images/thai-food/zoshua-colah-4ZyLEI4y3-0-unsplash.jpg"),
+    createMenu("prod-004", "ผัดไทยกุ้งสด", 99, 38, "cat-002", "เส้น", true, "/images/thai-food/john-aledia-_wBJ0cvKhIE-unsplash.jpg"),
+    createMenu("prod-005", "ขนมจีนน้ำยาไก่", 89, 33, "cat-002", "เส้น", false, "/images/thai-food/max-griss-YpfRCe5lda0-unsplash.jpg"),
+    createMenu("prod-006", "ข้าวซอยไก่", 109, 42, "cat-002", "เส้น", true, "/images/thai-food/8-low-ural-_6bfVnELZXE-unsplash.jpg"),
+    createMenu("prod-007", "ก๋วยเตี๋ยวต้มยำลูกชิ้น", 89, 32, "cat-002", "เส้น", false, "/images/thai-food/tips-fitness-CyhPA97pDiA-unsplash.jpg"),
+    createMenu("prod-008", "ต้มข่าไก่", 129, 49, "cat-003", "ต้ม / แกง", true, "/images/thai-food/alexandra-tran-PRMrWEF8Big-unsplash.jpg"),
+    createMenu("prod-009", "แกงแดงหมู", 119, 45, "cat-003", "ต้ม / แกง", false, "/images/thai-food/charlesdeluvio-wrfO9SWykdE-unsplash.jpg"),
+    createMenu("prod-010", "ไก่ย่างสมุนไพร", 149, 62, "cat-004", "ย่าง / ทอด", true, "/images/thai-food/streets-of-food-uVGi2miJDXo-unsplash.jpg"),
+    createMenu("prod-011", "หมูย่าง", 129, 54, "cat-004", "ย่าง / ทอด", false, "/images/thai-food/pcrm-dorego--wVjyTtcX04-unsplash.jpg"),
+    createMenu("prod-012", "ทอดมันปลา", 99, 38, "cat-006", "ทานเล่น", false, "/images/thai-food/olivier-bergeron-GM8JLQyHnhI-unsplash.jpg"),
+    createMenu("prod-013", "ส้มตำไทย", 79, 24, "cat-005", "กับข้าว", true, "/images/thai-food/bon-vivant-qom5MPOER-I-unsplash.jpg"),
+    createMenu("prod-014", "ข้าวหมูกรอบคะน้า", 99, 39, "cat-001", "จานเดียว", false, "/images/thai-food/jerome-jome-ElvU9T6-b0M-unsplash.jpg"),
   ];
 
   const orders = [
@@ -410,12 +388,12 @@ function createMadeToOrderBundle(): DemoSeedBundle {
   ];
 
   const orderMeta: DemoOrderMeta[] = [
-    { id: "order-001", storeId: DEMO_STORE_ID, tableNumber: "1", products: [{ productId: "prod-001", quantity: 2 }, { productId: "prod-025", quantity: 1 }, { productId: "prod-032", quantity: 1 }] },
-    { id: "order-002", storeId: DEMO_STORE_ID, products: [{ productId: "prod-006", quantity: 1 }, { productId: "prod-015", quantity: 1 }, { productId: "prod-029", quantity: 1 }] },
-    { id: "order-003", storeId: DEMO_STORE_ID, tableNumber: "3", products: [{ productId: "prod-001", quantity: 2 }, { productId: "prod-008", quantity: 1, note: "ไม่ใส่ผัก" }] },
-    { id: "order-004", storeId: DEMO_STORE_ID, deliveryPlatform: "GrabFood", deliveryOrderNumber: "GF-2048", products: [{ productId: "prod-025", quantity: 1 }] },
-    { id: "order-005", storeId: DEMO_STORE_ID, products: [{ productId: "prod-006", quantity: 1 }] },
-    { id: "order-006", storeId: DEMO_STORE_ID, deliveryPlatform: "LINE MAN", deliveryOrderNumber: "LM-3321", products: [{ productId: "prod-021", quantity: 1 }, { productId: "prod-029", quantity: 1, note: "ไม่ใส่น้ําแข็ง" }] },
+    { id: "order-001", storeId: DEMO_STORE_ID, tableNumber: "A1", products: [{ productId: "prod-001", quantity: 1 }, { productId: "prod-013", quantity: 1 }, { productId: "prod-012", quantity: 1 }] },
+    { id: "order-002", storeId: DEMO_STORE_ID, products: [{ productId: "prod-006", quantity: 1 }, { productId: "prod-012", quantity: 1 }] },
+    { id: "order-003", storeId: DEMO_STORE_ID, tableNumber: "B2", products: [{ productId: "prod-014", quantity: 1 }, { productId: "prod-008", quantity: 1, note: "ขอเผ็ดกลาง" }] },
+    { id: "order-004", storeId: DEMO_STORE_ID, deliveryPlatform: "GrabFood", deliveryOrderNumber: "GF-2048", products: [{ productId: "prod-004", quantity: 1 }, { productId: "prod-013", quantity: 1 }] },
+    { id: "order-005", storeId: DEMO_STORE_ID, products: [{ productId: "prod-002", quantity: 1 }, { productId: "prod-011", quantity: 1 }] },
+    { id: "order-006", storeId: DEMO_STORE_ID, deliveryPlatform: "LINE MAN", deliveryOrderNumber: "LM-3321", products: [{ productId: "prod-010", quantity: 1 }, { productId: "prod-009", quantity: 1 }, { productId: "prod-013", quantity: 1, note: "ไม่ใส่ถั่ว" }] },
   ];
 
   const orderStationItems: IOrderStationItemDto[] = [
@@ -424,10 +402,10 @@ function createMadeToOrderBundle(): DemoSeedBundle {
       status: "complete",
       orderItem: {
         id: "oi-001",
-        quantity: 2,
+        quantity: 1,
         notes: null,
-        product: { id: "prod-001", name: "ข้าวกะเพราหมูสับ" },
-        order: { id: "order-003", orderNumber: "003", status: "PREPARING", orderType: "DINE_IN", tableNumber: "3", createdAt: hourAgo },
+        product: { id: "prod-014", name: "ข้าวหมูกรอบคะน้า" },
+        order: { id: "order-003", orderNumber: "003", status: "PREPARING", orderType: "DINE_IN", tableNumber: "B2", createdAt: hourAgo },
       },
     },
     {
@@ -436,9 +414,9 @@ function createMadeToOrderBundle(): DemoSeedBundle {
       orderItem: {
         id: "oi-002",
         quantity: 1,
-        notes: "ไม่ใส่ผัก",
-        product: { id: "prod-008", name: "ผัดไทยกุ้งสด" },
-        order: { id: "order-003", orderNumber: "003", status: "PREPARING", orderType: "DINE_IN", tableNumber: "3", createdAt: hourAgo },
+        notes: "ขอเผ็ดกลาง",
+        product: { id: "prod-008", name: "ต้มข่าไก่" },
+        order: { id: "order-003", orderNumber: "003", status: "PREPARING", orderType: "DINE_IN", tableNumber: "B2", createdAt: hourAgo },
       },
     },
     {
@@ -448,7 +426,7 @@ function createMadeToOrderBundle(): DemoSeedBundle {
         id: "oi-003",
         quantity: 1,
         notes: null,
-        product: { id: "prod-025", name: "ชาเย็น" },
+        product: { id: "prod-004", name: "ผัดไทยกุ้งสด" },
         order: { id: "order-004", orderNumber: "004", status: "PENDING", orderType: "DELIVERY", deliveryPlatform: "GrabFood", deliveryOrderNumber: "GF-2048", createdAt: now },
       },
     },
@@ -459,7 +437,7 @@ function createMadeToOrderBundle(): DemoSeedBundle {
         id: "oi-004",
         quantity: 1,
         notes: null,
-        product: { id: "prod-006", name: "ข้าวกระเทียมหมู" },
+        product: { id: "prod-002", name: "ข้าวผัดกุ้ง" },
         order: { id: "order-005", orderNumber: "005", status: "READY", orderType: "TOGO", createdAt: now },
       },
     },
@@ -469,8 +447,8 @@ function createMadeToOrderBundle(): DemoSeedBundle {
       orderItem: {
         id: "oi-005",
         quantity: 1,
-        notes: "ไม่ใส่น้ําแข็ง",
-        product: { id: "prod-029", name: "น้ำมะนาว" },
+        notes: "ไม่ใส่ถั่ว",
+        product: { id: "prod-013", name: "ส้มตำไทย" },
         order: { id: "order-006", orderNumber: "006", status: "PREPARING", orderType: "DELIVERY", deliveryPlatform: "LINE MAN", deliveryOrderNumber: "LM-3321", createdAt: hourAgo },
       },
     },
@@ -478,18 +456,18 @@ function createMadeToOrderBundle(): DemoSeedBundle {
 
   const transactions = [
     createTransaction("txn-001", "order-001", "001", "CASH", [
-      { productId: "prod-001", name: "ข้าวกะเพราหมูสับ", price: 69, quantity: 2, total: 138 },
-      { productId: "prod-025", name: "ชาเย็น", price: 45, quantity: 1, total: 45 },
-      { productId: "prod-032", name: "ข้าวเหนียวมะม่วง", price: 89, quantity: 1, total: 89 },
+      { productId: "prod-001", name: "ข้าวกะเพราหมูสับไข่ดาว", price: 79, quantity: 1, total: 79 },
+      { productId: "prod-013", name: "ส้มตำไทย", price: 79, quantity: 1, total: 79 },
+      { productId: "prod-012", name: "ทอดมันปลา", price: 99, quantity: 1, total: 99 },
     ], twoHoursAgo),
     createTransaction("txn-002", "order-002", "002", "QR", [
-      { productId: "prod-006", name: "ข้าวกระเทียมหมู", price: 75, quantity: 1, total: 75 },
-      { productId: "prod-015", name: "เฟรนช์ฟรายส์", price: 59, quantity: 1, total: 59 },
-      { productId: "prod-029", name: "น้ำมะนาว", price: 39, quantity: 1, total: 39 },
+      { productId: "prod-006", name: "ข้าวซอยไก่", price: 109, quantity: 1, total: 109 },
+      { productId: "prod-012", name: "ทอดมันปลา", price: 99, quantity: 1, total: 99 },
     ], hourAgo),
     createTransaction("txn-003", "order-006", "006", "QR", [
-      { productId: "prod-021", name: "คอหมูย่าง", price: 129, quantity: 1, total: 129 },
-      { productId: "prod-031", name: "อัญชันมะนาวโซดา", price: 49, quantity: 1, total: 49 },
+      { productId: "prod-010", name: "ไก่ย่างสมุนไพร", price: 149, quantity: 1, total: 149 },
+      { productId: "prod-009", name: "แกงแดงหมู", price: 119, quantity: 1, total: 119 },
+      { productId: "prod-013", name: "ส้มตำไทย", price: 79, quantity: 1, total: 79 },
     ], hourAgo),
   ];
 
