@@ -254,38 +254,26 @@ function createCafeBundle(): DemoSeedBundle {
 function createFastFoodBundle(): DemoSeedBundle {
   const categories: CategoryModel[] = [
     { id: "cat-001", name: "เบอร์เกอร์", isActive: true, sortOrder: 1, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-002", name: "ไก่ทอด", isActive: true, sortOrder: 2, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-002", name: "ฮอตด็อก", isActive: true, sortOrder: 2, createdAt: twoHoursAgo, updatedAt: now },
     { id: "cat-003", name: "ของทานเล่น", isActive: true, sortOrder: 3, createdAt: twoHoursAgo, updatedAt: now },
     { id: "cat-004", name: "คอมโบเซ็ต", isActive: true, sortOrder: 4, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-005", name: "แรป/ฮอตด็อก", isActive: true, sortOrder: 5, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-006", name: "น้ำอัดลม", isActive: true, sortOrder: 6, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-007", name: "ของหวาน", isActive: true, sortOrder: 7, createdAt: twoHoursAgo, updatedAt: now },
-    { id: "cat-008", name: "เมนูเช้า", isActive: true, sortOrder: 8, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-005", name: "ไก่ทอด", isActive: true, sortOrder: 5, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-006", name: "พิซซ่า", isActive: true, sortOrder: 6, createdAt: twoHoursAgo, updatedAt: now },
+    { id: "cat-007", name: "เครื่องดื่ม", isActive: true, sortOrder: 7, createdAt: twoHoursAgo, updatedAt: now },
   ];
 
   const products: IMenu[] = [
-    createMenu("prod-001", "Classic Beef Burger", 129, 46, "cat-001", "เบอร์เกอร์", true),
-    createMenu("prod-002", "Double Cheese Burger", 169, 62, "cat-001", "เบอร์เกอร์", true),
-    createMenu("prod-003", "Spicy Chicken Burger", 139, 50, "cat-001", "เบอร์เกอร์"),
-    createMenu("prod-004", "Fish Burger", 145, 54, "cat-001", "เบอร์เกอร์"),
-    createMenu("prod-005", "ไก่ทอด 2 ชิ้น", 119, 41, "cat-002", "ไก่ทอด", true),
-    createMenu("prod-006", "ไก่ทอด 4 ชิ้น", 219, 82, "cat-002", "ไก่ทอด"),
-    createMenu("prod-007", "ไก่ป๊อป", 89, 30, "cat-002", "ไก่ทอด"),
-    createMenu("prod-008", "เฟรนช์ฟรายส์", 69, 23, "cat-003", "ของทานเล่น", true),
-    createMenu("prod-009", "นักเก็ตไก่ 6 ชิ้น", 99, 34, "cat-003", "ของทานเล่น"),
-    createMenu("prod-010", "หอมทอด", 79, 27, "cat-003", "ของทานเล่น"),
-    createMenu("prod-011", "Burger Combo", 189, 68, "cat-004", "คอมโบเซ็ต", true),
-    createMenu("prod-012", "Chicken Combo", 209, 76, "cat-004", "คอมโบเซ็ต"),
-    createMenu("prod-013", "Family Bucket", 399, 155, "cat-004", "คอมโบเซ็ต"),
-    createMenu("prod-014", "Chicken Wrap", 125, 46, "cat-005", "แรป/ฮอตด็อก"),
-    createMenu("prod-015", "Hotdog Cheese", 105, 37, "cat-005", "แรป/ฮอตด็อก"),
-    createMenu("prod-016", "Cola", 39, 9, "cat-006", "น้ำอัดลม", true),
-    createMenu("prod-017", "Orange Soda", 39, 9, "cat-006", "น้ำอัดลม"),
-    createMenu("prod-018", "Lemon Tea", 45, 11, "cat-006", "น้ำอัดลม"),
-    createMenu("prod-019", "ซันเดช็อกโกแลต", 59, 19, "cat-007", "ของหวาน"),
-    createMenu("prod-020", "พายแอปเปิล", 49, 17, "cat-007", "ของหวาน"),
-    createMenu("prod-021", "Breakfast Muffin", 99, 33, "cat-008", "เมนูเช้า"),
-    createMenu("prod-022", "Hash Brown", 45, 14, "cat-008", "เมนูเช้า"),
+    createMenu("prod-001", "Classic Beef Burger", 129, 46, "cat-001", "เบอร์เกอร์", true, "/images/fast-food/mafe-estudio-LV2p9Utbkbw-unsplash.jpg"),
+    createMenu("prod-002", "Loaded Cheese Burger", 169, 62, "cat-001", "เบอร์เกอร์", true, "/images/fast-food/fatima-akram-uU0Anw-8Vsg-unsplash.jpg"),
+    createMenu("prod-003", "Classic American Hotdog", 109, 39, "cat-002", "ฮอตด็อก", true, "/images/fast-food/jay-wennington-UgolPhUcu9g-unsplash.jpg"),
+    createMenu("prod-004", "French Fries", 69, 23, "cat-003", "ของทานเล่น", true, "/images/fast-food/justus-menke-IZ39sNNw3-k-unsplash.jpg"),
+    createMenu("prod-005", "Skin-On Fries", 79, 27, "cat-003", "ของทานเล่น", false, "/images/fast-food/christian-bolt-Uf0aVyl5C70-unsplash.jpg"),
+    createMenu("prod-006", "Burger Combo", 189, 68, "cat-004", "คอมโบเซ็ต", true, "/images/fast-food/mafe-estudio-LV2p9Utbkbw-unsplash.jpg"),
+    createMenu("prod-007", "Steak Fries Combo", 249, 98, "cat-004", "คอมโบเซ็ต", true, "/images/fast-food/zetong-li-zCIu5vilxCE-unsplash.jpg"),
+    createMenu("prod-008", "Spicy Chicken Wings", 149, 55, "cat-005", "ไก่ทอด", true, "/images/fast-food/ulvi-safari-9-_8faGPQrU-unsplash.jpg"),
+    createMenu("prod-009", "Pepperoni Pizza Slice", 119, 44, "cat-006", "พิซซ่า", true, "/images/fast-food/logan-weaver-lgnwvr-qgZRZI-pKgM-unsplash.jpg"),
+    createMenu("prod-010", "Cola Lime", 45, 10, "cat-007", "เครื่องดื่ม", true, "/images/fast-food/crystal-jo-miBwd6QfPKE-unsplash.jpg"),
+    createMenu("prod-011", "Orange Soda Can", 39, 9, "cat-007", "เครื่องดื่ม", false, "/images/fast-food/keriliwi-v_JswZL-s3k-unsplash.jpg"),
   ];
 
   const orders = [
@@ -297,11 +285,11 @@ function createFastFoodBundle(): DemoSeedBundle {
   ];
 
   const orderMeta: DemoOrderMeta[] = [
-    { id: "order-001", storeId: DEMO_STORE_ID, products: [{ productId: "prod-011", quantity: 1 }] },
-    { id: "order-002", storeId: DEMO_STORE_ID, products: [{ productId: "prod-013", quantity: 1 }] },
-    { id: "order-003", storeId: DEMO_STORE_ID, deliveryPlatform: "LINE MAN", deliveryOrderNumber: "LM-FF-403", products: [{ productId: "prod-003", quantity: 1 }, { productId: "prod-008", quantity: 1 }] },
-    { id: "order-004", storeId: DEMO_STORE_ID, products: [{ productId: "prod-014", quantity: 1 }, { productId: "prod-016", quantity: 1 }] },
-    { id: "order-005", storeId: DEMO_STORE_ID, tableNumber: "C4", products: [{ productId: "prod-002", quantity: 1 }, { productId: "prod-010", quantity: 1 }] },
+    { id: "order-001", storeId: DEMO_STORE_ID, products: [{ productId: "prod-006", quantity: 1 }] },
+    { id: "order-002", storeId: DEMO_STORE_ID, products: [{ productId: "prod-007", quantity: 1 }] },
+    { id: "order-003", storeId: DEMO_STORE_ID, deliveryPlatform: "LINE MAN", deliveryOrderNumber: "LM-FF-403", products: [{ productId: "prod-001", quantity: 1 }, { productId: "prod-004", quantity: 1 }, { productId: "prod-010", quantity: 1 }] },
+    { id: "order-004", storeId: DEMO_STORE_ID, products: [{ productId: "prod-003", quantity: 1 }, { productId: "prod-011", quantity: 1 }] },
+    { id: "order-005", storeId: DEMO_STORE_ID, tableNumber: "C4", products: [{ productId: "prod-002", quantity: 1 }, { productId: "prod-009", quantity: 1 }] },
   ];
 
   const orderStationItems: IOrderStationItemDto[] = [
@@ -312,7 +300,7 @@ function createFastFoodBundle(): DemoSeedBundle {
         id: "oi-001",
         quantity: 1,
         notes: null,
-        product: { id: "prod-013", name: "Family Bucket" },
+        product: { id: "prod-007", name: "Steak Fries Combo" },
         order: { id: "order-002", orderNumber: "402", status: "READY", orderType: "TOGO", createdAt: hourAgo },
       },
     },
@@ -323,7 +311,7 @@ function createFastFoodBundle(): DemoSeedBundle {
         id: "oi-002",
         quantity: 1,
         notes: null,
-        product: { id: "prod-003", name: "Spicy Chicken Burger" },
+        product: { id: "prod-001", name: "Classic Beef Burger" },
         order: { id: "order-003", orderNumber: "403", status: "PREPARING", orderType: "DELIVERY", deliveryPlatform: "LINE MAN", deliveryOrderNumber: "LM-FF-403", createdAt: hourAgo },
       },
     },
@@ -334,7 +322,7 @@ function createFastFoodBundle(): DemoSeedBundle {
         id: "oi-003",
         quantity: 1,
         notes: null,
-        product: { id: "prod-014", name: "Chicken Wrap" },
+        product: { id: "prod-003", name: "Classic American Hotdog" },
         order: { id: "order-004", orderNumber: "404", status: "PENDING", orderType: "TOGO", createdAt: now },
       },
     },
@@ -342,11 +330,11 @@ function createFastFoodBundle(): DemoSeedBundle {
 
   const transactions = [
     createTransaction("txn-401", "order-001", "401", "CASH", [
-      { productId: "prod-011", name: "Burger Combo", price: 189, quantity: 1, total: 189 },
+      { productId: "prod-006", name: "Burger Combo", price: 189, quantity: 1, total: 189 },
     ], twoHoursAgo),
     createTransaction("txn-405", "order-005", "405", "QR", [
-      { productId: "prod-002", name: "Double Cheese Burger", price: 169, quantity: 1, total: 169 },
-      { productId: "prod-010", name: "หอมทอด", price: 79, quantity: 1, total: 79 },
+      { productId: "prod-002", name: "Loaded Cheese Burger", price: 169, quantity: 1, total: 169 },
+      { productId: "prod-009", name: "Pepperoni Pizza Slice", price: 119, quantity: 1, total: 119 },
     ], now),
   ];
 
