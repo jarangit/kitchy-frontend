@@ -81,12 +81,23 @@ const KdsBoardPage = () => {
     return stations.find((station) => station.id === activeStationId) ?? stations[0];
   }, [activeStationId, stations]);
 
-  const { pendingGroups, isLoading, isUpdating, bumpAndRemove, bumpedOrderId } =
+  const {
+    pendingGroups,
+    isLoading,
+    isUpdating,
+    bumpAndRemove,
+    bumpedOrderId,
+    updateStatus,
+  } =
     useKds(activeStation?.id);
   const orderLimit = storeFinOneQuery?.orderLimit ?? DEFAULT_ORDER_LIMIT;
 
   const handleBump = (group: Parameters<typeof bumpAndRemove>[0]) => {
     void bumpAndRemove(group);
+  };
+
+  const handleItemReady = (item: Parameters<typeof updateStatus>[0]) => {
+    void updateStatus(item, item.status === "READY" ? "PENDING" : "READY");
   };
 
   return (
@@ -141,6 +152,7 @@ const KdsBoardPage = () => {
                   group={group}
                   isBumped={bumpedOrderId === group.orderId}
                   onBump={handleBump}
+                  onItemReady={handleItemReady}
                   disabled={isUpdating}
                 />
               ))}

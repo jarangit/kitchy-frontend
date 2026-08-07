@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { LuCheck, LuUtensilsCrossed } from "react-icons/lu";
+import { LuBike, LuCheck, LuClock3, LuPackage, LuUtensilsCrossed } from "react-icons/lu";
+import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 import type { KdsOrderGroup } from "@/features/kds/types/kds.model";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
 import { cn } from "@/shared/utils/cn";
+import type { OrderType } from "@/features/pos/types/pos.model";
 
 const ELAPSED_TICK_MS = 30_000;
 
@@ -18,26 +20,41 @@ const useElapsedMinutes = (iso: string) => {
   return Math.max(0, (now - new Date(iso).getTime()) / 60000);
 };
 
-const formatMmSs = (totalMinutes: number) => {
+const formatElapsedMinutes = (totalMinutes: number) => {
   const safe = Math.max(0, totalMinutes);
-  const minutes = Math.floor(safe);
-  const seconds = Math.floor((safe - minutes) * 60);
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  return `${Math.floor(safe)}`;
 };
 
 interface Props {
   group: KdsOrderGroup;
   isBumped: boolean;
   onBump: (group: KdsOrderGroup) => void;
+  onItemReady: (item: KdsOrderGroup["items"][number]) => void;
   disabled?: boolean;
 }
 
-const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
+const ORDER_TYPE_BADGE_STYLES: Record<OrderType, string> = {
+  DINE_IN: "border-emerald-600 bg-emerald-600 text-white",
+  TOGO: "border-amber-500 bg-amber-500 text-white",
+  DELIVERY: "border-sky-600 bg-sky-600 text-white",
+};
+
+const ORDER_TYPE_ICONS: Record<OrderType, typeof LuUtensilsCrossed> = {
+  DINE_IN: LuUtensilsCrossed,
+  TOGO: LuPackage,
+  DELIVERY: LuBike,
+};
+
+const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Props) => {
   const { t } = useTranslation();
   const elapsed = useElapsedMinutes(group.createdAt);
-  const timeLabel = formatMmSs(elapsed);
+  const timeLabel = formatElapsedMinutes(elapsed);
+  const headerOrderLabel =
+    group.orderType === "DELIVERY" && group.deliveryOrderNumber
+      ? `${group.orderNumber} · ${group.deliveryOrderNumber}`
+      : group.orderNumber;
 
-  const sourceLabel = useMemo(() => {
+  const orderMeta = useMemo(() => {
     if (!group.orderType) return null;
     const strategy = getOrderTypeStrategy(group.orderType);
     const typeLabel = t(strategy.labelKey as MessageKey);
@@ -48,7 +65,13 @@ const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
       deliveryPlatform: group.deliveryPlatform,
       deliveryOrderNumber: group.deliveryOrderNumber,
     });
-    return secondary ? `${typeLabel} · ${secondary}` : typeLabel;
+    const deliveryCode =
+      group.orderType === "DELIVERY" && group.deliveryOrderNumber
+        ? t("kds.card.deliveryOrderNumber", {
+            orderNumber: group.deliveryOrderNumber,
+          })
+        : null;
+    return { typeLabel, secondary, deliveryCode };
   }, [group, t]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -110,31 +133,47 @@ const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
     );
   }
 
+  const OrderTypeIcon = group.orderType ? ORDER_TYPE_ICONS[group.orderType] : LuUtensilsCrossed;
+
   return (
     <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-card-border bg-card-bg shadow-sm transition-all duration-[var(--motion-normal)]">
       {/* ── Header with order info ── */}
       <div className="flex flex-col gap-1.5 bg-primary px-4 pb-4 pt-4 text-on-primary">
         <div className="flex items-start justify-between gap-2">
           <p className="font-mono text-title font-bold leading-tight tracking-tight">
-            {group.orderNumber}
+            {headerOrderLabel}
           </p>
-          <LuUtensilsCrossed size={18} className="shrink-0 text-on-primary/90" />
+          {orderMeta && group.orderType && (
+            <Badge
+              size="sm"
+              className={cn(
+                "gap-1.5 border font-semibold",
+                ORDER_TYPE_BADGE_STYLES[group.orderType]
+              )}
+            >
+              <OrderTypeIcon size={14} className="shrink-0" />
+              {orderMeta.typeLabel}
+            </Badge>
+          )}
         </div>
-        {sourceLabel && (
-          <p className="text-caption font-semibold uppercase tracking-[0.04em] text-on-primary/90">
-            {sourceLabel}
+        {orderMeta && (orderMeta.secondary || orderMeta.deliveryCode) && (
+          <p className="text-caption font-semibold tracking-[0.04em] text-on-primary/85">
+            {[orderMeta.secondary, orderMeta.deliveryCode].filter(Boolean).join(" · ")}
           </p>
         )}
-        {group.orderType === "DELIVERY" && group.deliveryOrderNumber && (
-          <p className="font-mono text-caption font-semibold tabular-nums text-on-primary/85">
-            {t("kds.card.deliveryOrderNumber", {
-              orderNumber: group.deliveryOrderNumber,
-            })}
+        <div className="mt-1 flex items-end gap-2">
+          <LuClock3
+            size={16}
+            className="mb-0.5 shrink-0 text-on-primary/65"
+            aria-hidden="true"
+          />
+          <p className="flex items-end gap-1.5 font-mono text-title font-bold leading-none tabular-nums">
+            {timeLabel}
+            <span className="pb-px text-body-sm font-semibold text-on-primary/72">
+              {t("kds.card.minutesUnit")}
+            </span>
           </p>
-        )}
-        <p className="mt-1 font-mono text-heading font-bold leading-none tabular-nums">
-          {timeLabel}
-        </p>
+        </div>
       </div>
 
       {/* ── Scrollable body with items ── */}
@@ -158,9 +197,39 @@ const KdsOrderColumn = ({ group, isBumped, onBump, disabled }: Props) => {
                 >
                   [{item.quantity}]
                 </span>
-                <span className="min-w-0 text-body font-semibold leading-snug text-text-primary">
+                <span
+                  className={cn(
+                    "min-w-0 flex-1 text-body font-semibold leading-snug",
+                    item.status === "READY" ? "text-text-secondary line-through" : "text-text-primary"
+                  )}
+                >
                   {item.productName}
                 </span>
+                <button
+                  type="button"
+                  onClick={() => onItemReady(item)}
+                  disabled={disabled}
+                  aria-pressed={item.status === "READY"}
+                  aria-label={
+                    item.status === "READY"
+                      ? t("kds.item.markPending")
+                      : t("kds.item.markDone")
+                  }
+                  title={
+                    item.status === "READY"
+                      ? t("kds.item.markPending")
+                      : t("kds.item.markDone")
+                  }
+                  className={cn(
+                    "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-[var(--motion-fast)]",
+                    "disabled:cursor-not-allowed disabled:opacity-50",
+                    item.status === "READY"
+                      ? "border-success bg-success text-white"
+                      : "border-border bg-bg text-transparent hover:border-success hover:bg-success-bg hover:text-success"
+                  )}
+                >
+                  <LuCheck size={12} />
+                </button>
               </div>
               {item.note && (
                 <p className="mt-0.5 pl-6 text-caption italic leading-snug text-text-secondary">
