@@ -36,7 +36,7 @@ export function SearchInput({
           "text-input text-input-text",
           "placeholder:text-input-placeholder",
           "outline-none",
-          "transition-colors duration-[var(--motion-fast)]",
+          "transition-colors duration-fast",
           "focus:border-input-border-focus focus:ring-2 focus:ring-input-border-focus/10",
         )}
         {...props}
@@ -45,7 +45,7 @@ export function SearchInput({
         <button
           type="button"
           onClick={() => onValueChange("")}
-          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-text-tertiary transition-colors duration-[var(--motion-fast)] hover:text-text-primary"
+          className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-text-tertiary transition-colors duration-fast hover:text-text-primary"
           aria-label="Clear search"
         >
           <LuX size={16} />

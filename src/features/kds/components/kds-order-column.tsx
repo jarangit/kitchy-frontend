@@ -40,9 +40,9 @@ interface Props {
 }
 
 const ORDER_TYPE_BADGE_STYLES: Record<OrderType, string> = {
-  DINE_IN: "border-emerald-600 bg-emerald-600 text-white",
-  TOGO: "border-amber-500 bg-amber-500 text-white",
-  DELIVERY: "border-sky-600 bg-sky-600 text-white",
+  DINE_IN: "border-success bg-success text-on-success",
+  TOGO: "border-warning bg-warning text-on-warning",
+  DELIVERY: "border-info bg-info text-on-info",
 };
 
 const ORDER_TYPE_ICONS: Record<OrderType, typeof LuUtensilsCrossed> = {
@@ -150,7 +150,7 @@ const KdsOrderColumn = ({
     : LuUtensilsCrossed;
 
   return (
-    <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-card-border bg-card-bg shadow-sm transition-all duration-[var(--motion-normal)]">
+    <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-card-border bg-card-bg shadow-sm transition-all duration-normal">
       {/* ── Header with order info ── */}
       <div className="flex flex-col gap-1.5 bg-primary px-4 pb-4 pt-4 text-on-primary">
         <div className="flex items-start justify-between gap-2">
@@ -171,7 +171,7 @@ const KdsOrderColumn = ({
           )}
         </div>
         {orderMeta && (orderMeta.secondary || orderMeta.deliveryCode) && (
-          <p className="text-caption font-semibold tracking-[0.04em] text-on-primary/85">
+          <p className="text-caption font-semibold tracking-wide text-on-primary/85">
             {[orderMeta.secondary, orderMeta.deliveryCode]
               .filter(Boolean)
               .join(" · ")}
@@ -240,10 +240,10 @@ const KdsOrderColumn = ({
                       : t("kds.item.markDone")
                   }
                   className={cn(
-                    "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-[var(--motion-fast)]",
+                    "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-fast",
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     item.status === "READY"
-                      ? "border-success bg-success text-white"
+                      ? "border-success bg-success text-on-success"
                       : "border-border bg-bg text-transparent hover:border-success hover:bg-success-bg hover:text-success",
                   )}
                 >

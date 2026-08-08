@@ -57,6 +57,11 @@
   --spacing-toggle-width: 52px;
   --spacing-toggle-height: 28px;
   --spacing-toggle-knob-size: 22px;
+  /* Checked knob offset = track width - knob - 3px edge inset. Kept as a
+     token so the component never composes calc() from raw token vars. */
+  --spacing-toggle-knob-x: calc(
+    var(--spacing-toggle-width) - var(--spacing-toggle-knob-size) - 3px
+  );
 
   /* ── Skeleton ── */
   --color-skeleton-bg: var(--color-border);
@@ -92,6 +97,12 @@
   --color-badge-info-text: var(--color-info);
   --color-badge-accent-bg: var(--color-accent-bg);
   --color-badge-accent-text: var(--color-accent-text);
+
+  /* ── On-status text ── */
+  /* Text used on top of solid status fills (success/warning/info badges). */
+  --color-on-success: var(--color-text-inverse);
+  --color-on-warning: var(--color-text-inverse);
+  --color-on-info: var(--color-text-inverse);
 
   /* ── Status borders ── */
   /* Solid 100-scale tones, darker than their 50-scale bg tints. */
@@ -162,6 +173,86 @@
   --color-sidebar-text: color-mix(in srgb, var(--gray-0) 78%, transparent);
   --color-sidebar-hover-bg: color-mix(in srgb, var(--gray-0) 8%, transparent);
 
+  /* ── Sidebar glass dock ── */
+  /* Floating glass pill: translucent white layers over backdrop-blur.
+     Alphas are part of the glass design, so they stay in color-mix here
+     instead of being baked into solid hex values. */
+  --color-glass-surface-bg: color-mix(in srgb, var(--gray-0) 24%, transparent);
+  --color-glass-surface-border: color-mix(
+    in srgb,
+    var(--gray-0) 45%,
+    transparent
+  );
+  --color-glass-highlight-bg: color-mix(
+    in srgb,
+    var(--gray-0) 45%,
+    transparent
+  );
+  --color-glass-gradient-from: color-mix(
+    in srgb,
+    var(--gray-0) 42%,
+    transparent
+  );
+  --color-glass-gradient-via: color-mix(
+    in srgb,
+    var(--gray-0) 12%,
+    transparent
+  );
+  --color-glass-gradient-to: color-mix(in srgb, var(--gray-0) 4%, transparent);
+  --color-glass-inner-ring: color-mix(in srgb, var(--gray-0) 55%, transparent);
+  --color-glass-item-hover-bg: color-mix(
+    in srgb,
+    var(--gray-0) 45%,
+    transparent
+  );
+  --color-glass-tooltip-border: color-mix(
+    in srgb,
+    var(--gray-0) 40%,
+    transparent
+  );
+  --color-glass-divider: color-mix(in srgb, var(--gray-0) 55%, transparent);
+  --color-glass-button-bg: color-mix(in srgb, var(--gray-0) 58%, transparent);
+  --color-glass-button-bg-hover: color-mix(
+    in srgb,
+    var(--gray-0) 78%,
+    transparent
+  );
+  --color-glass-fab-bg: color-mix(in srgb, var(--gray-0) 28%, transparent);
+  --color-glass-fab-bg-hover: color-mix(
+    in srgb,
+    var(--gray-0) 58%,
+    transparent
+  );
+  --color-glass-fab-border: color-mix(in srgb, var(--gray-0) 45%, transparent);
+  --color-glass-ring-offset: color-mix(in srgb, var(--gray-0) 30%, transparent);
+  --shadow-glass-dock:
+    0 28px 90px rgba(15, 23, 42, 0.26),
+    0 8px 22px rgba(255, 255, 255, 0.24) inset,
+    0 -12px 34px rgba(15, 23, 42, 0.08) inset;
+  --shadow-glass-item-active:
+    0 16px 36px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  --shadow-glass-item-hover:
+    0 12px 28px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --shadow-glass-tooltip: 0 10px 28px rgba(15, 23, 42, 0.18);
+  --shadow-glass-button:
+    0 12px 28px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  --shadow-glass-fab:
+    0 20px 60px rgba(15, 23, 42, 0.2),
+    0 8px 22px rgba(255, 255, 255, 0.24) inset;
+  --radius-glass-item: 1rem;
+  --radius-glass-item-lg: 1.35rem;
+  --radius-glass-dock: 2.15rem;
+  --radius-glass-dock-lg: 2.5rem;
+  --radius-glass-fab: 1.45rem;
+  --backdrop-blur-glass-strong: 34px;
+  --backdrop-blur-glass-item: 40px;
+  --backdrop-blur-glass-tooltip: 24px;
+  --blur-glass-highlight: 40px;
+  --blur-glass-intro: 6px;
+  --backdrop-saturate-glass: 200%;
+  --font-size-glass-icon: 22px;
+  --font-size-glass-icon-sm: 18px;
+
   /* ── Select ── */
   --color-select-bg: var(--color-surface);
   --color-select-border: var(--color-border);
@@ -188,6 +279,9 @@
   --spacing-page-section-gap-loose: var(--space-6);
   --spacing-page-grid-gap: var(--space-4);
   --spacing-page-grid-gap-loose: var(--space-5);
+
+  /* ── POS ── */
+  --spacing-pos-cart-width: 460px;
 
   /* ── Label ── */
   --color-label-comp-text: var(--color-text-primary);
@@ -236,4 +330,50 @@
   --color-chip-active-text: var(--color-on-accent);
   --color-segment-active-bg: var(--color-accent);
   --color-segment-active-text: var(--color-on-accent);
+
+  /* On-status text — dark mode status fills are lighter tones, so the
+     label switches to the dark on-accent ink to keep contrast. */
+  --color-on-success: var(--color-on-accent);
+  --color-on-warning: var(--color-on-accent);
+  --color-on-info: var(--color-on-accent);
+
+  /* Sidebar glass dock — same white glass, much lower alpha over dark bg */
+  --color-glass-surface-bg: color-mix(in srgb, var(--gray-0) 8%, transparent);
+  --color-glass-surface-border: color-mix(
+    in srgb,
+    var(--gray-0) 12%,
+    transparent
+  );
+  --color-glass-highlight-bg: color-mix(
+    in srgb,
+    var(--gray-0) 12%,
+    transparent
+  );
+  --color-glass-gradient-from: color-mix(
+    in srgb,
+    var(--gray-0) 14%,
+    transparent
+  );
+  --color-glass-gradient-via: color-mix(in srgb, var(--gray-0) 6%, transparent);
+  --color-glass-gradient-to: transparent;
+  --color-glass-inner-ring: color-mix(in srgb, var(--gray-0) 10%, transparent);
+  --color-glass-item-hover-bg: color-mix(
+    in srgb,
+    var(--gray-0) 10%,
+    transparent
+  );
+  --color-glass-divider: color-mix(in srgb, var(--gray-0) 15%, transparent);
+  --color-glass-button-bg: color-mix(in srgb, var(--gray-0) 10%, transparent);
+  --color-glass-button-bg-hover: color-mix(
+    in srgb,
+    var(--gray-0) 15%,
+    transparent
+  );
+  --color-glass-fab-bg: color-mix(in srgb, var(--gray-0) 8%, transparent);
+  --color-glass-fab-bg-hover: color-mix(
+    in srgb,
+    var(--gray-0) 14%,
+    transparent
+  );
+  --color-glass-fab-border: color-mix(in srgb, var(--gray-0) 10%, transparent);
 }

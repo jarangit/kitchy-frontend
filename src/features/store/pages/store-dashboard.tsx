@@ -83,14 +83,14 @@ const DashboardCard = ({
 }) => (
   <Link
     to={to}
-    className="group flex h-full flex-col rounded-card border border-card-border bg-surface px-4 py-4 shadow-xs transition-all duration-[var(--motion-fast)] hover:border-border-hover hover:bg-card-bg-hover hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-5 sm:py-5"
+    className="group flex h-full flex-col rounded-card border border-card-border bg-surface px-4 py-4 shadow-xs transition-all duration-fast hover:border-border-hover hover:bg-card-bg-hover hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-5 sm:py-5"
   >
     <div className="flex items-start justify-between gap-4">
-      <span className="rounded-full bg-surface-muted p-2 text-text-secondary transition-colors duration-[var(--motion-fast)] group-hover:text-text-primary">
+      <span className="rounded-full bg-surface-muted p-2 text-text-secondary transition-colors duration-fast group-hover:text-text-primary">
         {icon}
       </span>
       <LuArrowRight
-        className="h-4 w-4 shrink-0 text-text-tertiary transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5 group-hover:text-text-secondary"
+        className="h-4 w-4 shrink-0 text-text-tertiary transition-transform duration-fast group-hover:translate-x-0.5 group-hover:text-text-secondary"
         aria-hidden="true"
       />
     </div>
@@ -158,7 +158,7 @@ const StoreDashboardPage = () => {
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 sm:gap-6">
       <header className="flex w-full items-start justify-between gap-4">
         <div className="flex min-w-0 flex-col gap-1">
-          <p className="text-label uppercase tracking-[0.08em] text-text-tertiary">
+          <p className="text-label uppercase tracking-widest text-text-tertiary">
             {t("dashboard.storeOverview")}
           </p>
           <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">

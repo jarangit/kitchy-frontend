@@ -84,7 +84,7 @@ export function TabList({
         role="tablist"
         aria-label={ariaLabel}
         className={cn(
-          "bg-segment-bg border border-segment-border rounded-full p-1",
+          "bg-segment-bg border border-segment-border rounded-segment p-1",
           fullWidth
             ? "grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:flex lg:gap-0"
             : "inline-flex flex-wrap gap-1",
@@ -224,9 +224,9 @@ export function Tab({
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex items-center justify-center rounded-full text-center",
+          "flex items-center justify-center rounded-segment text-center",
           "min-h-chip-height-md min-w-0 px-4 text-segment font-segment whitespace-normal leading-5 sm:px-5",
-          "transition-colors duration-[var(--motion-fast)]",
+          "transition-colors duration-fast",
           "flex-1",
           isActive
             ? "bg-segment-active-bg text-segment-active-text"
@@ -254,8 +254,8 @@ export function Tab({
       onKeyDown={handleKeyDown}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap gap-2",
-        "rounded-full font-chip",
-        "transition-colors duration-[var(--motion-fast)]",
+        "rounded-chip font-chip",
+        "transition-colors duration-fast",
         chipSizeStyles[size],
         isActive
           ? "bg-chip-active-bg text-chip-active-text"

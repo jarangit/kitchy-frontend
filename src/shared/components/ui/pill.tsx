@@ -23,7 +23,7 @@ export function Pill({
   return (
     <span
       className={cn(
-        "inline-flex h-7 items-center rounded-full leading-none transition-colors duration-[var(--motion-fast)]",
+        "inline-flex h-7 items-center rounded-full leading-none transition-colors duration-fast",
         variantStyles[variant],
         className,
       )}

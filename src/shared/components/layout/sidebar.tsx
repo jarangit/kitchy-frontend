@@ -106,11 +106,11 @@ const Sidebar = () => {
   };
 
   const itemClass =
-    "group relative flex h-10 w-10 shrink-0 origin-bottom items-center justify-center rounded-[1rem] text-[18px] transition-all duration-200 ease-out hover:-translate-y-2.5 hover:scale-115 focus-visible:-translate-y-2.5 focus-visible:scale-115 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white/30 sm:h-14 sm:w-14 sm:rounded-[1.35rem] sm:text-[22px]";
+    "group relative flex h-10 w-10 shrink-0 origin-bottom items-center justify-center rounded-glass-item text-glass-icon-sm transition-all duration-200 ease-out hover:-translate-y-2.5 hover:scale-115 focus-visible:-translate-y-2.5 focus-visible:scale-115 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-glass-ring-offset sm:h-14 sm:w-14 sm:rounded-glass-item-lg sm:text-glass-icon";
   const activeClass =
-    "border border-accent/25 bg-accent/10 text-accent-text shadow-[0_16px_36px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.75)] backdrop-blur-2xl";
+    "border border-accent/25 bg-accent/10 text-accent-text shadow-glass-item-active backdrop-blur-glass-item";
   const inactiveClass =
-    "text-text-secondary/75 hover:bg-white/45 hover:text-text-primary hover:shadow-[0_12px_28px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.55)] dark:hover:bg-white/10";
+    "text-text-secondary/75 hover:bg-glass-item-hover-bg hover:text-text-primary hover:shadow-glass-item-hover dark:hover:bg-glass-item-hover-bg";
 
   const renderNavItem = (item: NavItem, index: number) => {
     const active = isActive(item.path, item.match);
@@ -148,7 +148,7 @@ const Sidebar = () => {
             className="ring-sidebar-bg"
           />
         )}
-        <span className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-4 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-full border border-white/40 bg-surface/95 px-3 py-1.5 text-caption font-medium text-text-primary opacity-0 shadow-[0_10px_28px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+        <span className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-4 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-full border border-glass-tooltip-border bg-surface/95 px-3 py-1.5 text-caption font-medium text-text-primary opacity-0 shadow-glass-tooltip backdrop-blur-glass-tooltip transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
           {item.name}
         </span>
       </Link>
@@ -160,23 +160,23 @@ const Sidebar = () => {
       {isDockOpen ? (
         <div
           className={cn(
-            "pointer-events-auto relative isolate flex max-w-[calc(100vw-2rem)] items-end gap-1 overflow-visible rounded-[2.15rem] border border-white/45 bg-white/24 px-2 pb-2.5 pt-2 shadow-[0_28px_90px_rgba(15,23,42,0.26),0_8px_22px_rgba(255,255,255,0.24)_inset,0_-12px_34px_rgba(15,23,42,0.08)_inset] backdrop-blur-[34px] backdrop-saturate-200 transition-[opacity,transform,filter] duration-500 ease-out dark:border-white/12 dark:bg-white/8 sm:gap-2 sm:rounded-[2.5rem] sm:px-2.5 sm:pb-3 sm:pt-2",
+            "pointer-events-auto relative isolate flex max-w-[calc(100vw-2rem)] items-end gap-1 overflow-visible rounded-glass-dock border border-glass-surface-border bg-glass-surface-bg px-2 pb-2.5 pt-2 shadow-glass-dock backdrop-blur-glass-strong backdrop-saturate-glass transition-[opacity,transform,filter] duration-500 ease-out dark:border-glass-surface-border dark:bg-glass-surface-bg sm:gap-2 sm:rounded-glass-dock-lg sm:px-2.5 sm:pb-3 sm:pt-2",
             playDockIntro
               ? "translate-y-0 scale-100 opacity-100 blur-0"
-              : "translate-y-4 scale-95 opacity-0 blur-[6px]",
+              : "translate-y-4 scale-95 opacity-0 blur-glass-intro",
           )}
         >
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-5 top-2 h-10 rounded-full bg-white/45 blur-2xl dark:bg-white/12"
+            className="pointer-events-none absolute inset-x-5 top-2 h-10 rounded-full bg-glass-highlight-bg blur-glass-highlight dark:bg-glass-highlight-bg"
           />
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-b from-white/42 via-white/12 to-white/4 dark:from-white/14 dark:via-white/6 dark:to-transparent"
+            className="pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-b from-glass-gradient-from via-glass-gradient-via to-glass-gradient-to dark:from-glass-gradient-from dark:via-glass-gradient-via dark:to-glass-gradient-to"
           />
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/55 dark:ring-white/10"
+            className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-glass-inner-ring dark:ring-glass-inner-ring"
           />
           <nav
             aria-label="Store navigation"
@@ -195,7 +195,7 @@ const Sidebar = () => {
               )}
           </nav>
           <div
-            className="relative z-10 mb-2 hidden h-9 w-px shrink-0 bg-white/55 dark:bg-white/15 sm:block"
+            className="relative z-10 mb-2 hidden h-9 w-px shrink-0 bg-glass-divider dark:bg-glass-divider sm:block"
             aria-hidden="true"
           />
           <button
@@ -204,7 +204,7 @@ const Sidebar = () => {
             title="Hide navigation dock"
             onClick={() => setIsDockOpen(false)}
             className={cn(
-              "relative z-10 mb-1 flex h-10 w-10 shrink-0 origin-bottom items-center justify-center rounded-[1rem] bg-white/58 text-text-secondary shadow-[0_12px_28px_rgba(15,23,42,0.14),inset_0_1px_0_rgba(255,255,255,0.78)] backdrop-blur-2xl transition-all duration-200 ease-out hover:-translate-y-2 hover:scale-110 hover:bg-white/78 hover:text-text-primary focus-visible:-translate-y-2 focus-visible:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-white/30 dark:bg-white/10 dark:hover:bg-white/15 sm:h-12 sm:w-12 sm:rounded-[1.35rem]",
+              "relative z-10 mb-1 flex h-10 w-10 shrink-0 origin-bottom items-center justify-center rounded-glass-item bg-glass-button-bg text-text-secondary shadow-glass-button backdrop-blur-glass-item transition-all duration-200 ease-out hover:-translate-y-2 hover:scale-110 hover:bg-glass-button-bg-hover hover:text-text-primary focus-visible:-translate-y-2 focus-visible:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-glass-ring-offset dark:bg-glass-button-bg dark:hover:bg-glass-button-bg-hover sm:h-12 sm:w-12 sm:rounded-glass-item-lg",
               "transition-[opacity,transform] duration-500 ease-out",
               playDockIntro
                 ? "translate-y-0 scale-100 opacity-100"
@@ -227,7 +227,7 @@ const Sidebar = () => {
           aria-label="Show navigation dock"
           title="Show navigation dock"
           onClick={() => setIsDockOpen(true)}
-          className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-[1.45rem] border border-white/45 bg-white/28 text-text-secondary shadow-[0_20px_60px_rgba(15,23,42,0.2),0_8px_22px_rgba(255,255,255,0.24)_inset] backdrop-blur-[34px] backdrop-saturate-200 transition-all duration-200 ease-out hover:-translate-y-2 hover:scale-110 hover:bg-white/58 hover:text-text-primary focus-visible:-translate-y-2 focus-visible:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg dark:border-white/10 dark:bg-white/8 dark:hover:bg-white/14"
+          className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-glass-fab border border-glass-fab-border bg-glass-fab-bg text-text-secondary shadow-glass-fab backdrop-blur-glass-strong backdrop-saturate-glass transition-all duration-200 ease-out hover:-translate-y-2 hover:scale-110 hover:bg-glass-fab-bg-hover hover:text-text-primary focus-visible:-translate-y-2 focus-visible:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg dark:border-glass-fab-border dark:bg-glass-fab-bg dark:hover:bg-glass-fab-bg-hover"
         >
           <LuChevronUp size={24} />
         </button>

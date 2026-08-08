@@ -22,7 +22,7 @@ const KdsStatsBar = ({ groups, orderLimit }: Props) => {
   return (
     <div className="rounded-card bg-primary px-4 py-2.5 text-on-primary">
       <div className="flex flex-col gap-2.5 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,340px)_minmax(0,1fr)] sm:items-center sm:gap-3">
-        <span className="flex items-center gap-2 text-caption font-medium tracking-[0.06em] text-on-primary/80 sm:justify-self-start">
+        <span className="flex items-center gap-2 text-caption font-medium tracking-wider text-on-primary/80 sm:justify-self-start">
           <span className="text-on-primary/60">
             {t("kds.stats.itemsLabel")}
           </span>
@@ -44,7 +44,7 @@ const KdsStatsBar = ({ groups, orderLimit }: Props) => {
         {storeId ? (
           <Link
             to={`/store/${storeId}`}
-            className="flex items-center gap-1.5 text-caption font-medium tracking-[0.06em] text-on-primary/70 transition-colors hover:text-on-primary/55 sm:justify-self-end"
+            className="flex items-center gap-1.5 text-caption font-medium tracking-wider text-on-primary/70 transition-colors hover:text-on-primary/55 sm:justify-self-end"
           >
             <LuArrowLeft size={15} />
             {t("kds.header.back")}

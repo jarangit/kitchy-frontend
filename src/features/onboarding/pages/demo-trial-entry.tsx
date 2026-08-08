@@ -141,7 +141,7 @@ export default function DemoTrialEntryPage() {
                   onClick={() => setSelectedStorePreset(option.value)}
                   disabled={isStarting}
                   className={cn(
-                    "group relative min-h-32 rounded-card border border-card-border bg-card-bg px-4 py-4 text-center transition-colors duration-[var(--motion-fast)] sm:min-h-38 sm:px-4 sm:py-5 xl:min-h-44 xl:px-5 xl:py-6",
+                    "group relative min-h-32 rounded-card border border-card-border bg-card-bg px-4 py-4 text-center transition-colors duration-fast sm:min-h-38 sm:px-4 sm:py-5 xl:min-h-44 xl:px-5 xl:py-6",
                     "hover:border-border-hover hover:bg-card-bg-hover",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                     "disabled:cursor-not-allowed disabled:opacity-60",
@@ -152,7 +152,7 @@ export default function DemoTrialEntryPage() {
                 >
                   <span
                     className={cn(
-                      "absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border border-card-border bg-card-bg text-text-tertiary transition-colors duration-[var(--motion-fast)]",
+                      "absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border border-card-border bg-card-bg text-text-tertiary transition-colors duration-fast",
                       selected && "border-accent bg-accent text-on-accent",
                     )}
                     aria-hidden="true"
@@ -163,7 +163,7 @@ export default function DemoTrialEntryPage() {
                   <div className="flex h-full flex-col items-center justify-center gap-2.5 sm:gap-3">
                     <div
                       className={cn(
-                        "flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-[var(--motion-fast)] xl:h-14 xl:w-14",
+                        "flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-fast xl:h-14 xl:w-14",
                         selected
                           ? "bg-accent-bg text-accent-text"
                           : option.iconClassName,
@@ -175,7 +175,7 @@ export default function DemoTrialEntryPage() {
                     <div className="flex flex-col items-center gap-1">
                       <p
                         className={cn(
-                          "text-body font-medium text-text-primary transition-colors duration-[var(--motion-fast)] sm:text-subtitle",
+                          "text-body font-medium text-text-primary transition-colors duration-fast sm:text-subtitle",
                           selected && "text-accent-text",
                         )}
                       >

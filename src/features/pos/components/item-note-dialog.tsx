@@ -66,7 +66,7 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
 
       <div className="space-y-4">
         <div>
-          <p className="mb-2 text-label uppercase tracking-[0.08em] text-text-tertiary">
+          <p className="mb-2 text-label uppercase tracking-widest text-text-tertiary">
             {t("pos.noteDialog.quickNotes")}
           </p>
           <div className="flex flex-wrap gap-2">

@@ -231,7 +231,7 @@ const PaymentPage = () => {
 
                 <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg p-4 lg:border-l lg:border-t-0">
                   <div>
-                    <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
+                    <p className="text-caption font-medium uppercase tracking-widest text-text-tertiary">
                       {t("pos.payment.title")}
                     </p>
                     <h1 className="mt-1 text-subtitle text-text-primary">
@@ -320,7 +320,7 @@ const PaymentPage = () => {
               <aside className="flex min-h-full flex-col justify-between gap-4 border-t border-border bg-card-bg p-4 lg:border-l lg:border-t-0">
                 <div className="space-y-4">
                   <div>
-                    <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
+                    <p className="text-caption font-medium uppercase tracking-widest text-text-tertiary">
                       {t("pos.payment.title")}
                     </p>
                     <h1 className="mt-1 text-subtitle text-text-primary">
@@ -329,7 +329,7 @@ const PaymentPage = () => {
                   </div>
 
                   <div
-                    className="grid grid-cols-2 gap-2 rounded-selection border border-segment-border bg-segment-bg p-1"
+                    className="grid grid-cols-2 gap-2 rounded-segment border border-segment-border bg-segment-bg p-1"
                     role="group"
                     aria-label={t("pos.payment.methodLabel")}
                   >
@@ -344,7 +344,7 @@ const PaymentPage = () => {
                           aria-pressed={selected}
                           onClick={() => setPaymentMethod(method)}
                           className={cn(
-                            "flex h-12 items-center justify-center gap-2 rounded-selection text-label font-medium transition-colors duration-[var(--motion-fast)] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/35",
+                            "flex h-12 items-center justify-center gap-2 rounded-selection text-label font-medium transition-colors duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/35",
                             selected
                               ? "bg-segment-active-bg text-segment-active-text"
                               : "text-segment-inactive-text hover:text-segment-inactive-text-hover",

@@ -65,7 +65,7 @@ export function AppBar() {
           <Link
             to={`/store/${storeId}`}
             aria-label={t("appbar.storeFallback")}
-            className="flex min-h-[52px] min-w-0 flex-1 items-center gap-3 rounded-full text-body text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+            className="flex min-h-selection-height min-w-0 flex-1 items-center gap-3 rounded-full text-body text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
           >
             <BrandMark size="sm" />
             <span
@@ -76,7 +76,7 @@ export function AppBar() {
             </span>
           </Link>
         ) : (
-          <div className="flex min-h-[52px] min-w-0 flex-1 items-center gap-3 text-body text-text-primary">
+          <div className="flex min-h-selection-height min-w-0 flex-1 items-center gap-3 text-body text-text-primary">
             <BrandMark size="sm" />
             <span
               className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"

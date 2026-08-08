@@ -121,7 +121,7 @@ export function AlphanumericKeypad({
       <div className="space-y-2">
         <p className="text-caption text-text-tertiary">{t("ui.keypad.mode")}</p>
         <div
-          className="flex rounded-full border border-segment-border bg-segment-bg p-1"
+          className="flex rounded-segment border border-segment-border bg-segment-bg p-1"
           role="group"
           aria-label={t("ui.keypad.mode")}
         >
@@ -135,7 +135,7 @@ export function AlphanumericKeypad({
                 aria-label={option.label}
                 onClick={() => handleModeChange(option.value)}
                 className={cn(
-                  "flex h-[34px] flex-1 items-center justify-center rounded-full px-4 text-segment font-segment transition-colors duration-[var(--motion-fast)]",
+                  "flex h-[34px] flex-1 items-center justify-center rounded-full px-4 text-segment font-segment transition-colors duration-fast",
                   isActive
                     ? "bg-segment-active-bg text-segment-active-text"
                     : "text-segment-inactive-text hover:text-segment-inactive-text-hover",
@@ -150,7 +150,7 @@ export function AlphanumericKeypad({
               type="button"
               aria-label={t("ui.keypad.deviceKeyboard")}
               onClick={() => handlePress(onRequestDeviceKeyboard)}
-              className="flex h-[34px] flex-1 items-center justify-center rounded-full px-4 text-segment font-segment text-segment-inactive-text transition-colors duration-[var(--motion-fast)] hover:text-segment-inactive-text-hover"
+              className="flex h-[34px] flex-1 items-center justify-center rounded-full px-4 text-segment font-segment text-segment-inactive-text transition-colors duration-fast hover:text-segment-inactive-text-hover"
             >
               <LuKeyboard size={18} />
             </button>

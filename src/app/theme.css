@@ -91,6 +91,10 @@
   --color-badge-info-text: var(--color-badge-info-text);
   --color-badge-accent-bg: var(--color-badge-accent-bg);
   --color-badge-accent-text: var(--color-badge-accent-text);
+  /* On-status */
+  --color-on-success: var(--color-on-success);
+  --color-on-warning: var(--color-on-warning);
+  --color-on-info: var(--color-on-info);
   /* ChipTab */
   --color-chip-active-bg: var(--color-chip-active-bg);
   --color-chip-active-text: var(--color-chip-active-text);
@@ -122,6 +126,23 @@
   --color-sidebar-active-text: var(--color-sidebar-active-text);
   --color-sidebar-text: var(--color-sidebar-text);
   --color-sidebar-hover-bg: var(--color-sidebar-hover-bg);
+  /* Sidebar glass dock */
+  --color-glass-surface-bg: var(--color-glass-surface-bg);
+  --color-glass-surface-border: var(--color-glass-surface-border);
+  --color-glass-highlight-bg: var(--color-glass-highlight-bg);
+  --color-glass-gradient-from: var(--color-glass-gradient-from);
+  --color-glass-gradient-via: var(--color-glass-gradient-via);
+  --color-glass-gradient-to: var(--color-glass-gradient-to);
+  --color-glass-inner-ring: var(--color-glass-inner-ring);
+  --color-glass-item-hover-bg: var(--color-glass-item-hover-bg);
+  --color-glass-tooltip-border: var(--color-glass-tooltip-border);
+  --color-glass-divider: var(--color-glass-divider);
+  --color-glass-button-bg: var(--color-glass-button-bg);
+  --color-glass-button-bg-hover: var(--color-glass-button-bg-hover);
+  --color-glass-fab-bg: var(--color-glass-fab-bg);
+  --color-glass-fab-bg-hover: var(--color-glass-fab-bg-hover);
+  --color-glass-fab-border: var(--color-glass-fab-border);
+  --color-glass-ring-offset: var(--color-glass-ring-offset);
   /* Select */
   --color-select-bg: var(--color-select-bg);
   --color-select-border: var(--color-select-border);
@@ -148,6 +169,17 @@
   --radius-selection: var(--radius-selection);
   --radius-dialog: var(--radius-dialog);
   --radius-select: var(--radius-select);
+  --radius-glass-item: var(--radius-glass-item);
+  --radius-glass-item-lg: var(--radius-glass-item-lg);
+  --radius-glass-dock: var(--radius-glass-dock);
+  --radius-glass-dock-lg: var(--radius-glass-dock-lg);
+  --radius-glass-fab: var(--radius-glass-fab);
+
+  /* ── Tracking (Layer 1) ── */
+  --tracking-wide: var(--tracking-wide);
+  --tracking-wider: var(--tracking-wider);
+  --tracking-widest: var(--tracking-widest);
+  --tracking-widest-2: var(--tracking-widest-2);
 
   /* ── Primitive Spacing (Layer 1) ── */
   --spacing-1: var(--space-1);
@@ -193,6 +225,8 @@
   --spacing-sidebar-width: var(--spacing-sidebar-width);
   /* Select */
   --spacing-select-height: var(--spacing-select-height);
+  /* POS */
+  --spacing-pos-cart-width: var(--spacing-pos-cart-width);
   /* Page chrome */
   --spacing-page-padding-x: var(--spacing-page-padding-x);
   --spacing-page-padding-x-sm: var(--spacing-page-padding-x-sm);
@@ -218,6 +252,20 @@
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-soft: var(--shadow-soft);
+  --shadow-glass-dock: var(--shadow-glass-dock);
+  --shadow-glass-item-active: var(--shadow-glass-item-active);
+  --shadow-glass-item-hover: var(--shadow-glass-item-hover);
+  --shadow-glass-tooltip: var(--shadow-glass-tooltip);
+  --shadow-glass-button: var(--shadow-glass-button);
+  --shadow-glass-fab: var(--shadow-glass-fab);
+
+  /* ── Glass Dock Blur (Layer 3) ── */
+  --blur-glass-highlight: var(--blur-glass-highlight);
+  --blur-glass-intro: var(--blur-glass-intro);
+  --backdrop-blur-glass-strong: var(--backdrop-blur-glass-strong);
+  --backdrop-blur-glass-item: var(--backdrop-blur-glass-item);
+  --backdrop-blur-glass-tooltip: var(--backdrop-blur-glass-tooltip);
+  --backdrop-saturate-glass: var(--backdrop-saturate-glass);
 
   /* ── Component Font Sizes (Layer 3) ── */
   --font-size-button-sm: var(--font-size-button-sm);
@@ -234,6 +282,8 @@
   --font-size-dialog-desc: var(--font-size-dialog-desc);
   --font-size-select: var(--font-size-select);
   --font-size-label-comp: var(--font-size-label-comp);
+  --font-size-glass-icon: var(--font-size-glass-icon);
+  --font-size-glass-icon-sm: var(--font-size-glass-icon-sm);
 
   /* ── Component Font Weights (Layer 3) ── */
   --font-weight-button: var(--font-weight-button);
@@ -285,6 +335,7 @@
 @utility text-body-sm {
   font-size: var(--text-body-sm-size);
   font-weight: var(--text-body-sm-weight);
+  line-height: var(--text-body-sm-leading);
 }
 
 @utility text-label {
@@ -295,6 +346,7 @@
 @utility text-caption {
   font-size: var(--text-caption-size);
   font-weight: var(--text-caption-weight);
+  line-height: var(--text-caption-leading);
 }
 
 /* ============================================
@@ -355,8 +407,37 @@
   font-size: var(--font-size-select);
 }
 
+@utility text-glass-icon {
+  font-size: var(--font-size-glass-icon);
+}
+
+@utility text-glass-icon-sm {
+  font-size: var(--font-size-glass-icon-sm);
+}
+
 @utility text-label-comp {
   font-size: var(--font-size-label-comp);
+}
+
+@utility duration-fast {
+  transition-duration: var(--motion-fast);
+}
+
+@utility duration-normal {
+  transition-duration: var(--motion-normal);
+}
+
+@utility duration-slow {
+  transition-duration: var(--motion-slow);
+}
+
+@utility ease-standard {
+  transition-timing-function: var(--ease-standard);
+}
+
+@utility translate-x-toggle-knob-x {
+  --tw-translate-x: var(--spacing-toggle-knob-x);
+  translate: var(--tw-translate-x) var(--tw-translate-y);
 }
 
 .page-inline {

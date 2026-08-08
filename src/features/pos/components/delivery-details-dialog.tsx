@@ -99,7 +99,7 @@ export function DeliveryDetailsDialog({
           type="button"
           onClick={onClose}
           aria-label={t("common.close")}
-          className="mt-0.5 shrink-0 rounded-full p-1 text-text-tertiary transition-colors duration-[var(--motion-fast)] hover:bg-surface hover:text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+          className="mt-0.5 shrink-0 rounded-full p-1 text-text-tertiary transition-colors duration-fast hover:bg-surface hover:text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
         >
           <LuX size={18} />
         </button>
@@ -120,7 +120,7 @@ export function DeliveryDetailsDialog({
         >
           <Card variant="default" padding="sm" className="page-stack-tight">
             <div className="flex items-center justify-between gap-3">
-              <Label className="uppercase tracking-[0.08em] text-text-tertiary">
+              <Label className="uppercase tracking-widest text-text-tertiary">
                 {t("pos.cart.deliveryPlatform")}
               </Label>
               <span className="text-label text-text-tertiary">
@@ -189,7 +189,7 @@ export function DeliveryDetailsDialog({
                   inputMode="text"
                   autoComplete="off"
                   autoFocus
-                  className="mt-1 h-input-height w-full rounded-input border border-input-border bg-input-bg px-input-padding-x font-mono text-input text-text-primary tabular-nums outline-none transition-colors duration-[var(--motion-fast)] placeholder:text-input-placeholder focus:border-input-border-focus focus:ring-2 focus:ring-accent/25"
+                  className="mt-1 h-input-height w-full rounded-input border border-input-border bg-input-bg px-input-padding-x font-mono text-input text-text-primary tabular-nums outline-none transition-colors duration-fast placeholder:text-input-placeholder focus:border-input-border-focus focus:ring-2 focus:ring-accent/25"
                   placeholder={t("pos.cart.deliveryOrderNumberPlaceholder")}
                 />
               ) : (
@@ -199,7 +199,7 @@ export function DeliveryDetailsDialog({
                   onClick={onOpenCustomKeypad}
                   aria-haspopup="dialog"
                   aria-expanded={isDeliveryKeypadOpen}
-                  className="mt-1 flex h-input-height w-full items-center justify-between gap-3 rounded-input border border-input-border bg-input-bg px-input-padding-x text-left text-input-text transition-colors duration-[var(--motion-fast)] focus:border-input-border-focus focus:outline-none focus:ring-2 focus:ring-accent/25"
+                  className="mt-1 flex h-input-height w-full items-center justify-between gap-3 rounded-input border border-input-border bg-input-bg px-input-padding-x text-left text-input-text transition-colors duration-fast focus:border-input-border-focus focus:outline-none focus:ring-2 focus:ring-accent/25"
                 >
                   <span
                     className={

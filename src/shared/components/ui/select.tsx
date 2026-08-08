@@ -30,7 +30,7 @@ export function Select({
           "px-input-padding-x",
           "text-select-text text-select",
           "outline-none",
-          "transition-colors duration-[var(--motion-fast)]",
+          "transition-colors duration-fast",
           "focus:border-select-border-focus focus:ring-2 focus:ring-select-border-focus/10",
           className,
         )}

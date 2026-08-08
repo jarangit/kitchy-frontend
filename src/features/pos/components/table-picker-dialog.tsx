@@ -43,7 +43,7 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
             }}
             padding="none"
             className={cn(
-              "flex h-20 items-center justify-center bg-card-bg px-3 text-center transition-all duration-[var(--motion-fast)]",
+              "flex h-20 items-center justify-center bg-card-bg px-3 text-center transition-all duration-fast",
               "font-mono text-title tabular-nums whitespace-nowrap text-text-secondary",
               "hover:-translate-y-[1px] hover:border-border-hover hover:text-text-primary",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",

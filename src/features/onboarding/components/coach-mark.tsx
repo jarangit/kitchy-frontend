@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/shared/utils/cn";
+import "./coach-mark.css";
 
 interface Props {
   /**
@@ -117,14 +118,12 @@ export function CoachMark({
       {/* Backdrop + cutout (cutout has pointer-events-none so target is clickable).
           The `onDismiss` click handler lives on a sibling overlay below. */}
       <div
-        className="absolute rounded-card pointer-events-none"
+        className="coach-mark-cutout absolute rounded-card pointer-events-none transition-all duration-fast ease-standard"
         style={{
           top: rect.top - PADDING,
           left: rect.left - PADDING,
           width: rect.width + PADDING * 2,
           height: rect.height + PADDING * 2,
-          boxShadow: "0 0 0 9999px rgba(0,0,0,0.55)",
-          transition: "all 150ms ease",
         }}
       />
 

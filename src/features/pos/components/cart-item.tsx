@@ -46,7 +46,7 @@ const CartItem = ({
           type="button"
           onClick={() => onToggleExpand(item)}
           className={cn(
-            "inline-flex w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)]",
+            "inline-flex w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-fast",
             "hover:bg-surface hover:text-text-primary",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-1 focus-visible:ring-offset-bg",
           )}

@@ -53,44 +53,44 @@
   /* Bumped — KDS confirmation state shown briefly after a BUMP click,
      before the order slides out of the Expediter view. */
   --color-bumped: #5a1e9e;
-  --color-bumped-bg: #EBE4F3;            /* 12% bumped over white — solid */
+  --color-bumped-bg: #ebe4f3; /* 12% bumped over white — solid */
 }
 
 /* ── Semantic Colors: Dark Mode ── */
 [data-theme="dark"] {
   /* Surfaces — 3-tier depth: sidebar < bg < surface < surface-hover */
   --color-bg: #141416;
-  --color-surface: #1F1F21;
-  --color-surface-hover: #2A2A2C;
-  --color-surface-muted: #2C2C2E;        /* 6% white over surface — solid */
-  --color-surface-muted-hover: #353537;  /* 10% white over surface — solid */
-  --color-overlay: rgba(0, 0, 0, 0.65);  /* scrim — intentionally translucent */
+  --color-surface: #1f1f21;
+  --color-surface-hover: #2a2a2c;
+  --color-surface-muted: #2c2c2e; /* 6% white over surface — solid */
+  --color-surface-muted-hover: #353537; /* 10% white over surface — solid */
+  --color-overlay: rgba(0, 0, 0, 0.65); /* scrim — intentionally translucent */
 
-  --color-text-primary: #F5F5F7;
-  --color-text-secondary: #AEAEB2;
-  --color-text-tertiary: #AEAEB2;
+  --color-text-primary: #f5f5f7;
+  --color-text-secondary: #aeaeb2;
+  --color-text-tertiary: #aeaeb2;
   /* Text on primary surfaces (button-primary, chip-active, etc.) stays light
      because dark-mode primary is a mid-gray, not near-white. */
-  --color-text-inverse: #F5F5F7;
+  --color-text-inverse: #f5f5f7;
 
-  --color-border: #48484A;
+  --color-border: #48484a;
   --color-border-hover: #636366;
 
   /* Primary — mid-gray in dark mode (not near-white) so active states
      don't read as jarring white blocks on dark bg. */
   --color-primary: #080906;
-  --color-primary-hover: #1E2029;
-  --color-primary-bg: #1A1C1A;
-  --color-on-primary: #F5F5F7;
+  --color-primary-hover: #1e2029;
+  --color-primary-bg: #1a1c1a;
+  --color-on-primary: #f5f5f7;
 
   /* Accent — same brand family, tuned for dark surfaces */
-  --color-accent: #D1EF57;
-  --color-accent-fill: #D1EF57;
-  --color-accent-hover: #E4F38D;
-  --color-accent-bg: #2E3518;
+  --color-accent: #d1ef57;
+  --color-accent-fill: #d1ef57;
+  --color-accent-hover: #e4f38d;
+  --color-accent-bg: #2e3518;
   --color-accent-border: #495823;
-  --color-accent-text: #EDF7B8;
-  --color-accent-strong: #E4F38D;
+  --color-accent-text: #edf7b8;
+  --color-accent-strong: #e4f38d;
 
   /* Status — brighter references for dark surfaces, from the same muted families */
   --color-success: var(--green-500);
@@ -99,51 +99,55 @@
   --color-warning: var(--yellow-500);
   --color-info: var(--blue-500);
 
-  --color-success-bg: #26301A;
-  --color-danger-bg: #3D2622;
-  --color-warning-bg: #3C3120;
-  --color-info-bg: #26303D;
+  --color-success-bg: #26301a;
+  --color-danger-bg: #3d2622;
+  --color-warning-bg: #3c3120;
+  --color-info-bg: #26303d;
 
   --color-bumped: #7c3aed;
-  --color-bumped-bg: #33254C;            /* 22% bumped over surface — solid */
+  --color-bumped-bg: #33254c; /* 22% bumped over surface — solid */
 }
 
 /* ── Semantic Typography ── */
 :root {
   /* Display — major app page titles and large feature text */
-  --text-display-size:    var(--size-4xl);
-  --text-display-weight:  var(--weight-semibold); /* 600 — Newsroom: restraint over boldness */
+  --text-display-size: var(--size-4xl);
+  --text-display-weight: var(
+    --weight-semibold
+  ); /* 600 — Newsroom: restraint over boldness */
   --text-display-leading: var(--leading-tight);
 
   /* Heading — page titles, section headings */
-  --text-heading-size:    var(--size-2xl);
-  --text-heading-weight:  var(--weight-semibold);
+  --text-heading-size: var(--size-2xl);
+  --text-heading-weight: var(--weight-semibold);
   --text-heading-leading: var(--leading-tight);
 
   /* Title — card titles, dialog titles, sub-headings */
-  --text-title-size:      var(--size-xl);
-  --text-title-weight:    var(--weight-semibold);
-  --text-title-leading:   var(--leading-snug);
+  --text-title-size: var(--size-xl);
+  --text-title-weight: var(--weight-semibold);
+  --text-title-leading: var(--leading-snug);
 
   /* Subtitle — secondary headings, section labels */
-  --text-subtitle-size:   var(--size-lg);
+  --text-subtitle-size: var(--size-lg);
   --text-subtitle-weight: var(--weight-medium); /* 500 — calmer than semibold */
   --text-subtitle-leading: var(--leading-snug);
 
   /* Body — default body text for dense operational screens */
-  --text-body-size:       var(--size-base);
-  --text-body-weight:     var(--weight-regular);
-  --text-body-leading:    var(--leading-normal);
+  --text-body-size: var(--size-base);
+  --text-body-weight: var(--weight-regular);
+  --text-body-leading: var(--leading-normal);
 
   /* Body small — descriptions, secondary body */
-  --text-body-sm-size:    var(--size-sm);
-  --text-body-sm-weight:  var(--weight-regular);
+  --text-body-sm-size: var(--size-sm);
+  --text-body-sm-weight: var(--weight-regular);
+  --text-body-sm-leading: var(--leading-normal);
 
   /* Label — form labels, button text, badges */
-  --text-label-size:      var(--size-sm);
-  --text-label-weight:    var(--weight-medium);
+  --text-label-size: var(--size-sm);
+  --text-label-weight: var(--weight-medium);
 
   /* Caption — timestamps, footnotes, meta info */
-  --text-caption-size:    var(--size-xs);
-  --text-caption-weight:  var(--weight-regular);
+  --text-caption-size: var(--size-xs);
+  --text-caption-weight: var(--weight-regular);
+  --text-caption-leading: var(--leading-normal);
 }

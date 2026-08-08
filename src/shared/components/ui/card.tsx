@@ -44,7 +44,7 @@ export function Card<T extends ElementType = "div">({
   return (
     <Component
       className={cn(
-        "rounded-card transition-colors duration-[var(--motion-fast)]",
+        "rounded-card transition-colors duration-fast",
         variantStyles[variant],
         paddingStyles[padding],
         className,

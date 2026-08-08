@@ -25,7 +25,7 @@ export function IconButton({
       type={type}
       className={cn(
         "inline-flex items-center justify-center rounded-full",
-        "text-text-secondary transition-colors duration-[var(--motion-fast)]",
+        "text-text-secondary transition-colors duration-fast",
         "hover:bg-surface-hover hover:text-text-primary",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         "disabled:cursor-not-allowed disabled:opacity-50",

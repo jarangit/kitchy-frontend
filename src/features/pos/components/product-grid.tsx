@@ -57,7 +57,7 @@ const ProductGrid = ({
                 onClick={() => onAddToCart(product)}
                 data-onboarding-target={`product-card-${product.id}`}
                 className={cn(
-                  "relative flex min-h-[156px] w-full cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-3 transition-all duration-[var(--motion-fast)]",
+                  "relative flex min-h-[156px] w-full cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-3 transition-all duration-fast",
                   "border border-card-border",
                   "hover:border-border-hover hover:-translate-y-[1px]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
@@ -107,7 +107,7 @@ const ProductGrid = ({
                     event.stopPropagation();
                     onDecreaseQuantity(product.id);
                   }}
-                  className="absolute left-2 top-2 z-10 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full border border-card-border bg-bg px-2 text-label font-bold leading-none text-text-primary shadow-xs transition-all duration-[var(--motion-fast)] hover:scale-[1.03] hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg active:scale-[0.97]"
+                  className="absolute left-2 top-2 z-10 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full border border-card-border bg-bg px-2 text-label font-bold leading-none text-text-primary shadow-xs transition-all duration-fast hover:scale-[1.03] hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg active:scale-[0.97]"
                   aria-label={t("pos.cart.decreaseQuantity")}
                   title={t("pos.cart.decreaseQuantity")}
                 >

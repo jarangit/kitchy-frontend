@@ -37,25 +37,37 @@ body {
    ANIMATIONS
    ────────────────────────────────────────── */
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .skeleton-shimmer {
   background: linear-gradient(
     90deg,
-    var(--skeleton-bg) 25%,
-    var(--skeleton-shimmer) 50%,
-    var(--skeleton-bg) 75%
+    var(--color-skeleton-bg) 25%,
+    var(--color-skeleton-shimmer) 50%,
+    var(--color-skeleton-bg) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
 
 @keyframes check-bounce {
-  0% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .animate-check {
@@ -63,8 +75,12 @@ body {
 }
 
 @keyframes slide-in-right {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 .animate-slide-in-right {
@@ -92,7 +108,14 @@ body {
    PRINT STYLES
    ────────────────────────────────────────── */
 @media print {
-  body { background: white; color: black; }
-  .no-print { display: none !important; }
-  .print-only { display: block !important; }
+  body {
+    background: white;
+    color: black;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
 }

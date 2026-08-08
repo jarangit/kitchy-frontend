@@ -102,7 +102,7 @@ const TransactionCard = ({
         }
       }}
       className={cn(
-        "w-full px-5 py-4 text-left transition-colors duration-[var(--motion-fast)]",
+        "w-full px-5 py-4 text-left transition-colors duration-fast",
         "hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
         "cursor-pointer",
         !isLast && "border-b border-card-border",

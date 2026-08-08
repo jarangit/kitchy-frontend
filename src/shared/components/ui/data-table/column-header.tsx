@@ -35,7 +35,7 @@ export function DataTableColumnHeader<TData, TValue>({
       onClick={() => column.toggleSorting()}
       className={cn(
         "inline-flex items-center gap-1.5 cursor-pointer",
-        "table-header-label hover:text-text-primary transition-colors duration-[var(--motion-fast)]",
+        "table-header-label hover:text-text-primary transition-colors duration-fast",
         align === "right" && "flex-row-reverse",
         className,
       )}

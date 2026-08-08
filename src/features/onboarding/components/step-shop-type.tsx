@@ -48,7 +48,7 @@ export function StepShopType({ onSubmit }: Props) {
               onClick={() => setShopType(opt.value)}
               className={cn(
                 "flex flex-col items-center gap-2 rounded-card border p-5",
-                "transition-colors duration-[var(--motion-fast)]",
+                "transition-colors duration-fast",
                 "text-body text-text-primary",
                 selected
                   ? "border-accent bg-accent-bg ring-2 ring-accent/30"

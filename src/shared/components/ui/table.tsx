@@ -67,7 +67,7 @@ export function TableRow({
   return (
     <tr
       className={cn(
-        "transition-colors duration-[var(--motion-fast)]",
+        "transition-colors duration-fast",
         clickable &&
           "cursor-pointer hover:bg-surface-muted-hover focus-within:bg-surface-muted-hover",
         className,
@@ -111,7 +111,7 @@ export function TableHead({
       className={cn(
         "inline-flex items-center gap-1.5 cursor-pointer",
         "table-header-label",
-        "hover:text-text-primary transition-colors duration-[var(--motion-fast)]",
+        "hover:text-text-primary transition-colors duration-fast",
         align === "right" && "flex-row-reverse",
       )}
     >

@@ -24,7 +24,7 @@ export function ProgressDots({ total, current }: Props) {
           <span
             key={i}
             className={cn(
-              "h-2 w-2 rounded-full transition-colors duration-[var(--motion-fast)]",
+              "h-2 w-2 rounded-full transition-colors duration-fast",
               isActive ? "bg-accent" : "bg-border",
             )}
           />

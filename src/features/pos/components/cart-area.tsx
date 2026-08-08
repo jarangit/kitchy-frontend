@@ -47,19 +47,16 @@ const ORDER_TYPE_ICONS = {
 
 const ORDER_TYPE_STYLES = {
   DINE_IN: {
-    badge: "border-emerald-600 bg-emerald-600 text-white",
-    activeChip:
-      "border-emerald-300 bg-emerald-50 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50",
+    badge: "border-success bg-success text-on-success",
+    activeChip: "border-success-border bg-success-bg text-success",
   },
   TOGO: {
-    badge: "border-amber-500 bg-amber-500 text-white",
-    activeChip:
-      "border-amber-300 bg-amber-50 text-amber-700 hover:border-amber-300 hover:bg-amber-50",
+    badge: "border-warning bg-warning text-on-warning",
+    activeChip: "border-warning-border bg-warning-bg text-warning",
   },
   DELIVERY: {
-    badge: "border-sky-600 bg-sky-600 text-white",
-    activeChip:
-      "border-sky-300 bg-sky-50 text-sky-700 hover:border-sky-300 hover:bg-sky-50",
+    badge: "border-info bg-info text-on-info",
+    activeChip: "border-info-border bg-info-bg text-info",
   },
 } as const;
 
@@ -94,7 +91,7 @@ interface Props {
 }
 
 const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-  <p className="mb-2 text-label uppercase tracking-[0.08em] text-text-tertiary">
+  <p className="mb-2 text-label uppercase tracking-widest text-text-tertiary">
     {children}
   </p>
 );
@@ -577,7 +574,7 @@ const CartArea = ({
           <button
             type="button"
             onClick={openRequirementDialog}
-            className="w-full rounded-card bg-warning-bg px-3 py-2 text-left text-label font-medium text-warning transition-colors duration-[var(--motion-fast)] hover:bg-warning-border focus:outline-none focus-visible:ring-2 focus-visible:ring-warning/30"
+            className="w-full rounded-card bg-warning-bg px-3 py-2 text-left text-label font-medium text-warning transition-colors duration-fast hover:bg-warning-border focus:outline-none focus-visible:ring-2 focus-visible:ring-warning/30"
           >
             {requirementMessage}
           </button>

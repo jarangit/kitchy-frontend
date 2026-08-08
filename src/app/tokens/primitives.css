@@ -6,52 +6,52 @@
 /* ── Color Primitives ── */
 :root {
   /* Gray scale — aligned to the latest dashboard reference */
-  --gray-0:   #FCFCFC;
-  --gray-50:  #F7F7F5;
-  --gray-100: #F0F0EC;
-  --gray-200: #E4E5E8;
-  --gray-300: #C8CBD2;
-  --gray-400: #A7ABB5;
-  --gray-500: #7F838F;
+  --gray-0: #fcfcfc;
+  --gray-50: #f7f7f5;
+  --gray-100: #f0f0ec;
+  --gray-200: #e4e5e8;
+  --gray-300: #c8cbd2;
+  --gray-400: #a7abb5;
+  --gray-500: #7f838f;
   --gray-600: #565967;
-  --gray-700: #3B3E4A;
-  --gray-800: #1E2029;
+  --gray-700: #3b3e4a;
+  --gray-800: #1e2029;
   --gray-900: #080906;
 
   /* Brand lime from the latest reference swatch */
-  --lime-50:  #F6FBD9;
-  --lime-100: #EDF7B8;
-  --lime-200: #E4F38D;
-  --lime-300: #DCF06E;
-  --lime-400: #D6EF61;
-  --lime-500: #D1EF57;
-  --lime-600: #B9D84A;
-  --lime-700: #8FA538;
+  --lime-50: #f6fbd9;
+  --lime-100: #edf7b8;
+  --lime-200: #e4f38d;
+  --lime-300: #dcf06e;
+  --lime-400: #d6ef61;
+  --lime-500: #d1ef57;
+  --lime-600: #b9d84a;
+  --lime-700: #8fa538;
 
   /* Status color primitives — tuned to the same muted system palette */
-  --green-50:  #F4F9DE;
-  --green-100: #E7F1BB;
-  --green-500: #A9C94B;
-  --green-600: #7E9B37;
-  --green-700: #61782A;
+  --green-50: #f4f9de;
+  --green-100: #e7f1bb;
+  --green-500: #a9c94b;
+  --green-600: #7e9b37;
+  --green-700: #61782a;
 
-  --red-50:  #FAECEA;
-  --red-100: #F3D6D2;
-  --red-500: #C96E61;
-  --red-600: #A95346;
+  --red-50: #faecea;
+  --red-100: #f3d6d2;
+  --red-500: #c96e61;
+  --red-600: #a95346;
   --red-700: #844137;
 
-  --yellow-50:  #FBF2DE;
-  --yellow-100: #F3E2B8;
-  --yellow-500: #C7A24A;
-  --yellow-600: #A58438;
-  --yellow-700: #7E662C;
+  --yellow-50: #fbf2de;
+  --yellow-100: #f3e2b8;
+  --yellow-500: #c7a24a;
+  --yellow-600: #a58438;
+  --yellow-700: #7e662c;
 
-  --blue-50:  #EEF2F7;
-  --blue-100: #DCE4EE;
-  --blue-500: #6F89AC;
-  --blue-600: #566D8B;
-  --blue-700: #43556C;
+  --blue-50: #eef2f7;
+  --blue-100: #dce4ee;
+  --blue-500: #6f89ac;
+  --blue-600: #566d8b;
+  --blue-700: #43556c;
 }
 
 /* ── Typography Primitives ── */
@@ -61,32 +61,35 @@
   --font-mono: ui-monospace, "JetBrains Mono", monospace;
 
   /* Font size scale */
-  --size-xs:   12px;
-  --size-sm:   14px;
+  --size-xs: 12px;
+  --size-sm: 14px;
   --size-base: 16px;
-  --size-lg:   18px;
-  --size-xl:   20px;
-  --size-2xl:  24px;
-  --size-3xl:  30px;
-  --size-4xl:  36px;
-  --size-5xl:  48px;
+  --size-lg: 18px;
+  --size-xl: 20px;
+  --size-2xl: 24px;
+  --size-3xl: 30px;
+  --size-4xl: 36px;
+  --size-5xl: 48px;
 
   /* Font weight scale */
-  --weight-regular:  400;
-  --weight-medium:   500;
+  --weight-regular: 400;
+  --weight-medium: 500;
   --weight-semibold: 600;
-  --weight-bold:     700;
+  --weight-bold: 700;
 
   /* Line height scale */
-  --leading-tight:   1.25;
-  --leading-snug:    1.375;
-  --leading-normal:  1.5;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
   --leading-relaxed: 1.625;
 
   /* Letter spacing scale */
-  --tracking-tight:  -0.02em;
+  --tracking-tight: -0.02em;
   --tracking-normal: 0em;
-  --tracking-wide:   0.04em;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.06em;
+  --tracking-widest: 0.08em;
+  --tracking-widest-2: 0.16em;
 }
 
 /* ── Spacing Primitives ── */
@@ -117,20 +120,20 @@
 /* ── Elevation / Shadow Primitives ── */
 /* Newsroom-inspired: very soft, barely visible. Flat UI by default. */
 :root {
-  --shadow-xs:   0 1px 2px rgba(0, 0, 0, 0.03);
-  --shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md:   0 4px 8px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
-  --shadow-lg:   0 10px 20px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.02);
-  --shadow-xl:   0 20px 30px rgba(0, 0, 0, 0.06), 0 8px 12px rgba(0, 0, 0, 0.02);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.02);
+  --shadow-xl: 0 20px 30px rgba(0, 0, 0, 0.06), 0 8px 12px rgba(0, 0, 0, 0.02);
   --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 [data-theme="dark"] {
-  --shadow-xs:   0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-sm:   0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
-  --shadow-md:   0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
-  --shadow-lg:   0 10px 20px rgba(0, 0, 0, 0.25), 0 4px 8px rgba(0, 0, 0, 0.12);
-  --shadow-xl:   0 20px 30px rgba(0, 0, 0, 0.3), 0 8px 12px rgba(0, 0, 0, 0.12);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.25), 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 20px 30px rgba(0, 0, 0, 0.3), 0 8px 12px rgba(0, 0, 0, 0.12);
   --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 

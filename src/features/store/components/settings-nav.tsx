@@ -29,8 +29,8 @@ export function SettingsNavSidebar({ storeId }: Props) {
             end
             className={({ isActive }) =>
               cn(
-                "flex min-h-[56px] items-center gap-4 rounded-card px-4 py-3 text-body text-text-secondary",
-                "transition-colors duration-[var(--motion-fast)]",
+                "flex min-h-chip-height-lg items-center gap-4 rounded-card px-4 py-3 text-body text-text-secondary",
+                "transition-colors duration-fast",
                 "hover:bg-surface-hover hover:text-text-primary",
                 isActive && "bg-primary-bg text-text-primary font-medium",
               )
@@ -61,8 +61,8 @@ export function SettingsNavChips({ storeId }: Props) {
             end
             className={({ isActive }) =>
               cn(
-                "flex min-h-[52px] shrink-0 items-center gap-3 rounded-full px-5 py-3 text-body",
-                "transition-colors duration-[var(--motion-fast)]",
+                "flex min-h-selection-height shrink-0 items-center gap-3 rounded-full px-5 py-3 text-body",
+                "transition-colors duration-fast",
                 isActive
                   ? "bg-primary text-on-accent"
                   : "bg-surface text-text-secondary hover:bg-surface-hover",

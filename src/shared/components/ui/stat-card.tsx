@@ -56,7 +56,7 @@ export function StatCard({
 
   const shellClassName = cn(
     "flex w-full items-center gap-3 px-4 py-3 text-left",
-    "transition-colors duration-[var(--motion-fast)]",
+    "transition-colors duration-fast",
     onClick && "cursor-pointer hover:bg-card-bg-hover",
     className,
   );

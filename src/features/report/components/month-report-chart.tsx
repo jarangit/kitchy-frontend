@@ -71,8 +71,7 @@ const ActiveDot = ({ cx, cy, payload }: DotProps) => {
       cx={cx}
       cy={cy}
       r={5}
-      fill="var(--color-accent)"
-      stroke="var(--color-bg)"
+      className="fill-accent stroke-bg"
       strokeWidth={2}
     />
   );
@@ -125,24 +124,24 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
               }
             }}
           >
-            <CartesianGrid vertical={false} stroke="var(--color-border)" />
+            <CartesianGrid vertical={false} className="stroke-border" />
             <XAxis
               dataKey="dateLabel"
-              tick={{ fontSize: 10, fill: "var(--color-text-secondary)" }}
+              tick={{ fontSize: 10, className: "fill-text-secondary" }}
               tickLine={false}
               axisLine={false}
               minTickGap={24}
             />
             <YAxis
               tickFormatter={formatAxisValue}
-              tick={{ fontSize: 10, fill: "var(--color-text-secondary)" }}
+              tick={{ fontSize: 10, className: "fill-text-secondary" }}
               tickLine={false}
               axisLine={false}
               width={34}
             />
             <Tooltip
               cursor={{
-                stroke: "var(--color-text-primary)",
+                className: "stroke-text-primary",
                 strokeDasharray: "3 4",
               }}
               content={<CustomTooltip />}
@@ -150,7 +149,7 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
             <Line
               type="monotone"
               dataKey="revenue"
-              stroke="var(--color-accent)"
+              className="stroke-accent"
               strokeWidth={2.5}
               dot={false}
               activeDot={<ActiveDot />}

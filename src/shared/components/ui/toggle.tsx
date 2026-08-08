@@ -27,7 +27,7 @@ export function Toggle({
         "relative inline-flex shrink-0 cursor-pointer items-center",
         "w-toggle-width h-toggle-height",
         "rounded-full",
-        "transition-colors duration-[var(--motion-fast)]",
+        "transition-colors duration-fast",
         checked ? "bg-toggle-bg-active" : "bg-toggle-bg",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         className,
@@ -35,10 +35,8 @@ export function Toggle({
     >
       <span
         className={cn(
-          "pointer-events-none inline-block h-toggle-knob-size w-toggle-knob-size rounded-full bg-toggle-knob transition-transform duration-[var(--motion-fast)]",
-          checked
-            ? "translate-x-[calc(var(--spacing-toggle-width)-var(--spacing-toggle-knob-size)-3px)]"
-            : "translate-x-[3px]",
+          "pointer-events-none inline-block h-toggle-knob-size w-toggle-knob-size rounded-full bg-toggle-knob transition-transform duration-fast",
+          checked ? "translate-x-toggle-knob-x" : "translate-x-[3px]",
         )}
       />
     </button>

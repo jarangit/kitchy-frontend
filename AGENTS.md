@@ -50,6 +50,22 @@ Shared types (e.g. Redux store types) stay in `shared/`.
 - Shared components: Button, Card, Badge, Dialog, Select, Input, Label.
 - `@headlessui/react` is used for accessible modal overlays only.
 
+## Design Tokens — Layer Access
+
+Tokens are organized in three layers under `src/app/tokens/`:
+- **Layer 1 — Primitives** (`primitives.css`): raw values (colors, spacing, sizes). Never referenced in component code.
+- **Layer 2 — Semantic** (`semantic.css`): meaning-based tokens mapped from primitives (e.g. `--color-surface`, `--color-text-primary`).
+- **Layer 3 — Component** (`components.css`): the only layer UI components may access, grouped by component (e.g. `--color-button-primary-bg`, `--radius-segment`).
+
+`src/app/theme.css` maps layers 1-3 onto Tailwind utility namespaces (`--color-*` → `bg-*`/`text-*`/`border-*`, `--spacing-*` → `p-*`/`h-*`/`min-h-*`, `--radius-*` → `rounded-*`) plus custom `@utility` classes (`text-button-*`, `duration-*`, etc.).
+
+Rules for component code (`*.tsx`/`*.ts` under `src/features/` and `src/shared/`):
+- Reference tokens **only through Tailwind utilities** mapped in `theme.css` — either Layer 3 component tokens (`bg-button-primary-bg`, `rounded-segment`) or semantic utilities (`bg-surface`, `text-text-primary`).
+- **Never write `var(--...)` in component code.** No direct access to primitives (Layer 1) or raw token vars. CSS files may reference token vars; component code may not.
+- SVG presentation attributes in charts may use `fill-*`/`stroke-*` utilities instead of raw colors.
+- **Non-token exceptions (not styling):** raw hex values are allowed where they are data or brand assets, not design tokens — e.g. third-party logo SVGs (Google sign-in `fill="#EA4335"` etc.) and domain data colors (user-selectable station color swatches `#FFFFFF`/`#111315`, seed data). These bypass the token system by design.
+- Enforced by `npm run lint:styles` (`scripts/lint-styles.mjs`). The token gallery (`token-gallery.tsx`) is the only whitelisted exception.
+
 ## Formatting
 
 - **Prettier** is the code formatter for `src/`. After making any code changes, run `npm run format` (or `npm run format:check` to verify) before finishing. Do not hand-format code; let Prettier handle it.

@@ -41,7 +41,7 @@ const PaymentReceipt = ({
   return (
     <Card className={className}>
       <div className="pb-4 text-center">
-        <p className="mb-1 text-caption uppercase tracking-[0.16em] text-text-tertiary">
+        <p className="mb-1 text-caption uppercase tracking-widest-2 text-text-tertiary">
           {t("pos.receipt.title")}
         </p>
         <p className="font-mono text-title text-text-primary">#{receiptId}</p>

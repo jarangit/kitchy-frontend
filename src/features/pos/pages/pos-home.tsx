@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LuX } from "react-icons/lu";
 import { useProductService } from "@/features/product/hooks/useProductService";
@@ -16,9 +16,6 @@ const PosHomePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const cartRailStyle = {
-    "--pos-cart-width": "460px",
-  } as CSSProperties;
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [isCartPanelOpen, setIsCartPanelOpen] = useState(false);
 
@@ -130,10 +127,7 @@ const PosHomePage = () => {
         </div>
 
         {/* Desktop cart rail */}
-        <div
-          className="hidden min-h-0 w-[var(--pos-cart-width)] shrink-0 border-l border-card-border lg:flex"
-          style={cartRailStyle}
-        >
+        <div className="hidden min-h-0 w-pos-cart-width shrink-0 border-l border-card-border lg:flex">
           <CartArea
             items={cart.items}
             subtotal={cart.subtotal}

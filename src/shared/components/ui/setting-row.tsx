@@ -60,7 +60,7 @@ const rowBase =
   "group flex items-center gap-4 px-5 py-4 min-h-[60px] text-body text-text-primary";
 
 const tappable =
-  "cursor-pointer transition-colors duration-[var(--motion-fast)] hover:bg-surface-hover focus-visible:outline-none focus-visible:bg-surface-hover";
+  "cursor-pointer transition-colors duration-fast hover:bg-surface-hover focus-visible:outline-none focus-visible:bg-surface-hover";
 
 function LabelBlock({
   icon,
@@ -156,7 +156,7 @@ export function SettingRow(props: Props) {
           </span>
           <LuChevronRight
             size={18}
-            className="text-text-tertiary transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5"
+            className="text-text-tertiary transition-transform duration-fast group-hover:translate-x-0.5"
           />
         </div>
       </button>
@@ -186,7 +186,7 @@ export function SettingRow(props: Props) {
           {props.value != null && <span>{props.value}</span>}
           <LuChevronRight
             size={18}
-            className="text-text-tertiary transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5"
+            className="text-text-tertiary transition-transform duration-fast group-hover:translate-x-0.5"
           />
         </div>
       </button>

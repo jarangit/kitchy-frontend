@@ -38,12 +38,12 @@ export function BusyProgress({ count, limit, className }: Props) {
       >
         <div
           className={cn(
-            "h-full rounded-full transition-all duration-[var(--motion-fast)]",
+            "h-full rounded-full transition-all duration-fast",
             progressClassName,
           )}
           style={{ width: `${ratio * 100}%` }}
         />
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-[11px] font-medium leading-none text-text-inverse">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-caption font-medium leading-none text-text-inverse">
           {label}
         </div>
       </div>

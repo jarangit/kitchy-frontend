@@ -124,7 +124,7 @@ export default function UserDashboard() {
                       navigate(`/store/${item.id}`);
                     }}
                   >
-                    <Card className="min-h-44 bg-surface transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                    <Card className="min-h-44 bg-surface transition-colors duration-fast hover:bg-card-bg-hover">
                       <CardContent className="flex h-full flex-col justify-between">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-bg text-text-tertiary">
                           <LuStore size={18} />
@@ -169,7 +169,7 @@ export default function UserDashboard() {
                     className="cursor-pointer text-left"
                     onClick={handleCreateStore}
                   >
-                    <Card className="flex min-h-44 items-center justify-center border-dashed bg-bg text-center transition-colors duration-[var(--motion-fast)] hover:bg-card-bg-hover">
+                    <Card className="flex min-h-44 items-center justify-center border-dashed bg-bg text-center transition-colors duration-fast hover:bg-card-bg-hover">
                       <CardContent className="flex flex-col items-center gap-3 py-8">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
                           <LuPlus size={18} />

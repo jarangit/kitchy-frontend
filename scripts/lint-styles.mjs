@@ -10,7 +10,45 @@ const bannedPatterns = [
   /bg-surface-muted\/40/g,
   /bg-surface-muted\/70/g,
   /font-\[var\(--weight-(medium|semibold|bold)\)\]/g,
+  // Raw white overlays and arbitrary glass values in component code.
+  // These must go through the Layer 3 sidebar-glass tokens.
+  /\b(?:bg|border|ring|ring-offset|from|via|to|text)-white(?:\/\d+)?/g,
+  /shadow-\[[^\]]*rgba\(/g,
+  /backdrop-blur-\[|blur-\[|backdrop-blur-(?:2xl|xl)/g,
+  /backdrop-saturate-\d+/g,
+  /rounded-\[\d+\.?\d*rem\]/g,
+  /text-\[(?:18|22)px\]/g,
+  // Direct token access in component code. Components must reference tokens
+  // only through Tailwind utilities mapped in theme.css, never via var(--...).
+  ...[
+    "color",
+    "space",
+    "spacing",
+    "gray",
+    "green",
+    "yellow",
+    "blue",
+    "lime",
+    "red",
+    "size",
+    "weight",
+    "radius",
+    "tracking",
+    "text",
+    "motion",
+    "ease",
+    "shadow",
+    "leading",
+    "font",
+  ].map((prefix) => new RegExp(`var\\(--${prefix}-`, "g")),
 ];
+
+// Files allowed to reference raw token vars. The token gallery is a dev tool
+// that must display the underlying values.
+const whitelistedFiles = new Set([
+  "src/app/tokens/token-gallery.tsx",
+  "src/app/tokens/token-gallery.stories.tsx",
+]);
 
 const ignoredDirectories = new Set(["node_modules", "dist", ".git"]);
 
@@ -40,6 +78,8 @@ const files = await walk(root);
 const violations = [];
 
 for (const file of files) {
+  if (whitelistedFiles.has(path.relative(process.cwd(), file))) continue;
+
   const content = await readFile(file, "utf8");
 
   for (const pattern of bannedPatterns) {

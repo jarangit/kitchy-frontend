@@ -6,6 +6,7 @@ import { useStationService } from "@/features/station/hooks/useStation";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { EmptyState } from "@/shared/components/ui/empty-state";
+import { Card } from "@/shared/components/ui/card";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { LuUtensilsCrossed } from "react-icons/lu";
@@ -127,24 +128,24 @@ const KdsBoardPage = () => {
           <SkeletonCard className="h-[480px] w-[300px] shrink-0" />
         </div>
       ) : activeStation == null ? (
-        <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+        <Card>
           <EmptyState
             icon={<LuUtensilsCrossed size={28} />}
             title={t("kds.empty.noStationTitle")}
             description={t("kds.empty.noStationDescription")}
           />
-        </div>
+        </Card>
       ) : (
         <>
           <KdsStatsBar groups={pendingGroups} orderLimit={orderLimit} />
           {pendingGroups.length === 0 ? (
-            <div className="rounded-card border border-card-border bg-card-bg p-card-padding">
+            <Card>
               <EmptyState
                 icon={<LuUtensilsCrossed size={28} />}
                 title={t("kds.empty.pendingTitle")}
                 description={t("kds.empty.description")}
               />
-            </div>
+            </Card>
           ) : (
             <div
               ref={scrollRef}
