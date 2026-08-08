@@ -139,8 +139,10 @@
 
   /* ── Dialog ── */
   --color-dialog-bg: var(--color-surface);
-  --color-dialog-border: var(--color-border);   /* solid border, no transparency */
-  --radius-dialog: var(--radius-xl);           /* Slightly larger for premium feel */
+  --color-dialog-border: var(
+    --color-border
+  ); /* solid border, no transparency */
+  --radius-dialog: var(--radius-xl); /* Slightly larger for premium feel */
   --spacing-dialog-padding: var(--space-5);
   --color-dialog-overlay: var(--color-overlay);
   --font-size-dialog-title: var(--text-subtitle-size);
@@ -205,10 +207,10 @@
   --color-skeleton-bg: var(--color-surface-hover);
   /* Toggle knob becomes surface-hover so it stays visible against both
      the track (border gray) and the active fill (mid-gray primary). */
-  --color-toggle-knob: #F5F5F7;
+  --color-toggle-knob: #f5f5f7;
   /* Badge default needs to stand out from both bg (#141416) and
      surface (#1F1F21); use border gray for a visible pill. */
-  --color-badge-default-bg: #3A3A3C;
+  --color-badge-default-bg: #3a3a3c;
   --color-badge-default-text: var(--color-text-primary);
   /* Badge text on alpha-tinted status backgrounds: use lighter, saturated
      tones (status-300) so the text reads as clearly "colored" (warm/green/red/blue)
@@ -221,7 +223,17 @@
 
   /* Status borders — dark mode: composite of status color over surface. */
   --color-success-border: #205935;
-  --color-warning-border: #6A4B18;
-  --color-danger-border: #682C2C;
-  --color-info-border: #29426A;
+  --color-warning-border: #6a4b18;
+  --color-danger-border: #682c2c;
+  --color-info-border: #29426a;
+
+  /* Primary actions switch from near-black to accent lime so buttons,
+     active chips, and active segments stand out against the dark page. */
+  --color-button-primary-bg: var(--color-accent);
+  --color-button-primary-bg-hover: var(--color-accent-hover);
+  --color-button-primary-text: var(--color-on-accent);
+  --color-chip-active-bg: var(--color-accent);
+  --color-chip-active-text: var(--color-on-accent);
+  --color-segment-active-bg: var(--color-accent);
+  --color-segment-active-text: var(--color-on-accent);
 }

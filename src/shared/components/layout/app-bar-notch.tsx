@@ -1,5 +1,6 @@
 import "./app-bar-notch.css";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LuBellRing, LuChefHat, LuExternalLink, LuX } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -27,13 +28,14 @@ const getItemContext = (item: {
 
 export function AppBarNotch() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const storeId = useAppSelector((state) => state.currentStore.storeId);
   const { count: pendingOrdersCount } = usePendingOrdersCount();
   const { items } = useReadyToServeItems();
   const [expanded, setExpanded] = useState(false);
   const [dismissed, setDismissed] = useState(() =>
-    readReadyToServeDismissed(storeId)
+    readReadyToServeDismissed(storeId),
   );
 
   useEffect(() => {
@@ -63,7 +65,7 @@ export function AppBarNotch() {
 
   const visibleReadyItems = useMemo(
     () => items.filter((item) => !dismissed.has(item.id)),
-    [items, dismissed]
+    [items, dismissed],
   );
   const readyCount = visibleReadyItems.length;
   const previewItems = visibleReadyItems.slice(0, 3);
@@ -74,10 +76,7 @@ export function AppBarNotch() {
   });
 
   return (
-    <div
-      ref={containerRef}
-      className="appbar-notch-root"
-    >
+    <div ref={containerRef} className="appbar-notch-root">
       {/* Notch pill – centered in header */}
       <div className="appbar-notch-anchor">
         <button
@@ -106,9 +105,7 @@ export function AppBarNotch() {
         <div className="animate-notch-card-in appbar-notch-card">
           <div className="appbar-notch-card-header">
             <div>
-              <p className="appbar-notch-title">
-                {t("appbar.notch.title")}
-              </p>
+              <p className="appbar-notch-title">{t("appbar.notch.title")}</p>
               <p className="appbar-notch-subtitle">{label}</p>
             </div>
             <button
@@ -122,79 +119,78 @@ export function AppBarNotch() {
           </div>
 
           <div className="appbar-notch-stats">
-            <div className="appbar-notch-stat-card">
-              <div className="appbar-notch-stat-label appbar-notch-stat-label--warning">
+            <button
+              type="button"
+              className="appbar-notch-stat-card appbar-notch-stat-card--button"
+              onClick={() => {
+                if (storeId) navigate(`/store/${storeId}/kds`);
+              }}
+            >
+              <span className="appbar-notch-stat-label appbar-notch-stat-label--warning">
                 <LuChefHat size={15} />
-                <span>
-                  {t("appbar.notch.pending")}
-                </span>
-              </div>
-              <p className="appbar-notch-stat-number">
-                {pendingOrdersCount}
-              </p>
-            </div>
-            <div className="appbar-notch-stat-card">
-              <div className="appbar-notch-stat-label appbar-notch-stat-label--success">
+                <span>{t("appbar.notch.pending")}</span>
+              </span>
+              <p className="appbar-notch-stat-number">{pendingOrdersCount}</p>
+            </button>
+            <button
+              type="button"
+              className="appbar-notch-stat-card appbar-notch-stat-card--button"
+              onClick={() => {
+                appBus.emit("ui:readyToServeRequested", {});
+                setExpanded(false);
+              }}
+            >
+              <span className="appbar-notch-stat-label appbar-notch-stat-label--success">
                 <LuBellRing size={15} />
-                <span>
-                  {t("appbar.notch.ready")}
-                </span>
-              </div>
-              <p className="appbar-notch-stat-number">
-                {readyCount}
-              </p>
-            </div>
+                <span>{t("appbar.notch.ready")}</span>
+              </span>
+              <p className="appbar-notch-stat-number">{readyCount}</p>
+            </button>
           </div>
 
-          <div className="appbar-notch-section">
-            <p className="appbar-notch-section-title">
-              {t("appbar.notch.readyPreview")}
-            </p>
-            {previewItems.length === 0 ? (
-              <div className="appbar-notch-empty">
-                {t("appbar.notch.noReady")}
-              </div>
-            ) : (
-              <div className="appbar-notch-preview-list">
-                {previewItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="appbar-notch-preview-item"
-                  >
-                    <div className="appbar-notch-preview-text">
-                      <p className="appbar-notch-preview-name">
-                        {item.productName} x{item.quantity}
-                      </p>
-                      <p className="appbar-notch-preview-meta">
-                        {getItemContext(item)} · {item.stationName}
-                      </p>
+          {readyCount > 0 && (
+            <>
+              <div className="appbar-notch-section">
+                <p className="appbar-notch-section-title">
+                  {t("appbar.notch.readyPreview")}
+                </p>
+                <div className="appbar-notch-preview-list">
+                  {previewItems.map((item) => (
+                    <div key={item.id} className="appbar-notch-preview-item">
+                      <div className="appbar-notch-preview-text">
+                        <p className="appbar-notch-preview-name">
+                          {item.productName} x{item.quantity}
+                        </p>
+                        <p className="appbar-notch-preview-meta">
+                          {getItemContext(item)} · {item.stationName}
+                        </p>
+                      </div>
+                      <Badge
+                        variant="success"
+                        size="sm"
+                        className="appbar-notch-ready-badge shrink-0"
+                      >
+                        {t("kds.status.ready")}
+                      </Badge>
                     </div>
-                    <Badge
-                      variant="success"
-                      size="sm"
-                      className="appbar-notch-ready-badge shrink-0"
-                    >
-                      {t("kds.status.ready")}
-                    </Badge>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            )}
-          </div>
 
-          <Button
-            type="button"
-            onClick={() => {
-              appBus.emit("ui:readyToServeRequested", {});
-              setExpanded(false);
-            }}
-            size="sm"
-            className="appbar-notch-action"
-            disabled={readyCount <= 0}
-          >
-            <LuExternalLink size={15} />
-            {t("serve.action.view")}
-          </Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  appBus.emit("ui:readyToServeRequested", {});
+                  setExpanded(false);
+                }}
+                size="sm"
+                className="appbar-notch-action"
+              >
+                <LuExternalLink size={15} />
+                {t("serve.action.view")}
+              </Button>
+            </>
+          )}
         </div>
       )}
     </div>

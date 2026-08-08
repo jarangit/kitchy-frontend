@@ -1,8 +1,16 @@
 .appbar-notch-root {
   --appbar-notch-success: var(--green-500);
-  --appbar-notch-success-bg: color-mix(in srgb, var(--green-500) 22%, transparent);
+  --appbar-notch-success-bg: color-mix(
+    in srgb,
+    var(--green-500) 22%,
+    transparent
+  );
   --appbar-notch-warning: var(--yellow-500);
-  --appbar-notch-warning-bg: color-mix(in srgb, var(--yellow-500) 22%, transparent);
+  --appbar-notch-warning-bg: color-mix(
+    in srgb,
+    var(--yellow-500) 22%,
+    transparent
+  );
 
   pointer-events: none;
   position: absolute;
@@ -27,19 +35,20 @@
   justify-content: center;
   gap: var(--space-2);
   border-radius: var(--radius-full);
-  border: 1px solid var(--color-text-primary);
-  background: var(--color-text-primary);
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
   padding-inline: var(--space-2);
-  color: var(--color-text-inverse);
+  color: var(--color-on-primary);
   font-size: 11px;
   line-height: 1;
   box-shadow: var(--shadow-soft);
-  transition: background-color var(--motion-fast) var(--ease-standard),
+  transition:
+    background-color var(--motion-fast) var(--ease-standard),
     box-shadow var(--motion-fast) var(--ease-standard);
 }
 
 .appbar-notch-pill:hover {
-  background: color-mix(in srgb, var(--color-text-primary) 90%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 90%, transparent);
 }
 
 .appbar-notch-pill:focus-visible {
@@ -71,7 +80,7 @@
 .appbar-notch-divider {
   height: 16px;
   width: 1px;
-  background: color-mix(in srgb, var(--color-text-inverse) 25%, transparent);
+  background: color-mix(in srgb, var(--color-on-primary) 25%, transparent);
 }
 
 .appbar-notch-card {
@@ -84,10 +93,10 @@
   width: min(92vw, 380px);
   transform: translateX(-50%);
   border-radius: var(--radius-xl);
-  border: 1px solid var(--color-text-primary);
-  background: var(--color-text-primary);
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
   padding: var(--spacing-card-padding);
-  color: var(--color-text-inverse);
+  color: var(--color-on-primary);
   box-shadow: var(--shadow-xl);
 }
 
@@ -100,7 +109,7 @@
 }
 
 .appbar-notch-title {
-  color: var(--color-text-inverse);
+  color: var(--color-on-primary);
   font-size: var(--text-title-size);
   line-height: var(--text-title-line-height);
   font-weight: var(--text-title-weight);
@@ -108,7 +117,7 @@
 
 .appbar-notch-subtitle {
   margin-top: 2px;
-  color: color-mix(in srgb, var(--color-text-inverse) 60%, transparent);
+  color: color-mix(in srgb, var(--color-on-primary) 60%, transparent);
   font-size: var(--text-caption-size);
   line-height: var(--text-caption-line-height);
 }
@@ -116,14 +125,15 @@
 .appbar-notch-close {
   border-radius: var(--radius-full);
   padding: var(--space-1);
-  color: color-mix(in srgb, var(--color-text-inverse) 55%, transparent);
-  transition: background-color var(--motion-fast) var(--ease-standard),
+  color: color-mix(in srgb, var(--color-on-primary) 55%, transparent);
+  transition:
+    background-color var(--motion-fast) var(--ease-standard),
     color var(--motion-fast) var(--ease-standard);
 }
 
 .appbar-notch-close:hover {
-  background: color-mix(in srgb, var(--color-text-inverse) 10%, transparent);
-  color: var(--color-text-inverse);
+  background: color-mix(in srgb, var(--color-on-primary) 10%, transparent);
+  color: var(--color-on-primary);
 }
 
 .appbar-notch-stats {
@@ -133,15 +143,28 @@
 }
 
 .appbar-notch-stat-card,
-.appbar-notch-empty,
 .appbar-notch-preview-item {
   border-radius: var(--radius-xl);
-  border: 1px solid color-mix(in srgb, var(--color-text-inverse) 10%, transparent);
-  background: color-mix(in srgb, var(--color-text-inverse) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-on-primary) 10%, transparent);
+  background: color-mix(in srgb, var(--color-on-primary) 8%, transparent);
 }
 
 .appbar-notch-stat-card {
   padding: var(--space-3);
+}
+
+.appbar-notch-stat-card--button {
+  appearance: none;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease-standard);
+}
+
+.appbar-notch-stat-card--button:hover {
+  background: color-mix(in srgb, var(--color-on-primary) 14%, transparent);
 }
 
 .appbar-notch-stat-label {
@@ -168,7 +191,7 @@
 }
 
 .appbar-notch-stat-number {
-  color: var(--color-text-inverse);
+  color: var(--color-on-primary);
   font-size: var(--text-heading-size);
   line-height: var(--text-heading-line-height);
   font-weight: var(--text-heading-weight);
@@ -181,17 +204,10 @@
 
 .appbar-notch-section-title {
   margin-bottom: var(--space-2);
-  color: color-mix(in srgb, var(--color-text-inverse) 60%, transparent);
+  color: color-mix(in srgb, var(--color-on-primary) 60%, transparent);
   font-size: var(--text-caption-size);
   line-height: var(--text-caption-line-height);
   font-weight: var(--weight-semibold);
-}
-
-.appbar-notch-empty {
-  padding: var(--space-3);
-  color: color-mix(in srgb, var(--color-text-inverse) 60%, transparent);
-  font-size: var(--text-body-sm-size);
-  line-height: var(--text-body-sm-line-height);
 }
 
 .appbar-notch-preview-list {
@@ -214,7 +230,7 @@
 
 .appbar-notch-preview-name {
   overflow: hidden;
-  color: var(--color-text-inverse);
+  color: var(--color-on-primary);
   font-size: var(--text-body-sm-size);
   line-height: var(--text-body-sm-line-height);
   text-overflow: ellipsis;
@@ -223,7 +239,7 @@
 
 .appbar-notch-preview-meta {
   overflow: hidden;
-  color: color-mix(in srgb, var(--color-text-inverse) 55%, transparent);
+  color: color-mix(in srgb, var(--color-on-primary) 55%, transparent);
   font-size: var(--text-caption-size);
   line-height: var(--text-caption-line-height);
   text-overflow: ellipsis;
