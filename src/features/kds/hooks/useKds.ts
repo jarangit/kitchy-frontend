@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { orderApiService } from "@/features/order/services/order";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
@@ -10,6 +10,7 @@ import type {
   KdsStatus,
 } from "@/features/kds/types/kds.model";
 import { groupCardsByOrder } from "@/features/kds/utils/group-by-order";
+import { compareOrderNumber } from "@/features/kds/utils/parse-order-number";
 
 /**
  * Visual confirmation window for the BUMPED state shown on an order
@@ -17,6 +18,7 @@ import { groupCardsByOrder } from "@/features/kds/utils/group-by-order";
  * reference (~1.5s) before the order is removed from the board.
  */
 const BUMPED_TRANSITION_MS = 1500;
+const COMPLETED_TRANSITION_MS = 1500;
 
 /**
  * Map backend status ('pending' | 'complete' | 'served') to KDS UI status.
@@ -70,6 +72,12 @@ const mapToCards = (items: IOrderStationItemDto[]): KdsCard[] => {
 export const useKds = (stationId?: string) => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [bumpedOrderId, setBumpedOrderId] = useState<string | null>(null);
+  const [recentlyCompletedGroup, setRecentlyCompletedGroup] =
+    useState<KdsOrderGroup | null>(null);
+
+  useEffect(() => {
+    setRecentlyCompletedGroup(null);
+  }, [stationId]);
 
   const query = useQuery({
     queryKey: ["kds-orders", stationId],
@@ -103,8 +111,29 @@ export const useKds = (stationId?: string) => {
     [groups],
   );
 
+  const visiblePendingGroups = useMemo(() => {
+    if (!recentlyCompletedGroup) return pendingGroups;
+
+    const alreadyVisible = pendingGroups.some(
+      (group) => group.orderId === recentlyCompletedGroup.orderId,
+    );
+    if (alreadyVisible) return pendingGroups;
+
+    return [...pendingGroups, recentlyCompletedGroup].sort((a, b) =>
+      compareOrderNumber(a.orderNumber, b.orderNumber),
+    );
+  }, [pendingGroups, recentlyCompletedGroup]);
+
   const updateStatus = async (card: KdsCard, status: KdsStatus) => {
     if (!stationId) return;
+
+    const sourceGroup = groups.find((group) => group.orderId === card.orderId);
+    const isMarkingLastPendingItemReady =
+      status === "READY" &&
+      card.status === "PENDING" &&
+      sourceGroup != null &&
+      sourceGroup.items.filter((item) => item.status === "PENDING").length ===
+        1;
 
     await orderApiService.updateOrderStationItem(card.orderStationItemId, {
       status: toBackendStatus(status),
@@ -118,6 +147,24 @@ export const useKds = (stationId?: string) => {
       to: status,
       stationId,
     });
+
+    if (isMarkingLastPendingItemReady && sourceGroup) {
+      setRecentlyCompletedGroup({
+        ...sourceGroup,
+        status: "READY",
+        items: sourceGroup.items.map((item) =>
+          item.orderStationItemId === card.orderStationItemId
+            ? { ...item, status: "READY" }
+            : item,
+        ),
+      });
+
+      window.setTimeout(() => {
+        setRecentlyCompletedGroup((current) =>
+          current?.orderId === sourceGroup.orderId ? null : current,
+        );
+      }, COMPLETED_TRANSITION_MS);
+    }
 
     await query.refetch();
   };
@@ -177,6 +224,7 @@ export const useKds = (stationId?: string) => {
     cards,
     groups,
     pendingGroups,
+    visiblePendingGroups,
     isLoading: query.isLoading,
     isRefetching: query.isRefetching,
     error: query.error,

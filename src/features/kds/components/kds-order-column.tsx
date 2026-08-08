@@ -34,6 +34,7 @@ const formatElapsedMinutes = (totalMinutes: number) => {
 interface Props {
   group: KdsOrderGroup;
   isBumped: boolean;
+  isRecentlyCompleted?: boolean;
   onBump: (group: KdsOrderGroup) => void;
   onItemReady: (item: KdsOrderGroup["items"][number]) => void;
   disabled?: boolean;
@@ -54,6 +55,7 @@ const ORDER_TYPE_ICONS: Record<OrderType, typeof LuUtensilsCrossed> = {
 const KdsOrderColumn = ({
   group,
   isBumped,
+  isRecentlyCompleted,
   onBump,
   onItemReady,
   disabled,
@@ -61,29 +63,25 @@ const KdsOrderColumn = ({
   const { t } = useTranslation();
   const elapsed = useElapsedMinutes(group.createdAt);
   const timeLabel = formatElapsedMinutes(elapsed);
-  const headerOrderLabel =
-    group.orderType === "DELIVERY" && group.deliveryOrderNumber
-      ? `${group.orderNumber} · ${group.deliveryOrderNumber}`
-      : group.orderNumber;
 
   const orderMeta = useMemo(() => {
     if (!group.orderType) return null;
     const strategy = getOrderTypeStrategy(group.orderType);
     const typeLabel = t(strategy.labelKey as MessageKey);
-    const secondary = strategy.secondaryLine({
+    const primaryContext = strategy.secondaryLine({
       orderType: group.orderType,
       tableNumber: group.tableNumber,
       customerName: group.customerName,
       deliveryPlatform: group.deliveryPlatform,
       deliveryOrderNumber: group.deliveryOrderNumber,
     });
-    const deliveryCode =
+    const secondaryContext =
       group.orderType === "DELIVERY" && group.deliveryOrderNumber
         ? t("kds.card.deliveryOrderNumber", {
             orderNumber: group.deliveryOrderNumber,
           })
         : null;
-    return { typeLabel, secondary, deliveryCode };
+    return { typeLabel, primaryContext, secondaryContext };
   }, [group, t]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -111,7 +109,7 @@ const KdsOrderColumn = ({
     handleScroll();
   }, [handleScroll, group.items.length]);
 
-  if (isBumped) {
+  if (isBumped || isRecentlyCompleted) {
     return (
       <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-bumped bg-bumped text-text-inverse shadow-sm">
         <div className="flex flex-col gap-2 px-4 pb-4 pt-4">
@@ -125,7 +123,7 @@ const KdsOrderColumn = ({
             {timeLabel}
           </p>
         </div>
-        <div className="flex-1 bg-card-bg px-4 py-3 opacity-50">
+        <div className="flex-1 bg-surface px-4 py-3 opacity-50">
           <ul className="flex flex-col gap-2">
             {group.items.map((item) => (
               <li key={item.orderStationItemId} className="min-w-0">
@@ -150,12 +148,12 @@ const KdsOrderColumn = ({
     : LuUtensilsCrossed;
 
   return (
-    <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-card-border bg-card-bg shadow-sm transition-all duration-normal">
+    <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-border-hover bg-surface shadow-md transition-all duration-normal">
       {/* ── Header with order info ── */}
       <div className="flex flex-col gap-1.5 bg-primary px-4 pb-4 pt-4 text-on-primary">
         <div className="flex items-start justify-between gap-2">
           <p className="font-mono text-title font-bold leading-tight tracking-tight">
-            {headerOrderLabel}
+            #{group.orderNumber}
           </p>
           {orderMeta && group.orderType && (
             <Badge
@@ -170,11 +168,14 @@ const KdsOrderColumn = ({
             </Badge>
           )}
         </div>
-        {orderMeta && (orderMeta.secondary || orderMeta.deliveryCode) && (
-          <p className="text-caption font-semibold tracking-wide text-on-primary/85">
-            {[orderMeta.secondary, orderMeta.deliveryCode]
-              .filter(Boolean)
-              .join(" · ")}
+        {orderMeta?.primaryContext && (
+          <p className="text-body-sm font-semibold text-on-primary/88">
+            {orderMeta.primaryContext}
+          </p>
+        )}
+        {orderMeta?.secondaryContext && (
+          <p className="text-caption font-medium tracking-wide text-on-primary/72">
+            {orderMeta.secondaryContext}
           </p>
         )}
         <div className="mt-1 flex items-end gap-2">
@@ -197,7 +198,7 @@ const KdsOrderColumn = ({
         ref={scrollRef}
         onScroll={handleScroll}
         className={cn(
-          "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto bg-card-bg px-4 py-4",
+          "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto bg-surface px-4 py-4",
           !atBottom &&
             "[mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]",
         )}
@@ -205,56 +206,66 @@ const KdsOrderColumn = ({
         <ul className="flex flex-col gap-3">
           {group.items.map((item) => (
             <li key={item.orderStationItemId} className="min-w-0">
-              <div className="flex items-baseline gap-2">
-                <span
-                  className={cn(
-                    "shrink-0 font-mono font-bold tabular-nums",
-                    "text-body text-text-primary",
-                  )}
-                >
-                  [{item.quantity}]
-                </span>
-                <span
-                  className={cn(
-                    "min-w-0 flex-1 text-body font-semibold leading-snug",
-                    item.status === "READY"
-                      ? "text-text-secondary line-through"
-                      : "text-text-primary",
-                  )}
-                >
-                  {item.productName}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onItemReady(item)}
-                  disabled={disabled}
-                  aria-pressed={item.status === "READY"}
-                  aria-label={
-                    item.status === "READY"
-                      ? t("kds.item.markPending")
-                      : t("kds.item.markDone")
-                  }
-                  title={
-                    item.status === "READY"
-                      ? t("kds.item.markPending")
-                      : t("kds.item.markDone")
-                  }
-                  className={cn(
-                    "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-fast",
-                    "disabled:cursor-not-allowed disabled:opacity-50",
-                    item.status === "READY"
-                      ? "border-success bg-success text-on-status"
-                      : "border-border bg-bg text-transparent hover:border-success hover:bg-success-bg hover:text-success",
-                  )}
-                >
-                  <LuCheck size={12} />
-                </button>
-              </div>
-              {item.note && (
-                <p className="mt-0.5 pl-6 text-caption italic leading-snug text-text-secondary">
-                  {item.note}
-                </p>
-              )}
+              <button
+                type="button"
+                onClick={() => onItemReady(item)}
+                disabled={disabled}
+                aria-pressed={item.status === "READY"}
+                aria-label={
+                  item.status === "READY"
+                    ? t("kds.item.markPending")
+                    : t("kds.item.markDone")
+                }
+                title={
+                  item.status === "READY"
+                    ? t("kds.item.markPending")
+                    : t("kds.item.markDone")
+                }
+                className={cn(
+                  "flex w-full flex-col rounded-segment px-2 py-1.5 text-left transition-all duration-fast",
+                  "disabled:cursor-not-allowed disabled:opacity-50",
+                  item.status === "READY"
+                    ? "bg-success-bg/60"
+                    : "hover:bg-surface-hover",
+                )}
+              >
+                <div className="flex items-baseline gap-2">
+                  <span
+                    className={cn(
+                      "shrink-0 font-mono font-bold tabular-nums",
+                      "text-body text-text-primary",
+                    )}
+                  >
+                    [{item.quantity}]
+                  </span>
+                  <span
+                    className={cn(
+                      "min-w-0 flex-1 text-body font-semibold leading-snug",
+                      item.status === "READY"
+                        ? "text-text-secondary line-through"
+                        : "text-text-primary",
+                    )}
+                  >
+                    {item.productName}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-fast",
+                      item.status === "READY"
+                        ? "border-success bg-success text-on-status"
+                        : "border-border bg-bg text-transparent",
+                    )}
+                  >
+                    <LuCheck size={12} />
+                  </span>
+                </div>
+                {item.note && (
+                  <p className="mt-0.5 pl-6 text-caption italic leading-snug text-text-secondary">
+                    {item.note}
+                  </p>
+                )}
+              </button>
             </li>
           ))}
         </ul>
@@ -269,7 +280,7 @@ const KdsOrderColumn = ({
       )}
 
       {/* ── Footer with BUMP button ── */}
-      <div className="border-t border-border bg-card-bg px-4 pb-4 pt-3">
+      <div className="border-t border-border-hover bg-surface px-4 pb-4 pt-3">
         <Button
           className="w-full text-title"
           onClick={() => onBump(group)}
