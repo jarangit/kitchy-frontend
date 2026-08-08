@@ -11,8 +11,13 @@ interface Props {
  */
 export function ProgressDots({ total, current }: Props) {
   return (
-    <div className="flex items-center justify-center gap-2" role="progressbar"
-      aria-valuemin={1} aria-valuemax={total} aria-valuenow={current}>
+    <div
+      className="flex items-center justify-center gap-2"
+      role="progressbar"
+      aria-valuemin={1}
+      aria-valuemax={total}
+      aria-valuenow={current}
+    >
       {Array.from({ length: total }).map((_, i) => {
         const isActive = i < current;
         return (

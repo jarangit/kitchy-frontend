@@ -165,7 +165,10 @@ export const ListOrders = ({
           <Badge variant="danger">{t("order.legend.togo")}</Badge>
         </div>
       </div>
-      <div ref={containerRef} className="flex h-full flex-grow flex-col overflow-y-auto">
+      <div
+        ref={containerRef}
+        className="flex h-full flex-grow flex-col overflow-y-auto"
+      >
         <Card className="flex h-full flex-grow flex-col overflow-y-auto">
           {isLoading && !filteredOrders?.length ? (
             <div className="text-center text-text-secondary">
@@ -186,7 +189,9 @@ export const ListOrders = ({
                   order={{
                     ...(order as unknown as IOrderItem),
                     type: normalizeType(order.type) as IOrderItem["type"],
-                    status: normalizeStatus(order.status) as IOrderItem["status"],
+                    status: normalizeStatus(
+                      order.status,
+                    ) as IOrderItem["status"],
                   }}
                   onDelete={() => handleDelete(order.id)}
                   onUpdateStatus={(data: IUpdateOrder) =>
@@ -201,10 +206,7 @@ export const ListOrders = ({
               ))}
             </div>
           ) : (
-            <EmptyState
-              icon={<LuInbox size={32} />}
-              title={t("order.empty")}
-            />
+            <EmptyState icon={<LuInbox size={32} />} title={t("order.empty")} />
           )}
         </Card>
       </div>

@@ -72,7 +72,11 @@ export function StationTable({
           align="right"
         />
       ),
-      meta: { align: "right", className: "tabular-nums min-w-[112px]", hideBelow: "sm" },
+      meta: {
+        align: "right",
+        className: "tabular-nums min-w-[112px]",
+        hideBelow: "sm",
+      },
       cell: ({ row }) => (
         <span className="text-body-sm text-text-primary">
           {row.original.activeOrders}
@@ -83,7 +87,11 @@ export function StationTable({
       id: "actions",
       header: () => <span>{t("settings.stations.col.actions")}</span>,
       enableSorting: false,
-      meta: { align: "right", className: "w-36 min-w-[112px]", preventRowClick: true },
+      meta: {
+        align: "right",
+        className: "w-36 min-w-[112px]",
+        preventRowClick: true,
+      },
       cell: ({ row }) => (
         <div className="inline-flex items-center gap-2">
           <Button

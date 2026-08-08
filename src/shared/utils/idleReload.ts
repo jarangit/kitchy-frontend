@@ -2,8 +2,8 @@
 export function setupAutoReload(minutes = 0.1) {
   let lastActivity = Date.now();
   const reset = () => (lastActivity = Date.now());
-  ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach((event) =>
-    window.addEventListener(event, reset)
+  ["mousemove", "keydown", "click", "scroll", "touchstart"].forEach((event) =>
+    window.addEventListener(event, reset),
   );
 
   setInterval(() => {

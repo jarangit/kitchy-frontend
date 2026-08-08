@@ -24,7 +24,8 @@ const isNotFoundNoProductsError = (error: unknown) => {
 
 export function useProductService(selectedCategoryId?: string) {
   const queryClient = useQueryClient();
-  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   const productsListQuery = useQuery({
     queryKey: ["products", storeId],
@@ -42,7 +43,8 @@ export function useProductService(selectedCategoryId?: string) {
 
   const productsByCategoryQuery = useQuery({
     queryKey: ["products", "category", selectedCategoryId],
-    queryFn: () => productApiService.getProductsByCategoryId(selectedCategoryId as string),
+    queryFn: () =>
+      productApiService.getProductsByCategoryId(selectedCategoryId as string),
     enabled: !!selectedCategoryId && selectedCategoryId !== "ALL",
     select: (response) => {
       const payload = response.data.data;
@@ -91,7 +93,7 @@ export function useProductService(selectedCategoryId?: string) {
         if (!Array.isArray(list)) return old;
 
         const nextList = (list as IMenu[]).map((p) =>
-          p.id === productId ? { ...p, ...data } : p
+          p.id === productId ? { ...p, ...data } : p,
         );
         return {
           ...response,
@@ -115,7 +117,8 @@ export function useProductService(selectedCategoryId?: string) {
 
   // DELETE
   const deleteProductMutation = useMutation({
-    mutationFn: (productId: string) => productApiService.deleteProduct(productId),
+    mutationFn: (productId: string) =>
+      productApiService.deleteProduct(productId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["products", storeId],

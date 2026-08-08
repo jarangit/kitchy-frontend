@@ -76,9 +76,7 @@ export const SettingsSectionCard = ({
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
             {title && (
-              <h2 className="text-subtitle text-text-primary">
-                {title}
-              </h2>
+              <h2 className="text-subtitle text-text-primary">{title}</h2>
             )}
             {description && (
               <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">

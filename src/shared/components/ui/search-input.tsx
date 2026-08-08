@@ -2,8 +2,10 @@ import { LuSearch, LuX } from "react-icons/lu";
 import type { InputHTMLAttributes } from "react";
 import { cn } from "@/shared/utils/cn";
 
-interface SearchInputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
+interface SearchInputProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type"
+> {
   value: string;
   onValueChange: (value: string) => void;
 }

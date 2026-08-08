@@ -27,9 +27,11 @@ function resolveInitialOrderType(storeId: string | null): OrderType {
 export function CartProvider({ children }: { children: ReactNode }) {
   const currentStoreId = useAppSelector((s) => s.currentStore.storeId);
   const [items, setItems] = useState<ICartItem[]>([]);
-  const [paymentResult, setPaymentResultState] = useState<PaymentResult | null>(null);
+  const [paymentResult, setPaymentResultState] = useState<PaymentResult | null>(
+    null,
+  );
   const [orderType, setOrderTypeState] = useState<OrderType>(() =>
-    resolveInitialOrderType(currentStoreId)
+    resolveInitialOrderType(currentStoreId),
   );
   const [tableNumber, setTableNumberState] = useState<string | null>(null);
   const [customerName, setCustomerNameState] = useState("");
@@ -44,7 +46,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           return prev.map((item) =>
             item.productId === product.id
               ? { ...item, quantity: item.quantity + 1 }
-              : item
+              : item,
           );
         }
 
@@ -61,7 +63,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         ];
       });
     },
-    []
+    [],
   );
 
   const removeItem = useCallback((cartItemId: string) => {
@@ -76,18 +78,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       setItems((prev) =>
         prev.map((item) =>
-          item.cartItemId === cartItemId ? { ...item, quantity } : item
-        )
+          item.cartItemId === cartItemId ? { ...item, quantity } : item,
+        ),
       );
     },
-    [removeItem]
+    [removeItem],
   );
 
   const setItemNote = useCallback((cartItemId: string, note: string) => {
     setItems((prev) =>
       prev.map((item) =>
-        item.cartItemId === cartItemId ? { ...item, note: note.trim() } : item
-      )
+        item.cartItemId === cartItemId ? { ...item, note: note.trim() } : item,
+      ),
     );
   }, []);
 
@@ -134,12 +136,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const subtotal = useMemo(
     () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [items]
+    [items],
   );
 
   const totalItems = useMemo(
     () => items.reduce((sum, item) => sum + item.quantity, 0),
-    [items]
+    [items],
   );
 
   const setPaymentResult = useCallback((result: PaymentResult) => {

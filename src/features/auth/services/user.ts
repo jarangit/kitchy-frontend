@@ -1,6 +1,9 @@
 import axiosClient from "@/shared/services/axios-client";
 import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
-import { IS_DEMO_MODE, getAdapter } from "@/shared/services/adapters/data-adapter";
+import {
+  IS_DEMO_MODE,
+  getAdapter,
+} from "@/shared/services/adapters/data-adapter";
 
 export const userServiceApi = {
   //  login
@@ -37,5 +40,5 @@ export const userServiceApi = {
     }
     const response = await axiosClient.get("/users/me");
     return response.data;
-  }
+  },
 };

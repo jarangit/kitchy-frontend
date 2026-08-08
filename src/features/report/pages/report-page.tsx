@@ -28,7 +28,9 @@ const ReportPage = () => {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const [preset, setPreset] = useState<DateRangePreset>("today");
-  const [selectedMonth, setSelectedMonth] = useState(format(new Date(), "yyyy-MM"));
+  const [selectedMonth, setSelectedMonth] = useState(
+    format(new Date(), "yyyy-MM"),
+  );
   const [selectedDay, setSelectedDay] = useState<ICalendarDay | null>(null);
   const monthOptions = useMemo(() => buildMonthOptions(12), []);
   const { data, isLoading, error } = useReportData(preset, selectedMonth);
@@ -36,13 +38,15 @@ const ReportPage = () => {
   const getSubtitle = (): string => {
     switch (preset) {
       case "today":
-        return t("report.subtitle.today", { date: format(new Date(), "MMM d") });
+        return t("report.subtitle.today", {
+          date: format(new Date(), "MMM d"),
+        });
       case "week":
         return t("report.subtitle.week");
       case "month": {
         const monthLabel =
-          monthOptions.find((option) => option.value === selectedMonth)?.label ??
-          format(new Date(), "MMMM yyyy");
+          monthOptions.find((option) => option.value === selectedMonth)
+            ?.label ?? format(new Date(), "MMMM yyyy");
         return t("report.subtitle.month", { month: monthLabel });
       }
     }

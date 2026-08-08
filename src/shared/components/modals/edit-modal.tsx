@@ -10,9 +10,7 @@ type Props = {
   _onSubmit: (data: IUpdateOrder) => void;
 };
 
-const isEditableOrderType = (
-  value: string
-): value is "" | "TOGO" | "DINE_IN" =>
+const isEditableOrderType = (value: string): value is "" | "TOGO" | "DINE_IN" =>
   value === "" || value === "TOGO" || value === "DINE_IN";
 
 function EditModal({ data, _onSubmit }: Props) {

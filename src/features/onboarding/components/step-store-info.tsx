@@ -56,9 +56,7 @@ export function StepStoreInfo({ onSubmit, submitting, error }: Props) {
           </p>
         </div>
 
-        {error ? (
-          <p className="text-caption text-danger">{error}</p>
-        ) : null}
+        {error ? <p className="text-caption text-danger">{error}</p> : null}
       </div>
 
       <Button

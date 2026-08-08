@@ -24,7 +24,7 @@ export const usePendingOrdersCount = () => {
       queryKey: ["kds-orders", station.id],
       queryFn: async () => {
         const response = await orderApiService.getOrderStationItemsByStationId(
-          station.id
+          station.id,
         );
         return response.data as unknown;
       },

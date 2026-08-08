@@ -2,12 +2,7 @@ import type { OrderType } from "@/features/pos/types/pos.model";
 
 /** Steps in the onboarding wizard, in visit order. */
 export type OnboardingStep =
-  | "welcome"
-  | "store"
-  | "menu"
-  | "shopType"
-  | "pos"
-  | "done";
+  "welcome" | "store" | "menu" | "shopType" | "pos" | "done";
 
 /** One menu item captured in Step 2. */
 export interface OnboardingMenuDraft {

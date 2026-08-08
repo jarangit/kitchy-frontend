@@ -7,13 +7,10 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { normalizeResponse } from "@/shared/services/normalize-response";
 
-export function useStoreService({
-  userId,
-}: {
-  userId?: string;
-}) {
+export function useStoreService({ userId }: { userId?: string }) {
   const queryClient = useQueryClient();
-  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   // READ
   const storesQuery = useQuery({
@@ -41,11 +38,8 @@ export function useStoreService({
 
   // UPDATE
   const updateMutation = useMutation({
-    mutationFn: ({
-      storeData,
-    }: {
-      storeData: IUpdateStore;
-    }) => storeServiceApi.updateStore(storeId as string, storeData),
+    mutationFn: ({ storeData }: { storeData: IUpdateStore }) =>
+      storeServiceApi.updateStore(storeId as string, storeData),
     onSuccess: () =>
       queryClient.invalidateQueries({
         queryKey: ["store", storeId],

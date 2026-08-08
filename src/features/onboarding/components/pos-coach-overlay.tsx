@@ -31,7 +31,9 @@ export function PosCoachOverlay({ cartItemCount, subtotal }: Props) {
 
   const [active, setActive] = useState(false);
   const [stage, setStage] = useState<CoachStage>("tapProduct");
-  const [firstProductSelector, setFirstProductSelector] = useState<string | null>(null);
+  const [firstProductSelector, setFirstProductSelector] = useState<
+    string | null
+  >(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successAmount, setSuccessAmount] = useState(0);
 
@@ -51,7 +53,9 @@ export function PosCoachOverlay({ cartItemCount, subtotal }: Props) {
   useEffect(() => {
     if (!active || stage !== "tapProduct") return;
     const pickTarget = () => {
-      const el = document.querySelector("[data-onboarding-target^='product-card-']");
+      const el = document.querySelector(
+        "[data-onboarding-target^='product-card-']",
+      );
       if (el) {
         const selector = `[data-onboarding-target='${el.getAttribute("data-onboarding-target")}']`;
         setFirstProductSelector(selector);

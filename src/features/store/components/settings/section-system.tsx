@@ -9,10 +9,7 @@ import {
   LuArrowLeftRight,
   LuTriangleAlert,
 } from "react-icons/lu";
-import {
-  SettingGroup,
-  SettingRow,
-} from "@/shared/components/ui/setting-row";
+import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { Button } from "@/shared/components/ui/button";
@@ -121,9 +118,7 @@ export function SectionSystem() {
         />
         <SettingRow
           variant="action"
-          icon={
-            <LuTriangleAlert size={18} className="text-danger" />
-          }
+          icon={<LuTriangleAlert size={18} className="text-danger" />}
           label={
             <span className="text-danger">
               {t("settings.shop.deleteStore")}

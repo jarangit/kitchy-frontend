@@ -19,20 +19,23 @@ export const enMessages = {
   "appbar.offline": "Offline",
 
   "settings.title": "Settings",
-  "settings.description": "Manage products, categories, delivery apps, and display preferences for this store.",
+  "settings.description":
+    "Manage products, categories, delivery apps, and display preferences for this store.",
   "settings.management": "Management",
   "settings.display": "Display",
   "settings.theme.title": "Dark Mode",
   "settings.theme.dark": "Dark theme active",
   "settings.theme.light": "Light theme active",
   "settings.language.title": "Language",
-  "settings.language.description": "Choose the language used throughout the app.",
+  "settings.language.description":
+    "Choose the language used throughout the app.",
   "settings.language.th": "Thai",
   "settings.language.en": "English",
   "settings.menu.products.name": "Product Management",
   "settings.menu.products.description": "Add, edit, and manage products",
   "settings.menu.stations.name": "Station Management",
-  "settings.menu.stations.description": "Manage stations used in kitchen and POS",
+  "settings.menu.stations.description":
+    "Manage stations used in kitchen and POS",
   "settings.menu.categories.name": "Category Management",
   "settings.menu.categories.description": "Manage the new system categories",
   "settings.menu.shop.name": "Shop Settings",
@@ -40,7 +43,8 @@ export const enMessages = {
   "settings.menu.delivery.name": "Delivery Platforms",
   "settings.menu.delivery.description": "Choose delivery apps available in POS",
   "settings.menu.quickNotes.name": "Quick Notes",
-  "settings.menu.quickNotes.description": "Manage note shortcuts available in POS",
+  "settings.menu.quickNotes.description":
+    "Manage note shortcuts available in POS",
 
   // ── Control Panel (new) ──
   "settings.cp.title": "Settings",
@@ -54,13 +58,19 @@ export const enMessages = {
   "settings.cp.section.display": "Display",
 
   // Section descriptions (shown under the section header inside the content panel)
-  "settings.cp.section.store.description": "Basic store info and contact details",
-  "settings.cp.section.payments.description": "Enable or disable the channels customers use to pay",
-  "settings.cp.section.sales.description": "Features available on the sales screen and order flow",
-  "settings.cp.section.kitchen.description": "Manage the kitchen, stations, categories, and products",
+  "settings.cp.section.store.description":
+    "Basic store info and contact details",
+  "settings.cp.section.payments.description":
+    "Enable or disable the channels customers use to pay",
+  "settings.cp.section.sales.description":
+    "Features available on the sales screen and order flow",
+  "settings.cp.section.kitchen.description":
+    "Manage the kitchen, stations, categories, and products",
   "settings.cp.section.devices.description": "Devices connected to this store",
-  "settings.cp.section.safety.description": "Confirm before actions that cannot be undone",
-  "settings.cp.section.system.description": "Display, daily shortcuts, and store management",
+  "settings.cp.section.safety.description":
+    "Confirm before actions that cannot be undone",
+  "settings.cp.section.system.description":
+    "Display, daily shortcuts, and store management",
 
   "settings.cp.sales.more": "Other channels",
 
@@ -94,9 +104,11 @@ export const enMessages = {
   "settings.cp.sales.default.togo": "To go",
 
   // Kitchen
-  "settings.cp.kitchen.description": "Manage kitchen, stations, and order limit",
+  "settings.cp.kitchen.description":
+    "Manage kitchen, stations, and order limit",
   "settings.cp.kitchen.orderLimit.label": "Order limit",
-  "settings.cp.kitchen.orderLimit.hint": "Store-wide limit for active orders shown on KDS",
+  "settings.cp.kitchen.orderLimit.hint":
+    "Store-wide limit for active orders shown on KDS",
   "settings.cp.kitchen.orderLimit.placeholder": "20",
   "settings.cp.kitchen.manage": "Go to stations",
   "settings.cp.kitchen.categories": "Go to categories",
@@ -132,31 +144,39 @@ export const enMessages = {
   "settings.cp.row.cancel": "Cancel",
 
   "settings.shop.title": "Shop Settings",
-  "settings.shop.description": "Update your store identity and manage high-impact store actions.",
+  "settings.shop.description":
+    "Update your store identity and manage high-impact store actions.",
   "settings.shop.storeName": "Store Name",
   "settings.shop.loading": "Loading...",
   "settings.shop.dangerZone": "Danger Zone",
-  "settings.shop.dangerDescription": "Deleting a store is permanent and cannot be undone.",
+  "settings.shop.dangerDescription":
+    "Deleting a store is permanent and cannot be undone.",
   "settings.shop.deleteStore": "Delete Store",
   "settings.shop.switchStorePrompt": "Need to work on another store?",
   "settings.shop.switchStore": "Switch Store",
   "settings.shop.deleteDialogTitle": "Delete Store",
-  "settings.shop.deleteDialogDescription": "Are you sure you want to delete this store? This action is permanent and cannot be undone. All data associated with this store will be lost.",
+  "settings.shop.deleteDialogDescription":
+    "Are you sure you want to delete this store? This action is permanent and cannot be undone. All data associated with this store will be lost.",
   "settings.shop.deleteConfirm": "Delete",
 
   "settings.products.title": "Product Management",
-  "settings.products.description": "Add, edit, and organize the products available in this store.",
+  "settings.products.description":
+    "Add, edit, and organize the products available in this store.",
   "settings.products.listTitle": "Product List",
-  "settings.products.listDescription": "Browse current products and add new items for your store menu.",
+  "settings.products.listDescription":
+    "Browse current products and add new items for your store menu.",
   "settings.products.noProductsTitle": "No products found",
-  "settings.products.noProductsDescription": "Add your first product to get started",
+  "settings.products.noProductsDescription":
+    "Add your first product to get started",
   "settings.products.addProduct": "Add Product",
   "settings.products.createTitle": "Create New Product",
-  "settings.products.createDescription": "Add a new product and assign it to a station",
+  "settings.products.createDescription":
+    "Add a new product and assign it to a station",
   "settings.products.productName": "Product Name",
   "settings.products.productNamePlaceholder": "e.g., Caesar Salad",
   "settings.products.productNameRequired": "Product name is required",
-  "settings.products.productNameMin": "Product name must be at least 2 characters",
+  "settings.products.productNameMin":
+    "Product name must be at least 2 characters",
   "settings.products.station": "Station",
   "settings.products.stationPlaceholder": "Select a station",
   "settings.products.stationRequired": "Please select a station",
@@ -194,13 +214,16 @@ export const enMessages = {
   "settings.products.sortPriceDesc": "Price (high to low)",
   "settings.products.showingCount": "Showing {shown} of {total} products",
   "settings.products.noResults": "No products match your filters",
-  "settings.products.noResultsDescription": "Try adjusting your search or filters",
+  "settings.products.noResultsDescription":
+    "Try adjusting your search or filters",
   "settings.products.clearFilters": "Clear filters",
   "settings.products.editTitle": "Edit Product",
-  "settings.products.editDescription": "Update product details and availability",
+  "settings.products.editDescription":
+    "Update product details and availability",
   "settings.products.save": "Save changes",
   "settings.products.saving": "Saving...",
-  "settings.products.toggleUpdateFailed": "Failed to update status. Please try again.",
+  "settings.products.toggleUpdateFailed":
+    "Failed to update status. Please try again.",
   "settings.products.create": "Create Product",
   "settings.products.creating": "Creating...",
   "settings.products.category": "Category",
@@ -210,7 +233,8 @@ export const enMessages = {
   "settings.products.active": "Active",
   "settings.products.inactive": "Inactive",
   "settings.products.deleteTitle": "Delete Product",
-  "settings.products.deleteDescription": "Are you sure you want to delete this product? This action cannot be undone.",
+  "settings.products.deleteDescription":
+    "Are you sure you want to delete this product? This action cannot be undone.",
   "settings.products.col.image": "Image",
   "settings.products.col.name": "Name",
   "settings.products.col.category": "Category",
@@ -220,23 +244,31 @@ export const enMessages = {
   "settings.products.col.actions": "Actions",
 
   "settings.categories.title": "Category Management",
-  "settings.categories.description": "Manage product categories separately from stations for menu and POS usage.",
+  "settings.categories.description":
+    "Manage product categories separately from stations for menu and POS usage.",
   "settings.categories.featureTitle": "Product Categories",
-  "settings.categories.featureDescription": "This page is for managing the new category feature.",
-  "settings.categories.emptyTitle": "Category management page is being prepared",
-  "settings.categories.emptyDescription": "The category feature foundation is added, and CRUD UI is being wired.",
+  "settings.categories.featureDescription":
+    "This page is for managing the new category feature.",
+  "settings.categories.emptyTitle":
+    "Category management page is being prepared",
+  "settings.categories.emptyDescription":
+    "The category feature foundation is added, and CRUD UI is being wired.",
   "settings.categories.stationsTitle": "Stations",
-  "settings.categories.stationsDescription": "Manage the station groups used as product categories in this store.",
+  "settings.categories.stationsDescription":
+    "Manage the station groups used as product categories in this store.",
   "settings.categories.noStations": "No stations found.",
-  "settings.categories.missingStore": "Cannot create station: missing store id.",
+  "settings.categories.missingStore":
+    "Cannot create station: missing store id.",
   "settings.categories.loading": "Loading...",
   "settings.categories.addStation": "Add Station",
   "settings.categories.createTitle": "Create New Station",
-  "settings.categories.createDescription": "Add a new kitchen station to organize your orders",
+  "settings.categories.createDescription":
+    "Add a new kitchen station to organize your orders",
   "settings.categories.stationName": "Station Name",
   "settings.categories.stationNamePlaceholder": "e.g., Salad Station",
   "settings.categories.stationNameRequired": "Station name is required",
-  "settings.categories.stationNameMin": "Station name must be at least 2 characters",
+  "settings.categories.stationNameMin":
+    "Station name must be at least 2 characters",
   "settings.categories.stationColor": "Station Color",
   "settings.categories.stationColorPlaceholder": "Select a color",
   "settings.categories.stationColorRequired": "Please select a color",
@@ -246,16 +278,19 @@ export const enMessages = {
   "settings.categories.addCategory": "Add Category",
   "settings.categories.createTitle.category": "Create New Category",
   "settings.categories.editTitle": "Edit Category",
-  "settings.categories.createDescription.category": "Add a new category to organize your menu.",
+  "settings.categories.createDescription.category":
+    "Add a new category to organize your menu.",
   "settings.categories.editDescription": "Update category details.",
   "settings.categories.create.category": "Create Category",
   "settings.categories.categoryName": "Category Name",
   "settings.categories.categoryNamePlaceholder": "e.g., Beverages",
   "settings.categories.categoryNameRequired": "Category name is required",
-  "settings.categories.categoryNameMin": "Category name must be at least 2 characters",
+  "settings.categories.categoryNameMin":
+    "Category name must be at least 2 characters",
   "settings.categories.sortOrder": "Sort Order",
   "settings.categories.isActive": "Active",
-  "settings.categories.isActiveDescription": "Inactive categories are hidden from POS.",
+  "settings.categories.isActiveDescription":
+    "Inactive categories are hidden from POS.",
   "settings.categories.save": "Save",
   "settings.categories.saving": "Saving...",
   "settings.categories.active": "Active",
@@ -281,26 +316,32 @@ export const enMessages = {
   "transaction.list.col.total": "Total",
 
   "settings.delivery.title": "Delivery Platforms",
-  "settings.delivery.description": "Choose which delivery apps your store accepts in POS. These options are saved per store on this device.",
+  "settings.delivery.description":
+    "Choose which delivery apps your store accepts in POS. These options are saved per store on this device.",
   "settings.delivery.supportedApps": "Supported Apps",
-  "settings.delivery.supportedAppsDescription": "Disable apps your store does not use. At least one platform must stay enabled.",
+  "settings.delivery.supportedAppsDescription":
+    "Disable apps your store does not use. At least one platform must stay enabled.",
   "settings.delivery.available": "Available in delivery orders",
   "settings.delivery.hidden": "Hidden from delivery orders",
   "settings.delivery.enabled": "Enabled",
   "settings.delivery.disabled": "Disabled",
   "settings.delivery.addCustomPlatform": "Add Custom Platform",
-  "settings.delivery.addCustomPlatformDescription": "Add other delivery partners your store supports. New platforms are enabled immediately.",
+  "settings.delivery.addCustomPlatformDescription":
+    "Add other delivery partners your store supports. New platforms are enabled immediately.",
   "settings.delivery.platformName": "Platform name",
   "settings.delivery.platformNamePlaceholder": "Add custom delivery app",
   "settings.delivery.addPlatform": "Add Platform",
 
   "settings.quickNotes.title": "Quick Notes",
-  "settings.quickNotes.description": "Manage the note shortcuts staff can tap quickly while taking orders in POS.",
+  "settings.quickNotes.description":
+    "Manage the note shortcuts staff can tap quickly while taking orders in POS.",
   "settings.quickNotes.presetNotes": "Preset Notes",
-  "settings.quickNotes.presetNotesDescription": "These quick notes appear in the POS note dialog. Keep the most common requests here for faster service.",
+  "settings.quickNotes.presetNotesDescription":
+    "These quick notes appear in the POS note dialog. Keep the most common requests here for faster service.",
   "settings.quickNotes.resetDefault": "Reset Default",
   "settings.quickNotes.addQuickNote": "Add Quick Note",
-  "settings.quickNotes.addQuickNoteDescription": "Add custom shortcuts for your store, such as special preparation requests or kitchen reminders.",
+  "settings.quickNotes.addQuickNoteDescription":
+    "Add custom shortcuts for your store, such as special preparation requests or kitchen reminders.",
   "settings.quickNotes.quickNote": "Quick note",
   "settings.quickNotes.quickNotePlaceholder": "Add quick note",
   "settings.quickNotes.addNote": "Add Note",
@@ -316,7 +357,8 @@ export const enMessages = {
   "pos.cart.notePrefix": "Note: {note}",
   "pos.noteDialog.title": "Note for {name}",
   "pos.noteDialog.fallbackTitle": "Item note",
-  "pos.noteDialog.description": "Add a kitchen note for this item, such as no onion or extra spicy.",
+  "pos.noteDialog.description":
+    "Add a kitchen note for this item, such as no onion or extra spicy.",
   "pos.noteDialog.quickNotes": "Quick notes",
   "pos.noteDialog.placeholder": "e.g., No sugar, No vegetables",
   "pos.noteDialog.clearNote": "Clear note",
@@ -335,14 +377,18 @@ export const enMessages = {
   "pos.cart.table": "Table",
   "pos.cart.tableNotSelected": "Not selected",
   "pos.cart.selectTable": "Select Table",
-  "pos.cart.selectTableDescription": "Tap to select a table for the dine-in order.",
+  "pos.cart.selectTableDescription":
+    "Tap to select a table for the dine-in order.",
   "pos.cart.deliveryPlatform": "Delivery Platform",
   "pos.cart.deliveryOrderNumber": "App order number",
   "pos.cart.deliveryOrderNumberPlaceholder": "e.g. GF-1234 / LM-5678",
-  "pos.cart.deliveryOrderNumberHelp": "Use this number to match the kitchen ticket with the delivery app order.",
-  "pos.deliveryDialog.description": "Pick a delivery platform first. Add the app order number only if you need it.",
+  "pos.cart.deliveryOrderNumberHelp":
+    "Use this number to match the kitchen ticket with the delivery app order.",
+  "pos.deliveryDialog.description":
+    "Pick a delivery platform first. Add the app order number only if you need it.",
   "pos.deliveryDialog.optional": "Optional",
-  "pos.deliveryDialog.platformRequired": "Choose a delivery platform to continue.",
+  "pos.deliveryDialog.platformRequired":
+    "Choose a delivery platform to continue.",
   "pos.cart.emptyTitle": "Cart is empty",
   "pos.cart.emptyDescription": "Tap a product to add it",
   "pos.cart.pay": "Pay {amount}",
@@ -351,8 +397,10 @@ export const enMessages = {
   "pos.cart.total": "Total",
   "pos.cart.categoriesLabel": "Product categories",
   "pos.cart.selectTableBeforePay": "Select a table before payment",
-  "pos.cart.selectDeliveryPlatformBeforePay": "Select a delivery platform before payment",
-  "pos.cart.chooseOrderTypeBeforePay": "Choose an order type before continuing to payment",
+  "pos.cart.selectDeliveryPlatformBeforePay":
+    "Select a delivery platform before payment",
+  "pos.cart.chooseOrderTypeBeforePay":
+    "Choose an order type before continuing to payment",
   "pos.cart.removeItem": "Remove item",
   "pos.cart.decreaseQuantity": "Decrease quantity",
   "pos.cart.increaseQuantity": "Increase quantity",
@@ -362,7 +410,8 @@ export const enMessages = {
   "pos.orderType.delivery": "Delivery",
 
   "pos.grid.emptyTitle": "No products in this category",
-  "pos.grid.emptyDescription": "Try another category or add products in Settings",
+  "pos.grid.emptyDescription":
+    "Try another category or add products in Settings",
 
   "pos.payment.title": "Payment",
   "pos.payment.close": "Close payment",
@@ -388,15 +437,19 @@ export const enMessages = {
   "pos.payment.stepMethod": "1. Choose payment method",
   "pos.payment.stepComplete": "2. Complete the payment step",
   "pos.payment.stepConfirm": "3. Review and confirm payment",
-  "pos.payment.nextStepCash": "Enter cash received or tap a quick amount, then press the pay button below.",
-  "pos.payment.nextStepQr": "Let the customer scan the QR, then press the pay button below.",
-  "pos.payment.readyToConfirm": "When everything looks correct, press the pay button below.",
+  "pos.payment.nextStepCash":
+    "Enter cash received or tap a quick amount, then press the pay button below.",
+  "pos.payment.nextStepQr":
+    "Let the customer scan the QR, then press the pay button below.",
+  "pos.payment.readyToConfirm":
+    "When everything looks correct, press the pay button below.",
   "pos.payment.cash": "Cash",
   "pos.payment.qr": "QR",
   "pos.payment.qrTitle": "Scan QR to pay",
   "pos.payment.qrPlaceholder": "QR placeholder",
   "pos.payment.scanToPay": "Scan to pay {amount}",
-  "pos.payment.qrConfirmHint": "Ask the customer to scan, then press pay once you confirm the money was received.",
+  "pos.payment.qrConfirmHint":
+    "Ask the customer to scan, then press pay once you confirm the money was received.",
   "pos.payment.cashTitle": "Cash payment",
   "pos.payment.receivedAmount": "Received amount",
   "pos.payment.quickAmounts": "Quick amounts",
@@ -407,9 +460,11 @@ export const enMessages = {
   "pos.payment.confirm": "Confirm payment",
   "pos.payment.confirmQr": "Confirm money received",
   "pos.payment.failed": "Payment failed. Please try again.",
-  "pos.payment.insufficientCash": "Received amount is less than the amount due.",
+  "pos.payment.insufficientCash":
+    "Received amount is less than the amount due.",
   "pos.payment.selectTableFirst": "Select a table before paying.",
-  "pos.payment.selectPlatformFirst": "Select a delivery platform before paying.",
+  "pos.payment.selectPlatformFirst":
+    "Select a delivery platform before paying.",
 
   "pos.receipt.title": "Receipt",
   "pos.receipt.note": "Note: {note}",
@@ -515,7 +570,8 @@ export const enMessages = {
   "kds.stats.level.veryBusy": "Very busy",
   "kds.stats.overLimit": "Over limit",
   "kds.empty.noStationTitle": "No station found",
-  "kds.empty.noStationDescription": "Please create a station to use KDS in single-station mode.",
+  "kds.empty.noStationDescription":
+    "Please create a station to use KDS in single-station mode.",
   "kds.empty.pendingTitle": "All caught up",
   "kds.empty.description": "Items will appear automatically",
   "kds.card.note": "Note: {note}",
@@ -539,7 +595,8 @@ export const enMessages = {
   "serve.drawer.title": "Ready to serve",
   "serve.drawer.subtitle": "{count} items waiting to serve",
   "serve.empty.title": "No ready items",
-  "serve.empty.body": "Items will appear here when the kitchen marks them done.",
+  "serve.empty.body":
+    "Items will appear here when the kitchen marks them done.",
   "serve.item.meta": "Order #{order} · {station}",
   "serve.item.waiting": "Waiting {minutes} min",
 
@@ -559,7 +616,8 @@ export const enMessages = {
   "report.range.month": "Month",
 
   "transaction.title": "Orders",
-  "transaction.subtitle": "Update status, change tables, and cancel items in real time.",
+  "transaction.subtitle":
+    "Update status, change tables, and cancel items in real time.",
   "transaction.stat.inProgress": "In Progress",
   "transaction.stat.done": "Done",
   "transaction.stat.cancelled": "Cancelled",
@@ -570,11 +628,14 @@ export const enMessages = {
   "transaction.filter.statusLabel": "Filter by order status",
   "transaction.filter.searchPlaceholder": "Search order number...",
   "transaction.empty.title": "No orders found",
-  "transaction.empty.description": "Try a different filter or search by order number.",
+  "transaction.empty.description":
+    "Try a different filter or search by order number.",
   "transaction.empty.noOrdersTitle": "No orders yet",
-  "transaction.empty.noOrdersDescription": "Orders will appear here once you start selling.",
+  "transaction.empty.noOrdersDescription":
+    "Orders will appear here once you start selling.",
   "transaction.empty.filteredTitle": "No orders match this view",
-  "transaction.empty.filteredDescription": "Try clearing the search or changing the order status.",
+  "transaction.empty.filteredDescription":
+    "Try clearing the search or changing the order status.",
   "transaction.card.orderType.dineIn": "Dine-in",
   "transaction.card.orderType.togo": "Takeaway",
   "transaction.card.orderType.delivery": "Delivery",
@@ -582,7 +643,8 @@ export const enMessages = {
   "transaction.card.itemCount": "{count} items",
   "transaction.card.productFallback": "Item",
   "transaction.detail.notFound.title": "Transaction not found",
-  "transaction.detail.notFound.description": "This order may have been deleted or the link is invalid.",
+  "transaction.detail.notFound.description":
+    "This order may have been deleted or the link is invalid.",
   "transaction.detail.section.status": "Order Status",
   "transaction.detail.section.info": "Order Info",
   "transaction.detail.section.items": "Items",
@@ -605,11 +667,13 @@ export const enMessages = {
   "transaction.detail.summary.subtotal": "Subtotal ({count} items)",
   "transaction.detail.summary.total": "Total",
   "transaction.detail.edit.title": "Edit Order",
-  "transaction.detail.edit.description": "Change the table or adjust item quantities. Set to 0 to remove an item.",
+  "transaction.detail.edit.description":
+    "Change the table or adjust item quantities. Set to 0 to remove an item.",
   "transaction.detail.edit.table": "Table",
   "transaction.detail.edit.tablePlaceholder": "e.g. A12",
   "transaction.detail.edit.items": "Items",
-  "transaction.detail.edit.removedAll": "All items have been removed. To cancel the order, use the \"Cancel Order\" button instead.",
+  "transaction.detail.edit.removedAll":
+    'All items have been removed. To cancel the order, use the "Cancel Order" button instead.',
   "transaction.detail.edit.close": "Close",
   "transaction.detail.edit.save": "Save Changes",
   "transaction.detail.edit.increase": "Increase quantity",
@@ -619,7 +683,8 @@ export const enMessages = {
   "transaction.detail.nextAction.markReady": "Mark as Done",
   "transaction.detail.nextAction.revert": "Revert to In Progress",
   "transaction.detail.state.inProgress": "This order is in progress",
-  "transaction.detail.state.inProgressHint": "Tap \"Mark as Done\" when the order is ready to serve.",
+  "transaction.detail.state.inProgressHint":
+    'Tap "Mark as Done" when the order is ready to serve.',
   "transaction.detail.state.done": "Completed · {time}",
   "transaction.detail.state.cancelled": "This order has been cancelled",
   "transaction.list.timeline.today": "Today",
@@ -670,17 +735,21 @@ export const enMessages = {
   "onboarding.shopType.togo": "Takeaway only",
   "onboarding.shopType.delivery": "Delivery",
   "demo.trial.title": "Try the product instantly without creating an account",
-  "demo.trial.subtitle": "Choose the restaurant style closest to your business and start exploring right away.",
+  "demo.trial.subtitle":
+    "Choose the restaurant style closest to your business and start exploring right away.",
   "demo.trial.selectedBadge": "Selected",
   "demo.trial.start": "Start trial",
   "demo.trial.starting": "Preparing demo store...",
   "demo.trial.startError": "Failed to start the demo. Please try again.",
   "demo.trial.storePreset.cafe": "Cafe",
-  "demo.trial.storePreset.cafeDescription": "Drinks, bakery items, and counter orders",
+  "demo.trial.storePreset.cafeDescription":
+    "Drinks, bakery items, and counter orders",
   "demo.trial.storePreset.fastFood": "Fast food",
-  "demo.trial.storePreset.fastFoodDescription": "Fast-moving menus, short queues, and quick service",
+  "demo.trial.storePreset.fastFoodDescription":
+    "Fast-moving menus, short queues, and quick service",
   "demo.trial.storePreset.madeToOrder": "Made to order",
-  "demo.trial.storePreset.madeToOrderDescription": "Kitchen tickets prepared to order",
+  "demo.trial.storePreset.madeToOrderDescription":
+    "Kitchen tickets prepared to order",
 
   "onboarding.pos.coach.tapProduct": "Tap this item to add it to the bill",
   "onboarding.pos.coach.tapPay": "Tap to take payment",
@@ -703,7 +772,8 @@ export const enMessages = {
   "auth.register.submit": "Create Account",
   "auth.register.hasAccount": "Already have an account?",
   "auth.register.signInLink": "Sign in",
-  "auth.register.emailOrPhoneHint": "Enter an email or a 10-digit Thai mobile number (e.g. 0812345678).",
+  "auth.register.emailOrPhoneHint":
+    "Enter an email or a 10-digit Thai mobile number (e.g. 0812345678).",
   "auth.fields.emailLabel": "Email",
   "auth.fields.emailPlaceholder": "you@example.com",
   "auth.fields.phoneLabel": "Mobile number",
@@ -718,7 +788,8 @@ export const enMessages = {
   "auth.google.unavailable": "Google sign-in unavailable",
   "auth.errors.emailRequired": "Email is required",
   "auth.errors.emailInvalid": "Invalid email format",
-  "auth.errors.phoneInvalid": "Enter a 10-digit Thai mobile number starting with 0 (e.g. 0812345678)",
+  "auth.errors.phoneInvalid":
+    "Enter a 10-digit Thai mobile number starting with 0 (e.g. 0812345678)",
   "auth.errors.identifierInvalid": "Enter a valid email or Thai mobile number",
   "auth.errors.emailOrPhoneRequired": "Enter an email or mobile number.",
   "auth.errors.emailTaken": "This email is already registered",
@@ -737,7 +808,8 @@ export const enMessages = {
   "store.dashboard.card.open": "Open workspace",
   "store.dashboard.create.locked.title": "Add a workspace",
   "store.dashboard.create.locked.badge": "Coming soon",
-  "store.dashboard.create.locked.hint": "Multi-store will be available in an upcoming plan.",
+  "store.dashboard.create.locked.hint":
+    "Multi-store will be available in an upcoming plan.",
   "store.dashboard.empty.title": "No stores yet",
   "store.dashboard.empty.description": "Create your first workspace to begin.",
   "store.dashboard.empty.action": "Create Store",
@@ -745,5 +817,6 @@ export const enMessages = {
 
   "settings.stations.addLocked.label": "Add Station",
   "settings.stations.addLocked.badge": "Coming soon",
-  "settings.stations.addLocked.hint": "Creating custom stations will be available in an upcoming plan.",
+  "settings.stations.addLocked.hint":
+    "Creating custom stations will be available in an upcoming plan.",
 } as const satisfies Record<keyof typeof thMessages, string>;

@@ -5,10 +5,22 @@
 
 import type { DataAdapter } from "./data-adapter";
 import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
-import type { ICreateStore, IUpdateStore } from "@/features/store/types/store.dto";
-import type { ICreateStation, IUpdateStation } from "@/features/station/types/station.dto";
-import type { CreateProductRequest, UpdateProductRequest } from "@/features/product/types/product.dto";
-import type { CreateCategoryRequestDto, UpdateCategoryRequestDto } from "@/features/category/types/category.dto";
+import type {
+  ICreateStore,
+  IUpdateStore,
+} from "@/features/store/types/store.dto";
+import type {
+  ICreateStation,
+  IUpdateStation,
+} from "@/features/station/types/station.dto";
+import type {
+  CreateProductRequest,
+  UpdateProductRequest,
+} from "@/features/product/types/product.dto";
+import type {
+  CreateCategoryRequestDto,
+  UpdateCategoryRequestDto,
+} from "@/features/category/types/category.dto";
 import type { OrderType } from "@/features/order/types/order.dto";
 import type { IOrderItem } from "@/features/order/types/order.model";
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
@@ -104,11 +116,13 @@ export const apiAdapter: DataAdapter = {
   },
   async createCategory(dto: CreateCategoryRequestDto) {
     const res = await categoryServiceApi.create(dto);
-    return res.data.data as unknown as import("@/features/category/types/category.model").CategoryModel;
+    return res.data
+      .data as unknown as import("@/features/category/types/category.model").CategoryModel;
   },
   async updateCategory(id, dto: UpdateCategoryRequestDto) {
     const res = await categoryServiceApi.update(id, dto);
-    return res.data.data as unknown as import("@/features/category/types/category.model").CategoryModel;
+    return res.data
+      .data as unknown as import("@/features/category/types/category.model").CategoryModel;
   },
   async deleteCategory(id) {
     await categoryServiceApi.delete(id);
@@ -128,8 +142,26 @@ export const apiAdapter: DataAdapter = {
     const arr = unwrapPayload<IOrderItem>(res);
     return arr[0];
   },
-  async createOrder(storeId, orderNumber, products, orderType: OrderType, tableNumber?, customerName?, deliveryPlatform?, deliveryOrderNumber?) {
-    const res = await orderApiService.add(storeId, orderNumber, products, orderType, tableNumber, customerName, deliveryPlatform, deliveryOrderNumber);
+  async createOrder(
+    storeId,
+    orderNumber,
+    products,
+    orderType: OrderType,
+    tableNumber?,
+    customerName?,
+    deliveryPlatform?,
+    deliveryOrderNumber?,
+  ) {
+    const res = await orderApiService.add(
+      storeId,
+      orderNumber,
+      products,
+      orderType,
+      tableNumber,
+      customerName,
+      deliveryPlatform,
+      deliveryOrderNumber,
+    );
     return res.data;
   },
   async updateOrder(id, data) {
@@ -142,7 +174,8 @@ export const apiAdapter: DataAdapter = {
 
   // ═══ KDS ═══
   async getOrderStationItemsByStationId(stationId) {
-    const res = await orderApiService.getOrderStationItemsByStationId(stationId);
+    const res =
+      await orderApiService.getOrderStationItemsByStationId(stationId);
     return unwrapPayload(res);
   },
   async updateOrderStationItem(id, data) {

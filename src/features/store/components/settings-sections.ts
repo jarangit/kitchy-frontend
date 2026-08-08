@@ -10,13 +10,7 @@ import {
 import type { MessageKey } from "@/shared/i18n/messages";
 
 export type SectionId =
-  | "store"
-  | "payments"
-  | "sales"
-  | "kitchen"
-  | "devices"
-  | "safety"
-  | "system";
+  "store" | "payments" | "sales" | "kitchen" | "devices" | "safety" | "system";
 
 export const SETTINGS_SECTIONS = [
   // Ordered by frequency of use (most-used first) so the default landing

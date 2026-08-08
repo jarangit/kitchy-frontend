@@ -16,7 +16,7 @@ const currentStationSlice = createSlice({
   reducers: {
     setCurrentStation: (
       state,
-      action: PayloadAction<{ stationId: string; stationName?: string | null }>
+      action: PayloadAction<{ stationId: string; stationName?: string | null }>,
     ) => {
       state.stationId = action.payload.stationId;
       state.stationName = action.payload.stationName ?? null;
@@ -34,10 +34,7 @@ const currentStationSlice = createSlice({
   },
 });
 
-export const {
-  setCurrentStation,
-  setCurrentStationId,
-  clearCurrentStation,
-} = currentStationSlice.actions;
+export const { setCurrentStation, setCurrentStationId, clearCurrentStation } =
+  currentStationSlice.actions;
 
 export default currentStationSlice.reducer;

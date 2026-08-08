@@ -1,4 +1,8 @@
-import type { KdsCard, KdsOrderGroup, KdsStatus } from "@/features/kds/types/kds.model";
+import type {
+  KdsCard,
+  KdsOrderGroup,
+  KdsStatus,
+} from "@/features/kds/types/kds.model";
 import { compareOrderNumber } from "@/features/kds/utils/parse-order-number";
 
 /**
@@ -51,7 +55,8 @@ export const groupCardsByOrder = (cards: KdsCard[]): KdsOrderGroup[] => {
   const result: KdsOrderGroup[] = [];
   for (const [orderId, items] of groups) {
     const sortedItems = [...items].sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
     const first = sortedItems[0];
     if (!first) continue;
@@ -61,7 +66,7 @@ export const groupCardsByOrder = (cards: KdsCard[]): KdsOrderGroup[] => {
         new Date(item.createdAt).getTime() < new Date(earliest).getTime()
           ? item.createdAt
           : earliest,
-      sortedItems[0].createdAt
+      sortedItems[0].createdAt,
     );
 
     result.push({
@@ -78,5 +83,7 @@ export const groupCardsByOrder = (cards: KdsCard[]): KdsOrderGroup[] => {
     });
   }
 
-  return result.sort((a, b) => compareOrderNumber(a.orderNumber, b.orderNumber));
+  return result.sort((a, b) =>
+    compareOrderNumber(a.orderNumber, b.orderNumber),
+  );
 };

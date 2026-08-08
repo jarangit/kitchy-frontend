@@ -140,7 +140,11 @@ export function ProductTable({
           align="right"
         />
       ),
-      meta: { align: "right", hideBelow: "lg", className: "tabular-nums min-w-[112px]" },
+      meta: {
+        align: "right",
+        hideBelow: "lg",
+        className: "tabular-nums min-w-[112px]",
+      },
       cell: ({ row }) => {
         const menu = row.original;
         return menu.cost == null ? (
@@ -154,7 +158,11 @@ export function ProductTable({
       id: "status",
       header: () => <span>{t("settings.products.col.status")}</span>,
       enableSorting: false,
-      meta: { align: "center", className: "w-24 min-w-[96px]", preventRowClick: true },
+      meta: {
+        align: "center",
+        className: "w-24 min-w-[96px]",
+        preventRowClick: true,
+      },
       cell: ({ row }) => {
         const menu = row.original;
         const isToggling = togglingId === menu.id;
@@ -178,7 +186,11 @@ export function ProductTable({
       id: "actions",
       header: () => <span>{t("settings.products.col.actions")}</span>,
       enableSorting: false,
-      meta: { align: "right", className: "w-36 min-w-[112px]", preventRowClick: true },
+      meta: {
+        align: "right",
+        className: "w-36 min-w-[112px]",
+        preventRowClick: true,
+      },
       cell: ({ row }) => {
         const menu = row.original;
         return (

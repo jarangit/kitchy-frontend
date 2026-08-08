@@ -4,7 +4,10 @@ import { EmptyState } from "@/shared/components/ui/empty-state";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useAppDispatch } from "@/shared/hooks/hooks";
-import { clearCurrentStore, setCurrentStore } from "@/shared/store/slices/current-store-slice";
+import {
+  clearCurrentStore,
+  setCurrentStore,
+} from "@/shared/store/slices/current-store-slice";
 import { Card, CardContent } from "@/shared/components/ui/card";
 import type { IStore } from "@/features/store/types/store.model";
 import { useEffect } from "react";
@@ -91,9 +94,7 @@ export default function UserDashboard() {
             <h1 className="text-display text-text-primary">
               {t("store.dashboard.welcome.title")}
             </h1>
-            <p className="text-body-sm text-text-tertiary">
-              {user?.email}
-            </p>
+            <p className="text-body-sm text-text-tertiary">{user?.email}</p>
           </div>
 
           <section className="page-stack-tight">
@@ -118,7 +119,7 @@ export default function UserDashboard() {
                         setCurrentStore({
                           storeId: String(item.id),
                           storeName: item.name,
-                        })
+                        }),
                       );
                       navigate(`/store/${item.id}`);
                     }}
@@ -129,7 +130,9 @@ export default function UserDashboard() {
                           <LuStore size={18} />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-subtitle text-text-primary line-clamp-2">{item.name}</p>
+                          <p className="text-subtitle text-text-primary line-clamp-2">
+                            {item.name}
+                          </p>
                           <p className="text-body-sm leading-6 text-text-tertiary">
                             {t("store.dashboard.card.open")}
                           </p>
@@ -140,11 +143,7 @@ export default function UserDashboard() {
                 ))}
 
                 {isMultiStoreLocked ? (
-                  <div
-                    role="group"
-                    aria-disabled="true"
-                    className="text-left"
-                  >
+                  <div role="group" aria-disabled="true" className="text-left">
                     <Card className="flex min-h-44 items-center justify-center border-dashed border-border bg-bg text-center">
                       <CardContent className="flex flex-col items-center gap-3 py-8">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">

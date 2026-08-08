@@ -50,6 +50,10 @@ Shared types (e.g. Redux store types) stay in `shared/`.
 - Shared components: Button, Card, Badge, Dialog, Select, Input, Label.
 - `@headlessui/react` is used for accessible modal overlays only.
 
+## Formatting
+
+- **Prettier** is the code formatter for `src/`. After making any code changes, run `npm run format` (or `npm run format:check` to verify) before finishing. Do not hand-format code; let Prettier handle it.
+
 ## UI Design Guidelines
 
 When building or modifying UI components, load the `apple-newsroom-style` skill for the full Design DNA, token rules, component patterns, and visual guidelines.

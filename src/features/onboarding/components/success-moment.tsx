@@ -19,8 +19,11 @@ export function SuccessMoment({ amount, onClose }: Props) {
   const { id: storeId } = useParams<{ id: string }>();
 
   return createPortal(
-    <div className="fixed inset-0 z-[300] flex items-center justify-center bg-dialog-overlay px-6"
-      role="dialog" aria-modal="true">
+    <div
+      className="fixed inset-0 z-[300] flex items-center justify-center bg-dialog-overlay px-6"
+      role="dialog"
+      aria-modal="true"
+    >
       <div className="w-full max-w-md rounded-card bg-card-bg border border-card-border p-8 text-center shadow-xl">
         <div className="mb-4 text-[56px] leading-none">🎉</div>
         <h2 className="mb-2 text-heading text-text-primary tracking-tight">

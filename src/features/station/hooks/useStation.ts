@@ -5,13 +5,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { normalizeResponse } from "@/shared/services/normalize-response";
 
-export function useStationService({
-  stationId,
-}: {
-  stationId?: string;
-}) {
+export function useStationService({ stationId }: { stationId?: string }) {
   const queryClient = useQueryClient();
-  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   const stationsQuery = useQuery({
     queryKey: ["stations", storeId],

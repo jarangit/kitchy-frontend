@@ -5,7 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { appBus } from "@/shared/events/app-events";
 
 export function useTransactionService() {
-  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   const transactionsQuery = useQuery({
     queryKey: ["transactions", storeId],

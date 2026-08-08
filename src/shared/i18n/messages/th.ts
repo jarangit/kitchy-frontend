@@ -17,7 +17,8 @@ export const thMessages = {
   "appbar.offline": "ออฟไลน์",
 
   "settings.title": "การตั้งค่า",
-  "settings.description": "จัดการสินค้า หมวดหมู่ แอปเดลิเวอรี และการตั้งค่าการแสดงผลของร้านนี้",
+  "settings.description":
+    "จัดการสินค้า หมวดหมู่ แอปเดลิเวอรี และการตั้งค่าการแสดงผลของร้านนี้",
   "settings.management": "จัดการระบบ",
   "settings.display": "การแสดงผล",
   "settings.theme.title": "โหมดมืด",
@@ -53,12 +54,17 @@ export const thMessages = {
 
   // Section descriptions (shown under the section header inside the content panel)
   "settings.cp.section.store.description": "ข้อมูลร้านพื้นฐานและช่องทางติดต่อ",
-  "settings.cp.section.payments.description": "เปิด/ปิดช่องทางที่ลูกค้าใช้จ่ายเงินที่ร้าน",
-  "settings.cp.section.sales.description": "ฟีเจอร์ที่จะเปิดใช้ในหน้าขายและออเดอร์",
-  "settings.cp.section.kitchen.description": "จัดการครัว สเตชัน หมวดหมู่ และสินค้า",
+  "settings.cp.section.payments.description":
+    "เปิด/ปิดช่องทางที่ลูกค้าใช้จ่ายเงินที่ร้าน",
+  "settings.cp.section.sales.description":
+    "ฟีเจอร์ที่จะเปิดใช้ในหน้าขายและออเดอร์",
+  "settings.cp.section.kitchen.description":
+    "จัดการครัว สเตชัน หมวดหมู่ และสินค้า",
   "settings.cp.section.devices.description": "อุปกรณ์ที่เชื่อมต่อกับร้าน",
-  "settings.cp.section.safety.description": "ตั้งค่าการยืนยันก่อนทำสิ่งที่แก้ไม่ได้",
-  "settings.cp.section.system.description": "การแสดงผล ปุ่มลัดประจำวัน และการจัดการร้าน",
+  "settings.cp.section.safety.description":
+    "ตั้งค่าการยืนยันก่อนทำสิ่งที่แก้ไม่ได้",
+  "settings.cp.section.system.description":
+    "การแสดงผล ปุ่มลัดประจำวัน และการจัดการร้าน",
 
   "settings.cp.sales.more": "ช่องทางอื่น",
 
@@ -94,7 +100,8 @@ export const thMessages = {
   // Kitchen
   "settings.cp.kitchen.description": "จัดการครัว/สเตชัน และลิมิตออเดอร์ของร้าน",
   "settings.cp.kitchen.orderLimit.label": "ลิมิตออเดอร์",
-  "settings.cp.kitchen.orderLimit.hint": "ลิมิตทั้งร้านสำหรับออเดอร์ที่แสดงใน KDS",
+  "settings.cp.kitchen.orderLimit.hint":
+    "ลิมิตทั้งร้านสำหรับออเดอร์ที่แสดงใน KDS",
   "settings.cp.kitchen.orderLimit.placeholder": "20",
   "settings.cp.kitchen.manage": "ไปที่สเตชัน",
   "settings.cp.kitchen.categories": "ไปที่หมวดหมู่",
@@ -134,20 +141,25 @@ export const thMessages = {
   "settings.shop.storeName": "ชื่อร้าน",
   "settings.shop.loading": "กำลังโหลด...",
   "settings.shop.dangerZone": "พื้นที่อันตราย",
-  "settings.shop.dangerDescription": "การลบร้านเป็นการถาวรและไม่สามารถย้อนกลับได้",
+  "settings.shop.dangerDescription":
+    "การลบร้านเป็นการถาวรและไม่สามารถย้อนกลับได้",
   "settings.shop.deleteStore": "ลบร้าน",
   "settings.shop.switchStorePrompt": "ต้องการไปจัดการร้านอื่นหรือไม่?",
   "settings.shop.switchStore": "สลับร้าน",
   "settings.shop.deleteDialogTitle": "ลบร้าน",
-  "settings.shop.deleteDialogDescription": "คุณแน่ใจหรือไม่ว่าต้องการลบร้านนี้ การกระทำนี้เป็นการถาวรและไม่สามารถย้อนกลับได้ ข้อมูลทั้งหมดของร้านจะหายไป",
+  "settings.shop.deleteDialogDescription":
+    "คุณแน่ใจหรือไม่ว่าต้องการลบร้านนี้ การกระทำนี้เป็นการถาวรและไม่สามารถย้อนกลับได้ ข้อมูลทั้งหมดของร้านจะหายไป",
   "settings.shop.deleteConfirm": "ลบ",
 
   "settings.products.title": "จัดการสินค้า",
-  "settings.products.description": "เพิ่ม แก้ไข และจัดระเบียบสินค้าที่ขายในร้านนี้",
+  "settings.products.description":
+    "เพิ่ม แก้ไข และจัดระเบียบสินค้าที่ขายในร้านนี้",
   "settings.products.listTitle": "รายการสินค้า",
-  "settings.products.listDescription": "ดูสินค้าปัจจุบันและเพิ่มเมนูใหม่สำหรับร้านของคุณ",
+  "settings.products.listDescription":
+    "ดูสินค้าปัจจุบันและเพิ่มเมนูใหม่สำหรับร้านของคุณ",
   "settings.products.noProductsTitle": "ยังไม่มีสินค้า",
-  "settings.products.noProductsDescription": "เพิ่มสินค้าชิ้นแรกเพื่อเริ่มต้นใช้งาน",
+  "settings.products.noProductsDescription":
+    "เพิ่มสินค้าชิ้นแรกเพื่อเริ่มต้นใช้งาน",
   "settings.products.addProduct": "เพิ่มสินค้า",
   "settings.products.createTitle": "สร้างสินค้าใหม่",
   "settings.products.createDescription": "เพิ่มสินค้าใหม่และกำหนดให้กับสเตชัน",
@@ -208,7 +220,8 @@ export const thMessages = {
   "settings.products.active": "เปิดขาย",
   "settings.products.inactive": "ปิดขาย",
   "settings.products.deleteTitle": "ลบสินค้า",
-  "settings.products.deleteDescription": "คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? การลบไม่สามารถย้อนกลับได้",
+  "settings.products.deleteDescription":
+    "คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? การลบไม่สามารถย้อนกลับได้",
   "settings.products.col.image": "รูป",
   "settings.products.col.name": "ชื่อสินค้า",
   "settings.products.col.category": "หมวดหมู่",
@@ -218,19 +231,24 @@ export const thMessages = {
   "settings.products.col.actions": "จัดการ",
 
   "settings.categories.title": "จัดการหมวดหมู่",
-  "settings.categories.description": "จัดการหมวดหมู่สินค้าแยกจากสเตชัน เพื่อใช้งานกับเมนูและ POS",
+  "settings.categories.description":
+    "จัดการหมวดหมู่สินค้าแยกจากสเตชัน เพื่อใช้งานกับเมนูและ POS",
   "settings.categories.featureTitle": "หมวดหมู่สินค้า",
-  "settings.categories.featureDescription": "หน้านี้ใช้สำหรับจัดการหมวดหมู่สินค้าแบบใหม่",
+  "settings.categories.featureDescription":
+    "หน้านี้ใช้สำหรับจัดการหมวดหมู่สินค้าแบบใหม่",
   "settings.categories.emptyTitle": "กำลังเตรียมหน้าจัดการหมวดหมู่",
-  "settings.categories.emptyDescription": "โครงสร้าง category feature ถูกเพิ่มแล้ว และกำลังเชื่อมหน้า CRUD",
+  "settings.categories.emptyDescription":
+    "โครงสร้าง category feature ถูกเพิ่มแล้ว และกำลังเชื่อมหน้า CRUD",
   "settings.categories.stationsTitle": "สเตชัน",
-  "settings.categories.stationsDescription": "จัดการสเตชันที่ใช้เป็นหมวดหมู่สินค้าในร้านนี้",
+  "settings.categories.stationsDescription":
+    "จัดการสเตชันที่ใช้เป็นหมวดหมู่สินค้าในร้านนี้",
   "settings.categories.noStations": "ยังไม่มีสเตชัน",
   "settings.categories.missingStore": "ไม่สามารถสร้างสเตชันได้: ไม่พบ store id",
   "settings.categories.loading": "กำลังโหลด...",
   "settings.categories.addStation": "เพิ่มสเตชัน",
   "settings.categories.createTitle": "สร้างสเตชันใหม่",
-  "settings.categories.createDescription": "เพิ่มสเตชันครัวใหม่เพื่อจัดระเบียบออเดอร์",
+  "settings.categories.createDescription":
+    "เพิ่มสเตชันครัวใหม่เพื่อจัดระเบียบออเดอร์",
   "settings.categories.stationName": "ชื่อสเตชัน",
   "settings.categories.stationNamePlaceholder": "เช่น สเตชันสลัด",
   "settings.categories.stationNameRequired": "กรุณากรอกชื่อสเตชัน",
@@ -244,16 +262,19 @@ export const thMessages = {
   "settings.categories.addCategory": "เพิ่มหมวดหมู่",
   "settings.categories.createTitle.category": "สร้างหมวดหมู่ใหม่",
   "settings.categories.editTitle": "แก้ไขหมวดหมู่",
-  "settings.categories.createDescription.category": "เพิ่มหมวดหมู่ใหม่เพื่อจัดกลุ่มเมนู",
+  "settings.categories.createDescription.category":
+    "เพิ่มหมวดหมู่ใหม่เพื่อจัดกลุ่มเมนู",
   "settings.categories.editDescription": "อัปเดตรายละเอียดหมวดหมู่",
   "settings.categories.create.category": "สร้างหมวดหมู่",
   "settings.categories.categoryName": "ชื่อหมวดหมู่",
   "settings.categories.categoryNamePlaceholder": "เช่น เครื่องดื่ม",
   "settings.categories.categoryNameRequired": "กรุณาระบุชื่อหมวดหมู่",
-  "settings.categories.categoryNameMin": "ชื่อหมวดหมู่ต้องมีอย่างน้อย 2 ตัวอักษร",
+  "settings.categories.categoryNameMin":
+    "ชื่อหมวดหมู่ต้องมีอย่างน้อย 2 ตัวอักษร",
   "settings.categories.sortOrder": "ลำดับ",
   "settings.categories.isActive": "ใช้งาน",
-  "settings.categories.isActiveDescription": "หมวดหมู่ที่ปิดใช้งานจะไม่แสดงบน POS",
+  "settings.categories.isActiveDescription":
+    "หมวดหมู่ที่ปิดใช้งานจะไม่แสดงบน POS",
   "settings.categories.save": "บันทึก",
   "settings.categories.saving": "กำลังบันทึก...",
   "settings.categories.active": "ใช้งาน",
@@ -279,26 +300,32 @@ export const thMessages = {
   "transaction.list.col.total": "ยอดรวม",
 
   "settings.delivery.title": "แอปเดลิเวอรี",
-  "settings.delivery.description": "เลือกแอปเดลิเวอรีที่ร้านนี้ยอมรับใน POS ค่าเหล่านี้จะถูกบันทึกแยกตามร้านในอุปกรณ์นี้",
+  "settings.delivery.description":
+    "เลือกแอปเดลิเวอรีที่ร้านนี้ยอมรับใน POS ค่าเหล่านี้จะถูกบันทึกแยกตามร้านในอุปกรณ์นี้",
   "settings.delivery.supportedApps": "แอปที่รองรับ",
-  "settings.delivery.supportedAppsDescription": "ปิดแอปที่ร้านไม่ใช้งาน โดยต้องเหลืออย่างน้อย 1 แอปที่เปิดใช้งาน",
+  "settings.delivery.supportedAppsDescription":
+    "ปิดแอปที่ร้านไม่ใช้งาน โดยต้องเหลืออย่างน้อย 1 แอปที่เปิดใช้งาน",
   "settings.delivery.available": "พร้อมใช้ในออเดอร์เดลิเวอรี",
   "settings.delivery.hidden": "ซ่อนจากออเดอร์เดลิเวอรี",
   "settings.delivery.enabled": "เปิดใช้งาน",
   "settings.delivery.disabled": "ปิดใช้งาน",
   "settings.delivery.addCustomPlatform": "เพิ่มแอปเดลิเวอรี",
-  "settings.delivery.addCustomPlatformDescription": "เพิ่มพาร์ทเนอร์เดลิเวอรีอื่นที่ร้านรองรับ โดยรายการใหม่จะถูกเปิดใช้งานทันที",
+  "settings.delivery.addCustomPlatformDescription":
+    "เพิ่มพาร์ทเนอร์เดลิเวอรีอื่นที่ร้านรองรับ โดยรายการใหม่จะถูกเปิดใช้งานทันที",
   "settings.delivery.platformName": "ชื่อแพลตฟอร์ม",
   "settings.delivery.platformNamePlaceholder": "เพิ่มแอปเดลิเวอรีเอง",
   "settings.delivery.addPlatform": "เพิ่มแพลตฟอร์ม",
 
   "settings.quickNotes.title": "โน้ตด่วน",
-  "settings.quickNotes.description": "จัดการ shortcut ของโน้ตที่พนักงานสามารถแตะได้ทันทีขณะรับออเดอร์ใน POS",
+  "settings.quickNotes.description":
+    "จัดการ shortcut ของโน้ตที่พนักงานสามารถแตะได้ทันทีขณะรับออเดอร์ใน POS",
   "settings.quickNotes.presetNotes": "โน้ตที่ตั้งไว้",
-  "settings.quickNotes.presetNotesDescription": "โน้ตเหล่านี้จะแสดงใน dialog ของ POS ควรเก็บเฉพาะคำขอที่ใช้บ่อยเพื่อให้บริการเร็วขึ้น",
+  "settings.quickNotes.presetNotesDescription":
+    "โน้ตเหล่านี้จะแสดงใน dialog ของ POS ควรเก็บเฉพาะคำขอที่ใช้บ่อยเพื่อให้บริการเร็วขึ้น",
   "settings.quickNotes.resetDefault": "รีเซ็ตค่าเริ่มต้น",
   "settings.quickNotes.addQuickNote": "เพิ่มโน้ตด่วน",
-  "settings.quickNotes.addQuickNoteDescription": "เพิ่ม shortcut เฉพาะของร้าน เช่น คำขอพิเศษหรือคำสั่งถึงครัว",
+  "settings.quickNotes.addQuickNoteDescription":
+    "เพิ่ม shortcut เฉพาะของร้าน เช่น คำขอพิเศษหรือคำสั่งถึงครัว",
   "settings.quickNotes.quickNote": "โน้ตด่วน",
   "settings.quickNotes.quickNotePlaceholder": "เพิ่มโน้ตด่วน",
   "settings.quickNotes.addNote": "เพิ่มโน้ต",
@@ -314,7 +341,8 @@ export const thMessages = {
   "pos.cart.notePrefix": "หมายเหตุ: {note}",
   "pos.noteDialog.title": "โน้ตสำหรับ {name}",
   "pos.noteDialog.fallbackTitle": "โน้ตสินค้า",
-  "pos.noteDialog.description": "เพิ่มหมายเหตุให้ครัวสำหรับสินค้านี้ เช่น ไม่ใส่หอม หรือเผ็ดมาก",
+  "pos.noteDialog.description":
+    "เพิ่มหมายเหตุให้ครัวสำหรับสินค้านี้ เช่น ไม่ใส่หอม หรือเผ็ดมาก",
   "pos.noteDialog.quickNotes": "โน้ตด่วน",
   "pos.noteDialog.placeholder": "เช่น ไม่หวาน, ไม่เอาผัก",
   "pos.noteDialog.clearNote": "ล้างโน้ต",
@@ -337,8 +365,10 @@ export const thMessages = {
   "pos.cart.deliveryPlatform": "แพลตฟอร์มเดลิเวอรี",
   "pos.cart.deliveryOrderNumber": "เลขออเดอร์จากแอป",
   "pos.cart.deliveryOrderNumberPlaceholder": "เช่น GF-1234 / LM-5678",
-  "pos.cart.deliveryOrderNumberHelp": "ใช้เลขนี้ให้ครัวเทียบกับออเดอร์ในแอปเดลิเวอรี",
-  "pos.deliveryDialog.description": "เลือกแพลตฟอร์มเดลิเวอรีก่อน ส่วนเลขออเดอร์จากแอปใส่เพิ่มได้ถ้าต้องการ",
+  "pos.cart.deliveryOrderNumberHelp":
+    "ใช้เลขนี้ให้ครัวเทียบกับออเดอร์ในแอปเดลิเวอรี",
+  "pos.deliveryDialog.description":
+    "เลือกแพลตฟอร์มเดลิเวอรีก่อน ส่วนเลขออเดอร์จากแอปใส่เพิ่มได้ถ้าต้องการ",
   "pos.deliveryDialog.optional": "ไม่บังคับ",
   "pos.deliveryDialog.platformRequired": "กรุณาเลือกแพลตฟอร์มเดลิเวอรี",
   "pos.cart.emptyTitle": "ตะกร้าว่าง",
@@ -349,8 +379,10 @@ export const thMessages = {
   "pos.cart.total": "รวม",
   "pos.cart.categoriesLabel": "หมวดหมู่สินค้า",
   "pos.cart.selectTableBeforePay": "เลือกโต๊ะก่อนชำระเงิน",
-  "pos.cart.selectDeliveryPlatformBeforePay": "เลือกแพลตฟอร์มเดลิเวอรีก่อนชำระเงิน",
-  "pos.cart.chooseOrderTypeBeforePay": "เลือกประเภทออเดอร์ก่อนเพื่อไปหน้าชำระเงิน",
+  "pos.cart.selectDeliveryPlatformBeforePay":
+    "เลือกแพลตฟอร์มเดลิเวอรีก่อนชำระเงิน",
+  "pos.cart.chooseOrderTypeBeforePay":
+    "เลือกประเภทออเดอร์ก่อนเพื่อไปหน้าชำระเงิน",
   "pos.cart.removeItem": "ลบสินค้า",
   "pos.cart.decreaseQuantity": "ลดจำนวน",
   "pos.cart.increaseQuantity": "เพิ่มจำนวน",
@@ -386,7 +418,8 @@ export const thMessages = {
   "pos.payment.stepMethod": "1. เลือกวิธีชำระเงิน",
   "pos.payment.stepComplete": "2. ทำรายการชำระเงินให้เสร็จ",
   "pos.payment.stepConfirm": "3. ตรวจสอบแล้วกดชำระ",
-  "pos.payment.nextStepCash": "เลือกรับเงินสดหรือแตะจำนวนลัด แล้วกดปุ่มชำระด้านล่าง",
+  "pos.payment.nextStepCash":
+    "เลือกรับเงินสดหรือแตะจำนวนลัด แล้วกดปุ่มชำระด้านล่าง",
   "pos.payment.nextStepQr": "ให้ลูกค้าสแกน QR จากนั้นกดปุ่มชำระด้านล่าง",
   "pos.payment.readyToConfirm": "เมื่อข้อมูลครบแล้ว กดปุ่มชำระด้านล่างได้เลย",
   "pos.payment.cash": "เงินสด",
@@ -394,7 +427,8 @@ export const thMessages = {
   "pos.payment.qrTitle": "สแกน QR เพื่อชำระเงิน",
   "pos.payment.qrPlaceholder": "QR placeholder",
   "pos.payment.scanToPay": "สแกนเพื่อชำระ {amount}",
-  "pos.payment.qrConfirmHint": "ให้ลูกค้าสแกน QR แล้วกดชำระเมื่อยืนยันว่าได้รับเงินแล้ว",
+  "pos.payment.qrConfirmHint":
+    "ให้ลูกค้าสแกน QR แล้วกดชำระเมื่อยืนยันว่าได้รับเงินแล้ว",
   "pos.payment.cashTitle": "รับเงินสด",
   "pos.payment.receivedAmount": "จำนวนเงินที่รับ",
   "pos.payment.quickAmounts": "จำนวนลัด",
@@ -513,7 +547,8 @@ export const thMessages = {
   "kds.stats.level.veryBusy": "ยุ่งมาก",
   "kds.stats.overLimit": "เกินลิมิต",
   "kds.empty.noStationTitle": "ยังไม่มีสเตชัน",
-  "kds.empty.noStationDescription": "กรุณาสร้างสเตชันเพื่อใช้ KDS ในโหมดสเตชันเดียว",
+  "kds.empty.noStationDescription":
+    "กรุณาสร้างสเตชันเพื่อใช้ KDS ในโหมดสเตชันเดียว",
   "kds.empty.pendingTitle": "ไม่มีออเดอร์ค้าง",
   "kds.empty.description": "รายการจะแสดงขึ้นโดยอัตโนมัติ",
   "kds.card.note": "หมายเหตุ: {note}",
@@ -570,9 +605,11 @@ export const thMessages = {
   "transaction.empty.title": "ไม่พบรายการออเดอร์",
   "transaction.empty.description": "ลองเปลี่ยนตัวกรองหรือค้นหาด้วยเลขออเดอร์",
   "transaction.empty.noOrdersTitle": "ยังไม่มีออเดอร์",
-  "transaction.empty.noOrdersDescription": "เมื่อเริ่มขายแล้ว ออเดอร์จะแสดงที่นี่",
+  "transaction.empty.noOrdersDescription":
+    "เมื่อเริ่มขายแล้ว ออเดอร์จะแสดงที่นี่",
   "transaction.empty.filteredTitle": "ไม่พบออเดอร์ที่ตรงกับตัวกรอง",
-  "transaction.empty.filteredDescription": "ลองล้างคำค้นหาหรือเปลี่ยนสถานะออเดอร์",
+  "transaction.empty.filteredDescription":
+    "ลองล้างคำค้นหาหรือเปลี่ยนสถานะออเดอร์",
   "transaction.card.orderType.dineIn": "ทานที่ร้าน",
   "transaction.card.orderType.togo": "กลับบ้าน",
   "transaction.card.orderType.delivery": "เดลิเวอรี",
@@ -580,7 +617,8 @@ export const thMessages = {
   "transaction.card.itemCount": "{count} รายการ",
   "transaction.card.productFallback": "สินค้า",
   "transaction.detail.notFound.title": "ไม่พบรายการออเดอร์",
-  "transaction.detail.notFound.description": "รายการนี้อาจถูกลบ หรือลิงก์ไม่ถูกต้อง",
+  "transaction.detail.notFound.description":
+    "รายการนี้อาจถูกลบ หรือลิงก์ไม่ถูกต้อง",
   "transaction.detail.section.status": "สถานะออเดอร์",
   "transaction.detail.section.info": "ข้อมูลออเดอร์",
   "transaction.detail.section.items": "รายการสินค้า",
@@ -603,11 +641,13 @@ export const thMessages = {
   "transaction.detail.summary.subtotal": "ยอดรวม ({count} รายการ)",
   "transaction.detail.summary.total": "รวมสุทธิ",
   "transaction.detail.edit.title": "แก้ไขออเดอร์",
-  "transaction.detail.edit.description": "เปลี่ยนโต๊ะ หรือปรับจำนวนสินค้าได้ หากต้องการลบสินค้าบางรายการให้ลดเหลือ 0",
+  "transaction.detail.edit.description":
+    "เปลี่ยนโต๊ะ หรือปรับจำนวนสินค้าได้ หากต้องการลบสินค้าบางรายการให้ลดเหลือ 0",
   "transaction.detail.edit.table": "โต๊ะ",
   "transaction.detail.edit.tablePlaceholder": "เช่น A12",
   "transaction.detail.edit.items": "สินค้า",
-  "transaction.detail.edit.removedAll": "รายการสินค้าถูกลบทั้งหมดแล้ว หากต้องการยกเลิกออเดอร์ กรุณาใช้ปุ่ม \"ยกเลิกรายการ\"",
+  "transaction.detail.edit.removedAll":
+    'รายการสินค้าถูกลบทั้งหมดแล้ว หากต้องการยกเลิกออเดอร์ กรุณาใช้ปุ่ม "ยกเลิกรายการ"',
   "transaction.detail.edit.close": "ปิด",
   "transaction.detail.edit.save": "บันทึกการแก้ไข",
   "transaction.detail.edit.increase": "เพิ่มจำนวน",
@@ -617,7 +657,8 @@ export const thMessages = {
   "transaction.detail.nextAction.markReady": "ทำเสร็จแล้ว",
   "transaction.detail.nextAction.revert": "ย้อนกลับเป็นกำลังทำ",
   "transaction.detail.state.inProgress": "ออเดอร์นี้กำลังทำ",
-  "transaction.detail.state.inProgressHint": "กดปุ่ม \"ทำเสร็จแล้ว\" เมื่อออเดอร์พร้อมเสิร์ฟ",
+  "transaction.detail.state.inProgressHint":
+    'กดปุ่ม "ทำเสร็จแล้ว" เมื่อออเดอร์พร้อมเสิร์ฟ',
   "transaction.detail.state.done": "ออเดอร์นี้เสร็จแล้ว · เวลา {time}",
   "transaction.detail.state.cancelled": "ออเดอร์นี้ถูกยกเลิก",
   "transaction.list.timeline.today": "วันนี้",
@@ -668,13 +709,15 @@ export const thMessages = {
   "onboarding.shopType.togo": "กลับบ้านอย่างเดียว",
   "onboarding.shopType.delivery": "เดลิเวอรี่",
   "demo.trial.title": "ทดลองระบบได้ทันที โดยไม่ต้องสมัครสมาชิก",
-  "demo.trial.subtitle": "เลือกรูปแบบร้านที่ใกล้กับร้านคุณ แล้วเข้าไปลองใช้งานได้ทันที",
+  "demo.trial.subtitle":
+    "เลือกรูปแบบร้านที่ใกล้กับร้านคุณ แล้วเข้าไปลองใช้งานได้ทันที",
   "demo.trial.selectedBadge": "เลือกแล้ว",
   "demo.trial.start": "เริ่มทดลองฟรี",
   "demo.trial.starting": "กำลังเตรียมร้านเดโม...",
   "demo.trial.startError": "เริ่มเดโมไม่สำเร็จ กรุณาลองอีกครั้ง",
   "demo.trial.storePreset.cafe": "คาเฟ่",
-  "demo.trial.storePreset.cafeDescription": "เครื่องดื่ม เบเกอรี่ และออเดอร์หน้าร้าน",
+  "demo.trial.storePreset.cafeDescription":
+    "เครื่องดื่ม เบเกอรี่ และออเดอร์หน้าร้าน",
   "demo.trial.storePreset.fastFood": "ฟาสต์ฟู้ด",
   "demo.trial.storePreset.fastFoodDescription": "เมนูเร็ว คิวสั้น และเสิร์ฟไว",
   "demo.trial.storePreset.madeToOrder": "อาหารตามสั่ง",
@@ -701,7 +744,8 @@ export const thMessages = {
   "auth.register.submit": "สร้างบัญชี",
   "auth.register.hasAccount": "มีบัญชีอยู่แล้ว?",
   "auth.register.signInLink": "เข้าสู่ระบบ",
-  "auth.register.emailOrPhoneHint": "กรอกอีเมล หรือเบอร์มือถือไทย 10 หลัก (เช่น 0812345678)",
+  "auth.register.emailOrPhoneHint":
+    "กรอกอีเมล หรือเบอร์มือถือไทย 10 หลัก (เช่น 0812345678)",
   "auth.fields.emailLabel": "อีเมล",
   "auth.fields.emailPlaceholder": "you@example.com",
   "auth.fields.phoneLabel": "เบอร์มือถือ",
@@ -716,7 +760,8 @@ export const thMessages = {
   "auth.google.unavailable": "Google ยังไม่พร้อมใช้งาน",
   "auth.errors.emailRequired": "กรุณากรอกอีเมล",
   "auth.errors.emailInvalid": "รูปแบบอีเมลไม่ถูกต้อง",
-  "auth.errors.phoneInvalid": "กรอกเบอร์มือถือไทย 10 หลัก ขึ้นต้นด้วย 0 (เช่น 0812345678)",
+  "auth.errors.phoneInvalid":
+    "กรอกเบอร์มือถือไทย 10 หลัก ขึ้นต้นด้วย 0 (เช่น 0812345678)",
   "auth.errors.identifierInvalid": "กรอกอีเมลหรือเบอร์มือถือให้ถูกต้อง",
   "auth.errors.emailOrPhoneRequired": "กรุณากรอกอีเมลหรือเบอร์มือถือ",
   "auth.errors.emailTaken": "อีเมลนี้ถูกใช้งานแล้ว",
@@ -735,7 +780,8 @@ export const thMessages = {
   "store.dashboard.card.open": "เปิดร้าน",
   "store.dashboard.create.locked.title": "เพิ่มร้าน",
   "store.dashboard.create.locked.badge": "เร็วๆ นี้",
-  "store.dashboard.create.locked.hint": "ระบบหลายร้านจะเปิดใช้งานในแพ็กเกจถัดไป",
+  "store.dashboard.create.locked.hint":
+    "ระบบหลายร้านจะเปิดใช้งานในแพ็กเกจถัดไป",
   "store.dashboard.empty.title": "ยังไม่มีร้าน",
   "store.dashboard.empty.description": "สร้างร้านแรกเพื่อเริ่มต้น",
   "store.dashboard.empty.action": "สร้างร้าน",
@@ -743,5 +789,6 @@ export const thMessages = {
 
   "settings.stations.addLocked.label": "เพิ่มสถานี",
   "settings.stations.addLocked.badge": "เร็วๆ นี้",
-  "settings.stations.addLocked.hint": "การสร้างสถานีเองจะเปิดใช้งานในแพ็กเกจถัดไป",
+  "settings.stations.addLocked.hint":
+    "การสร้างสถานีเองจะเปิดใช้งานในแพ็กเกจถัดไป",
 } as const;

@@ -64,7 +64,8 @@ export function AlphanumericKeypad({
     valueRef.current = nextValue;
     onChange(nextValue);
   };
-  const append = (next: string) => commit(`${valueRef.current}${next}`.slice(0, maxLength));
+  const append = (next: string) =>
+    commit(`${valueRef.current}${next}`.slice(0, maxLength));
   const clear = () => commit("");
   const backspace = () => commit(valueRef.current.slice(0, -1));
   const handleModeChange = (next: KeypadMode) => {
@@ -102,12 +103,16 @@ export function AlphanumericKeypad({
             {value ? (
               <span className="font-mono text-input tabular-nums text-text-primary">
                 {value}
-                <span className="ml-px inline-block w-px translate-y-[1px] animate-pulse bg-text-primary align-middle text-input leading-none">&nbsp;</span>
+                <span className="ml-px inline-block w-px translate-y-[1px] animate-pulse bg-text-primary align-middle text-input leading-none">
+                  &nbsp;
+                </span>
               </span>
             ) : (
               <span className="font-mono text-input text-input-placeholder">
                 {placeholder}
-                <span className="ml-px inline-block w-px translate-y-[1px] animate-pulse bg-text-tertiary align-middle text-input leading-none">&nbsp;</span>
+                <span className="ml-px inline-block w-px translate-y-[1px] animate-pulse bg-text-tertiary align-middle text-input leading-none">
+                  &nbsp;
+                </span>
               </span>
             )}
           </div>
@@ -133,7 +138,7 @@ export function AlphanumericKeypad({
                   "flex h-[34px] flex-1 items-center justify-center rounded-full px-4 text-segment font-segment transition-colors duration-[var(--motion-fast)]",
                   isActive
                     ? "bg-segment-active-bg text-segment-active-text"
-                    : "text-segment-inactive-text hover:text-segment-inactive-text-hover"
+                    : "text-segment-inactive-text hover:text-segment-inactive-text-hover",
                 )}
               >
                 {option.icon}
@@ -196,10 +201,7 @@ export function AlphanumericKeypad({
       ) : (
         <div className="mt-3 space-y-2">
           {englishRows.map((row) => (
-            <div
-              key={row.keys.join("")}
-              className={cn("grid gap-2", row.cols)}
-            >
+            <div key={row.keys.join("")} className={cn("grid gap-2", row.cols)}>
               {row.keys.map((letter) => (
                 <Button
                   key={letter}

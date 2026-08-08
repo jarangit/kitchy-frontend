@@ -141,7 +141,9 @@ const MobileTransactionCard = ({
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <p className="text-body font-semibold text-text-primary">#{tx.orderNumber}</p>
+              <p className="text-body font-semibold text-text-primary">
+                #{tx.orderNumber}
+              </p>
               <Badge variant={flowVariant(flow)} size="md">
                 {t(flowLabelKey(flow))}
               </Badge>
@@ -161,7 +163,11 @@ const MobileTransactionCard = ({
         <div className="flex flex-wrap items-center gap-2">
           {flow === "IN_PROGRESS" && (
             <>
-              <Button size="sm" onClick={() => onMarkReady(tx)} disabled={isUpdating}>
+              <Button
+                size="sm"
+                onClick={() => onMarkReady(tx)}
+                disabled={isUpdating}
+              >
                 {t("transaction.list.quickAction.markReady")}
               </Button>
               <Button
@@ -193,7 +199,8 @@ const TransactionListPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { transactions, isLoading, updateTransaction, isUpdating, refetch } = useTransactionService();
+  const { transactions, isLoading, updateTransaction, isUpdating, refetch } =
+    useTransactionService();
 
   const [filter, setFilter] = useState<{
     search: string;
@@ -401,7 +408,8 @@ const TransactionListPage = () => {
   );
 
   const hasAny = filteredTransactions.length > 0;
-  const hasActiveFilters = filter.search.trim().length > 0 || filter.status !== "ALL";
+  const hasActiveFilters =
+    filter.search.trim().length > 0 || filter.status !== "ALL";
   const emptyTitle = hasActiveFilters
     ? t("transaction.empty.filteredTitle")
     : t("transaction.empty.noOrdersTitle");
@@ -454,8 +462,12 @@ const TransactionListPage = () => {
                 key={tx.id}
                 tx={tx}
                 storeId={storeId}
-                onMarkReady={(nextTx) => handleQuickStatusUpdate(nextTx, "READY")}
-                onCancel={(nextTx) => handleQuickStatusUpdate(nextTx, "CANCELLED")}
+                onMarkReady={(nextTx) =>
+                  handleQuickStatusUpdate(nextTx, "READY")
+                }
+                onCancel={(nextTx) =>
+                  handleQuickStatusUpdate(nextTx, "CANCELLED")
+                }
                 isUpdating={isUpdating}
               />
             ))}

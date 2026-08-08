@@ -6,11 +6,11 @@ import { appBus } from "@/shared/events/app-events";
 import type { ICreateOrder } from "@/features/order/types/order.dto";
 import { AxiosError } from "axios";
 
-const unwrapApiData = <T,>(response: any): T | undefined => {
+const unwrapApiData = <T>(response: any): T | undefined => {
   return response?.data?.data as T | undefined;
 };
 
-const toArray = <T,>(value: unknown): T[] => {
+const toArray = <T>(value: unknown): T[] => {
   return Array.isArray(value) ? (value as T[]) : [];
 };
 
@@ -25,14 +25,17 @@ export function useOrderService({
   stationId?: string;
   orderId?: string;
 }) {
-  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   // READ
   const ordersQuery = useQuery({
     queryKey: ["orders", storeId],
     queryFn: async () => {
       try {
-        const response = await orderApiService.getOrdersByStoreId(storeId as string);
+        const response = await orderApiService.getOrdersByStoreId(
+          storeId as string,
+        );
         return toArray<any>(unwrapApiData<any>(response));
       } catch (error) {
         if (isNotFound(error)) {
@@ -48,7 +51,9 @@ export function useOrderService({
     queryKey: ["ordersByStation", stationId],
     queryFn: async () => {
       try {
-        const response = await orderApiService.getOrdersByStationId(stationId as string);
+        const response = await orderApiService.getOrdersByStationId(
+          stationId as string,
+        );
         return toArray<any>(unwrapApiData<any>(response));
       } catch (error) {
         if (isNotFound(error)) {
@@ -80,7 +85,7 @@ export function useOrderService({
         data.tableNumber,
         data.customerName,
         data.deliveryPlatform,
-        data.deliveryOrderNumber
+        data.deliveryOrderNumber,
       ),
     onSuccess: (response) => {
       const created = unwrapApiData<{ id?: string }>(response);

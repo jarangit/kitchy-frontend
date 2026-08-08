@@ -51,8 +51,7 @@ const RegisterPage = () => {
   // Mirror the login page guard — only mount the Google button when an
   // OAuth client ID is configured to avoid `useGoogleLogin` crashes.
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as
-    | string
-    | undefined;
+    string | undefined;
   const googleEnabled = Boolean(googleClientId);
 
   const validate = (): {
@@ -129,7 +128,8 @@ const RegisterPage = () => {
     try {
       await auth?.register({
         email: kind === "email" ? value : undefined,
-        phoneNumber: kind === "phone" ? normalizedPhone ?? undefined : undefined,
+        phoneNumber:
+          kind === "phone" ? (normalizedPhone ?? undefined) : undefined,
         password,
       });
     } catch (err: unknown) {
@@ -226,7 +226,10 @@ const RegisterPage = () => {
 
             <p className="text-center text-body-sm text-text-secondary">
               {t("auth.register.hasAccount")}{" "}
-              <Link to="/login" className="text-accent-text underline underline-offset-4">
+              <Link
+                to="/login"
+                className="text-accent-text underline underline-offset-4"
+              >
                 {t("auth.register.signInLink")}
               </Link>
             </p>

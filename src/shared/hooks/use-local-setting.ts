@@ -29,7 +29,7 @@ export function useLocalSetting<T>(key: string, initial: T) {
 
   const update = useCallback((next: T | ((prev: T) => T)) => {
     setValue((prev) =>
-      typeof next === "function" ? (next as (p: T) => T)(prev) : next
+      typeof next === "function" ? (next as (p: T) => T)(prev) : next,
     );
   }, []);
 

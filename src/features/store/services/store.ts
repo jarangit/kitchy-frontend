@@ -1,6 +1,12 @@
 import axiosClient from "@/shared/services/axios-client";
-import type { ICreateStore, IUpdateStore } from "@/features/store/types/store.dto";
-import { IS_DEMO_MODE, getAdapter } from "@/shared/services/adapters/data-adapter";
+import type {
+  ICreateStore,
+  IUpdateStore,
+} from "@/features/store/types/store.dto";
+import {
+  IS_DEMO_MODE,
+  getAdapter,
+} from "@/shared/services/adapters/data-adapter";
 
 export const storeServiceApi = {
   getByUserId: async (userId: string) => {
@@ -19,7 +25,8 @@ export const storeServiceApi = {
     return response.data;
   },
   updateStore: async (storeId: string, storeData: IUpdateStore) => {
-    if (IS_DEMO_MODE) return (await getAdapter()).updateStore(storeId, storeData);
+    if (IS_DEMO_MODE)
+      return (await getAdapter()).updateStore(storeId, storeData);
     const response = await axiosClient.patch(`/stores/${storeId}`, storeData);
     return response.data;
   },

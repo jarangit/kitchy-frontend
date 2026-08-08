@@ -38,11 +38,7 @@ export default function RoleCard({
           </>
         )}
       </p>
-      <Button
-        type="button"
-        className="w-full"
-        onClick={onClick}
-      >
+      <Button type="button" className="w-full" onClick={onClick}>
         Open Station
       </Button>
     </Card>

@@ -15,9 +15,11 @@ export const onboardingStorageKeys = {
   /** Active flag — set while the wizard is still live for this store. */
   active: (storeId: string) => `${STORAGE_PREFIX}.active.${storeId}`,
   /** User dismissed the POS coach marks. */
-  posTourSkipped: (storeId: string) => `${STORAGE_PREFIX}.posTourSkipped.${storeId}`,
+  posTourSkipped: (storeId: string) =>
+    `${STORAGE_PREFIX}.posTourSkipped.${storeId}`,
   /** First order was placed within the onboarding session. */
-  firstOrderDone: (storeId: string) => `${STORAGE_PREFIX}.firstOrderDone.${storeId}`,
+  firstOrderDone: (storeId: string) =>
+    `${STORAGE_PREFIX}.firstOrderDone.${storeId}`,
   /** Selected shop type (drives default orderType in cart). */
   shopType: (storeId: string) => `${STORAGE_PREFIX}.shopType.${storeId}`,
 } as const;
@@ -45,10 +47,13 @@ function writeBool(key: string, value: boolean): void {
 }
 
 export const onboardingStorage = {
-  isCompleted: (storeId: string) => readBool(onboardingStorageKeys.completed(storeId)),
-  markCompleted: (storeId: string) => writeBool(onboardingStorageKeys.completed(storeId), true),
+  isCompleted: (storeId: string) =>
+    readBool(onboardingStorageKeys.completed(storeId)),
+  markCompleted: (storeId: string) =>
+    writeBool(onboardingStorageKeys.completed(storeId), true),
 
-  isActive: (storeId: string) => readBool(onboardingStorageKeys.active(storeId)),
+  isActive: (storeId: string) =>
+    readBool(onboardingStorageKeys.active(storeId)),
   setActive: (storeId: string, active: boolean) =>
     writeBool(onboardingStorageKeys.active(storeId), active),
 
@@ -65,7 +70,9 @@ export const onboardingStorage = {
   getShopType: (storeId: string): string | null => {
     if (typeof window === "undefined") return null;
     try {
-      return window.localStorage.getItem(onboardingStorageKeys.shopType(storeId));
+      return window.localStorage.getItem(
+        onboardingStorageKeys.shopType(storeId),
+      );
     } catch {
       return null;
     }
@@ -73,7 +80,10 @@ export const onboardingStorage = {
   setShopType: (storeId: string, shopType: string) => {
     if (typeof window === "undefined") return;
     try {
-      window.localStorage.setItem(onboardingStorageKeys.shopType(storeId), shopType);
+      window.localStorage.setItem(
+        onboardingStorageKeys.shopType(storeId),
+        shopType,
+      );
     } catch {
       /* ignore */
     }
@@ -84,8 +94,12 @@ export const onboardingStorage = {
     try {
       window.localStorage.removeItem(onboardingStorageKeys.completed(storeId));
       window.localStorage.removeItem(onboardingStorageKeys.active(storeId));
-      window.localStorage.removeItem(onboardingStorageKeys.posTourSkipped(storeId));
-      window.localStorage.removeItem(onboardingStorageKeys.firstOrderDone(storeId));
+      window.localStorage.removeItem(
+        onboardingStorageKeys.posTourSkipped(storeId),
+      );
+      window.localStorage.removeItem(
+        onboardingStorageKeys.firstOrderDone(storeId),
+      );
       window.localStorage.removeItem(onboardingStorageKeys.shopType(storeId));
     } catch {
       /* ignore */

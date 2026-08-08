@@ -5,10 +5,7 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 
 export type TransactionFilterStatus =
-  | "ALL"
-  | "IN_PROGRESS"
-  | "DONE"
-  | "CANCELLED";
+  "ALL" | "IN_PROGRESS" | "DONE" | "CANCELLED";
 
 export interface TransactionFilterCounts {
   all: number;

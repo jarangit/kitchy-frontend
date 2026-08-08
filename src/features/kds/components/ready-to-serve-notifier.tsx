@@ -39,7 +39,7 @@ export function ReadyToServeNotifier() {
   const storeId = useAppSelector((state) => state.currentStore.storeId);
   const { items } = useReadyToServeItems();
   const [dismissed, setDismissed] = useState<Set<string>>(() =>
-    readReadyToServeDismissed(storeId)
+    readReadyToServeDismissed(storeId),
   );
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -49,7 +49,7 @@ export function ReadyToServeNotifier() {
 
   const visibleItems = useMemo(
     () => items.filter((item) => !dismissed.has(item.id)),
-    [items, dismissed]
+    [items, dismissed],
   );
 
   useEffect(() => {
@@ -90,10 +90,14 @@ export function ReadyToServeNotifier() {
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-warning-bg text-warning">
                     <LuChefHat size={20} />
                   </span>
-                  <h2 className="text-heading text-text-primary">{t("serve.drawer.title")}</h2>
+                  <h2 className="text-heading text-text-primary">
+                    {t("serve.drawer.title")}
+                  </h2>
                 </div>
                 <p className="text-body text-text-secondary">
-                  {t("serve.drawer.subtitle", { count: String(visibleItems.length) })}
+                  {t("serve.drawer.subtitle", {
+                    count: String(visibleItems.length),
+                  })}
                 </p>
               </div>
               <IconButton
@@ -106,20 +110,22 @@ export function ReadyToServeNotifier() {
 
             {visibleItems.length === 0 ? (
               <Card className="text-center">
-                <p className="text-title text-text-primary">{t("serve.empty.title")}</p>
-                <p className="mt-1 text-body text-text-secondary">{t("serve.empty.body")}</p>
+                <p className="text-title text-text-primary">
+                  {t("serve.empty.title")}
+                </p>
+                <p className="mt-1 text-body text-text-secondary">
+                  {t("serve.empty.body")}
+                </p>
               </Card>
             ) : (
               <div className="space-y-3">
                 {visibleItems.map((item) => (
-                  <Card
-                    as="article"
-                    key={item.id}
-                    padding="sm"
-                  >
+                  <Card as="article" key={item.id} padding="sm">
                     <div className="mb-3 flex items-start justify-between gap-3">
                       <div>
-                        <p className="text-title text-text-primary">{getItemContext(item)}</p>
+                        <p className="text-title text-text-primary">
+                          {getItemContext(item)}
+                        </p>
                         <p className="text-body text-text-secondary">
                           {t("serve.item.meta", {
                             order: item.orderNumber,
@@ -138,7 +144,9 @@ export function ReadyToServeNotifier() {
                         {item.productName} x{item.quantity}
                       </p>
                       {item.note && (
-                        <p className="mt-1 text-body-sm text-text-secondary">{item.note}</p>
+                        <p className="mt-1 text-body-sm text-text-secondary">
+                          {item.note}
+                        </p>
                       )}
                     </InsetPanel>
                     <div className="mt-4 flex gap-2">

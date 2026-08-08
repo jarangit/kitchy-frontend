@@ -16,7 +16,7 @@ const currentStoreSlice = createSlice({
   reducers: {
     setCurrentStore: (
       state,
-      action: PayloadAction<{ storeId: string; storeName?: string | null }>
+      action: PayloadAction<{ storeId: string; storeName?: string | null }>,
     ) => {
       state.storeId = action.payload.storeId;
       state.storeName = action.payload.storeName ?? null;

@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from "@tanstack/react-query";
 import { userServiceApi } from "@/features/auth/services/user";
 import { appBus } from "@/shared/events/app-events";
 import { authChannel } from "@/features/auth/events/auth-channel";
@@ -16,7 +21,7 @@ export const hasAuthToken = () =>
  */
 function persistTokenAndNotify(
   accessToken: string | undefined,
-  queryClient: QueryClient
+  queryClient: QueryClient,
 ) {
   if (!accessToken) return;
   localStorage.setItem(TOKEN_KEY, accessToken);
@@ -105,9 +110,7 @@ export const useGoogleLoginMutation = () => {
  * Clears the auth token and every cached query so no stale
  * user data lingers after logout. Notifies sibling tabs too.
  */
-export const clearAuthState = (queryClient: {
-  clear: () => void;
-}) => {
+export const clearAuthState = (queryClient: { clear: () => void }) => {
   localStorage.removeItem(TOKEN_KEY);
   queryClient.clear();
   appBus.emit("auth:logout", {});

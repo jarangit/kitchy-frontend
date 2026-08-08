@@ -38,7 +38,9 @@ export function SettingsLayout({ storeId, children }: Props) {
           </div>
         </aside>
 
-        <main className="min-w-0 flex-1 md:max-w-[880px] lg:max-w-[960px]">{children}</main>
+        <main className="min-w-0 flex-1 md:max-w-[880px] lg:max-w-[960px]">
+          {children}
+        </main>
       </div>
     </div>
   );

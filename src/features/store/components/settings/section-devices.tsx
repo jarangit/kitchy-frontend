@@ -1,8 +1,5 @@
 import { LuMonitor, LuPlus } from "react-icons/lu";
-import {
-  SettingGroup,
-  SettingRow,
-} from "@/shared/components/ui/setting-row";
+import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
 

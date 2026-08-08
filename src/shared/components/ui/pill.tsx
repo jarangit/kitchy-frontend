@@ -14,7 +14,12 @@ const variantStyles: Record<PillVariant, string> = {
   danger: "bg-danger-bg text-danger",
 };
 
-export function Pill({ variant = "surface", className, children, ...props }: Props) {
+export function Pill({
+  variant = "surface",
+  className,
+  children,
+  ...props
+}: Props) {
   return (
     <span
       className={cn(

@@ -16,11 +16,19 @@ import TablePickerDialog from "./table-picker-dialog";
 import ItemNoteDialog from "./item-note-dialog";
 import { DeliveryDetailsDialog } from "./delivery-details-dialog";
 import { Button } from "@/shared/components/ui/button";
-import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+import {
+  Dialog,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
-import { getDefaultDeliveryPlatforms, getDefaultQuickNotes } from "@/shared/i18n/presets";
+import {
+  getDefaultDeliveryPlatforms,
+  getDefaultQuickNotes,
+} from "@/shared/i18n/presets";
 import { cn } from "@/shared/utils/cn";
 
 const ORDER_TYPE_VALUES: OrderType[] = ["DINE_IN", "TOGO", "DELIVERY"];
@@ -40,24 +48,29 @@ const ORDER_TYPE_ICONS = {
 const ORDER_TYPE_STYLES = {
   DINE_IN: {
     badge: "border-emerald-600 bg-emerald-600 text-white",
-    activeChip: "border-emerald-300 bg-emerald-50 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50",
+    activeChip:
+      "border-emerald-300 bg-emerald-50 text-emerald-700 hover:border-emerald-300 hover:bg-emerald-50",
   },
   TOGO: {
     badge: "border-amber-500 bg-amber-500 text-white",
-    activeChip: "border-amber-300 bg-amber-50 text-amber-700 hover:border-amber-300 hover:bg-amber-50",
+    activeChip:
+      "border-amber-300 bg-amber-50 text-amber-700 hover:border-amber-300 hover:bg-amber-50",
   },
   DELIVERY: {
     badge: "border-sky-600 bg-sky-600 text-white",
-    activeChip: "border-sky-300 bg-sky-50 text-sky-700 hover:border-sky-300 hover:bg-sky-50",
+    activeChip:
+      "border-sky-300 bg-sky-50 text-sky-700 hover:border-sky-300 hover:bg-sky-50",
   },
 } as const;
 
 const hasQuickNotes = (value: unknown): value is string[] => {
-  return Array.isArray(value) && value.every((item) => typeof item === "string");
+  return (
+    Array.isArray(value) && value.every((item) => typeof item === "string")
+  );
 };
 
 const hasEnabledPlatforms = (
-  value: string[] | { enabledPlatforms?: string[] }
+  value: string[] | { enabledPlatforms?: string[] },
 ): value is { enabledPlatforms: string[] } => {
   return !Array.isArray(value) && Array.isArray(value.enabledPlatforms);
 };
@@ -106,15 +119,18 @@ const CartArea = ({
   const { t, language } = useTranslation();
   const defaultDeliveryPlatforms = useMemo(
     () => getDefaultDeliveryPlatforms(language),
-    [language]
+    [language],
   );
-  const defaultQuickNotes = useMemo(() => getDefaultQuickNotes(language), [language]);
+  const defaultQuickNotes = useMemo(
+    () => getDefaultQuickNotes(language),
+    [language],
+  );
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const [isTableDialogOpen, setIsTableDialogOpen] = useState(false);
   const [isDeliveryDialogOpen, setIsDeliveryDialogOpen] = useState(false);
   const [activeNoteItem, setActiveNoteItem] = useState<ICartItem | null>(null);
   const [deliveryPlatforms, setDeliveryPlatforms] = useState(
-    defaultDeliveryPlatforms
+    defaultDeliveryPlatforms,
   );
   const [quickNotes, setQuickNotes] = useState(defaultQuickNotes);
   const [isDeliveryKeypadOpen, setIsDeliveryKeypadOpen] = useState(false);
@@ -122,17 +138,18 @@ const CartArea = ({
   const [isConfigExpanded, setIsConfigExpanded] = useState(false);
   const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
   const [isOrderTypeGateOpen, setIsOrderTypeGateOpen] = useState(false);
-  const [pendingPayOrderType, setPendingPayOrderType] = useState<OrderType | null>(null);
+  const [pendingPayOrderType, setPendingPayOrderType] =
+    useState<OrderType | null>(null);
   const deliveryOrderInputRef = useRef<HTMLInputElement | null>(null);
   const firstDeliveryPlatform = deliveryPlatforms[0] ?? "";
 
   const deliverySettingsKey = useMemo(
     () => `store:${window.location.pathname.split("/")[2]}:delivery-platforms`,
-    []
+    [],
   );
   const quickNotesSettingsKey = useMemo(
     () => `store:${window.location.pathname.split("/")[2]}:quick-notes`,
-    []
+    [],
   );
 
   useEffect(() => {
@@ -149,8 +166,7 @@ const CartArea = ({
 
     try {
       const parsed = JSON.parse(stored) as
-        | string[]
-        | { enabledPlatforms?: string[] };
+        string[] | { enabledPlatforms?: string[] };
       if (Array.isArray(parsed) && parsed.length > 0) {
         setDeliveryPlatforms(parsed);
         return;
@@ -190,7 +206,10 @@ const CartArea = ({
   }, [isDeliveryDialogOpen, isDeviceKeyboardEnabled]);
 
   const ensureDeliveryPlatformSelected = () => {
-    if (deliveryPlatform.trim().length > 0 || firstDeliveryPlatform.trim().length === 0) {
+    if (
+      deliveryPlatform.trim().length > 0 ||
+      firstDeliveryPlatform.trim().length === 0
+    ) {
       return;
     }
 
@@ -201,7 +220,10 @@ const CartArea = ({
     setIsConfigExpanded((current) => !current);
   };
 
-  const openOrderTypeRequirements = (nextType: OrderType, source: "config" | "pay") => {
+  const openOrderTypeRequirements = (
+    nextType: OrderType,
+    source: "config" | "pay",
+  ) => {
     if (nextType === "DINE_IN") {
       setIsTableDialogOpen(true);
     }
@@ -223,7 +245,10 @@ const CartArea = ({
     }
   };
 
-  const handleOrderTypeChange = (nextType: OrderType, source: "config" | "pay" = "config") => {
+  const handleOrderTypeChange = (
+    nextType: OrderType,
+    source: "config" | "pay" = "config",
+  ) => {
     onOrderTypeChange(nextType);
     openOrderTypeRequirements(nextType, source);
   };
@@ -340,7 +365,7 @@ const CartArea = ({
           event.preventDefault();
           toggleConfigExpanded();
         }}
-        >
+      >
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
             <span
@@ -352,7 +377,9 @@ const CartArea = ({
               <ActiveOrderTypeIcon className="h-3.5 w-3.5" aria-hidden="true" />
               {orderTypeLabel}
             </span>
-            {summaryParts.length > 0 && <p className="truncate">{summaryParts.join(" • ")}</p>}
+            {summaryParts.length > 0 && (
+              <p className="truncate">{summaryParts.join(" • ")}</p>
+            )}
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
@@ -380,10 +407,18 @@ const CartArea = ({
               }}
               aria-label={t("common.edit")}
               title={t("common.edit")}
-              className={isConfigExpanded ? "shrink-0 text-accent-text hover:text-accent-text" : "shrink-0"}
+              className={
+                isConfigExpanded
+                  ? "shrink-0 text-accent-text hover:text-accent-text"
+                  : "shrink-0"
+              }
             >
               <span>{t("common.edit")}</span>
-              {isConfigExpanded ? <LuChevronUp className="h-4 w-4" aria-hidden="true" /> : <LuChevronDown className="h-4 w-4" aria-hidden="true" />}
+              {isConfigExpanded ? (
+                <LuChevronUp className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <LuChevronDown className="h-4 w-4" aria-hidden="true" />
+              )}
             </Button>
           </div>
         </div>
@@ -404,7 +439,8 @@ const CartArea = ({
                       onClick={() => handleOrderTypeChange(value)}
                       className={cn(
                         "h-auto min-h-16 flex-col gap-1 px-2 py-2",
-                        orderType === value && ORDER_TYPE_STYLES[value].activeChip,
+                        orderType === value &&
+                          ORDER_TYPE_STYLES[value].activeChip,
                       )}
                       aria-label={label}
                       title={label}
@@ -420,8 +456,13 @@ const CartArea = ({
             {orderType === "DINE_IN" && (
               <div className="flex items-center justify-between gap-3">
                 <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
-                  <LuTableProperties className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
-                  <p className="truncate">{tableNumber ?? t("pos.cart.tableNotSelected")}</p>
+                  <LuTableProperties
+                    className="h-4 w-4 shrink-0 text-text-tertiary"
+                    aria-hidden="true"
+                  />
+                  <p className="truncate">
+                    {tableNumber ?? t("pos.cart.tableNotSelected")}
+                  </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   {tableNumber && (
@@ -453,7 +494,10 @@ const CartArea = ({
             {orderType === "DELIVERY" && (
               <div className="flex items-center justify-between gap-3">
                 <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
-                  <LuBike className="h-4 w-4 shrink-0 text-text-tertiary" aria-hidden="true" />
+                  <LuBike
+                    className="h-4 w-4 shrink-0 text-text-tertiary"
+                    aria-hidden="true"
+                  />
                   <p className="truncate">
                     {deliveryPlatform.trim().length > 0
                       ? deliveryOrderNumberValue.length > 0
@@ -463,7 +507,8 @@ const CartArea = ({
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  {(deliveryPlatform.trim().length > 0 || deliveryOrderNumberValue.length > 0) && (
+                  {(deliveryPlatform.trim().length > 0 ||
+                    deliveryOrderNumberValue.length > 0) && (
                     <Button
                       type="button"
                       variant="ghost"
@@ -492,12 +537,11 @@ const CartArea = ({
                 </div>
               </div>
             )}
-
           </div>
         )}
       </div>
 
-       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-card-bg p-card-padding [scrollbar-gutter:stable] [-webkit-overflow-scrolling:touch]">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-card-bg p-card-padding [scrollbar-gutter:stable] [-webkit-overflow-scrolling:touch]">
         {items.length === 0 ? (
           <EmptyState
             icon={<LuShoppingCart size={32} />}
@@ -506,23 +550,25 @@ const CartArea = ({
             className="py-10"
           />
         ) : (
-            <div className="page-stack-tight">
-              {items.map((item) => (
-                <CartItem
-                  key={item.cartItemId}
-                  item={item}
-                  expanded={expandedItemId === item.cartItemId}
-                  onUpdateQuantity={onUpdateQuantity}
-                  onRemove={onRemoveItem}
-                  onEditNote={() => setActiveNoteItem(item)}
-                  onToggleExpand={(nextItem) =>
-                    setExpandedItemId((current) =>
-                      current === nextItem.cartItemId ? null : nextItem.cartItemId
-                    )
-                  }
-                />
-              ))}
-            </div>
+          <div className="page-stack-tight">
+            {items.map((item) => (
+              <CartItem
+                key={item.cartItemId}
+                item={item}
+                expanded={expandedItemId === item.cartItemId}
+                onUpdateQuantity={onUpdateQuantity}
+                onRemove={onRemoveItem}
+                onEditNote={() => setActiveNoteItem(item)}
+                onToggleExpand={(nextItem) =>
+                  setExpandedItemId((current) =>
+                    current === nextItem.cartItemId
+                      ? null
+                      : nextItem.cartItemId,
+                  )
+                }
+              />
+            ))}
+          </div>
         )}
       </div>
 
@@ -554,7 +600,9 @@ const CartArea = ({
       >
         <DialogHeader>
           <DialogTitle>{t("pos.cart.orderType")}</DialogTitle>
-          <DialogDescription>{t("pos.cart.chooseOrderTypeBeforePay")}</DialogDescription>
+          <DialogDescription>
+            {t("pos.cart.chooseOrderTypeBeforePay")}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="page-grid grid grid-cols-1 sm:grid-cols-3">
@@ -610,9 +658,19 @@ const CartArea = ({
         onOpenDeviceKeyboard={openDeviceKeyboard}
         onCloseKeypad={closeDeliveryKeypad}
         autoOpenOrderNumberOnPlatformSelect={pendingPayOrderType !== "DELIVERY"}
-        onKeypadDone={pendingPayOrderType === "DELIVERY" ? closeDeliveryKeypad : undefined}
-        onConfirm={pendingPayOrderType === "DELIVERY" ? handleDeliveryPayConfirm : undefined}
-        confirmLabel={pendingPayOrderType === "DELIVERY" ? t("pos.payment.continueToPayment") : undefined}
+        onKeypadDone={
+          pendingPayOrderType === "DELIVERY" ? closeDeliveryKeypad : undefined
+        }
+        onConfirm={
+          pendingPayOrderType === "DELIVERY"
+            ? handleDeliveryPayConfirm
+            : undefined
+        }
+        confirmLabel={
+          pendingPayOrderType === "DELIVERY"
+            ? t("pos.payment.continueToPayment")
+            : undefined
+        }
       />
 
       <ItemNoteDialog

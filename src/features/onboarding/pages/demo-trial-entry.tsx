@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { LuArrowRight, LuCheck, LuCoffee, LuSandwich, LuSoup } from "react-icons/lu";
+import {
+  LuArrowRight,
+  LuCheck,
+  LuCoffee,
+  LuSandwich,
+  LuSoup,
+} from "react-icons/lu";
 import { BrandMark } from "@/shared/components/ui/brand-mark";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -59,7 +65,8 @@ export default function DemoTrialEntryPage() {
   const { t } = useTranslation();
   const auth = useAuth();
   const dispatch = useAppDispatch();
-  const [selectedStorePreset, setSelectedStorePreset] = useState<DemoStorePreset | null>(null);
+  const [selectedStorePreset, setSelectedStorePreset] =
+    useState<DemoStorePreset | null>(null);
   const [isStarting, setIsStarting] = useState(false);
   const [startError, setStartError] = useState(false);
 
@@ -69,7 +76,10 @@ export default function DemoTrialEntryPage() {
     try {
       setStartError(false);
       setIsStarting(true);
-      window.localStorage.setItem(DEMO_STORE_PRESET_STORAGE_KEY, selectedStorePreset);
+      window.localStorage.setItem(
+        DEMO_STORE_PRESET_STORAGE_KEY,
+        selectedStorePreset,
+      );
       clearDemoData();
       onboardingStorage.resetStore(DEMO_STORE_ID);
       onboardingStorage.setShopType(DEMO_STORE_ID, "DINE_IN");
@@ -103,7 +113,9 @@ export default function DemoTrialEntryPage() {
         <section className="mx-auto flex max-w-xl flex-col items-center gap-3 py-1 text-center sm:gap-3.5 xl:max-w-2xl xl:gap-4 xl:py-3">
           <div className="flex items-center justify-center gap-2.5">
             <BrandMark size="sm" className="rounded-full" />
-            <span className="text-body font-medium text-text-primary">Kitchy Demo</span>
+            <span className="text-body font-medium text-text-primary">
+              Kitchy Demo
+            </span>
           </div>
 
           <div className="flex flex-col items-center gap-3 xl:gap-3.5">
@@ -152,17 +164,21 @@ export default function DemoTrialEntryPage() {
                     <div
                       className={cn(
                         "flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-[var(--motion-fast)] xl:h-14 xl:w-14",
-                        selected ? "bg-accent-bg text-accent-text" : option.iconClassName,
+                        selected
+                          ? "bg-accent-bg text-accent-text"
+                          : option.iconClassName,
                       )}
                     >
                       <Icon size={18} />
                     </div>
 
                     <div className="flex flex-col items-center gap-1">
-                      <p className={cn(
-                        "text-body font-medium text-text-primary transition-colors duration-[var(--motion-fast)] sm:text-subtitle",
-                        selected && "text-accent-text",
-                      )}>
+                      <p
+                        className={cn(
+                          "text-body font-medium text-text-primary transition-colors duration-[var(--motion-fast)] sm:text-subtitle",
+                          selected && "text-accent-text",
+                        )}
+                      >
                         {t(option.labelKey)}
                       </p>
                       <p className="max-w-40 text-label leading-5 text-text-secondary">
@@ -192,7 +208,10 @@ export default function DemoTrialEntryPage() {
             {!isStarting && <LuArrowRight size={18} aria-hidden="true" />}
           </Button>
           {startError && (
-            <p className="text-center text-label font-medium text-danger sm:text-body-sm" role="alert">
+            <p
+              className="text-center text-label font-medium text-danger sm:text-body-sm"
+              role="alert"
+            >
               {t("demo.trial.startError")}
             </p>
           )}

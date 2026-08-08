@@ -7,13 +7,25 @@
 import type { IUser } from "@/features/auth/types/auth.model";
 import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
 import type { IStore } from "@/features/store/types/store.model";
-import type { ICreateStore, IUpdateStore } from "@/features/store/types/store.dto";
+import type {
+  ICreateStore,
+  IUpdateStore,
+} from "@/features/store/types/store.dto";
 import type { IStation } from "@/features/station/types/station.model";
-import type { ICreateStation, IUpdateStation } from "@/features/station/types/station.dto";
+import type {
+  ICreateStation,
+  IUpdateStation,
+} from "@/features/station/types/station.dto";
 import type { IMenu } from "@/features/product/types/product.model";
-import type { CreateProductRequest, UpdateProductRequest } from "@/features/product/types/product.dto";
+import type {
+  CreateProductRequest,
+  UpdateProductRequest,
+} from "@/features/product/types/product.dto";
 import type { CategoryModel } from "@/features/category/types/category.model";
-import type { CreateCategoryRequestDto, UpdateCategoryRequestDto } from "@/features/category/types/category.dto";
+import type {
+  CreateCategoryRequestDto,
+  UpdateCategoryRequestDto,
+} from "@/features/category/types/category.dto";
 import type { IOrderItem } from "@/features/order/types/order.model";
 import type { OrderType } from "@/features/order/types/order.dto";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
@@ -24,8 +36,13 @@ import type { IReportFilter } from "@/features/report/types/report.dto";
 
 export interface DataAdapter {
   // Auth
-  login(email: string, password: string): Promise<{ data: { access_token: string } }>;
-  register(payload: IRegisterRequest): Promise<{ data: { access_token: string } }>;
+  login(
+    email: string,
+    password: string,
+  ): Promise<{ data: { access_token: string } }>;
+  register(
+    payload: IRegisterRequest,
+  ): Promise<{ data: { access_token: string } }>;
   getMe(): Promise<IUser>;
 
   // Store
@@ -53,7 +70,10 @@ export interface DataAdapter {
   // Category
   getCategoriesByStoreId(storeId: string): Promise<CategoryModel[]>;
   createCategory(dto: CreateCategoryRequestDto): Promise<CategoryModel>;
-  updateCategory(id: string, dto: UpdateCategoryRequestDto): Promise<CategoryModel>;
+  updateCategory(
+    id: string,
+    dto: UpdateCategoryRequestDto,
+  ): Promise<CategoryModel>;
   deleteCategory(id: string): Promise<void>;
 
   // Order
@@ -74,10 +94,16 @@ export interface DataAdapter {
   deleteOrder(id: string): Promise<void>;
 
   // KDS
-  getOrderStationItemsByStationId(stationId: string): Promise<IOrderStationItemDto[]>;
+  getOrderStationItemsByStationId(
+    stationId: string,
+  ): Promise<IOrderStationItemDto[]>;
   updateOrderStationItem(
     id: string,
-    data: { status: "pending" | "complete" | "served"; stationId: string; orderItemId: string },
+    data: {
+      status: "pending" | "complete" | "served";
+      stationId: string;
+      orderItemId: string;
+    },
   ): Promise<void>;
 
   // Transaction

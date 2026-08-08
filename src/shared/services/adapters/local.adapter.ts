@@ -7,13 +7,25 @@ import type { DataAdapter } from "./data-adapter";
 import type { IUser } from "@/features/auth/types/auth.model";
 import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
 import type { IStore } from "@/features/store/types/store.model";
-import type { ICreateStore, IUpdateStore } from "@/features/store/types/store.dto";
+import type {
+  ICreateStore,
+  IUpdateStore,
+} from "@/features/store/types/store.dto";
 import type { IStation } from "@/features/station/types/station.model";
-import type { ICreateStation, IUpdateStation } from "@/features/station/types/station.dto";
+import type {
+  ICreateStation,
+  IUpdateStation,
+} from "@/features/station/types/station.dto";
 import type { IMenu } from "@/features/product/types/product.model";
-import type { CreateProductRequest, UpdateProductRequest } from "@/features/product/types/product.dto";
+import type {
+  CreateProductRequest,
+  UpdateProductRequest,
+} from "@/features/product/types/product.dto";
 import type { CategoryModel } from "@/features/category/types/category.model";
-import type { CreateCategoryRequestDto, UpdateCategoryRequestDto } from "@/features/category/types/category.dto";
+import type {
+  CreateCategoryRequestDto,
+  UpdateCategoryRequestDto,
+} from "@/features/category/types/category.dto";
 import type { IOrderItem } from "@/features/order/types/order.model";
 import type { OrderType } from "@/features/order/types/order.dto";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
@@ -153,7 +165,9 @@ function buildTransactionItems(
   if (!meta) return fallbackItems;
 
   return meta.products.map((product) => {
-    const productRecord = products.find((item) => item.id === product.productId);
+    const productRecord = products.find(
+      (item) => item.id === product.productId,
+    );
     const price = productRecord?.price ?? 0;
 
     return {
@@ -172,9 +186,15 @@ function buildTransactionView(
   products: IMenu[],
   payments: ITransaction[],
 ): ITransaction {
-  const relatedPayments = payments.filter((payment) => payment.orderId === order.id);
+  const relatedPayments = payments.filter(
+    (payment) => payment.orderId === order.id,
+  );
   const primaryPayment = relatedPayments.at(-1);
-  const items = buildTransactionItems(meta, products, primaryPayment?.items ?? []);
+  const items = buildTransactionItems(
+    meta,
+    products,
+    primaryPayment?.items ?? [],
+  );
   const amount = items.reduce((sum, item) => sum + item.total, 0);
 
   return {
@@ -199,7 +219,10 @@ function buildTransactionView(
   };
 }
 
-function resolveTransactionOrderId(id: string, payments: ITransaction[]): string {
+function resolveTransactionOrderId(
+  id: string,
+  payments: ITransaction[],
+): string {
   return payments.find((payment) => payment.id === id)?.orderId ?? id;
 }
 
@@ -268,14 +291,18 @@ export const localAdapter: DataAdapter = {
 
   async deleteStore(id: string) {
     await delay();
-    const stores = get<IStore[]>(KEYS.stores, [getSeedStore()]).filter((s) => s.id !== id);
+    const stores = get<IStore[]>(KEYS.stores, [getSeedStore()]).filter(
+      (s) => s.id !== id,
+    );
     set(KEYS.stores, stores);
   },
 
   // ═══ Station ═══
   async getStationsByStoreId(storeId: string) {
     await delay();
-    return get<IStation[]>(KEYS.stations, getSeedStations()).filter((s) => s.storeId === storeId);
+    return get<IStation[]>(KEYS.stations, getSeedStations()).filter(
+      (s) => s.storeId === storeId,
+    );
   },
 
   async getStationById(id: string) {
@@ -287,7 +314,14 @@ export const localAdapter: DataAdapter = {
   async createStation(dto: ICreateStation) {
     await delay();
     const stations = get<IStation[]>(KEYS.stations, getSeedStations());
-    const station: IStation = { id: genId(), name: dto.name, color: dto.color, storeId: dto.storeId, createdAt: now(), updatedAt: now() };
+    const station: IStation = {
+      id: genId(),
+      name: dto.name,
+      color: dto.color,
+      storeId: dto.storeId,
+      createdAt: now(),
+      updatedAt: now(),
+    };
     stations.push(station);
     set(KEYS.stations, stations);
     return station;
@@ -307,14 +341,18 @@ export const localAdapter: DataAdapter = {
 
   async deleteStation(id: string) {
     await delay();
-    const stations = get<IStation[]>(KEYS.stations, getSeedStations()).filter((s) => s.id !== id);
+    const stations = get<IStation[]>(KEYS.stations, getSeedStations()).filter(
+      (s) => s.id !== id,
+    );
     set(KEYS.stations, stations);
   },
 
   // ═══ Product ═══
   async getProductsByStoreId(storeId: string) {
     await delay();
-    return get<IMenu[]>(KEYS.products, getSeedProducts()).filter((p) => p.storeId === storeId);
+    return get<IMenu[]>(KEYS.products, getSeedProducts()).filter(
+      (p) => p.storeId === storeId,
+    );
   },
 
   async getProductById(id: string) {
@@ -325,13 +363,18 @@ export const localAdapter: DataAdapter = {
 
   async getProductsByCategoryId(categoryId: string) {
     await delay();
-    return get<IMenu[]>(KEYS.products, getSeedProducts()).filter((p) => p.categoryId === categoryId);
+    return get<IMenu[]>(KEYS.products, getSeedProducts()).filter(
+      (p) => p.categoryId === categoryId,
+    );
   },
 
   async createProduct(dto: CreateProductRequest) {
     await delay();
     const products = get<IMenu[]>(KEYS.products, getSeedProducts());
-    const categories = get<CategoryModel[]>(KEYS.categories, getSeedCategories());
+    const categories = get<CategoryModel[]>(
+      KEYS.categories,
+      getSeedCategories(),
+    );
     const stations = get<IStation[]>(KEYS.stations, getSeedStations());
     const cat = categories.find((c) => c.id === dto.categoryId);
     const station = stations.find((s) => s.id === dto.stationId);
@@ -370,7 +413,9 @@ export const localAdapter: DataAdapter = {
 
   async deleteProduct(id: string) {
     await delay();
-    const products = get<IMenu[]>(KEYS.products, getSeedProducts()).filter((p) => p.id !== id);
+    const products = get<IMenu[]>(KEYS.products, getSeedProducts()).filter(
+      (p) => p.id !== id,
+    );
     set(KEYS.products, products);
   },
 
@@ -382,7 +427,10 @@ export const localAdapter: DataAdapter = {
 
   async createCategory(dto: CreateCategoryRequestDto) {
     await delay();
-    const categories = get<CategoryModel[]>(KEYS.categories, getSeedCategories());
+    const categories = get<CategoryModel[]>(
+      KEYS.categories,
+      getSeedCategories(),
+    );
     const category: CategoryModel = {
       id: genId(),
       name: dto.name,
@@ -398,7 +446,10 @@ export const localAdapter: DataAdapter = {
 
   async updateCategory(id: string, dto: UpdateCategoryRequestDto) {
     await delay();
-    const categories = get<CategoryModel[]>(KEYS.categories, getSeedCategories());
+    const categories = get<CategoryModel[]>(
+      KEYS.categories,
+      getSeedCategories(),
+    );
     const idx = categories.findIndex((c) => c.id === id);
     if (idx >= 0) {
       categories[idx] = { ...categories[idx], ...dto, updatedAt: now() };
@@ -410,7 +461,10 @@ export const localAdapter: DataAdapter = {
 
   async deleteCategory(id: string) {
     await delay();
-    const categories = get<CategoryModel[]>(KEYS.categories, getSeedCategories()).filter((c) => c.id !== id);
+    const categories = get<CategoryModel[]>(
+      KEYS.categories,
+      getSeedCategories(),
+    ).filter((c) => c.id !== id);
     set(KEYS.categories, categories);
   },
 
@@ -426,9 +480,13 @@ export const localAdapter: DataAdapter = {
     const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta());
     const products = get<IMenu[]>(KEYS.products, getSeedProducts());
     // Return orders that have products belonging to this station
-    const stationProductIds = products.filter((p) => p.stationId === stationId).map((p) => p.id);
+    const stationProductIds = products
+      .filter((p) => p.stationId === stationId)
+      .map((p) => p.id);
     const orderIds = metas
-      .filter((m) => m.products.some((p) => stationProductIds.includes(p.productId)))
+      .filter((m) =>
+        m.products.some((p) => stationProductIds.includes(p.productId)),
+      )
       .map((m) => m.id);
     return orders.filter((o) => orderIds.includes(o.id));
   },
@@ -467,12 +525,23 @@ export const localAdapter: DataAdapter = {
     orders.push(order);
     set(KEYS.orders, orders);
 
-    metas.push({ id, storeId, tableNumber, customerName, deliveryPlatform, deliveryOrderNumber, products });
+    metas.push({
+      id,
+      storeId,
+      tableNumber,
+      customerName,
+      deliveryPlatform,
+      deliveryOrderNumber,
+      products,
+    });
     set(KEYS.orderMeta, metas);
 
     // Create order-station items for KDS
     const allProducts = get<IMenu[]>(KEYS.products, getSeedProducts());
-    const osis = get<IOrderStationItemDto[]>(KEYS.orderStationItems, getSeedOrderStationItems());
+    const osis = get<IOrderStationItemDto[]>(
+      KEYS.orderStationItems,
+      getSeedOrderStationItems(),
+    );
     for (const p of products) {
       const prod = allProducts.find((ap) => ap.id === p.productId);
       if (prod) {
@@ -484,7 +553,17 @@ export const localAdapter: DataAdapter = {
             quantity: p.quantity,
             notes: p.note ?? null,
             product: { id: prod.id, name: prod.name },
-            order: { id, orderNumber, status: "PENDING", orderType, tableNumber, customerName, deliveryPlatform, deliveryOrderNumber, createdAt: now() },
+            order: {
+              id,
+              orderNumber,
+              status: "PENDING",
+              orderType,
+              tableNumber,
+              customerName,
+              deliveryPlatform,
+              deliveryOrderNumber,
+              createdAt: now(),
+            },
           },
         });
       }
@@ -499,7 +578,11 @@ export const localAdapter: DataAdapter = {
     const orders = get<IOrderItem[]>(KEYS.orders, getSeedOrders());
     const idx = orders.findIndex((o) => o.id === id);
     if (idx >= 0) {
-      orders[idx] = { ...orders[idx], ...(data as Partial<IOrderItem>), updatedAt: now() };
+      orders[idx] = {
+        ...orders[idx],
+        ...(data as Partial<IOrderItem>),
+        updatedAt: now(),
+      };
       set(KEYS.orders, orders);
       return orders[idx];
     }
@@ -508,22 +591,45 @@ export const localAdapter: DataAdapter = {
 
   async deleteOrder(id: string) {
     await delay();
-    set(KEYS.orders, get<IOrderItem[]>(KEYS.orders, getSeedOrders()).filter((o) => o.id !== id));
-    set(KEYS.orderMeta, get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta()).filter((m) => m.id !== id));
+    set(
+      KEYS.orders,
+      get<IOrderItem[]>(KEYS.orders, getSeedOrders()).filter(
+        (o) => o.id !== id,
+      ),
+    );
+    set(
+      KEYS.orderMeta,
+      get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta()).filter(
+        (m) => m.id !== id,
+      ),
+    );
   },
 
   // ═══ KDS ═══
   async getOrderStationItemsByStationId(stationId: string) {
     await delay();
-    const osis = get<IOrderStationItemDto[]>(KEYS.orderStationItems, getSeedOrderStationItems());
+    const osis = get<IOrderStationItemDto[]>(
+      KEYS.orderStationItems,
+      getSeedOrderStationItems(),
+    );
     const products = get<IMenu[]>(KEYS.products, getSeedProducts());
-    const stationProductIds = products.filter((p) => p.stationId === stationId).map((p) => p.id);
-    return osis.filter((osi) => stationProductIds.includes(osi.orderItem.product.id));
+    const stationProductIds = products
+      .filter((p) => p.stationId === stationId)
+      .map((p) => p.id);
+    return osis.filter((osi) =>
+      stationProductIds.includes(osi.orderItem.product.id),
+    );
   },
 
-  async updateOrderStationItem(id: string, data: { status: "pending" | "complete" | "served" }) {
+  async updateOrderStationItem(
+    id: string,
+    data: { status: "pending" | "complete" | "served" },
+  ) {
     await delay();
-    const osis = get<IOrderStationItemDto[]>(KEYS.orderStationItems, getSeedOrderStationItems());
+    const osis = get<IOrderStationItemDto[]>(
+      KEYS.orderStationItems,
+      getSeedOrderStationItems(),
+    );
     const idx = osis.findIndex((o) => o.id === id);
     if (idx >= 0) {
       osis[idx] = { ...osis[idx], status: data.status };
@@ -537,7 +643,10 @@ export const localAdapter: DataAdapter = {
     const orders = get<IOrderItem[]>(KEYS.orders, getSeedOrders());
     const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta());
     const products = get<IMenu[]>(KEYS.products, getSeedProducts());
-    const payments = get<ITransaction[]>(KEYS.transactions, getSeedTransactions());
+    const payments = get<ITransaction[]>(
+      KEYS.transactions,
+      getSeedTransactions(),
+    );
 
     let txns = orders
       .map((order) =>
@@ -550,7 +659,8 @@ export const localAdapter: DataAdapter = {
       )
       .filter((transaction) => transaction.storeId === filter.storeId);
 
-    if (filter.method) txns = txns.filter((transaction) => transaction.method === filter.method);
+    if (filter.method)
+      txns = txns.filter((transaction) => transaction.method === filter.method);
 
     return txns;
   },
@@ -560,12 +670,20 @@ export const localAdapter: DataAdapter = {
     const orders = get<IOrderItem[]>(KEYS.orders, getSeedOrders());
     const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta());
     const products = get<IMenu[]>(KEYS.products, getSeedProducts());
-    const payments = get<ITransaction[]>(KEYS.transactions, getSeedTransactions());
+    const payments = get<ITransaction[]>(
+      KEYS.transactions,
+      getSeedTransactions(),
+    );
     const orderId = resolveTransactionOrderId(id, payments);
     const order = orders.find((item) => item.id === orderId);
 
     if (!order) {
-      return buildTransactionView(orders[0], metas.find((meta) => meta.id === orders[0].id), products, payments);
+      return buildTransactionView(
+        orders[0],
+        metas.find((meta) => meta.id === orders[0].id),
+        products,
+        payments,
+      );
     }
 
     return buildTransactionView(
@@ -578,11 +696,17 @@ export const localAdapter: DataAdapter = {
 
   async updateTransaction(id: string, payload: unknown) {
     await delay();
-    const payments = get<ITransaction[]>(KEYS.transactions, getSeedTransactions());
+    const payments = get<ITransaction[]>(
+      KEYS.transactions,
+      getSeedTransactions(),
+    );
     const orders = get<IOrderItem[]>(KEYS.orders, getSeedOrders());
     const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta());
     const products = get<IMenu[]>(KEYS.products, getSeedProducts());
-    const orderStationItems = get<IOrderStationItemDto[]>(KEYS.orderStationItems, getSeedOrderStationItems());
+    const orderStationItems = get<IOrderStationItemDto[]>(
+      KEYS.orderStationItems,
+      getSeedOrderStationItems(),
+    );
     const orderId = resolveTransactionOrderId(id, payments);
     const orderIdx = orders.findIndex((order) => order.id === orderId);
 
@@ -636,7 +760,12 @@ export const localAdapter: DataAdapter = {
       set(KEYS.orderStationItems, nextOrderStationItems);
     }
 
-    return buildTransactionView(orders[orderIdx], orderMeta, products, payments);
+    return buildTransactionView(
+      orders[orderIdx],
+      orderMeta,
+      products,
+      payments,
+    );
   },
 
   // ═══ Report ═══
@@ -645,10 +774,14 @@ export const localAdapter: DataAdapter = {
     const txns = get<ITransaction[]>(KEYS.transactions, getSeedTransactions());
     const totalRevenue = txns.reduce((sum, t) => sum + t.amount, 0);
     const totalOrders = txns.length;
-    const averageOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+    const averageOrderValue =
+      totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
 
     // Aggregate top products
-    const productMap = new Map<string, { name: string; quantity: number; revenue: number }>();
+    const productMap = new Map<
+      string,
+      { name: string; quantity: number; revenue: number }
+    >();
     for (const txn of txns) {
       for (const item of txn.items) {
         const existing = productMap.get(item.productId);
@@ -656,13 +789,22 @@ export const localAdapter: DataAdapter = {
           existing.quantity += item.quantity;
           existing.revenue += item.total;
         } else {
-          productMap.set(item.productId, { name: item.name, quantity: item.quantity, revenue: item.total });
+          productMap.set(item.productId, {
+            name: item.name,
+            quantity: item.quantity,
+            revenue: item.total,
+          });
         }
       }
     }
 
     const topProducts = [...productMap.entries()]
-      .map(([productId, data]) => ({ productId, name: data.name, quantitySold: data.quantity, revenue: data.revenue }))
+      .map(([productId, data]) => ({
+        productId,
+        name: data.name,
+        quantitySold: data.quantity,
+        revenue: data.revenue,
+      }))
       .sort((a, b) => b.revenue - a.revenue)
       .slice(0, 5);
 
@@ -671,7 +813,9 @@ export const localAdapter: DataAdapter = {
     for (const txn of txns) {
       methodMap.set(txn.method, (methodMap.get(txn.method) ?? 0) + txn.amount);
     }
-    const paymentBreakdown = [...methodMap.entries()].map(([method, amount]) => ({ method, amount }));
+    const paymentBreakdown = [...methodMap.entries()].map(
+      ([method, amount]) => ({ method, amount }),
+    );
 
     return {
       summary: { totalRevenue, totalOrders, averageOrderValue },

@@ -25,4 +25,3 @@ export const toFlowStatus = (status: string): FlowStatus => {
   if (DONE_STATUSES.includes(status)) return "DONE";
   return "IN_PROGRESS";
 };
-

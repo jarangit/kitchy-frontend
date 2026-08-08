@@ -1,6 +1,12 @@
 import axiosClient from "@/shared/services/axios-client";
-import type { ICreateStation, IUpdateStation } from "@/features/station/types/station.dto";
-import { IS_DEMO_MODE, getAdapter } from "@/shared/services/adapters/data-adapter";
+import type {
+  ICreateStation,
+  IUpdateStation,
+} from "@/features/station/types/station.dto";
+import {
+  IS_DEMO_MODE,
+  getAdapter,
+} from "@/shared/services/adapters/data-adapter";
 
 export const stationServiceApi = {
   getByStoreId: async (storeId: string) => {
@@ -19,8 +25,12 @@ export const stationServiceApi = {
     return response.data;
   },
   update: async (stationId: string, stationData: IUpdateStation) => {
-    if (IS_DEMO_MODE) return (await getAdapter()).updateStation(stationId, stationData);
-    const response = await axiosClient.patch(`/stations/${stationId}`, stationData);
+    if (IS_DEMO_MODE)
+      return (await getAdapter()).updateStation(stationId, stationData);
+    const response = await axiosClient.patch(
+      `/stations/${stationId}`,
+      stationData,
+    );
     return response.data;
   },
   delete: async (stationId: string) => {

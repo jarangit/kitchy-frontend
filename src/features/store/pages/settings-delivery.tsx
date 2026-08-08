@@ -5,7 +5,10 @@ import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
 import { Toggle } from "@/shared/components/ui/toggle";
-import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
+import {
+  SettingsSectionCard,
+  SettingsShell,
+} from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { getDefaultDeliveryPlatforms } from "@/shared/i18n/presets";
 
@@ -18,7 +21,7 @@ interface DeliveryPlatformSettings {
 }
 
 const isDeliveryPlatformSettings = (
-  value: string[] | DeliveryPlatformSettings
+  value: string[] | DeliveryPlatformSettings,
 ): value is DeliveryPlatformSettings => {
   return (
     !Array.isArray(value) &&
@@ -33,16 +36,19 @@ const SettingsDeliveryPage = () => {
   const { t, language } = useTranslation();
   const defaultDeliveryPlatforms = useMemo(
     () => getDefaultDeliveryPlatforms(language),
-    [language]
+    [language],
   );
   const [supportedPlatforms, setSupportedPlatforms] = useState<string[]>(
-    defaultDeliveryPlatforms
+    defaultDeliveryPlatforms,
   );
   const [enabledPlatforms, setEnabledPlatforms] = useState<string[]>(
-    defaultDeliveryPlatforms
+    defaultDeliveryPlatforms,
   );
   const [customPlatform, setCustomPlatform] = useState("");
-  const storageKey = useMemo(() => (id ? getDeliverySettingsKey(id) : ""), [id]);
+  const storageKey = useMemo(
+    () => (id ? getDeliverySettingsKey(id) : ""),
+    [id],
+  );
 
   useEffect(() => {
     setSupportedPlatforms(defaultDeliveryPlatforms);
@@ -56,12 +62,12 @@ const SettingsDeliveryPage = () => {
     if (!stored) return;
 
     try {
-      const parsed = JSON.parse(stored) as
-        | DeliveryPlatformSettings
-        | string[];
+      const parsed = JSON.parse(stored) as DeliveryPlatformSettings | string[];
 
       if (Array.isArray(parsed) && parsed.length > 0) {
-        setSupportedPlatforms(Array.from(new Set([...defaultDeliveryPlatforms, ...parsed])));
+        setSupportedPlatforms(
+          Array.from(new Set([...defaultDeliveryPlatforms, ...parsed])),
+        );
         setEnabledPlatforms(parsed);
         return;
       }
@@ -77,7 +83,7 @@ const SettingsDeliveryPage = () => {
 
   const persistPlatforms = (
     nextSupportedPlatforms: string[],
-    nextEnabledPlatforms: string[]
+    nextEnabledPlatforms: string[],
   ) => {
     setSupportedPlatforms(nextSupportedPlatforms);
     setEnabledPlatforms(nextEnabledPlatforms);
@@ -87,7 +93,7 @@ const SettingsDeliveryPage = () => {
         JSON.stringify({
           supportedPlatforms: nextSupportedPlatforms,
           enabledPlatforms: nextEnabledPlatforms,
-        })
+        }),
       );
     }
   };
@@ -104,7 +110,7 @@ const SettingsDeliveryPage = () => {
 
     persistPlatforms(
       supportedPlatforms,
-      enabledPlatforms.filter((item) => item !== platform)
+      enabledPlatforms.filter((item) => item !== platform),
     );
   };
 
@@ -118,7 +124,7 @@ const SettingsDeliveryPage = () => {
 
     persistPlatforms(
       [...supportedPlatforms, nextPlatform],
-      [...enabledPlatforms, nextPlatform]
+      [...enabledPlatforms, nextPlatform],
     );
     setCustomPlatform("");
   };
@@ -138,7 +144,7 @@ const SettingsDeliveryPage = () => {
           </div>
         }
       >
-         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
           {supportedPlatforms.map((platform) => (
             <Card
               key={platform}
@@ -155,7 +161,7 @@ const SettingsDeliveryPage = () => {
                 </div>
               </div>
 
-               <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
+              <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
                 <span className="text-label text-text-secondary">
                   {enabledPlatforms.includes(platform)
                     ? t("settings.delivery.enabled")
@@ -163,7 +169,9 @@ const SettingsDeliveryPage = () => {
                 </span>
                 <Toggle
                   checked={enabledPlatforms.includes(platform)}
-                  onChange={(checked) => handleTogglePlatform(platform, checked)}
+                  onChange={(checked) =>
+                    handleTogglePlatform(platform, checked)
+                  }
                   label={`Toggle ${platform}`}
                   disabled={enabledPlatforms.length === 1}
                 />

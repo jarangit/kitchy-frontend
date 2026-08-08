@@ -63,7 +63,13 @@ export function StatCard({
 
   if (onClick) {
     return (
-      <Card as="button" type="button" onClick={onClick} padding="none" className={shellClassName}>
+      <Card
+        as="button"
+        type="button"
+        onClick={onClick}
+        padding="none"
+        className={shellClassName}
+      >
         {content}
       </Card>
     );

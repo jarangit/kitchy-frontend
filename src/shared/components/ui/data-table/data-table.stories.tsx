@@ -19,7 +19,13 @@ interface OrderRow {
 const data: OrderRow[] = [
   { id: "1", number: "#0042", type: "DINE_IN", total: 420, status: "PENDING" },
   { id: "2", number: "#0041", type: "TOGO", total: 180, status: "COMPLETED" },
-  { id: "3", number: "#0040", type: "DINE_IN", total: 650, status: "COMPLETED" },
+  {
+    id: "3",
+    number: "#0040",
+    type: "DINE_IN",
+    total: 650,
+    status: "COMPLETED",
+  },
   { id: "4", number: "#0039", type: "TOGO", total: 95, status: "CANCELLED" },
   { id: "5", number: "#0038", type: "DINE_IN", total: 340, status: "PENDING" },
 ];

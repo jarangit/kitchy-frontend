@@ -24,13 +24,13 @@ const ordersSlice = createSlice({
   reducers: {
     setSelectedType: (
       state,
-      action: PayloadAction<"TOGO" | "DINE_IN" | "ALL">
+      action: PayloadAction<"TOGO" | "DINE_IN" | "ALL">,
     ) => {
       state.selectedType = action.payload;
     },
     setSelectedStatus: (
       state,
-      action: PayloadAction<"PENDING" | "COMPLETED" | "ALL">
+      action: PayloadAction<"PENDING" | "COMPLETED" | "ALL">,
     ) => {
       state.selectedStatus = action.payload;
     },

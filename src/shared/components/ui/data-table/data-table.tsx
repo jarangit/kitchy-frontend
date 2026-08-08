@@ -92,7 +92,10 @@ export function DataTable<TData>({
   const rows = table.getRowModel().rows;
   const columnCount = columns.length;
 
-  const handleRowClick = (event: React.MouseEvent<HTMLTableRowElement>, row: Row<TData>) => {
+  const handleRowClick = (
+    event: React.MouseEvent<HTMLTableRowElement>,
+    row: Row<TData>,
+  ) => {
     if (!onRowClick) return;
     // Ignore clicks that were targeted at interactive elements marked with data-stop-row-click
     const target = event.target as HTMLElement | null;
@@ -113,7 +116,9 @@ export function DataTable<TData>({
                   : meta.align === "center"
                     ? "text-center"
                     : "text-left";
-              const wrapClass = meta.wrap ? "whitespace-normal" : "whitespace-nowrap";
+              const wrapClass = meta.wrap
+                ? "whitespace-normal"
+                : "whitespace-nowrap";
               return (
                 <TableHead
                   key={header.id}
@@ -136,7 +141,10 @@ export function DataTable<TData>({
                 >
                   {header.isPlaceholder
                     ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                 </TableHead>
               );
             })}
@@ -148,7 +156,8 @@ export function DataTable<TData>({
           Array.from({ length: loadingRowCount }).map((_, i) => (
             <TableRow key={`skeleton-${i}`}>
               {columns.map((col, j) => {
-                const meta = (col.meta as DataTableColumnMeta | undefined) ?? {};
+                const meta =
+                  (col.meta as DataTableColumnMeta | undefined) ?? {};
                 return (
                   <TableCell
                     key={j}
@@ -169,7 +178,9 @@ export function DataTable<TData>({
           <tr>
             <td colSpan={columnCount} className="px-4 py-12 text-center">
               {emptyState ?? (
-                <span className="text-body-sm text-text-secondary">No data</span>
+                <span className="text-body-sm text-text-secondary">
+                  No data
+                </span>
               )}
             </td>
           </tr>
@@ -199,7 +210,9 @@ export function DataTable<TData>({
                       meta.className,
                       meta.hideBelow && hideBelowClass[meta.hideBelow],
                     )}
-                    data-stop-row-click={meta.preventRowClick ? "true" : undefined}
+                    data-stop-row-click={
+                      meta.preventRowClick ? "true" : undefined
+                    }
                     onClick={
                       meta.preventRowClick
                         ? (e) => e.stopPropagation()

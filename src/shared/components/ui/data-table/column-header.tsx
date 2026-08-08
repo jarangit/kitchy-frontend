@@ -24,16 +24,7 @@ export function DataTableColumnHeader<TData, TValue>({
   const sortable = column.getCanSort();
 
   if (!sortable) {
-    return (
-        <span
-          className={cn(
-            "table-header-label",
-            className,
-          )}
-      >
-        {title}
-      </span>
-    );
+    return <span className={cn("table-header-label", className)}>{title}</span>;
   }
 
   const sorted = column.getIsSorted();

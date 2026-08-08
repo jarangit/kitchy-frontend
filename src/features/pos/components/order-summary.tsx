@@ -58,15 +58,23 @@ const OrderSummary = ({ items, subtotal }: Props) => {
         aria-expanded={isExpanded}
       >
         <div>
-          <p className="text-body font-semibold text-text-primary">{toggleLabel}</p>
+          <p className="text-body font-semibold text-text-primary">
+            {toggleLabel}
+          </p>
           <p className="mt-1 text-body-sm tabular-nums text-text-secondary">
             {t("pos.receipt.total")} ฿{subtotal.toFixed(2)}
           </p>
         </div>
         {isExpanded ? (
-          <LuChevronUp className="h-5 w-5 shrink-0 text-text-tertiary" aria-hidden="true" />
+          <LuChevronUp
+            className="h-5 w-5 shrink-0 text-text-tertiary"
+            aria-hidden="true"
+          />
         ) : (
-          <LuChevronDown className="h-5 w-5 shrink-0 text-text-tertiary" aria-hidden="true" />
+          <LuChevronDown
+            className="h-5 w-5 shrink-0 text-text-tertiary"
+            aria-hidden="true"
+          />
         )}
       </button>
 

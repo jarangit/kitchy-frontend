@@ -72,11 +72,7 @@ export function OrderForm({
   const waitingValue: WaitingKey = isWaitingInStore ? "waiting" : "here";
 
   return (
-    <Card
-      as="form"
-      onSubmit={handleFormSubmit}
-      className="lg:min-w-[300px]"
-    >
+    <Card as="form" onSubmit={handleFormSubmit} className="lg:min-w-[300px]">
       <div className="flex flex-col space-y-4">
         <Label htmlFor="orderNumber">{label}</Label>
         <Input

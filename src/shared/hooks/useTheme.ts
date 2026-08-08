@@ -29,7 +29,7 @@ export function useTheme() {
       localStorage.setItem(STORAGE_KEY, t);
       applyTheme(t);
     },
-    [applyTheme]
+    [applyTheme],
   );
 
   const toggleTheme = useCallback(() => {

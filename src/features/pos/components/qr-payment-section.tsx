@@ -33,10 +33,16 @@ const QrPaymentSection = ({ subtotal, className, embedded = false }: Props) => {
   );
 
   if (embedded) {
-    return <div className={cn("space-y-4 text-center", className)}>{content}</div>;
+    return (
+      <div className={cn("space-y-4 text-center", className)}>{content}</div>
+    );
   }
 
-  return <Card className={cn("mt-6 space-y-4 text-center", className)}>{content}</Card>;
+  return (
+    <Card className={cn("mt-6 space-y-4 text-center", className)}>
+      {content}
+    </Card>
+  );
 };
 
 export default QrPaymentSection;

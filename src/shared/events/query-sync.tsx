@@ -26,7 +26,9 @@ export function QuerySyncProvider({ children }: { children: ReactNode }) {
     };
 
     offs.push(
-      appBus.on("order:created", ({ storeId }) => invalidateOrderCaches(storeId)),
+      appBus.on("order:created", ({ storeId }) =>
+        invalidateOrderCaches(storeId),
+      ),
       appBus.on("order:updated", ({ orderId, storeId }) => {
         invalidateOrderCaches(storeId);
         queryClient.invalidateQueries({ queryKey: ["order", orderId] });
@@ -46,12 +48,16 @@ export function QuerySyncProvider({ children }: { children: ReactNode }) {
     offs.push(
       appBus.on("transaction:updated", ({ transactionId, storeId }) => {
         queryClient.invalidateQueries({ queryKey: ["transactions", storeId] });
-        queryClient.invalidateQueries({ queryKey: ["transaction", transactionId] });
+        queryClient.invalidateQueries({
+          queryKey: ["transaction", transactionId],
+        });
         queryClient.invalidateQueries({ queryKey: ["orders", storeId] });
       }),
       appBus.on("transaction:refunded", ({ transactionId, storeId }) => {
         queryClient.invalidateQueries({ queryKey: ["transactions", storeId] });
-        queryClient.invalidateQueries({ queryKey: ["transaction", transactionId] });
+        queryClient.invalidateQueries({
+          queryKey: ["transaction", transactionId],
+        });
       }),
     );
 

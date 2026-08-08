@@ -13,15 +13,15 @@ export function SelectionChip({
   ...props
 }: SelectionChipProps) {
   return (
-      <button
-        type="button"
-        className={cn(
-          "inline-flex h-selection-height w-full items-center justify-center gap-2 rounded-selection px-5",
-          "border text-selection font-selection",
-          "transition-colors duration-[var(--motion-fast)]",
-          active
-            ? "border-selection-active-border bg-selection-active-bg text-selection-active-text"
-            : "border-selection-border bg-surface-hover text-selection-text hover:border-selection-border-hover hover:bg-surface",
+    <button
+      type="button"
+      className={cn(
+        "inline-flex h-selection-height w-full items-center justify-center gap-2 rounded-selection px-5",
+        "border text-selection font-selection",
+        "transition-colors duration-[var(--motion-fast)]",
+        active
+          ? "border-selection-active-border bg-selection-active-bg text-selection-active-text"
+          : "border-selection-border bg-surface-hover text-selection-text hover:border-selection-border-hover hover:bg-surface",
         className,
       )}
       {...props}

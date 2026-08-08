@@ -78,10 +78,10 @@ export function AppBar() {
         ) : (
           <div className="flex min-h-[52px] min-w-0 flex-1 items-center gap-3 text-body text-text-primary">
             <BrandMark size="sm" />
-             <span
-               className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
-               title={storeName || t("appbar.storeFallback")}
-             >
+            <span
+              className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
+              title={storeName || t("appbar.storeFallback")}
+            >
               {storeName || t("appbar.storeFallback")}
             </span>
           </div>
@@ -96,7 +96,11 @@ export function AppBar() {
             aria-label={`${timeLabel} ${dateLabel}`}
             title={`${timeLabel} · ${dateLabel}`}
           >
-            <LuClock3 size={13} className="text-text-tertiary" aria-hidden="true" />
+            <LuClock3
+              size={13}
+              className="text-text-tertiary"
+              aria-hidden="true"
+            />
             <span className="font-mono text-body tabular-nums text-text-primary">
               {timeLabel}
             </span>
@@ -110,8 +114,17 @@ export function AppBar() {
           </Pill>
 
           <Pill
-            variant={state === "veryBusy" ? "danger" : state === "busy" ? "warning" : "success"}
-            className={cn("min-w-[72px] justify-center px-2 hover:opacity-90", busyClassName)}
+            variant={
+              state === "veryBusy"
+                ? "danger"
+                : state === "busy"
+                  ? "warning"
+                  : "success"
+            }
+            className={cn(
+              "min-w-[72px] justify-center px-2 hover:opacity-90",
+              busyClassName,
+            )}
             aria-label={busyLabel}
             title={busyLabel}
           >
@@ -123,7 +136,9 @@ export function AppBar() {
             title={isOnline ? t("appbar.online") : t("appbar.offline")}
             className={cn(
               "hidden h-7 w-7 items-center justify-center rounded-full text-caption leading-none sm:inline-flex",
-              isOnline ? "bg-success-bg text-success" : "bg-danger-bg text-danger"
+              isOnline
+                ? "bg-success-bg text-success"
+                : "bg-danger-bg text-danger",
             )}
           >
             {isOnline ? <LuWifi size={13} /> : <LuWifiOff size={13} />}

@@ -16,20 +16,30 @@ const KdsStatsBar = ({ groups, orderLimit }: Props) => {
 
   const itemCount = groups.reduce(
     (sum, g) => sum + g.items.reduce((s, i) => s + i.quantity, 0),
-    0
+    0,
   );
 
   return (
     <div className="rounded-card bg-primary px-4 py-2.5 text-on-primary">
       <div className="flex flex-col gap-2.5 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,340px)_minmax(0,1fr)] sm:items-center sm:gap-3">
         <span className="flex items-center gap-2 text-caption font-medium tracking-[0.06em] text-on-primary/80 sm:justify-self-start">
-          <span className="text-on-primary/60">{t("kds.stats.itemsLabel")}</span>
-          <span className="font-mono tabular-nums text-on-primary">{itemCount}</span>
+          <span className="text-on-primary/60">
+            {t("kds.stats.itemsLabel")}
+          </span>
+          <span className="font-mono tabular-nums text-on-primary">
+            {itemCount}
+          </span>
           <span className="text-on-primary/30">/</span>
-          <span className="font-mono tabular-nums text-on-primary/70">{orderLimit}</span>
+          <span className="font-mono tabular-nums text-on-primary/70">
+            {orderLimit}
+          </span>
         </span>
 
-        <BusyProgress count={itemCount} limit={orderLimit} className="w-full justify-self-center" />
+        <BusyProgress
+          count={itemCount}
+          limit={orderLimit}
+          className="w-full justify-self-center"
+        />
 
         {storeId ? (
           <Link

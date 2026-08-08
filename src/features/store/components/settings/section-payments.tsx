@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
-import { LuBanknote, LuQrCode, LuLandmark, LuWallet, LuPlus } from "react-icons/lu";
-import { Toggle } from "@/shared/components/ui/toggle";
 import {
-  SettingGroup,
-  SettingRow,
-} from "@/shared/components/ui/setting-row";
+  LuBanknote,
+  LuQrCode,
+  LuLandmark,
+  LuWallet,
+  LuPlus,
+} from "react-icons/lu";
+import { Toggle } from "@/shared/components/ui/toggle";
+import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useLocalSetting } from "@/shared/hooks/use-local-setting";

@@ -53,8 +53,7 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        sticky &&
-          "sticky top-0 z-10 border-b border-border bg-bg",
+        sticky && "sticky top-0 z-10 border-b border-border bg-bg",
         className,
       )}
     >

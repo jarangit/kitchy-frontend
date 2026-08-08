@@ -9,12 +9,7 @@ import {
 import { cn } from "@/shared/utils/cn";
 import { TabsContext } from "./tabs.context";
 import { useTabsContext } from "./tabs.context";
-import type {
-  TabListProps,
-  TabProps,
-  TabsProps,
-  TabsSize,
-} from "./tabs.types";
+import type { TabListProps, TabProps, TabsProps, TabsSize } from "./tabs.types";
 
 /* ---------------- Root ---------------- */
 
@@ -90,7 +85,9 @@ export function TabList({
         aria-label={ariaLabel}
         className={cn(
           "bg-segment-bg border border-segment-border rounded-full p-1",
-          fullWidth ? "grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:flex lg:gap-0" : "inline-flex flex-wrap gap-1",
+          fullWidth
+            ? "grid w-full grid-cols-1 gap-1 sm:grid-cols-2 lg:flex lg:gap-0"
+            : "inline-flex flex-wrap gap-1",
           className,
         )}
       >
@@ -105,7 +102,7 @@ export function TabList({
       role="tablist"
       aria-label={ariaLabel}
       className={cn(
-          "flex gap-3",
+        "flex gap-3",
         scrollable
           ? "overflow-x-auto flex-nowrap whitespace-nowrap"
           : "flex-wrap",

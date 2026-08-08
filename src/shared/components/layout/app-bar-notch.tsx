@@ -33,7 +33,7 @@ export function AppBarNotch() {
   const { items } = useReadyToServeItems();
   const [expanded, setExpanded] = useState(false);
   const [dismissed, setDismissed] = useState(() =>
-    readReadyToServeDismissed(storeId)
+    readReadyToServeDismissed(storeId),
   );
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export function AppBarNotch() {
 
   const visibleReadyItems = useMemo(
     () => items.filter((item) => !dismissed.has(item.id)),
-    [items, dismissed]
+    [items, dismissed],
   );
   const readyCount = visibleReadyItems.length;
   const previewItems = visibleReadyItems.slice(0, 3);
@@ -74,10 +74,7 @@ export function AppBarNotch() {
   });
 
   return (
-    <div
-      ref={containerRef}
-      className="appbar-notch-root"
-    >
+    <div ref={containerRef} className="appbar-notch-root">
       {/* Notch pill – centered in header */}
       <div className="appbar-notch-anchor">
         <button
@@ -106,9 +103,7 @@ export function AppBarNotch() {
         <div className="animate-notch-card-in appbar-notch-card">
           <div className="appbar-notch-card-header">
             <div>
-              <p className="appbar-notch-title">
-                {t("appbar.notch.title")}
-              </p>
+              <p className="appbar-notch-title">{t("appbar.notch.title")}</p>
               <p className="appbar-notch-subtitle">{label}</p>
             </div>
             <button
@@ -125,24 +120,16 @@ export function AppBarNotch() {
             <div className="appbar-notch-stat-card">
               <div className="appbar-notch-stat-label appbar-notch-stat-label--warning">
                 <LuChefHat size={15} />
-                <span>
-                  {t("appbar.notch.pending")}
-                </span>
+                <span>{t("appbar.notch.pending")}</span>
               </div>
-              <p className="appbar-notch-stat-number">
-                {pendingOrdersCount}
-              </p>
+              <p className="appbar-notch-stat-number">{pendingOrdersCount}</p>
             </div>
             <div className="appbar-notch-stat-card">
               <div className="appbar-notch-stat-label appbar-notch-stat-label--success">
                 <LuBellRing size={15} />
-                <span>
-                  {t("appbar.notch.ready")}
-                </span>
+                <span>{t("appbar.notch.ready")}</span>
               </div>
-              <p className="appbar-notch-stat-number">
-                {readyCount}
-              </p>
+              <p className="appbar-notch-stat-number">{readyCount}</p>
             </div>
           </div>
 
@@ -157,10 +144,7 @@ export function AppBarNotch() {
             ) : (
               <div className="appbar-notch-preview-list">
                 {previewItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="appbar-notch-preview-item"
-                  >
+                  <div key={item.id} className="appbar-notch-preview-item">
                     <div className="appbar-notch-preview-text">
                       <p className="appbar-notch-preview-name">
                         {item.productName} x{item.quantity}

@@ -1,11 +1,16 @@
-import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+import {
+  Dialog,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/dialog";
 import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
 const TABLE_OPTIONS = Array.from(
   { length: 20 },
-  (_, index) => `T-${String(index + 1).padStart(2, "0")}`
+  (_, index) => `T-${String(index + 1).padStart(2, "0")}`,
 );
 
 interface Props {
@@ -22,7 +27,9 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
     <Dialog open={open} onClose={onClose} className="max-w-2xl p-5 sm:p-6">
       <DialogHeader className="mb-5">
         <DialogTitle>{t("pos.cart.selectTable")}</DialogTitle>
-        <DialogDescription>{t("pos.cart.selectTableDescription")}</DialogDescription>
+        <DialogDescription>
+          {t("pos.cart.selectTableDescription")}
+        </DialogDescription>
       </DialogHeader>
 
       <div className="page-grid grid grid-cols-4">
@@ -42,7 +49,7 @@ const TablePickerDialog = ({ open, onClose, tableNumber, onSelect }: Props) => {
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
               tableNumber === table
                 ? "accent-inset-ring border-accent bg-accent-bg text-accent"
-                : "border-card-border"
+                : "border-card-border",
             )}
             aria-pressed={tableNumber === table}
             type="button"

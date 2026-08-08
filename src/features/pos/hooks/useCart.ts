@@ -15,7 +15,7 @@ export function useCart() {
           return prev.map((item) =>
             item.productId === product.id
               ? { ...item, quantity: item.quantity + 1 }
-              : item
+              : item,
           );
         }
 
@@ -32,7 +32,7 @@ export function useCart() {
         ];
       });
     },
-    []
+    [],
   );
 
   const removeItem = useCallback((cartItemId: string) => {
@@ -47,11 +47,11 @@ export function useCart() {
       }
       setItems((prev) =>
         prev.map((item) =>
-          item.cartItemId === cartItemId ? { ...item, quantity } : item
-        )
+          item.cartItemId === cartItemId ? { ...item, quantity } : item,
+        ),
       );
     },
-    [removeItem]
+    [removeItem],
   );
 
   const clearCart = useCallback(() => {
@@ -60,12 +60,12 @@ export function useCart() {
 
   const subtotal = useMemo(
     () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [items]
+    [items],
   );
 
   const totalItems = useMemo(
     () => items.reduce((sum, item) => sum + item.quantity, 0),
-    [items]
+    [items],
   );
 
   return {

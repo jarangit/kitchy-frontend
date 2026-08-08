@@ -64,9 +64,7 @@ const AddUpProductForm = ({
   const [imageError, setImageError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const stationId = useAppSelector(
-    (state) => state.currentStation.stationId
-  );
+  const stationId = useAppSelector((state) => state.currentStation.stationId);
 
   const {
     register,
@@ -96,7 +94,9 @@ const AddUpProductForm = ({
       stationId: data.stationId || stationId || "",
       price: Number(data.price) || 0,
       cost:
-        data.cost === undefined || data.cost === null || Number.isNaN(Number(data.cost))
+        data.cost === undefined ||
+        data.cost === null ||
+        Number.isNaN(Number(data.cost))
           ? undefined
           : Number(data.cost),
       isActive: data.isActive ?? true,
@@ -114,7 +114,7 @@ const AddUpProductForm = ({
   };
 
   const handleImagePick = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ): Promise<void> => {
     const file = e.target.files?.[0];
     e.target.value = "";
@@ -187,8 +187,8 @@ const AddUpProductForm = ({
         ? t("settings.products.saving")
         : t("settings.products.save")
       : isSubmitting
-      ? t("settings.products.creating")
-      : t("settings.products.create");
+        ? t("settings.products.creating")
+        : t("settings.products.create");
 
   return (
     <Dialog open={open} onClose={handleClose}>
