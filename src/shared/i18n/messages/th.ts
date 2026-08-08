@@ -269,6 +269,10 @@ export const thMessages = {
   "settings.stations.col.actions": "การดำเนินการ",
 
   "transaction.list.col.orderNumber": "เลขที่ออร์เดอร์",
+  "transaction.list.col.orderType": "ประเภท",
+  "transaction.list.col.table": "โต๊ะ",
+  "transaction.list.col.customer": "ลูกค้า",
+  "transaction.list.col.method": "วิธีจ่าย",
   "transaction.list.col.status": "สถานะ",
   "transaction.list.col.createdAt": "เวลา",
   "transaction.list.col.items": "รายการ",
@@ -593,6 +597,7 @@ export const thMessages = {
   "transaction.detail.info.customer": "ลูกค้า",
   "transaction.detail.info.platform": "แพลตฟอร์ม",
   "transaction.detail.info.deliveryOrderNumber": "เลขแอป",
+  "transaction.detail.info.paymentMethod": "วิธีจ่ายเงิน",
   "transaction.detail.info.orderId": "รหัสออเดอร์",
   "transaction.detail.items.note": "หมายเหตุ: {note}",
   "transaction.detail.summary.subtotal": "ยอดรวม ({count} รายการ)",

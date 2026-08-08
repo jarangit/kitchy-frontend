@@ -33,6 +33,9 @@ interface TransactionListItem {
   status: string;
   type?: string;
   orderType?: string;
+  tableNumber?: string;
+  customerName?: string;
+  method?: string;
   createdAt: string;
   totalAmount?: number;
   products?: TransactionProduct[];
@@ -249,6 +252,58 @@ const TransactionListPage = () => {
         cell: ({ row }) => (
           <span className="text-body font-medium text-text-primary">
             #{row.original.orderNumber}
+          </span>
+        ),
+      },
+      {
+        id: "orderType",
+        accessorFn: (tx) => tx.type ?? tx.orderType ?? "",
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("transaction.list.col.orderType")}
+          />
+        ),
+        meta: { className: "min-w-[96px]" },
+        cell: ({ row }) => (
+          <Badge variant="default" size="md">
+            {t(orderTypeLabelKey(row.original.type ?? row.original.orderType))}
+          </Badge>
+        ),
+      },
+      {
+        id: "table",
+        accessorFn: (tx) => tx.tableNumber ?? "",
+        header: () => <span>{t("transaction.list.col.table")}</span>,
+        enableSorting: false,
+        meta: { hideBelow: "md", className: "min-w-[80px]" },
+        cell: ({ row }) => (
+          <span className="text-body-sm text-text-secondary">
+            {row.original.tableNumber ?? "—"}
+          </span>
+        ),
+      },
+      {
+        id: "customer",
+        accessorFn: (tx) => tx.customerName ?? "",
+        header: () => <span>{t("transaction.list.col.customer")}</span>,
+        enableSorting: false,
+        meta: { hideBelow: "lg", className: "min-w-[140px]", wrap: true },
+        cell: ({ row }) => (
+          <span className="text-body-sm text-text-secondary">
+            {row.original.customerName ?? "—"}
+          </span>
+        ),
+      },
+      {
+        id: "method",
+        accessorFn: (tx) => tx.method ?? "",
+        header: () => <span>{t("transaction.list.col.method")}</span>,
+        enableSorting: false,
+        meta: { hideBelow: "lg", className: "min-w-[120px]" },
+        cell: ({ row }) => (
+          <span className="text-body-sm text-text-secondary">
+            {row.original.method ?? "—"}
           </span>
         ),
       },

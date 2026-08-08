@@ -29,9 +29,9 @@
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-button-ghost-text: var(--color-text-primary);
   --radius-button: var(--radius-xl);
-  --spacing-button-height-sm: 44px;
-  --spacing-button-height-md: 52px;
-  --spacing-button-height-lg: 60px;
+  --spacing-button-height-sm: 40px;
+  --spacing-button-height-md: 48px;
+  --spacing-button-height-lg: 56px;
   --spacing-button-padding-x: var(--space-5);
   --font-weight-button: var(--weight-medium);
   --font-size-button-sm: var(--text-label-size);
@@ -77,7 +77,7 @@
   /* ── Badge ── */
   --radius-badge: 9999px;
   --spacing-badge-padding-x: var(--space-2);
-  --spacing-badge-padding-y: 2px;
+  --spacing-badge-padding-y: 1px;
   --font-size-badge: var(--text-caption-size);
   --font-weight-badge: var(--text-label-weight);
   --color-badge-default-bg: var(--color-surface-hover);
@@ -107,9 +107,9 @@
   --color-chip-inactive-text: var(--color-text-secondary);
   --color-chip-inactive-bg-hover: var(--color-surface-hover);
   --radius-chip: 9999px;
-  --spacing-chip-height-sm: 44px;
-  --spacing-chip-height-md: 52px;
-  --spacing-chip-height-lg: 60px;
+  --spacing-chip-height-sm: 40px;
+  --spacing-chip-height-md: 48px;
+  --spacing-chip-height-lg: 56px;
   --spacing-chip-padding-x: var(--space-5);
   --font-weight-chip: var(--weight-medium);
   --font-size-chip: var(--text-body-size);

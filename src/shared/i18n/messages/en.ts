@@ -271,6 +271,10 @@ export const enMessages = {
   "settings.stations.col.actions": "Actions",
 
   "transaction.list.col.orderNumber": "Order",
+  "transaction.list.col.orderType": "Type",
+  "transaction.list.col.table": "Table",
+  "transaction.list.col.customer": "Customer",
+  "transaction.list.col.method": "Payment",
   "transaction.list.col.status": "Status",
   "transaction.list.col.createdAt": "Created",
   "transaction.list.col.items": "Items",
@@ -595,6 +599,7 @@ export const enMessages = {
   "transaction.detail.info.customer": "Customer",
   "transaction.detail.info.platform": "Platform",
   "transaction.detail.info.deliveryOrderNumber": "App order",
+  "transaction.detail.info.paymentMethod": "Payment method",
   "transaction.detail.info.orderId": "Order ID",
   "transaction.detail.items.note": "Note: {note}",
   "transaction.detail.summary.subtotal": "Subtotal ({count} items)",
