@@ -26,9 +26,7 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogHeader>
-        <DialogTitle>
-          {format(parseISO(day.date), "d MMM yyyy")}
-        </DialogTitle>
+        <DialogTitle>{format(parseISO(day.date), "d MMM yyyy")}</DialogTitle>
       </DialogHeader>
 
       <div className="space-y-6">
@@ -41,11 +39,17 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
 
         <div className="flex items-center gap-3 text-label text-text-secondary">
           <span>
-            Orders <span className="font-semibold text-text-primary">{day.orders}</span>
+            Orders{" "}
+            <span className="font-semibold text-text-primary">
+              {day.orders}
+            </span>
           </span>
           <span className="text-text-tertiary">|</span>
           <span>
-            Avg <span className="font-semibold text-text-primary">{formatCurrency(avg)}</span>
+            Avg{" "}
+            <span className="font-semibold text-text-primary">
+              {formatCurrency(avg)}
+            </span>
           </span>
         </div>
 

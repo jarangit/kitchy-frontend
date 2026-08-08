@@ -13,15 +13,20 @@ const NetworkQualityIcon = ({
   isOnline: boolean;
 }) => {
   const { t } = useTranslation();
-  const activeBars = !isOnline ? 0 : level === "good" ? 3 : level === "fair" ? 2 : 1;
-  const levelColorClass =
-    !isOnline
-      ? "bg-text-tertiary"
-      : level === "good"
+  const activeBars = !isOnline
+    ? 0
+    : level === "good"
+      ? 3
+      : level === "fair"
+        ? 2
+        : 1;
+  const levelColorClass = !isOnline
+    ? "bg-text-tertiary"
+    : level === "good"
       ? "bg-info"
       : level === "fair"
-      ? "bg-warning"
-      : "bg-danger";
+        ? "bg-warning"
+        : "bg-danger";
 
   const label = !isOnline
     ? t("pos.header.network.offline")
@@ -76,9 +81,7 @@ const PosHeader = ({
   return (
     <div className="flex items-center justify-between border-b border-border bg-bg px-6 py-5 sm:px-8">
       <div className="min-w-0 flex-1">
-        <h1 className="truncate text-heading text-text-primary">
-          {shopName}
-        </h1>
+        <h1 className="truncate text-heading text-text-primary">{shopName}</h1>
       </div>
 
       <div className="flex shrink-0 items-center gap-3 sm:gap-4">

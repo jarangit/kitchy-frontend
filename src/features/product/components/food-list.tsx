@@ -14,7 +14,10 @@ import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { SettingsSectionCard } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import type { IMenu, ProductFormData } from "@/features/product/types/product.model";
+import type {
+  IMenu,
+  ProductFormData,
+} from "@/features/product/types/product.model";
 
 type StatusFilter = "all" | "active" | "inactive";
 
@@ -30,7 +33,10 @@ const ProductListTemplate = () => {
   } = useProductService();
   const { categoriesQuery } = useCategoryService();
 
-  const products = useMemo(() => (productsQuery ?? []) as IMenu[], [productsQuery]);
+  const products = useMemo(
+    () => (productsQuery ?? []) as IMenu[],
+    [productsQuery],
+  );
 
   // Dialog state
   const [isFormOpen, setIsFormOpen] = useState(false);

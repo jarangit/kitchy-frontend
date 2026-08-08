@@ -11,7 +11,10 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/shared/components/ui/dialog";
-import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
+import {
+  SettingsSectionCard,
+  SettingsShell,
+} from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 const SettingsShopPage = () => {
@@ -22,7 +25,9 @@ const SettingsShopPage = () => {
   const userId = auth?.user?.id ? String(auth.user.id) : undefined;
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const { storeFinOneQuery, updateStore, deleteStore } = useStoreService({ userId });
+  const { storeFinOneQuery, updateStore, deleteStore } = useStoreService({
+    userId,
+  });
 
   const handleDeleteStore = () => {
     if (id !== undefined) {
@@ -50,7 +55,9 @@ const SettingsShopPage = () => {
               }
             />
           ) : (
-            <div className="text-text-tertiary">{t("settings.shop.loading")}</div>
+            <div className="text-text-tertiary">
+              {t("settings.shop.loading")}
+            </div>
           )}
         </SettingsSectionCard>
 
@@ -84,7 +91,10 @@ const SettingsShopPage = () => {
       </SettingsShell>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      >
         <DialogHeader>
           <DialogTitle>{t("settings.shop.deleteDialogTitle")}</DialogTitle>
           <DialogDescription>
@@ -92,7 +102,10 @@ const SettingsShopPage = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="secondary" onClick={() => setIsDeleteDialogOpen(false)}>
+          <Button
+            variant="secondary"
+            onClick={() => setIsDeleteDialogOpen(false)}
+          >
             {t("common.cancel")}
           </Button>
           <Button variant="danger" onClick={handleDeleteStore}>

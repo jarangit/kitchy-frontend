@@ -4,7 +4,10 @@ import { LuPlus, LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Input } from "@/shared/components/ui/input";
-import { SettingsSectionCard, SettingsShell } from "@/features/store/components/settings-shell";
+import {
+  SettingsSectionCard,
+  SettingsShell,
+} from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { getDefaultQuickNotes } from "@/shared/i18n/presets";
 
@@ -15,10 +18,16 @@ const SettingsQuickNotesPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t, language } = useTranslation();
-  const defaultQuickNotes = useMemo(() => getDefaultQuickNotes(language), [language]);
+  const defaultQuickNotes = useMemo(
+    () => getDefaultQuickNotes(language),
+    [language],
+  );
   const [quickNotes, setQuickNotes] = useState<string[]>(defaultQuickNotes);
   const [customNote, setCustomNote] = useState("");
-  const storageKey = useMemo(() => (id ? getQuickNotesSettingsKey(id) : ""), [id]);
+  const storageKey = useMemo(
+    () => (id ? getQuickNotesSettingsKey(id) : ""),
+    [id],
+  );
 
   useEffect(() => {
     setQuickNotes(defaultQuickNotes);
@@ -91,9 +100,7 @@ const SettingsQuickNotesPage = () => {
               key={note}
               className="flex items-center justify-between gap-3 bg-bg px-4 py-4"
             >
-              <span className="text-label text-text-primary">
-                {note}
-              </span>
+              <span className="text-label text-text-primary">{note}</span>
               <Button
                 type="button"
                 variant="ghost"

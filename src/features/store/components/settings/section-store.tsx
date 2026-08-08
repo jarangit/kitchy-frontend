@@ -1,10 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
-import {
-  SettingGroup,
-  SettingRow,
-} from "@/shared/components/ui/setting-row";
+import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useLocalSetting } from "@/shared/hooks/use-local-setting";

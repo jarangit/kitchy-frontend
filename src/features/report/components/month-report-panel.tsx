@@ -88,9 +88,15 @@ const MonthReportPanel = ({
       </div>
 
       {viewMode === "table" ? (
-        <MonthReportTable calendarDays={calendarDays} onSelectDay={onSelectDay} />
+        <MonthReportTable
+          calendarDays={calendarDays}
+          onSelectDay={onSelectDay}
+        />
       ) : (
-        <MonthReportChart calendarDays={calendarDays} onSelectDay={onSelectDay} />
+        <MonthReportChart
+          calendarDays={calendarDays}
+          onSelectDay={onSelectDay}
+        />
       )}
     </Card>
   );

@@ -20,7 +20,9 @@ const PaymentSuccessPage = () => {
           title="No payment data found"
           description="It looks like you navigated here directly. Please start a new order."
           action={
-            <Button onClick={() => navigate(`/store/${id}/pos`)}>{t("pos.payment.backToPos")}</Button>
+            <Button onClick={() => navigate(`/store/${id}/pos`)}>
+              {t("pos.payment.backToPos")}
+            </Button>
           }
         />
       </div>
@@ -55,7 +57,9 @@ const PaymentSuccessPage = () => {
                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-success-bg text-success animate-check">
                   <LuCircleCheck size={28} />
                 </div>
-                <h1 className="text-title text-text-primary">{t("pos.success.title")}</h1>
+                <h1 className="text-title text-text-primary">
+                  {t("pos.success.title")}
+                </h1>
                 <p className="mt-2 text-heading tabular-nums text-text-primary">
                   ฿{subtotal.toFixed(2)}
                 </p>
@@ -68,14 +72,18 @@ const PaymentSuccessPage = () => {
                 <p className="mt-1 font-mono text-title text-text-primary">
                   #{paymentResult.receiptId}
                 </p>
-                <p className="mt-1 text-label text-text-tertiary">{formattedDate}</p>
+                <p className="mt-1 text-label text-text-tertiary">
+                  {formattedDate}
+                </p>
               </div>
             </div>
 
             <div className="hidden space-y-3 lg:block lg:mt-auto">
               <div className="rounded-card bg-bg px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="text-label text-text-secondary">{t("pos.receipt.total")}</span>
+                  <span className="text-label text-text-secondary">
+                    {t("pos.receipt.total")}
+                  </span>
                   <span className="text-title tabular-nums text-text-primary">
                     ฿{subtotal.toFixed(2)}
                   </span>
@@ -118,7 +126,9 @@ const PaymentSuccessPage = () => {
           <div className="space-y-3">
             <div className="rounded-card bg-bg px-4 py-3">
               <div className="flex items-center justify-between gap-3">
-                <span className="text-label text-text-secondary">{t("pos.receipt.total")}</span>
+                <span className="text-label text-text-secondary">
+                  {t("pos.receipt.total")}
+                </span>
                 <span className="text-title tabular-nums text-text-primary">
                   ฿{subtotal.toFixed(2)}
                 </span>

@@ -78,7 +78,9 @@ const KdsBoardPage = () => {
   const [activeStationId, setActiveStationId] = useState<string | null>(null);
   const activeStation = useMemo(() => {
     if (stations.length === 0) return null;
-    return stations.find((station) => station.id === activeStationId) ?? stations[0];
+    return (
+      stations.find((station) => station.id === activeStationId) ?? stations[0]
+    );
   }, [activeStationId, stations]);
 
   const {
@@ -88,8 +90,7 @@ const KdsBoardPage = () => {
     bumpAndRemove,
     bumpedOrderId,
     updateStatus,
-  } =
-    useKds(activeStation?.id);
+  } = useKds(activeStation?.id);
   const orderLimit = storeFinOneQuery?.orderLimit ?? DEFAULT_ORDER_LIMIT;
 
   const handleBump = (group: Parameters<typeof bumpAndRemove>[0]) => {
@@ -145,7 +146,10 @@ const KdsBoardPage = () => {
               />
             </div>
           ) : (
-            <div ref={scrollRef} className="flex flex-1 min-h-0 gap-4 overflow-x-auto cursor-grab pb-2 select-none">
+            <div
+              ref={scrollRef}
+              className="flex flex-1 min-h-0 gap-4 overflow-x-auto cursor-grab pb-2 select-none"
+            >
               {pendingGroups.map((group) => (
                 <KdsOrderColumn
                   key={group.orderId}

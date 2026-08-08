@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
-import { setCurrentStore, setCurrentStoreId } from "@/shared/store/slices/current-store-slice";
+import {
+  setCurrentStore,
+  setCurrentStoreId,
+} from "@/shared/store/slices/current-store-slice";
 import {
   clearCurrentStation,
   setCurrentStation,
@@ -22,7 +25,9 @@ export function useStoreContextSync() {
   const dispatch = useAppDispatch();
   const routeStoreId = useStoreRouteParam();
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
-  const currentStoreName = useAppSelector((state) => state.currentStore.storeName);
+  const currentStoreName = useAppSelector(
+    (state) => state.currentStore.storeName,
+  );
   const currentStationId = useAppSelector(
     (state) => state.currentStation.stationId,
   );

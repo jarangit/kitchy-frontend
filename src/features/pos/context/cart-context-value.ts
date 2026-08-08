@@ -1,5 +1,9 @@
 import { createContext } from "react";
-import type { ICartItem, OrderType, PaymentMethod } from "@/features/pos/types/pos.model";
+import type {
+  ICartItem,
+  OrderType,
+  PaymentMethod,
+} from "@/features/pos/types/pos.model";
 
 interface CartState {
   items: ICartItem[];

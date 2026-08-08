@@ -22,7 +22,7 @@ axiosClient.interceptors.request.use(
   (error) => {
     // Handle request error
     return Promise.reject(error);
-  }
+  },
 );
 
 axiosClient.interceptors.response.use(
@@ -32,7 +32,7 @@ axiosClient.interceptors.response.use(
       appBus.emit("auth:unauthorized", {});
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default axiosClient;

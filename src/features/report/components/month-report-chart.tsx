@@ -112,7 +112,9 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
             margin={{ top: 8, right: 12, left: -12, bottom: 8 }}
             onMouseLeave={() => setActiveIndex(chartData.length - 1)}
             onClick={(state: unknown) => {
-              const s = state as { activePayload?: Array<{ payload: ChartPoint }> };
+              const s = state as {
+                activePayload?: Array<{ payload: ChartPoint }>;
+              };
               if (s?.activePayload?.[0]?.payload?.day) {
                 onSelectDay(s.activePayload[0].payload.day);
               }
@@ -139,7 +141,10 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
               width={34}
             />
             <Tooltip
-              cursor={{ stroke: "var(--color-text-primary)", strokeDasharray: "3 4" }}
+              cursor={{
+                stroke: "var(--color-text-primary)",
+                strokeDasharray: "3 4",
+              }}
               content={<CustomTooltip />}
             />
             <Line

@@ -1,5 +1,3 @@
-
-
 import { Button } from "@/shared/components/ui/button";
 
 const ErrorModal = () => {
@@ -12,11 +10,7 @@ const ErrorModal = () => {
         </p>
       </div>
       <div className="mt-6 flex justify-center">
-        <Button
-          onClick={() => window.location.reload()}
-        >
-          Reload Page
-        </Button>
+        <Button onClick={() => window.location.reload()}>Reload Page</Button>
       </div>
     </div>
   );

@@ -34,7 +34,8 @@ const Sidebar = () => {
   const routeStoreId = useStoreRouteParam();
   const currentStoreId = useAppSelector((state) => state.currentStore.storeId);
 
-  const resolvedStoreId = routeStoreId ?? (currentStoreId ? String(currentStoreId) : undefined);
+  const resolvedStoreId =
+    routeStoreId ?? (currentStoreId ? String(currentStoreId) : undefined);
 
   const { count: pendingOrdersCount } = usePendingOrdersCount();
 
@@ -97,7 +98,9 @@ const Sidebar = () => {
 
   const isActive = (path: string, match: NavMatch = "exact") => {
     if (match === "prefix") {
-      return location.pathname === path || location.pathname.startsWith(`${path}/`);
+      return (
+        location.pathname === path || location.pathname.startsWith(`${path}/`)
+      );
     }
     return location.pathname === path;
   };
@@ -127,7 +130,7 @@ const Sidebar = () => {
           "transition-[opacity,transform] duration-500 ease-out",
           playDockIntro
             ? "translate-y-0 scale-100 opacity-100"
-            : "translate-y-2 scale-90 opacity-0"
+            : "translate-y-2 scale-90 opacity-0",
         )}
         style={
           playDockIntro
@@ -160,23 +163,41 @@ const Sidebar = () => {
             "pointer-events-auto relative isolate flex max-w-[calc(100vw-2rem)] items-end gap-1 overflow-visible rounded-[2.15rem] border border-white/45 bg-white/24 px-2 pb-2.5 pt-2 shadow-[0_28px_90px_rgba(15,23,42,0.26),0_8px_22px_rgba(255,255,255,0.24)_inset,0_-12px_34px_rgba(15,23,42,0.08)_inset] backdrop-blur-[34px] backdrop-saturate-200 transition-[opacity,transform,filter] duration-500 ease-out dark:border-white/12 dark:bg-white/8 sm:gap-2 sm:rounded-[2.5rem] sm:px-2.5 sm:pb-3 sm:pt-2",
             playDockIntro
               ? "translate-y-0 scale-100 opacity-100 blur-0"
-              : "translate-y-4 scale-95 opacity-0 blur-[6px]"
+              : "translate-y-4 scale-95 opacity-0 blur-[6px]",
           )}
         >
-          <span aria-hidden="true" className="pointer-events-none absolute inset-x-5 top-2 h-10 rounded-full bg-white/45 blur-2xl dark:bg-white/12" />
-          <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-b from-white/42 via-white/12 to-white/4 dark:from-white/14 dark:via-white/6 dark:to-transparent" />
-          <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/55 dark:ring-white/10" />
-          <nav aria-label="Store navigation" className="relative z-10 flex min-w-0 items-end gap-1 px-0.5 pb-0.5 sm:gap-2">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-5 top-2 h-10 rounded-full bg-white/45 blur-2xl dark:bg-white/12"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-b from-white/42 via-white/12 to-white/4 dark:from-white/14 dark:via-white/6 dark:to-transparent"
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/55 dark:ring-white/10"
+          />
+          <nav
+            aria-label="Store navigation"
+            className="relative z-10 flex min-w-0 items-end gap-1 px-0.5 pb-0.5 sm:gap-2"
+          >
             {storeMenuList.map((item, index) => renderNavItem(item, index))}
             {resolvedStoreId &&
-              renderNavItem({
-                name: "Settings",
-                path: `/store/${resolvedStoreId}/settings`,
-                icon: <LuSettings size={22} />,
-                match: "prefix",
-              }, storeMenuList.length)}
+              renderNavItem(
+                {
+                  name: "Settings",
+                  path: `/store/${resolvedStoreId}/settings`,
+                  icon: <LuSettings size={22} />,
+                  match: "prefix",
+                },
+                storeMenuList.length,
+              )}
           </nav>
-          <div className="relative z-10 mb-2 hidden h-9 w-px shrink-0 bg-white/55 dark:bg-white/15 sm:block" aria-hidden="true" />
+          <div
+            className="relative z-10 mb-2 hidden h-9 w-px shrink-0 bg-white/55 dark:bg-white/15 sm:block"
+            aria-hidden="true"
+          />
           <button
             type="button"
             aria-label="Hide navigation dock"
@@ -187,11 +208,13 @@ const Sidebar = () => {
               "transition-[opacity,transform] duration-500 ease-out",
               playDockIntro
                 ? "translate-y-0 scale-100 opacity-100"
-                : "translate-y-2 scale-90 opacity-0"
+                : "translate-y-2 scale-90 opacity-0",
             )}
             style={
               playDockIntro
-                ? ({ transitionDelay: `${80 + (storeMenuList.length + 1) * 42}ms` } as CSSProperties)
+                ? ({
+                    transitionDelay: `${80 + (storeMenuList.length + 1) * 42}ms`,
+                  } as CSSProperties)
                 : undefined
             }
           >

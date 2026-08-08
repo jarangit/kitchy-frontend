@@ -23,7 +23,8 @@ const extractCategoryList = (payload: unknown): ICategoryDto[] => {
 
 export const useCategoryService = () => {
   const queryClient = useQueryClient();
-  const storeId = useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   const categoriesQuery = useQuery({
     queryKey: ["categories", storeId],
@@ -33,7 +34,9 @@ export const useCategoryService = () => {
       const list = extractCategoryList(response.data.data);
       return list
         .map(normalizeCategory)
-        .filter((category) => category.id.length > 0 && category.name.length > 0)
+        .filter(
+          (category) => category.id.length > 0 && category.name.length > 0,
+        )
         .sort((a, b) => a.sortOrder - b.sortOrder);
     },
   });

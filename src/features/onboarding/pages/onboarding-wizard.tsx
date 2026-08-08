@@ -6,9 +6,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useAppDispatch } from "@/shared/hooks/hooks";
 import { setCurrentStore } from "@/shared/store/slices/current-store-slice";
 import { setCurrentStation } from "@/shared/store/slices/current-station-slice";
-import {
-  OnboardingProvider,
-} from "@/features/onboarding/context/onboarding-context";
+import { OnboardingProvider } from "@/features/onboarding/context/onboarding-context";
 import { useOnboarding } from "@/features/onboarding/context/onboarding-hooks";
 import { useOnboardingFlow } from "@/features/onboarding/hooks/use-onboarding-flow";
 import { onboardingStorage } from "@/features/onboarding/utils/onboarding-storage";
@@ -83,7 +81,15 @@ function WizardBody() {
       queryClient.invalidateQueries({ queryKey: ["products", storeId] });
       navigate(`/store/${storeId}/pos`);
     },
-    [dispatch, draft.promptpay, draft.shopType, navigate, queryClient, t, userId],
+    [
+      dispatch,
+      draft.promptpay,
+      draft.shopType,
+      navigate,
+      queryClient,
+      t,
+      userId,
+    ],
   );
 
   // ── Step dispatchers ──
@@ -154,7 +160,9 @@ function WizardBody() {
           <StepStoreInfo
             onSubmit={handleStoreSubmit}
             submitting={flow.initStoreLoading}
-            error={flow.initStoreError ? t("onboarding.store.submitError") : null}
+            error={
+              flow.initStoreError ? t("onboarding.store.submitError") : null
+            }
           />
         </WizardShell>
       );
@@ -170,7 +178,9 @@ function WizardBody() {
           <StepAddMenu
             onSubmit={handleMenuSubmit}
             submitting={flow.createMenusLoading}
-            error={flow.createMenusError ? t("onboarding.menu.submitError") : null}
+            error={
+              flow.createMenusError ? t("onboarding.menu.submitError") : null
+            }
           />
         </WizardShell>
       );

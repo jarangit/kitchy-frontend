@@ -77,7 +77,7 @@ const PaymentPage = () => {
         total: subtotal,
         received: receivedAmount ? Number(receivedAmount) : undefined,
       }),
-    [paymentStrategy, receivedAmount, subtotal]
+    [paymentStrategy, receivedAmount, subtotal],
   );
 
   const canConfirm =
@@ -98,7 +98,9 @@ const PaymentPage = () => {
       ? t("pos.payment.selectTableFirst")
       : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
         ? t("pos.payment.selectPlatformFirst")
-        : paymentMethod === "CASH" && receivedAmount.trim().length > 0 && Number(receivedAmount) < subtotal
+        : paymentMethod === "CASH" &&
+            receivedAmount.trim().length > 0 &&
+            Number(receivedAmount) < subtotal
           ? t("pos.payment.insufficientCash")
           : null;
 
@@ -117,8 +119,10 @@ const PaymentPage = () => {
       await createMutation.mutateAsync({
         orderNumber,
         orderType,
-        tableNumber: orderType === "DINE_IN" ? tableNumber ?? undefined : undefined,
-        customerName: orderType === "DELIVERY" ? customerName.trim() : undefined,
+        tableNumber:
+          orderType === "DINE_IN" ? (tableNumber ?? undefined) : undefined,
+        customerName:
+          orderType === "DELIVERY" ? customerName.trim() : undefined,
         deliveryPlatform:
           orderType === "DELIVERY" ? deliveryPlatform.trim() : undefined,
         deliveryOrderNumber:
@@ -160,7 +164,9 @@ const PaymentPage = () => {
         <EmptyState
           title={t("pos.payment.emptyTitle")}
           description={t("pos.payment.emptyDescription")}
-          action={<Button onClick={handleCancel}>{t("pos.payment.backToPos")}</Button>}
+          action={
+            <Button onClick={handleCancel}>{t("pos.payment.backToPos")}</Button>
+          }
         />
       </div>
     );
@@ -171,7 +177,11 @@ const PaymentPage = () => {
       <div className="min-h-0 flex-1 overflow-y-auto [-webkit-overflow-scrolling:touch]">
         {step === "SUMMARY" ? (
           <div className="mx-auto flex h-full w-full max-w-6xl flex-col p-4">
-            <Card as="section" padding="none" className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            <Card
+              as="section"
+              padding="none"
+              className="flex min-h-0 flex-1 flex-col overflow-hidden"
+            >
               <div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[minmax(0,1fr)_320px]">
                 <section className="flex min-h-0 flex-col">
                   <div className="shrink-0 border-b border-border p-4">
@@ -192,7 +202,9 @@ const PaymentPage = () => {
                     </div>
 
                     <div className="mt-4 min-w-0">
-                      <h1 className="text-title text-text-primary">{t("pos.payment.reviewTitle")}</h1>
+                      <h1 className="text-title text-text-primary">
+                        {t("pos.payment.reviewTitle")}
+                      </h1>
                       <p className="mt-1 text-body-sm leading-6 text-text-secondary">
                         {t("pos.payment.orderSummary")}
                       </p>
@@ -222,13 +234,17 @@ const PaymentPage = () => {
                     <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
                       {t("pos.payment.title")}
                     </p>
-                    <h1 className="mt-1 text-subtitle text-text-primary">{t("pos.payment.stepSummary")}</h1>
+                    <h1 className="mt-1 text-subtitle text-text-primary">
+                      {t("pos.payment.stepSummary")}
+                    </h1>
                   </div>
 
                   <div className="space-y-3">
                     <div className="rounded-card border border-card-border bg-bg p-3">
                       <div className="flex items-center justify-between gap-3">
-                        <span className="text-label text-text-secondary">{t("pos.receipt.total")}</span>
+                        <span className="text-label text-text-secondary">
+                          {t("pos.receipt.total")}
+                        </span>
                         <span className="text-title tabular-nums text-text-primary">
                           ฿{subtotal.toFixed(2)}
                         </span>
@@ -282,7 +298,11 @@ const PaymentPage = () => {
                 <div className="flex flex-1 items-center justify-center p-6">
                   <div className="w-full max-w-xl">
                     {paymentMethod === "QR" ? (
-                      <QrPaymentSection subtotal={subtotal} className="border-0 bg-transparent p-0" embedded />
+                      <QrPaymentSection
+                        subtotal={subtotal}
+                        className="border-0 bg-transparent p-0"
+                        embedded
+                      />
                     ) : (
                       <CashPaymentSection
                         subtotal={subtotal}
@@ -303,7 +323,9 @@ const PaymentPage = () => {
                     <p className="text-caption font-medium uppercase tracking-[0.08em] text-text-tertiary">
                       {t("pos.payment.title")}
                     </p>
-                    <h1 className="mt-1 text-subtitle text-text-primary">{t("pos.payment.method")}</h1>
+                    <h1 className="mt-1 text-subtitle text-text-primary">
+                      {t("pos.payment.method")}
+                    </h1>
                   </div>
 
                   <div
@@ -325,11 +347,15 @@ const PaymentPage = () => {
                             "flex h-12 items-center justify-center gap-2 rounded-selection text-label font-medium transition-colors duration-[var(--motion-fast)] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/35",
                             selected
                               ? "bg-segment-active-bg text-segment-active-text"
-                              : "text-segment-inactive-text hover:text-segment-inactive-text-hover"
+                              : "text-segment-inactive-text hover:text-segment-inactive-text-hover",
                           )}
                         >
                           <Icon className="h-5 w-5" aria-hidden="true" />
-                          {t(method === "QR" ? "pos.payment.qr" : "pos.payment.cash")}
+                          {t(
+                            method === "QR"
+                              ? "pos.payment.qr"
+                              : "pos.payment.cash",
+                          )}
                         </button>
                       );
                     })}

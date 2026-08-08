@@ -4,7 +4,11 @@ import { orderApiService } from "@/features/order/services/order";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
 import { appBus } from "@/shared/events/app-events";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
-import type { KdsCard, KdsOrderGroup, KdsStatus } from "@/features/kds/types/kds.model";
+import type {
+  KdsCard,
+  KdsOrderGroup,
+  KdsStatus,
+} from "@/features/kds/types/kds.model";
 import { groupCardsByOrder } from "@/features/kds/utils/group-by-order";
 
 /**
@@ -25,7 +29,9 @@ const toKdsStatus = (backendStatus: string): KdsStatus => {
 /**
  * Map KDS UI status back to backend status for PATCH.
  */
-const toBackendStatus = (kdsStatus: KdsStatus): "pending" | "complete" | "served" => {
+const toBackendStatus = (
+  kdsStatus: KdsStatus,
+): "pending" | "complete" | "served" => {
   if (kdsStatus === "SERVED") return "served";
   return kdsStatus === "READY" ? "complete" : "pending";
 };
@@ -69,7 +75,7 @@ export const useKds = (stationId?: string) => {
     queryKey: ["kds-orders", stationId],
     queryFn: async () => {
       const response = await orderApiService.getOrderStationItemsByStationId(
-        stationId as string
+        stationId as string,
       );
       return response.data as unknown;
     },
@@ -94,7 +100,7 @@ export const useKds = (stationId?: string) => {
    */
   const pendingGroups = useMemo(
     () => groups.filter((g) => g.status === "PENDING"),
-    [groups]
+    [groups],
   );
 
   const updateStatus = async (card: KdsCard, status: KdsStatus) => {
@@ -129,7 +135,7 @@ export const useKds = (stationId?: string) => {
       if (group.status !== "PENDING") return;
 
       const itemsToAdvance = group.items.filter(
-        (item) => item.status === "PENDING"
+        (item) => item.status === "PENDING",
       );
       if (itemsToAdvance.length === 0) return;
 
@@ -137,14 +143,19 @@ export const useKds = (stationId?: string) => {
       setIsUpdating(true);
 
       try {
-        await new Promise((resolve) => setTimeout(resolve, BUMPED_TRANSITION_MS));
+        await new Promise((resolve) =>
+          setTimeout(resolve, BUMPED_TRANSITION_MS),
+        );
 
         for (const item of itemsToAdvance) {
-          await orderApiService.updateOrderStationItem(item.orderStationItemId, {
-            status: toBackendStatus("READY"),
-            stationId,
-            orderItemId: item.orderItemId,
-          });
+          await orderApiService.updateOrderStationItem(
+            item.orderStationItemId,
+            {
+              status: toBackendStatus("READY"),
+              stationId,
+              orderItemId: item.orderItemId,
+            },
+          );
 
           appBus.emit("order:statusChanged", {
             orderStationItemId: item.orderStationItemId,
@@ -159,7 +170,7 @@ export const useKds = (stationId?: string) => {
         setIsUpdating(false);
       }
     },
-    [stationId, isUpdating, query]
+    [stationId, isUpdating, query],
   );
 
   return {

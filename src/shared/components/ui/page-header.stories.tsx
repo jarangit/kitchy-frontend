@@ -86,10 +86,7 @@ export const Sticky: Story = {
       <PageHeader {...args} sticky />
       <div className="space-y-3 p-4">
         {Array.from({ length: 12 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-10 rounded-md bg-surface-muted"
-          />
+          <div key={i} className="h-10 rounded-md bg-surface-muted" />
         ))}
       </div>
     </div>

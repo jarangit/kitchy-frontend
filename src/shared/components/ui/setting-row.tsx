@@ -54,11 +54,7 @@ type EditableProps = BaseProps & {
 };
 
 type Props =
-  | DisplayProps
-  | LinkProps
-  | ActionProps
-  | ControlProps
-  | EditableProps;
+  DisplayProps | LinkProps | ActionProps | ControlProps | EditableProps;
 
 const rowBase =
   "group flex items-center gap-4 px-5 py-4 min-h-[60px] text-body text-text-primary";

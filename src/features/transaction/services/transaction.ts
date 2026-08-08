@@ -1,5 +1,8 @@
 import axiosClient from "@/shared/services/axios-client";
-import { IS_DEMO_MODE, getAdapter } from "@/shared/services/adapters/data-adapter";
+import {
+  IS_DEMO_MODE,
+  getAdapter,
+} from "@/shared/services/adapters/data-adapter";
 import type { ITransaction } from "@/features/transaction/types/transaction.model";
 
 type PayloadResponse<T> = T | { data: T };
@@ -15,7 +18,11 @@ const normalizeTransaction = (transaction: ITransaction): ITransaction => {
   const totalAmount =
     transaction.totalAmount ??
     transaction.amount ??
-    items.reduce((sum, item) => sum + (item.total ?? (item.price ?? 0) * (item.quantity ?? 0)), 0);
+    items.reduce(
+      (sum, item) =>
+        sum + (item.total ?? (item.price ?? 0) * (item.quantity ?? 0)),
+      0,
+    );
 
   return {
     ...transaction,

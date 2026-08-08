@@ -39,7 +39,9 @@ export function OnboardingProvider({
   initialStep = "welcome",
 }: ProviderProps) {
   const [step, setStep] = useState<OnboardingStep>(initialStep);
-  const [draft, setDraft] = useState<OnboardingDraft>(() => createInitialDraft());
+  const [draft, setDraft] = useState<OnboardingDraft>(() =>
+    createInitialDraft(),
+  );
 
   const goTo = useCallback((target: OnboardingStep) => setStep(target), []);
 
@@ -75,7 +77,9 @@ export function OnboardingProvider({
     (localId: string, patch: Partial<Omit<OnboardingMenuDraft, "localId">>) => {
       setDraft((prev) => ({
         ...prev,
-        menus: prev.menus.map((m) => (m.localId === localId ? { ...m, ...patch } : m)),
+        menus: prev.menus.map((m) =>
+          m.localId === localId ? { ...m, ...patch } : m,
+        ),
       }));
     },
     [],
@@ -150,6 +154,8 @@ export function OnboardingProvider({
   );
 
   return (
-    <OnboardingContext.Provider value={value}>{children}</OnboardingContext.Provider>
+    <OnboardingContext.Provider value={value}>
+      {children}
+    </OnboardingContext.Provider>
   );
 }

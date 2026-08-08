@@ -37,7 +37,7 @@ const PosHomePage = () => {
         id: category.id,
         name: category.name,
       })),
-    [categoriesQuery]
+    [categoriesQuery],
   );
 
   const filteredProducts = useMemo(() => {
@@ -51,15 +51,18 @@ const PosHomePage = () => {
         acc[item.productId] = item.quantity;
         return acc;
       }, {}),
-    [cart.items]
+    [cart.items],
   );
 
   const isProductsLoading =
-    selectedCategory === "ALL" ? productsQueryLoading : productsByCategoryLoading;
+    selectedCategory === "ALL"
+      ? productsQueryLoading
+      : productsByCategoryLoading;
   const mobileRequirementMessage =
     cart.orderType === "DINE_IN" && !cart.tableNumber
       ? t("pos.cart.selectTableBeforePay")
-      : cart.orderType === "DELIVERY" && cart.deliveryPlatform.trim().length === 0
+      : cart.orderType === "DELIVERY" &&
+          cart.deliveryPlatform.trim().length === 0
         ? t("pos.cart.selectDeliveryPlatformBeforePay")
         : null;
 
@@ -69,7 +72,9 @@ const PosHomePage = () => {
   };
 
   const handleDecreaseQuantity = (productId: string) => {
-    const existingItem = cart.items.find((item) => item.productId === productId);
+    const existingItem = cart.items.find(
+      (item) => item.productId === productId,
+    );
     if (!existingItem) return;
 
     if (existingItem.quantity <= 1) {
@@ -103,12 +108,17 @@ const PosHomePage = () => {
               <ProductGrid
                 products={
                   filteredProducts?.map(
-                    (p: { id: string; name: string; price?: number; imageUrl?: string }) => ({
+                    (p: {
+                      id: string;
+                      name: string;
+                      price?: number;
+                      imageUrl?: string;
+                    }) => ({
                       id: String(p.id),
                       name: p.name,
                       price: p.price ?? 0,
                       imageUrl: p.imageUrl,
-                    })
+                    }),
                   ) || []
                 }
                 onAddToCart={cart.addItem}
@@ -146,7 +156,9 @@ const PosHomePage = () => {
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card-bg p-4 shadow-cart-dock lg:hidden">
         {cart.totalItems > 0 && (
           <div className="mb-3 flex items-center justify-between gap-3 text-body-sm text-text-secondary">
-            <span>{t("pos.cart.itemCount", { count: String(cart.totalItems) })}</span>
+            <span>
+              {t("pos.cart.itemCount", { count: String(cart.totalItems) })}
+            </span>
             <span className="font-semibold tabular-nums text-text-primary">
               ฿{cart.subtotal.toFixed(2)}
             </span>
@@ -170,10 +182,17 @@ const PosHomePage = () => {
       </div>
 
       {isCartPanelOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-bg lg:hidden" role="dialog" aria-modal="true" aria-label={t("pos.cart.title")}>
+        <div
+          className="fixed inset-0 z-50 flex flex-col bg-bg lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t("pos.cart.title")}
+        >
           <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border bg-card-bg px-4 py-3">
             <div>
-              <p className="text-label text-text-tertiary">{t("pos.cart.title")}</p>
+              <p className="text-label text-text-tertiary">
+                {t("pos.cart.title")}
+              </p>
               <p className="text-body font-semibold text-text-primary">
                 {t("pos.cart.itemCount", { count: String(cart.totalItems) })}
               </p>

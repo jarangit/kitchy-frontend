@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { messages, type MessageKey } from "./messages";
 import {
   LanguageContext,
@@ -34,15 +40,14 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       const message = messages[language][key] ?? messages.en[key] ?? key;
       return interpolate(message, values);
     },
-    [language]
+    [language],
   );
 
-  const value = useMemo(
-    () => ({ language, setLanguage, t }),
-    [language, t]
-  );
+  const value = useMemo(() => ({ language, setLanguage, t }), [language, t]);
 
   return (
-    <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
   );
 };

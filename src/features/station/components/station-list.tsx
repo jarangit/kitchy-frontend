@@ -83,7 +83,12 @@ const StationListTemplate = () => {
   const rows: StationRow[] = useMemo(
     () =>
       (stationsQuery ?? []).map(
-        (s: { id: string; name: string; color?: string; activeOrders?: number }) => ({
+        (s: {
+          id: string;
+          name: string;
+          color?: string;
+          activeOrders?: number;
+        }) => ({
           id: s.id,
           name: s.name,
           color: s.color ?? "#111315",
@@ -209,11 +214,7 @@ const StationListTemplate = () => {
           </div>
 
           <DialogFooter>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handleCloseEdit}
-            >
+            <Button type="button" variant="secondary" onClick={handleCloseEdit}>
               {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>

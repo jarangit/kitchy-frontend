@@ -1,9 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Toggle } from "@/shared/components/ui/toggle";
-import {
-  SettingGroup,
-  SettingRow,
-} from "@/shared/components/ui/setting-row";
+import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useLocalSetting } from "@/shared/hooks/use-local-setting";
 import { SettingsSectionHeader } from "../settings-section-header";

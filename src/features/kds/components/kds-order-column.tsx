@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { LuBike, LuCheck, LuClock3, LuPackage, LuUtensilsCrossed } from "react-icons/lu";
+import {
+  LuBike,
+  LuCheck,
+  LuClock3,
+  LuPackage,
+  LuUtensilsCrossed,
+} from "react-icons/lu";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -45,7 +51,13 @@ const ORDER_TYPE_ICONS: Record<OrderType, typeof LuUtensilsCrossed> = {
   DELIVERY: LuBike,
 };
 
-const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Props) => {
+const KdsOrderColumn = ({
+  group,
+  isBumped,
+  onBump,
+  onItemReady,
+  disabled,
+}: Props) => {
   const { t } = useTranslation();
   const elapsed = useElapsedMinutes(group.createdAt);
   const timeLabel = formatElapsedMinutes(elapsed);
@@ -133,7 +145,9 @@ const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Prop
     );
   }
 
-  const OrderTypeIcon = group.orderType ? ORDER_TYPE_ICONS[group.orderType] : LuUtensilsCrossed;
+  const OrderTypeIcon = group.orderType
+    ? ORDER_TYPE_ICONS[group.orderType]
+    : LuUtensilsCrossed;
 
   return (
     <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-card-border bg-card-bg shadow-sm transition-all duration-[var(--motion-normal)]">
@@ -148,7 +162,7 @@ const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Prop
               size="sm"
               className={cn(
                 "gap-1.5 border font-semibold",
-                ORDER_TYPE_BADGE_STYLES[group.orderType]
+                ORDER_TYPE_BADGE_STYLES[group.orderType],
               )}
             >
               <OrderTypeIcon size={14} className="shrink-0" />
@@ -158,7 +172,9 @@ const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Prop
         </div>
         {orderMeta && (orderMeta.secondary || orderMeta.deliveryCode) && (
           <p className="text-caption font-semibold tracking-[0.04em] text-on-primary/85">
-            {[orderMeta.secondary, orderMeta.deliveryCode].filter(Boolean).join(" · ")}
+            {[orderMeta.secondary, orderMeta.deliveryCode]
+              .filter(Boolean)
+              .join(" · ")}
           </p>
         )}
         <div className="mt-1 flex items-end gap-2">
@@ -182,7 +198,8 @@ const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Prop
         onScroll={handleScroll}
         className={cn(
           "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto bg-card-bg px-4 py-4",
-          !atBottom && "[mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]"
+          !atBottom &&
+            "[mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]",
         )}
       >
         <ul className="flex flex-col gap-3">
@@ -192,7 +209,7 @@ const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Prop
                 <span
                   className={cn(
                     "shrink-0 font-mono font-bold tabular-nums",
-                    "text-body text-text-primary"
+                    "text-body text-text-primary",
                   )}
                 >
                   [{item.quantity}]
@@ -200,7 +217,9 @@ const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Prop
                 <span
                   className={cn(
                     "min-w-0 flex-1 text-body font-semibold leading-snug",
-                    item.status === "READY" ? "text-text-secondary line-through" : "text-text-primary"
+                    item.status === "READY"
+                      ? "text-text-secondary line-through"
+                      : "text-text-primary",
                   )}
                 >
                   {item.productName}
@@ -225,7 +244,7 @@ const KdsOrderColumn = ({ group, isBumped, onBump, onItemReady, disabled }: Prop
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     item.status === "READY"
                       ? "border-success bg-success text-white"
-                      : "border-border bg-bg text-transparent hover:border-success hover:bg-success-bg hover:text-success"
+                      : "border-border bg-bg text-transparent hover:border-success hover:bg-success-bg hover:text-success",
                   )}
                 >
                   <LuCheck size={12} />

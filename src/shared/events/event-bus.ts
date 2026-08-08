@@ -17,7 +17,10 @@
 export type EventHandler<T> = (payload: T) => void;
 
 export interface EventBus<TMap extends Record<string, unknown>> {
-  on<K extends keyof TMap>(event: K, handler: EventHandler<TMap[K]>): () => void;
+  on<K extends keyof TMap>(
+    event: K,
+    handler: EventHandler<TMap[K]>,
+  ): () => void;
   off<K extends keyof TMap>(event: K, handler: EventHandler<TMap[K]>): void;
   emit<K extends keyof TMap>(event: K, payload: TMap[K]): void;
   clear(): void;
@@ -53,7 +56,10 @@ export function createEventBus<
           (handler as EventHandler<typeof payload>)(payload);
         } catch (err) {
           // Never let one broken handler break the whole emit pipeline.
-          console.error(`[event-bus] handler for "${String(event)}" threw`, err);
+          console.error(
+            `[event-bus] handler for "${String(event)}" threw`,
+            err,
+          );
         }
       }
     },

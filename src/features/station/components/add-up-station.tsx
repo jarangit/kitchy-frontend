@@ -99,14 +99,18 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
             <Controller
               name="color"
               control={control}
-              rules={{ required: t("settings.categories.stationColorRequired") }}
+              rules={{
+                required: t("settings.categories.stationColorRequired"),
+              }}
               render={({ field }) => (
                 <div>
                   <Select
                     id="station-color"
                     label={t("settings.categories.stationColor")}
                     options={colorOptions}
-                    placeholder={t("settings.categories.stationColorPlaceholder")}
+                    placeholder={t(
+                      "settings.categories.stationColorPlaceholder",
+                    )}
                     value={field.value}
                     onChange={(e) => field.onChange(e.target.value)}
                     onBlur={field.onBlur}
@@ -131,7 +135,9 @@ const AddUpStationForm = ({ _onSubmit, defaultValues }: Props) => {
               {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? t("settings.categories.creating") : t("settings.categories.create")}
+              {isSubmitting
+                ? t("settings.categories.creating")
+                : t("settings.categories.create")}
             </Button>
           </DialogFooter>
         </form>

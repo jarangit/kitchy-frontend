@@ -49,10 +49,18 @@ const GRAY_SCALE = [
 ].map((name) => ({ name }));
 
 const STATUS_PRIMITIVES = [
-  ...["50", "100", "500", "600", "700"].map((step) => ({ name: `--green-${step}` })),
-  ...["50", "100", "500", "600", "700"].map((step) => ({ name: `--red-${step}` })),
-  ...["50", "100", "500", "600", "700"].map((step) => ({ name: `--yellow-${step}` })),
-  ...["50", "100", "500", "600", "700"].map((step) => ({ name: `--blue-${step}` })),
+  ...["50", "100", "500", "600", "700"].map((step) => ({
+    name: `--green-${step}`,
+  })),
+  ...["50", "100", "500", "600", "700"].map((step) => ({
+    name: `--red-${step}`,
+  })),
+  ...["50", "100", "500", "600", "700"].map((step) => ({
+    name: `--yellow-${step}`,
+  })),
+  ...["50", "100", "500", "600", "700"].map((step) => ({
+    name: `--blue-${step}`,
+  })),
 ];
 
 const SURFACE_TOKENS = [
@@ -107,11 +115,20 @@ const STATUS_TOKENS = [
 export const PrimitiveColors: Story = {
   render: () => (
     <Page>
-      <TokenGroup title="Primitive Colors" description="Layer 1 — raw values. Never used directly in components.">
-        <TokenGroup title="Gray scale" description="Apple Newsroom warm gray palette.">
+      <TokenGroup
+        title="Primitive Colors"
+        description="Layer 1 — raw values. Never used directly in components."
+      >
+        <TokenGroup
+          title="Gray scale"
+          description="Apple Newsroom warm gray palette."
+        >
           <ColorSwatches tokens={GRAY_SCALE} />
         </TokenGroup>
-        <TokenGroup title="Status primitives" description="Green, red, yellow, blue — base hues for status colors.">
+        <TokenGroup
+          title="Status primitives"
+          description="Green, red, yellow, blue — base hues for status colors."
+        >
           <ColorSwatches tokens={STATUS_PRIMITIVES} />
         </TokenGroup>
       </TokenGroup>
@@ -189,11 +206,17 @@ const TRACKING_ROWS = [
 export const Typography: Story = {
   render: () => (
     <Page>
-      <TokenGroup title="Typography" description="Font families, scales, and the composite text utilities.">
+      <TokenGroup
+        title="Typography"
+        description="Font families, scales, and the composite text utilities."
+      >
         <TokenGroup title="Font families">
           <TokenTable rows={FAMILY_ROWS} />
         </TokenGroup>
-        <TokenGroup title="Size scale" description="Primitive type sizes used by semantic text styles.">
+        <TokenGroup
+          title="Size scale"
+          description="Primitive type sizes used by semantic text styles."
+        >
           <TokenTable rows={SIZE_ROWS} />
         </TokenGroup>
         <TokenGroup title="Weights">
@@ -205,7 +228,10 @@ export const Typography: Story = {
         <TokenGroup title="Letter spacing">
           <TokenTable rows={TRACKING_ROWS} />
         </TokenGroup>
-        <TokenGroup title="Composite text styles" description="Semantic utilities bundling size + weight + leading.">
+        <TokenGroup
+          title="Composite text styles"
+          description="Semantic utilities bundling size + weight + leading."
+        >
           <CompositeTypeScale
             items={[
               { className: "text-display", name: "text-display" },
@@ -241,7 +267,10 @@ const SPACING_ROWS = [
 export const Spacing: Story = {
   render: () => (
     <Page>
-      <TokenGroup title="Spacing" description="Layer 1 — the 4px-based spacing scale.">
+      <TokenGroup
+        title="Spacing"
+        description="Layer 1 — the 4px-based spacing scale."
+      >
         <TokenTable rows={SPACING_ROWS} />
       </TokenGroup>
     </Page>
@@ -260,7 +289,10 @@ const RADIUS_ROWS = [
 export const Radius: Story = {
   render: () => (
     <Page>
-      <TokenGroup title="Radius" description="Corner rounding scale. Component radii reference these.">
+      <TokenGroup
+        title="Radius"
+        description="Corner rounding scale. Component radii reference these."
+      >
         <TokenTable rows={RADIUS_ROWS} />
       </TokenGroup>
     </Page>
@@ -279,23 +311,27 @@ const SHADOW_ROWS = [
 export const Shadows: Story = {
   render: () => (
     <Page>
-      <TokenGroup title="Shadows" description="Very soft, Newsroom-inspired elevation. Darkens in dark mode.">
+      <TokenGroup
+        title="Shadows"
+        description="Very soft, Newsroom-inspired elevation. Darkens in dark mode."
+      >
         <TokenTable rows={SHADOW_ROWS} />
       </TokenGroup>
     </Page>
   ),
 };
 
-const MOTION_ROWS = [
-  "--motion-fast",
-  "--motion-normal",
-  "--motion-slow",
-].map((name) => ({ name, sample: motionSample }));
+const MOTION_ROWS = ["--motion-fast", "--motion-normal", "--motion-slow"].map(
+  (name) => ({ name, sample: motionSample }),
+);
 
 export const Motion: Story = {
   render: () => (
     <Page>
-      <TokenGroup title="Motion" description="Duration tokens for transitions and micro-interactions.">
+      <TokenGroup
+        title="Motion"
+        description="Duration tokens for transitions and micro-interactions."
+      >
         <TokenTable rows={MOTION_ROWS} />
         <TokenGroup title="Easing">
           <TokenTable
@@ -303,7 +339,9 @@ export const Motion: Story = {
               {
                 name: "--ease-standard",
                 sample: (value) => (
-                  <span className="font-mono text-xs text-text-secondary">{value}</span>
+                  <span className="font-mono text-xs text-text-secondary">
+                    {value}
+                  </span>
                 ),
               },
             ]}
@@ -477,7 +515,10 @@ export const ComponentTokens: Story = {
         <TokenGroup title="Card, Toggle, Skeleton, Dialog, Sidebar, Label">
           <ColorSwatches tokens={CHROME_COLORS} />
         </TokenGroup>
-        <TokenGroup title="Component metrics" description="Radii, spacings, font sizes and weights per component.">
+        <TokenGroup
+          title="Component metrics"
+          description="Radii, spacings, font sizes and weights per component."
+        >
           <TokenTable rows={COMPONENT_METRICS} />
         </TokenGroup>
       </TokenGroup>

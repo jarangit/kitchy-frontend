@@ -22,8 +22,7 @@ const LoginPage = () => {
   // `useGoogleLogin` throws when wrapped in a provider with an empty
   // clientId, which would crash the whole login screen otherwise.
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID as
-    | string
-    | undefined;
+    string | undefined;
   const googleEnabled = Boolean(googleClientId) && !IS_DEMO_MODE;
 
   const handleLogin = async () => {
@@ -49,9 +48,12 @@ const LoginPage = () => {
           <BrandMark />
           <div className="page-hero-stack">
             <p className="text-label text-text-secondary">Kitchy POS</p>
-            <h1 className="text-display text-text-primary">Calm operations for busy restaurant teams.</h1>
+            <h1 className="text-display text-text-primary">
+              Calm operations for busy restaurant teams.
+            </h1>
             <p className="max-w-xl text-body text-text-secondary">
-              Sign in to manage stores, monitor service flow, and keep every station aligned from one quiet workspace.
+              Sign in to manage stores, monitor service flow, and keep every
+              station aligned from one quiet workspace.
             </p>
           </div>
         </section>
@@ -64,7 +66,9 @@ const LoginPage = () => {
               </div>
             )}
             <div className="space-y-2">
-              <h2 className="text-heading text-text-primary">{t("auth.login.title")}</h2>
+              <h2 className="text-heading text-text-primary">
+                {t("auth.login.title")}
+              </h2>
               <p className="text-body-sm leading-6 text-text-secondary">
                 {t("auth.login.subtitle")}
               </p>

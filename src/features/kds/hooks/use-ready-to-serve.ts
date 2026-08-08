@@ -36,7 +36,7 @@ export const useReadyToServeItems = () => {
       queryKey: ["kds-orders", station.id],
       queryFn: async () => {
         const response = await orderApiService.getOrderStationItemsByStationId(
-          station.id
+          station.id,
         );
         return response.data as unknown;
       },
@@ -79,7 +79,8 @@ export const useReadyToServeItems = () => {
     }
 
     return readyItems.sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
   }, [results, stations]);
 

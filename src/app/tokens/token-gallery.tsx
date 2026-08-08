@@ -23,7 +23,9 @@ function useThemeVersion(): number {
   return version;
 }
 
-export function useTokenValues(names: readonly string[]): Record<string, string> {
+export function useTokenValues(
+  names: readonly string[],
+): Record<string, string> {
   useThemeVersion();
   const style = getComputedStyle(document.documentElement);
   const values: Record<string, string> = {};
@@ -46,7 +48,9 @@ export function TokenGroup({
     <section className="space-y-3">
       <div>
         <h2 className="text-title text-text-primary">{title}</h2>
-        {description ? <p className="text-body-sm text-text-secondary">{description}</p> : null}
+        {description ? (
+          <p className="text-body-sm text-text-secondary">{description}</p>
+        ) : null}
       </div>
       {children}
     </section>
@@ -73,9 +77,13 @@ export function ColorSwatches({ tokens }: { tokens: Token[] }) {
             style={{ backgroundColor: `var(${token.name})` }}
           />
           <div className="space-y-0.5 p-2.5">
-            <p className="text-label text-text-primary">{token.label ?? shortName(token.name)}</p>
+            <p className="text-label text-text-primary">
+              {token.label ?? shortName(token.name)}
+            </p>
             <p className="font-mono text-xs text-text-tertiary">{token.name}</p>
-            <p className="font-mono text-xs text-text-secondary">{values[token.name]}</p>
+            <p className="font-mono text-xs text-text-secondary">
+              {values[token.name]}
+            </p>
           </div>
         </div>
       ))}
@@ -94,12 +102,20 @@ export function TokenTable({ rows }: { rows: TokenRow[] }) {
           key={row.name}
           className="flex items-center gap-4 border-b border-border px-3.5 py-2 last:border-b-0"
         >
-          <div className="flex w-28 shrink-0 items-center justify-center">{row.sample(values[row.name])}</div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-label text-text-primary">{row.label ?? shortName(row.name)}</p>
-            <p className="truncate font-mono text-xs text-text-tertiary">{row.name}</p>
+          <div className="flex w-28 shrink-0 items-center justify-center">
+            {row.sample(values[row.name])}
           </div>
-          <p className="shrink-0 font-mono text-xs text-text-secondary">{values[row.name]}</p>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-label text-text-primary">
+              {row.label ?? shortName(row.name)}
+            </p>
+            <p className="truncate font-mono text-xs text-text-tertiary">
+              {row.name}
+            </p>
+          </div>
+          <p className="shrink-0 font-mono text-xs text-text-secondary">
+            {values[row.name]}
+          </p>
         </div>
       ))}
     </div>
@@ -121,7 +137,9 @@ export function CompositeTypeScale({
           <p className={`${item.className} text-text-primary`}>
             The quick brown fox jumps over the lazy dog
           </p>
-          <p className="mt-1 font-mono text-xs text-text-tertiary">{item.name}</p>
+          <p className="mt-1 font-mono text-xs text-text-tertiary">
+            {item.name}
+          </p>
         </div>
       ))}
     </div>
@@ -191,13 +209,19 @@ export const leadingSample = (value: string): ReactNode => (
 );
 
 export const trackingSample = (value: string): ReactNode => (
-  <span className="text-body-sm text-text-primary" style={{ letterSpacing: value }}>
+  <span
+    className="text-body-sm text-text-primary"
+    style={{ letterSpacing: value }}
+  >
     Tracking
   </span>
 );
 
 export const familySample = (value: string): ReactNode => (
-  <span className="text-body-sm text-text-primary" style={{ fontFamily: value }}>
+  <span
+    className="text-body-sm text-text-primary"
+    style={{ fontFamily: value }}
+  >
     Ag
   </span>
 );

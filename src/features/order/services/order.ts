@@ -1,9 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axiosClient from "@/shared/services/axios-client";
 import type { ApiResponse, OrderType } from "@/features/order/types/order.dto";
-import { IS_DEMO_MODE, getAdapter } from "@/shared/services/adapters/data-adapter";
+import {
+  IS_DEMO_MODE,
+  getAdapter,
+} from "@/shared/services/adapters/data-adapter";
 
-type OrderProductPayload = { productId: string; quantity: number; note?: string };
+type OrderProductPayload = {
+  productId: string;
+  quantity: number;
+  note?: string;
+};
 
 const sanitizeProducts = (products: OrderProductPayload[]) =>
   products.map(({ productId, quantity }) => ({
@@ -15,14 +22,20 @@ export const orderApiService = {
   getOrdersByStoreId: async (storeId: string) => {
     if (IS_DEMO_MODE) {
       const data = await (await getAdapter()).getOrdersByStoreId(storeId);
-      return { data: { success: true, message: "ok", data } } as { data: ApiResponse<unknown> };
+      return { data: { success: true, message: "ok", data } } as {
+        data: ApiResponse<unknown>;
+      };
     }
-    return await axiosClient.get<ApiResponse<unknown>>(`/orders/store/${storeId}`);
+    return await axiosClient.get<ApiResponse<unknown>>(
+      `/orders/store/${storeId}`,
+    );
   },
   getById: async (orderId: string) => {
     if (IS_DEMO_MODE) {
       const data = await (await getAdapter()).getOrderById(orderId);
-      return { data: { success: true, message: "ok", data } } as { data: ApiResponse<unknown> };
+      return { data: { success: true, message: "ok", data } } as {
+        data: ApiResponse<unknown>;
+      };
     }
     return await axiosClient.get<ApiResponse<unknown>>(`/orders/${orderId}`);
   },
@@ -34,10 +47,21 @@ export const orderApiService = {
     tableNumber?: string,
     customerName?: string,
     deliveryPlatform?: string,
-    deliveryOrderNumber?: string
+    deliveryOrderNumber?: string,
   ) => {
     if (IS_DEMO_MODE) {
-      const data = await (await getAdapter()).createOrder(storeId, orderNumber, products, orderType, tableNumber, customerName, deliveryPlatform, deliveryOrderNumber);
+      const data = await (
+        await getAdapter()
+      ).createOrder(
+        storeId,
+        orderNumber,
+        products,
+        orderType,
+        tableNumber,
+        customerName,
+        deliveryPlatform,
+        deliveryOrderNumber,
+      );
       return { data };
     }
     return await axiosClient.post(`/orders`, {
@@ -61,24 +85,36 @@ export const orderApiService = {
   delete: async (orderId: string) => {
     if (IS_DEMO_MODE) {
       await (await getAdapter()).deleteOrder(orderId);
-      return { data: { success: true, message: "ok", data: { message: "deleted" } } } as { data: ApiResponse<{ message: string }> };
+      return {
+        data: { success: true, message: "ok", data: { message: "deleted" } },
+      } as { data: ApiResponse<{ message: string }> };
     }
-    return await axiosClient.delete<ApiResponse<{ message: string }>>(`/orders/${orderId}`);
+    return await axiosClient.delete<ApiResponse<{ message: string }>>(
+      `/orders/${orderId}`,
+    );
   },
   getOrdersByStationId: async (stationId: string) => {
     if (IS_DEMO_MODE) {
       const data = await (await getAdapter()).getOrdersByStationId(stationId);
-      return { data: { success: true, message: "ok", data } } as { data: ApiResponse<unknown> };
+      return { data: { success: true, message: "ok", data } } as {
+        data: ApiResponse<unknown>;
+      };
     }
-    return await axiosClient.get<ApiResponse<unknown>>(`/orders/station/${stationId}`);
+    return await axiosClient.get<ApiResponse<unknown>>(
+      `/orders/station/${stationId}`,
+    );
   },
   getOrderStationItemsByStationId: async (stationId: string) => {
     if (IS_DEMO_MODE) {
-      const data = await (await getAdapter()).getOrderStationItemsByStationId(stationId);
-      return { data: { success: true, message: "ok", data } } as { data: ApiResponse<unknown> };
+      const data = await (
+        await getAdapter()
+      ).getOrderStationItemsByStationId(stationId);
+      return { data: { success: true, message: "ok", data } } as {
+        data: ApiResponse<unknown>;
+      };
     }
     return await axiosClient.get<ApiResponse<unknown>>(
-      `/order-station-item/station/${stationId}`
+      `/order-station-item/station/${stationId}`,
     );
   },
   updateOrderStationItem: async (
@@ -87,15 +123,17 @@ export const orderApiService = {
       status: "pending" | "complete" | "served";
       stationId: string;
       orderItemId: string;
-    }
+    },
   ) => {
     if (IS_DEMO_MODE) {
-      await (await getAdapter()).updateOrderStationItem(orderStationItemId, orderStationItemData);
+      await (
+        await getAdapter()
+      ).updateOrderStationItem(orderStationItemId, orderStationItemData);
       return { data: {} };
     }
     return await axiosClient.patch(
       `/order-station-item/${orderStationItemId}`,
-      orderStationItemData
+      orderStationItemData,
     );
   },
 };

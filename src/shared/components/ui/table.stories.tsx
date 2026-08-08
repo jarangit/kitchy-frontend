@@ -58,7 +58,11 @@ export const SortableHeader: Story = {
               sortDirection={sort}
               onSort={() =>
                 setSort((current) =>
-                  current === "asc" ? "desc" : current === "desc" ? null : "asc",
+                  current === "asc"
+                    ? "desc"
+                    : current === "desc"
+                      ? null
+                      : "asc",
                 )
               }
             >

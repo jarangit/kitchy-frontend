@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { LuLayoutGrid, LuShoppingBag, LuUtensils, LuCircleCheck } from "react-icons/lu";
+import {
+  LuLayoutGrid,
+  LuShoppingBag,
+  LuUtensils,
+  LuCircleCheck,
+} from "react-icons/lu";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import {

@@ -34,9 +34,7 @@ export const Basic: Story = {
     <Dialog {...args}>
       <DialogHeader>
         <DialogTitle>Confirm action</DialogTitle>
-        <DialogDescription>
-          This action cannot be undone.
-        </DialogDescription>
+        <DialogDescription>This action cannot be undone.</DialogDescription>
       </DialogHeader>
       <p className="text-body text-text-secondary">
         Are you sure you want to continue?

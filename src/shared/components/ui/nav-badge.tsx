@@ -51,7 +51,7 @@ export const NavBadge = ({
       className={cn(
         "pointer-events-none absolute right-0.5 top-0.5 z-10 flex min-h-[20px] min-w-[20px] items-center justify-center rounded-full bg-danger px-1.5 text-caption font-semibold leading-none text-text-inverse ring-2 ring-sidebar-bg",
         pulsing && "animate-pulse",
-        className
+        className,
       )}
     >
       {label}

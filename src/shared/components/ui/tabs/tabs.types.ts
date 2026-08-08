@@ -32,8 +32,10 @@ export interface TabListProps {
   "aria-label"?: string;
 }
 
-export interface TabProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "value" | "children"> {
+export interface TabProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "value" | "children"
+> {
   value: string;
   icon?: ReactNode;
   count?: number;

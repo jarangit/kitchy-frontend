@@ -14,7 +14,10 @@ type NavigatorWithConnection = Navigator & {
 
 export type NetworkQualityLevel = "poor" | "fair" | "good";
 
-const getLevel = (isOnline: boolean, connection?: ConnectionLike): NetworkQualityLevel => {
+const getLevel = (
+  isOnline: boolean,
+  connection?: ConnectionLike,
+): NetworkQualityLevel => {
   if (!isOnline) return "poor";
   if (!connection) return "fair";
 
@@ -37,7 +40,8 @@ const getLevel = (isOnline: boolean, connection?: ConnectionLike): NetworkQualit
 };
 
 export const useNetworkQuality = () => {
-  const initialOnline = typeof navigator === "undefined" ? true : navigator.onLine;
+  const initialOnline =
+    typeof navigator === "undefined" ? true : navigator.onLine;
   const [isOnline, setIsOnline] = useState(initialOnline);
   const [tick, setTick] = useState(0);
 

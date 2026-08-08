@@ -21,9 +21,7 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {};
 
 export const WithIcon: Story = {
-  render: (args) => (
-    <EmptyState {...args} icon={<LuInbox size={48} />} />
-  ),
+  render: (args) => <EmptyState {...args} icon={<LuInbox size={48} />} />,
 };
 
 export const WithAction: Story = {

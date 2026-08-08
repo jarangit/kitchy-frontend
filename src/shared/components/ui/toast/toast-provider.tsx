@@ -1,11 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  LuBell,
-  LuCheck,
-  LuInfo,
-  LuTriangleAlert,
-  LuX,
-} from "react-icons/lu";
+import { LuBell, LuCheck, LuInfo, LuTriangleAlert, LuX } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { toast } from "@/shared/services/toast-service";
 import { cn } from "@/shared/utils/cn";
@@ -14,7 +8,10 @@ import type { ToastRecord, ToastVariant } from "./toast.types";
 const DEFAULT_TOAST_DURATION_MS = 6000;
 const MAX_VISIBLE_TOASTS = 3;
 
-const variantStyles: Record<ToastVariant, { shell: string; icon: string; iconNode: React.ReactNode }> = {
+const variantStyles: Record<
+  ToastVariant,
+  { shell: string; icon: string; iconNode: React.ReactNode }
+> = {
   default: {
     shell: "border-border bg-surface",
     icon: "bg-surface-hover text-text-secondary",
@@ -42,7 +39,13 @@ const variantStyles: Record<ToastVariant, { shell: string; icon: string; iconNod
   },
 };
 
-function ToastItem({ record, onDismiss }: { record: ToastRecord; onDismiss: (id: string) => void }) {
+function ToastItem({
+  record,
+  onDismiss,
+}: {
+  record: ToastRecord;
+  onDismiss: (id: string) => void;
+}) {
   const styles = variantStyles[record.variant];
 
   useEffect(() => {
@@ -58,7 +61,12 @@ function ToastItem({ record, onDismiss }: { record: ToastRecord; onDismiss: (id:
   return (
     <div className={cn("rounded-card border p-4 shadow-xl", styles.shell)}>
       <div className="flex items-start gap-3">
-        <span className={cn("mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full", styles.icon)}>
+        <span
+          className={cn(
+            "mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full",
+            styles.icon,
+          )}
+        >
           {styles.iconNode}
         </span>
         <div className="min-w-0 flex-1 space-y-1">
@@ -66,7 +74,9 @@ function ToastItem({ record, onDismiss }: { record: ToastRecord; onDismiss: (id:
             {record.title}
           </p>
           {record.description && (
-            <p className="text-body-sm text-text-secondary">{record.description}</p>
+            <p className="text-body-sm text-text-secondary">
+              {record.description}
+            </p>
           )}
           {record.action && (
             <div className="pt-2">
@@ -100,9 +110,11 @@ export function ToastProvider() {
 
   const dismiss = useMemo(
     () => (id?: string) => {
-      setRecords((current) => (id ? current.filter((record) => record.id !== id) : []));
+      setRecords((current) =>
+        id ? current.filter((record) => record.id !== id) : [],
+      );
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -113,7 +125,9 @@ export function ToastProvider() {
         durationMs: incoming.durationMs ?? DEFAULT_TOAST_DURATION_MS,
       };
 
-      setRecords((current) => [record, ...current].slice(0, MAX_VISIBLE_TOASTS));
+      setRecords((current) =>
+        [record, ...current].slice(0, MAX_VISIBLE_TOASTS),
+      );
     });
     const unsubscribeDismiss = toast.subscribeDismiss(dismiss);
 

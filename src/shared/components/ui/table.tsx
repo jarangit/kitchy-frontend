@@ -15,7 +15,10 @@ export function Table({
   return (
     <div className="overflow-x-auto rounded-card border border-card-border bg-card-bg">
       <table
-        className={cn("w-full min-w-[640px] border-collapse text-left", className)}
+        className={cn(
+          "w-full min-w-[640px] border-collapse text-left",
+          className,
+        )}
         {...props}
       >
         {children}
@@ -31,10 +34,7 @@ export function TableHeader({
 }: HTMLAttributes<HTMLTableSectionElement>) {
   return (
     <thead
-      className={cn(
-        "bg-surface-muted border-b border-card-border",
-        className,
-      )}
+      className={cn("bg-surface-muted border-b border-card-border", className)}
       {...props}
     >
       {children}
@@ -66,11 +66,11 @@ export function TableRow({
 }: TableRowProps) {
   return (
     <tr
-        className={cn(
-          "transition-colors duration-[var(--motion-fast)]",
+      className={cn(
+        "transition-colors duration-[var(--motion-fast)]",
         clickable &&
           "cursor-pointer hover:bg-surface-muted-hover focus-within:bg-surface-muted-hover",
-          className,
+        className,
       )}
       {...props}
     >
@@ -125,9 +125,7 @@ export function TableHead({
       )}
     </button>
   ) : (
-    <span className="table-header-label">
-      {children}
-    </span>
+    <span className="table-header-label">{children}</span>
   );
 
   return (

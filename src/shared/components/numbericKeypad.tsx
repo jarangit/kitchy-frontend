@@ -20,7 +20,7 @@ export function NumericKeypad({
   value,
 }: NumericKeypadProps) {
   const [numberValue, setNumberValue] = useState("");
-  const {isLoading}= useLoading()
+  const { isLoading } = useLoading();
   const { t } = useTranslation();
 
   const handleKeyPress = (key: string) => {
@@ -64,14 +64,14 @@ export function NumericKeypad({
                 key === "clear"
                   ? "bg-warning-bg hover:opacity-80 text-warning border border-border"
                   : key === "backspace"
-                  ? "bg-danger-bg hover:opacity-80 text-danger border border-border"
-                  : "bg-bg hover:bg-surface-hover text-text-primary border border-border"
+                    ? "bg-danger-bg hover:opacity-80 text-danger border border-border"
+                    : "bg-bg hover:bg-surface-hover text-text-primary border border-border",
               )}
               onClick={() => handleKeyPress(key)}
             >
               {key === "backspace" ? "⌫" : key === "clear" ? "C" : key}
             </Button>
-          ))
+          )),
         )}
       </div>
 
@@ -79,7 +79,7 @@ export function NumericKeypad({
         type="button"
         variant="primary"
         onClick={() => {
-          onSubmit(), onChange("");
+          (onSubmit(), onChange(""));
         }}
         className="h-auto w-full px-8 py-4 text-title font-bold"
         loading={isLoading}

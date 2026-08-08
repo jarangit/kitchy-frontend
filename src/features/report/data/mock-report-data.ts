@@ -159,7 +159,10 @@ export function generateMockReportData(
 
   if (preset === "month") {
     const calendarDays = generateCalendarDays(month);
-    const totalRevenue = calendarDays.reduce((sum, day) => sum + day.revenue, 0);
+    const totalRevenue = calendarDays.reduce(
+      (sum, day) => sum + day.revenue,
+      0,
+    );
     const totalOrders = calendarDays.reduce((sum, day) => sum + day.orders, 0);
     const paymentBreakdown = aggregatePaymentBreakdown(
       calendarDays.flatMap((day) => day.paymentBreakdown),
@@ -174,7 +177,9 @@ export function generateMockReportData(
         averageOrderValue,
       },
       topProducts:
-        calendarDays.length > 0 ? generateTopProducts(getSeedFromMonth(monthStart), 3) : [],
+        calendarDays.length > 0
+          ? generateTopProducts(getSeedFromMonth(monthStart), 3)
+          : [],
       paymentBreakdown,
       calendarDays,
     };

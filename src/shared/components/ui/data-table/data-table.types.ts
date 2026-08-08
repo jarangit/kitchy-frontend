@@ -17,7 +17,10 @@ export interface DataTableColumnMeta {
 }
 
 /** A column definition for the shared DataTable. Wraps TanStack's ColumnDef with our meta. */
-export type DataTableColumn<TData, TValue = unknown> = ColumnDef<TData, TValue> & {
+export type DataTableColumn<TData, TValue = unknown> = ColumnDef<
+  TData,
+  TValue
+> & {
   meta?: DataTableColumnMeta;
 };
 

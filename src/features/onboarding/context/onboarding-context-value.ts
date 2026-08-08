@@ -21,7 +21,10 @@ export interface OnboardingContextValue {
   setPromptpay: (value: string) => void;
 
   addMenu: () => void;
-  updateMenu: (localId: string, patch: Partial<Omit<OnboardingMenuDraft, "localId">>) => void;
+  updateMenu: (
+    localId: string,
+    patch: Partial<Omit<OnboardingMenuDraft, "localId">>,
+  ) => void;
   removeMenu: (localId: string) => void;
 
   setShopType: (value: OnboardingShopType | null) => void;
@@ -32,4 +35,6 @@ export interface OnboardingContextValue {
   resetDraft: () => void;
 }
 
-export const OnboardingContext = createContext<OnboardingContextValue | null>(null);
+export const OnboardingContext = createContext<OnboardingContextValue | null>(
+  null,
+);

@@ -16,11 +16,7 @@ export default function GlobalModal() {
   const handleClose = () => dispatch(closeModal());
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={handleClose}
-      className="w-fit max-w-[80vh]"
-    >
+    <Dialog open={isOpen} onClose={handleClose} className="w-fit max-w-[80vh]">
       {title && (
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

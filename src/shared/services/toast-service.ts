@@ -1,4 +1,7 @@
-import type { ToastOptions, ToastVariant } from "@/shared/components/ui/toast/toast.types";
+import type {
+  ToastOptions,
+  ToastVariant,
+} from "@/shared/components/ui/toast/toast.types";
 
 type ToastListener = (toast: ToastOptions & { id: string }) => void;
 type DismissListener = (id?: string) => void;
@@ -15,8 +18,9 @@ const emitToast = (options: ToastOptions & { variant?: ToastVariant }) => {
   return toast.id;
 };
 
-const createVariantToast = (variant: ToastVariant) => (options: Omit<ToastOptions, "variant">) =>
-  emitToast({ ...options, variant });
+const createVariantToast =
+  (variant: ToastVariant) => (options: Omit<ToastOptions, "variant">) =>
+    emitToast({ ...options, variant });
 
 export const toast = {
   show: emitToast,

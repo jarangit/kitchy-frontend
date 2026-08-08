@@ -19,7 +19,10 @@ export const Variants: Story = {
     <>
       <ToastProvider />
       <div className="flex flex-wrap gap-3">
-        <Button size="sm" onClick={() => toast.show({ title: "Default toast" })}>
+        <Button
+          size="sm"
+          onClick={() => toast.show({ title: "Default toast" })}
+        >
           Default
         </Button>
         <Button

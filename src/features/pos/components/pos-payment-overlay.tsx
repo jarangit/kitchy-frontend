@@ -56,7 +56,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
         total: subtotal,
         received: receivedAmount ? Number(receivedAmount) : undefined,
       }),
-    [paymentStrategy, receivedAmount, subtotal]
+    [paymentStrategy, receivedAmount, subtotal],
   );
 
   const canConfirm =
@@ -89,7 +89,8 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
       await createMutation.mutateAsync({
         orderNumber,
         orderType,
-        tableNumber: orderType === "DINE_IN" ? tableNumber ?? undefined : undefined,
+        tableNumber:
+          orderType === "DINE_IN" ? (tableNumber ?? undefined) : undefined,
         customerName:
           orderType === "DELIVERY" ? customerName.trim() : undefined,
         deliveryPlatform:
@@ -264,9 +265,7 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
 
                   <div className="space-y-3">
                     {errorMessage && (
-                      <InlineAlert tone="danger">
-                        {errorMessage}
-                      </InlineAlert>
+                      <InlineAlert tone="danger">{errorMessage}</InlineAlert>
                     )}
 
                     {orderType === "DINE_IN" && !tableNumber && (
@@ -275,11 +274,12 @@ const PosPaymentOverlay = ({ open, onClose }: Props) => {
                       </InlineAlert>
                     )}
 
-                    {orderType === "DELIVERY" && deliveryPlatform.trim().length === 0 && (
-                      <InlineAlert tone="danger">
-                        {t("pos.payment.selectPlatformFirst")}
-                      </InlineAlert>
-                    )}
+                    {orderType === "DELIVERY" &&
+                      deliveryPlatform.trim().length === 0 && (
+                        <InlineAlert tone="danger">
+                          {t("pos.payment.selectPlatformFirst")}
+                        </InlineAlert>
+                      )}
                   </div>
                 </div>
               </div>

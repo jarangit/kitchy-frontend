@@ -165,7 +165,9 @@ const OrderCard = ({
               type="button"
               onClick={() => setIsShowDeleteButton(!isShowDeleteButton)}
               className="inline-flex h-8 w-8 items-center justify-center rounded-full text-text-tertiary transition-colors hover:bg-surface-hover hover:text-text-primary"
-              aria-label={isShowDeleteButton ? t("common.cancel") : t("common.edit")}
+              aria-label={
+                isShowDeleteButton ? t("common.cancel") : t("common.edit")
+              }
             >
               {isShowDeleteButton ? <LuX size={18} /> : <LuPencil size={16} />}
             </button>

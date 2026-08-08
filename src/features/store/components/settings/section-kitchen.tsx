@@ -1,9 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { LuShapes, LuTag, LuPackage } from "react-icons/lu";
-import {
-  SettingGroup,
-  SettingRow,
-} from "@/shared/components/ui/setting-row";
+import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
@@ -38,7 +35,8 @@ export function SectionKitchen() {
           onSave={(next) => {
             if (!storeFinOneQuery) return;
             const parsed = Number(next);
-            if (!Number.isFinite(parsed) || parsed < 1 || parsed === orderLimit) return;
+            if (!Number.isFinite(parsed) || parsed < 1 || parsed === orderLimit)
+              return;
             updateStore({
               storeData: {
                 name: storeFinOneQuery.name,

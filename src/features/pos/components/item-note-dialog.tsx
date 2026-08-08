@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import type { ICartItem } from "@/features/pos/types/pos.model";
-import { Dialog, DialogDescription, DialogHeader, DialogTitle } from "@/shared/components/ui/dialog";
+import {
+  Dialog,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/shared/components/ui/dialog";
 import { Input } from "@/shared/components/ui/input";
 import { Button } from "@/shared/components/ui/button";
 import { ChipTab } from "@/shared/components/ui/chip-tab";
@@ -49,16 +54,14 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
   };
 
   return (
-      <Dialog open={item != null} onClose={handleClose}>
-        <DialogHeader>
+    <Dialog open={item != null} onClose={handleClose}>
+      <DialogHeader>
         <DialogTitle>
           {item
             ? t("pos.noteDialog.title", { name: item.name })
             : t("pos.noteDialog.fallbackTitle")}
         </DialogTitle>
-        <DialogDescription>
-          {t("pos.noteDialog.description")}
-        </DialogDescription>
+        <DialogDescription>{t("pos.noteDialog.description")}</DialogDescription>
       </DialogHeader>
 
       <div className="space-y-4">
@@ -107,9 +110,7 @@ const ItemNoteDialog = ({ item, onClose, onSave, quickNotes }: Props) => {
             <Button variant="secondary" onClick={handleClose}>
               {t("common.cancel")}
             </Button>
-            <Button onClick={handleSave}>
-              {t("pos.noteDialog.saveNote")}
-            </Button>
+            <Button onClick={handleSave}>{t("pos.noteDialog.saveNote")}</Button>
           </div>
         </div>
       </div>

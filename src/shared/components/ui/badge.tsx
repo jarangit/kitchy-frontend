@@ -2,12 +2,7 @@ import type { HTMLAttributes } from "react";
 import { cn } from "@/shared/utils/cn";
 
 export type BadgeVariant =
-  | "default"
-  | "success"
-  | "danger"
-  | "warning"
-  | "info"
-  | "accent";
+  "default" | "success" | "danger" | "warning" | "info" | "accent";
 
 export type BadgeSize = "sm" | "md" | "lg";
 

@@ -14,7 +14,7 @@ export const readReadyToServeDismissed = (storeId?: string | null) => {
 
 export const writeReadyToServeDismissed = (
   storeId: string | null | undefined,
-  ids: Set<string>
+  ids: Set<string>,
 ) => {
   if (typeof window === "undefined") return;
   localStorage.setItem(dismissedKey(storeId), JSON.stringify(Array.from(ids)));

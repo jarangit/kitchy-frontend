@@ -58,10 +58,11 @@ const TransactionCard = ({
 
   const totalAmount =
     order.totalAmount ??
-    (order.products?.reduce(
+    order.products?.reduce(
       (sum, item) => sum + (item.price ?? 0) * (item.quantity ?? 1),
       0,
-    ) ?? 0);
+    ) ??
+    0;
 
   const itemCount =
     order.products?.reduce((sum, item) => sum + (item.quantity ?? 1), 0) ?? 0;
@@ -71,7 +72,7 @@ const TransactionCard = ({
   const orderTypeLabel =
     orderType && ORDER_TYPE_KEY[orderType]
       ? t(ORDER_TYPE_KEY[orderType])
-      : orderType ?? t("transaction.card.orderType.default");
+      : (orderType ?? t("transaction.card.orderType.default"));
 
   const summaryLine =
     productCount > 0

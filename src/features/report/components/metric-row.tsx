@@ -31,10 +31,7 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {metrics.map((m) => (
-        <Card
-          key={m.label}
-          className="p-4"
-        >
+        <Card key={m.label} className="p-4">
           <div className="flex items-center gap-3">
             <div
               className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${m.iconShellClassName}`}
@@ -45,9 +42,7 @@ const MetricRow = ({ orders, averageOrderValue }: Props) => {
               <div className="text-title font-semibold text-text-primary">
                 {m.value}
               </div>
-              <div className="text-caption text-text-secondary">
-                {m.label}
-              </div>
+              <div className="text-caption text-text-secondary">{m.label}</div>
             </div>
           </div>
         </Card>

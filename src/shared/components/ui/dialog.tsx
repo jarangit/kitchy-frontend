@@ -53,9 +53,7 @@ export function DialogHeader({
   className?: string;
   children: ReactNode;
 }) {
-  return (
-    <div className={cn("mb-5", className)}>{children}</div>
-  );
+  return <div className={cn("mb-5", className)}>{children}</div>;
 }
 
 export function DialogTitle({
@@ -85,12 +83,7 @@ export function DialogDescription({
   children: ReactNode;
 }) {
   return (
-    <p
-      className={cn(
-        "text-dialog-desc text-text-secondary mt-1",
-        className,
-      )}
-    >
+    <p className={cn("text-dialog-desc text-text-secondary mt-1", className)}>
       {children}
     </p>
   );
@@ -104,12 +97,7 @@ export function DialogFooter({
   children: ReactNode;
 }) {
   return (
-    <div
-      className={cn(
-          "mt-6 flex justify-end gap-4",
-          className,
-        )}
-    >
+    <div className={cn("mt-6 flex justify-end gap-4", className)}>
       {children}
     </div>
   );

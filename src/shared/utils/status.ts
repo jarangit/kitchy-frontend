@@ -32,7 +32,11 @@ const borderClassFor = (variant: BadgeVariant): string => {
 };
 
 const statusTable: Record<string, StatusMeta> = {
-  NEW: { variant: "default", label: "New", borderClass: borderClassFor("default") },
+  NEW: {
+    variant: "default",
+    label: "New",
+    borderClass: borderClassFor("default"),
+  },
   PREPARING: {
     variant: "info",
     label: "Preparing",

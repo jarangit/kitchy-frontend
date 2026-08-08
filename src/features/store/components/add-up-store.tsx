@@ -41,10 +41,7 @@ const AddUpStoreForm = ({ onSubmit, defaultValues }: Props) => {
         error={errors.name?.message}
         {...register("name", { required: t("storeForm.nameRequired") })}
       />
-      <Button
-        type="submit"
-        disabled={isSubmitting}
-      >
+      <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? t("storeForm.saving") : t("storeForm.save")}
       </Button>
     </form>

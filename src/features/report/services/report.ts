@@ -1,7 +1,10 @@
 import type { IReportData } from "@/features/report/types/report.model";
 import type { IReportFilter } from "@/features/report/types/report.dto";
 import { generateMockReportData } from "@/features/report/data/mock-report-data";
-import { IS_DEMO_MODE, getAdapter } from "@/shared/services/adapters/data-adapter";
+import {
+  IS_DEMO_MODE,
+  getAdapter,
+} from "@/shared/services/adapters/data-adapter";
 
 /**
  * Report service.

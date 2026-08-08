@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { cn } from "@/shared/utils/cn";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { SETTINGS_SECTIONS, type SectionId } from "@/features/store/components/settings-sections";
+import {
+  SETTINGS_SECTIONS,
+  type SectionId,
+} from "@/features/store/components/settings-sections";
 
 interface Props {
   storeId: string;

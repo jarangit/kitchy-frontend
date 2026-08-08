@@ -6,7 +6,12 @@ import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-c
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { type ReactNode, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { LuArrowRight, LuChefHat, LuHistory, LuShoppingCart } from "react-icons/lu";
+import {
+  LuArrowRight,
+  LuChefHat,
+  LuHistory,
+  LuShoppingCart,
+} from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
 import { Button } from "@/shared/components/ui/button";
 
@@ -25,7 +30,10 @@ const formatCurrency = (value: number): string =>
     maximumFractionDigits: 0,
   }).format(value);
 
-const isSameCalendarDay = (dateValue: string | undefined, targetDate: Date): boolean => {
+const isSameCalendarDay = (
+  dateValue: string | undefined,
+  targetDate: Date,
+): boolean => {
   if (!dateValue) return false;
   const date = new Date(dateValue);
   if (Number.isNaN(date.getTime())) return false;
@@ -86,7 +94,9 @@ const DashboardCard = ({
         aria-hidden="true"
       />
     </div>
-    <h2 className="mt-3 text-body font-medium text-text-primary sm:text-subtitle">{title}</h2>
+    <h2 className="mt-3 text-body font-medium text-text-primary sm:text-subtitle">
+      {title}
+    </h2>
     <div className="mt-3 flex-1">{children}</div>
     <p className="mt-4 text-label text-text-secondary">{footerLabel}</p>
   </Link>
@@ -103,19 +113,17 @@ const StoreDashboardPage = () => {
   const { ordersQuery } = useOrderService({});
   const { count: pendingOrdersCount } = usePendingOrdersCount();
 
-  const todayOrders = useMemo(
-    () => {
-      const today = new Date();
-      return (ordersQuery as DashboardOrder[]).filter((order) =>
-        isSameCalendarDay(order.createdAt, today),
-      );
-    },
-    [ordersQuery],
-  );
+  const todayOrders = useMemo(() => {
+    const today = new Date();
+    return (ordersQuery as DashboardOrder[]).filter((order) =>
+      isSameCalendarDay(order.createdAt, today),
+    );
+  }, [ordersQuery]);
 
   const todayOrderCount = todayOrders.length;
   const todayRevenue = todayOrders.reduce(
-    (sum, order) => sum + (typeof order.totalAmount === "number" ? order.totalAmount : 0),
+    (sum, order) =>
+      sum + (typeof order.totalAmount === "number" ? order.totalAmount : 0),
     0,
   );
 
@@ -157,7 +165,8 @@ const StoreDashboardPage = () => {
             {storeName}
           </h1>
           <p className="text-body-sm text-text-secondary">
-            {t("dashboard.todayOrders")} · {t("dashboard.pendingInKitchen")} · {t("dashboard.summaryHistory")}
+            {t("dashboard.todayOrders")} · {t("dashboard.pendingInKitchen")} ·{" "}
+            {t("dashboard.summaryHistory")}
           </p>
         </div>
 
@@ -178,7 +187,10 @@ const StoreDashboardPage = () => {
           to={`/store/${id}/pos`}
           footerLabel={t("dashboard.openPos")}
         >
-          <MetricLine label={t("dashboard.todayOrders")} value={String(todayOrderCount)} />
+          <MetricLine
+            label={t("dashboard.todayOrders")}
+            value={String(todayOrderCount)}
+          />
         </DashboardCard>
 
         <DashboardCard
@@ -205,7 +217,10 @@ const StoreDashboardPage = () => {
               label={t("dashboard.todayRevenue")}
               value={`฿ ${formatCurrency(todayRevenue)}`}
             />
-            <MetricLine label={t("dashboard.todayOrders")} value={String(todayOrderCount)} />
+            <MetricLine
+              label={t("dashboard.todayOrders")}
+              value={String(todayOrderCount)}
+            />
           </div>
         </DashboardCard>
       </div>

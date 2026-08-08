@@ -47,16 +47,15 @@ export function StepAddMenu({ onSubmit, submitting, error }: Props) {
         {draft.menus.map((menu, idx) => {
           const showRemove = draft.menus.length > 1;
           return (
-            <Card
-              key={menu.localId}
-              padding="sm"
-            >
+            <Card key={menu.localId} padding="sm">
               <div className="flex items-start gap-2">
                 <div className="flex flex-1 flex-col gap-2">
                   <Input
                     placeholder={t("onboarding.menu.namePlaceholder")}
                     value={menu.name}
-                    onChange={(e) => updateMenu(menu.localId, { name: e.target.value })}
+                    onChange={(e) =>
+                      updateMenu(menu.localId, { name: e.target.value })
+                    }
                     autoFocus={idx === 0 && !menu.name}
                     maxLength={80}
                     aria-label={t("onboarding.menu.nameLabel")}

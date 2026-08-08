@@ -23,7 +23,9 @@ const CartItem = ({
   onToggleExpand,
 }: Props) => {
   const { t } = useTranslation();
-  const noteActionLabel = item.note ? t("pos.cart.editNote") : t("pos.cart.addNote");
+  const noteActionLabel = item.note
+    ? t("pos.cart.editNote")
+    : t("pos.cart.addNote");
 
   return (
     <InsetPanel className="border-accent-border bg-accent-bg px-3 py-3 shadow-xs">
@@ -46,7 +48,7 @@ const CartItem = ({
           className={cn(
             "inline-flex w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-[var(--motion-fast)]",
             "hover:bg-surface hover:text-text-primary",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-1 focus-visible:ring-offset-bg"
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-1 focus-visible:ring-offset-bg",
           )}
           aria-label={expanded ? t("common.close") : t("common.edit")}
           title={expanded ? t("common.close") : t("common.edit")}
@@ -69,7 +71,11 @@ const CartItem = ({
                     : onUpdateQuantity(item.cartItemId, item.quantity - 1)
                 }
                 className="h-9 w-9 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
-                aria-label={item.quantity <= 1 ? t("pos.cart.removeItem") : t("pos.cart.decreaseQuantity")}
+                aria-label={
+                  item.quantity <= 1
+                    ? t("pos.cart.removeItem")
+                    : t("pos.cart.decreaseQuantity")
+                }
               >
                 <span className="text-label font-semibold leading-none">-</span>
               </Button>
@@ -80,7 +86,9 @@ const CartItem = ({
                 type="button"
                 variant="ghost"
                 size="icon"
-                onClick={() => onUpdateQuantity(item.cartItemId, item.quantity + 1)}
+                onClick={() =>
+                  onUpdateQuantity(item.cartItemId, item.quantity + 1)
+                }
                 className="h-9 w-9 rounded-full text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                 aria-label={t("pos.cart.increaseQuantity")}
               >
@@ -114,7 +122,10 @@ const CartItem = ({
 
           {item.note ? (
             <InsetPanel className="mt-2 rounded-sm border-border bg-surface px-3 py-2">
-              <p className="line-clamp-2 text-label leading-5 text-text-tertiary" title={item.note}>
+              <p
+                className="line-clamp-2 text-label leading-5 text-text-tertiary"
+                title={item.note}
+              >
                 {item.note}
               </p>
             </InsetPanel>
