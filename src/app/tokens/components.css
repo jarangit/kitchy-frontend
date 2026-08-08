@@ -100,9 +100,7 @@
 
   /* ── On-status text ── */
   /* Text used on top of solid status fills (success/warning/info badges). */
-  --color-on-success: var(--color-text-inverse);
-  --color-on-warning: var(--color-text-inverse);
-  --color-on-info: var(--color-text-inverse);
+  --color-on-status: var(--color-text-inverse);
 
   /* ── Status borders ── */
   /* Solid 100-scale tones, darker than their 50-scale bg tints. */
@@ -166,12 +164,7 @@
 
   /* ── Sidebar ── */
   --color-sidebar-bg: #232235;
-  --color-sidebar-border: var(--color-border);
   --spacing-sidebar-width: 84px;
-  --color-sidebar-active-bg: var(--color-accent-fill);
-  --color-sidebar-active-text: var(--color-accent-text);
-  --color-sidebar-text: color-mix(in srgb, var(--gray-0) 78%, transparent);
-  --color-sidebar-hover-bg: color-mix(in srgb, var(--gray-0) 8%, transparent);
 
   /* ── Sidebar glass dock ── */
   /* Floating glass pill: translucent white layers over backdrop-blur.
@@ -179,11 +172,6 @@
      instead of being baked into solid hex values. */
   --color-glass-surface-bg: color-mix(in srgb, var(--gray-0) 24%, transparent);
   --color-glass-surface-border: color-mix(
-    in srgb,
-    var(--gray-0) 45%,
-    transparent
-  );
-  --color-glass-highlight-bg: color-mix(
     in srgb,
     var(--gray-0) 45%,
     transparent
@@ -294,7 +282,6 @@
   --color-card-border: var(--color-border);
   --color-dialog-border: var(--color-border);
   --color-sidebar-bg: #171821;
-  --color-sidebar-active-bg: var(--color-accent-fill);
   --color-button-secondary-bg: var(--color-surface);
   --color-button-ghost-bg-hover: var(--color-surface-hover);
   --color-dialog-bg: var(--color-surface);
@@ -333,18 +320,11 @@
 
   /* On-status text — dark mode status fills are lighter tones, so the
      label switches to the dark on-accent ink to keep contrast. */
-  --color-on-success: var(--color-on-accent);
-  --color-on-warning: var(--color-on-accent);
-  --color-on-info: var(--color-on-accent);
+  --color-on-status: var(--color-on-accent);
 
   /* Sidebar glass dock — same white glass, much lower alpha over dark bg */
   --color-glass-surface-bg: color-mix(in srgb, var(--gray-0) 8%, transparent);
   --color-glass-surface-border: color-mix(
-    in srgb,
-    var(--gray-0) 12%,
-    transparent
-  );
-  --color-glass-highlight-bg: color-mix(
     in srgb,
     var(--gray-0) 12%,
     transparent

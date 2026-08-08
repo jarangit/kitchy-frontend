@@ -66,6 +66,13 @@ Rules for component code (`*.tsx`/`*.ts` under `src/features/` and `src/shared/`
 - **Non-token exceptions (not styling):** raw hex values are allowed where they are data or brand assets, not design tokens — e.g. third-party logo SVGs (Google sign-in `fill="#EA4335"` etc.) and domain data colors (user-selectable station color swatches `#FFFFFF`/`#111315`, seed data). These bypass the token system by design.
 - Enforced by `npm run lint:styles` (`scripts/lint-styles.mjs`). The token gallery (`token-gallery.tsx`) is the only whitelisted exception.
 
+Token creation policy:
+- Prefer an existing semantic or component utility first. Do not create a new Layer 3 token if `bg-surface`, `border-border`, `h-input-height`, `rounded-card`, etc. already express the intent.
+- Create a new Layer 3 token when the value represents a stable component seam: reused across the same component family, likely to diverge from semantic defaults later, or a repeated effect/calc value that would otherwise require arbitrary classes.
+- Avoid creating a Layer 3 token for one-off styling in a single component unless that value is expected to repeat or needs a meaningful name for future theming.
+- When adding a new Layer 3 token, wire it through `theme.css`, add dark-mode overrides only if the value truly differs in dark mode, and remove obsolete aliases if the new token replaces them.
+- Before adding a new token, check whether the same value already exists under another component token. Prefer reusing the existing token when the visual role is the same; prefer a new token when the role is different and should remain a future seam.
+
 ## Formatting
 
 - **Prettier** is the code formatter for `src/`. After making any code changes, run `npm run format` (or `npm run format:check` to verify) before finishing. Do not hand-format code; let Prettier handle it.

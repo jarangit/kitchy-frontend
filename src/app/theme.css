@@ -92,9 +92,7 @@
   --color-badge-accent-bg: var(--color-badge-accent-bg);
   --color-badge-accent-text: var(--color-badge-accent-text);
   /* On-status */
-  --color-on-success: var(--color-on-success);
-  --color-on-warning: var(--color-on-warning);
-  --color-on-info: var(--color-on-info);
+  --color-on-status: var(--color-on-status);
   /* ChipTab */
   --color-chip-active-bg: var(--color-chip-active-bg);
   --color-chip-active-text: var(--color-chip-active-text);
@@ -121,15 +119,9 @@
   --color-dialog-overlay: var(--color-dialog-overlay);
   /* Sidebar */
   --color-sidebar-bg: var(--color-sidebar-bg);
-  --color-sidebar-border: var(--color-sidebar-border);
-  --color-sidebar-active-bg: var(--color-sidebar-active-bg);
-  --color-sidebar-active-text: var(--color-sidebar-active-text);
-  --color-sidebar-text: var(--color-sidebar-text);
-  --color-sidebar-hover-bg: var(--color-sidebar-hover-bg);
   /* Sidebar glass dock */
   --color-glass-surface-bg: var(--color-glass-surface-bg);
   --color-glass-surface-border: var(--color-glass-surface-border);
-  --color-glass-highlight-bg: var(--color-glass-highlight-bg);
   --color-glass-gradient-from: var(--color-glass-gradient-from);
   --color-glass-gradient-via: var(--color-glass-gradient-via);
   --color-glass-gradient-to: var(--color-glass-gradient-to);

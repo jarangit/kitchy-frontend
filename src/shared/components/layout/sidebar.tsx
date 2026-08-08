@@ -168,7 +168,7 @@ const Sidebar = () => {
         >
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-5 top-2 h-10 rounded-full bg-glass-highlight-bg blur-glass-highlight dark:bg-glass-highlight-bg"
+            className="pointer-events-none absolute inset-x-5 top-2 h-10 rounded-full bg-glass-surface-border blur-glass-highlight dark:bg-glass-surface-border"
           />
           <span
             aria-hidden="true"

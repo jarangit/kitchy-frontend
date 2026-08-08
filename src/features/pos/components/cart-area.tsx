@@ -47,15 +47,15 @@ const ORDER_TYPE_ICONS = {
 
 const ORDER_TYPE_STYLES = {
   DINE_IN: {
-    badge: "border-success bg-success text-on-success",
+    badge: "border-success bg-success text-on-status",
     activeChip: "border-success-border bg-success-bg text-success",
   },
   TOGO: {
-    badge: "border-warning bg-warning text-on-warning",
+    badge: "border-warning bg-warning text-on-status",
     activeChip: "border-warning-border bg-warning-bg text-warning",
   },
   DELIVERY: {
-    badge: "border-info bg-info text-on-info",
+    badge: "border-info bg-info text-on-status",
     activeChip: "border-info-border bg-info-bg text-info",
   },
 } as const;

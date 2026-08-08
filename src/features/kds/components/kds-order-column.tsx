@@ -40,9 +40,9 @@ interface Props {
 }
 
 const ORDER_TYPE_BADGE_STYLES: Record<OrderType, string> = {
-  DINE_IN: "border-success bg-success text-on-success",
-  TOGO: "border-warning bg-warning text-on-warning",
-  DELIVERY: "border-info bg-info text-on-info",
+  DINE_IN: "border-success bg-success text-on-status",
+  TOGO: "border-warning bg-warning text-on-status",
+  DELIVERY: "border-info bg-info text-on-status",
 };
 
 const ORDER_TYPE_ICONS: Record<OrderType, typeof LuUtensilsCrossed> = {
@@ -243,7 +243,7 @@ const KdsOrderColumn = ({
                     "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-fast",
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     item.status === "READY"
-                      ? "border-success bg-success text-on-success"
+                      ? "border-success bg-success text-on-status"
                       : "border-border bg-bg text-transparent hover:border-success hover:bg-success-bg hover:text-success",
                   )}
                 >
