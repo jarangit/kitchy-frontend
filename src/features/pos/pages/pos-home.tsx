@@ -138,10 +138,12 @@ const PosHomePage = () => {
             onPay={handlePay}
             orderType={cart.orderType}
             tableNumber={cart.tableNumber}
+            customerName={cart.customerName}
             deliveryPlatform={cart.deliveryPlatform}
             deliveryOrderNumber={cart.deliveryOrderNumber}
             onOrderTypeChange={cart.setOrderType}
             onTableNumberChange={cart.setTableNumber}
+            onCustomerNameChange={cart.setCustomerName}
             onDeliveryPlatformChange={cart.setDeliveryPlatform}
             onDeliveryOrderNumberChange={cart.setDeliveryOrderNumber}
           />
@@ -212,10 +214,12 @@ const PosHomePage = () => {
               onPay={handlePay}
               orderType={cart.orderType}
               tableNumber={cart.tableNumber}
+              customerName={cart.customerName}
               deliveryPlatform={cart.deliveryPlatform}
               deliveryOrderNumber={cart.deliveryOrderNumber}
               onOrderTypeChange={cart.setOrderType}
               onTableNumberChange={cart.setTableNumber}
+              onCustomerNameChange={cart.setCustomerName}
               onDeliveryPlatformChange={cart.setDeliveryPlatform}
               onDeliveryOrderNumberChange={cart.setDeliveryOrderNumber}
             />

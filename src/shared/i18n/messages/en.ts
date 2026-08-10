@@ -310,6 +310,9 @@ export const enMessages = {
   "transaction.list.col.table": "Table",
   "transaction.list.col.customer": "Customer",
   "transaction.list.col.method": "Payment",
+  "transaction.method.cash": "Cash",
+  "transaction.method.qr": "QR",
+  "transaction.method.viaPlatform": "Paid via {platform}",
   "transaction.list.col.status": "Status",
   "transaction.list.col.createdAt": "Created",
   "transaction.list.col.items": "Items",
@@ -380,6 +383,7 @@ export const enMessages = {
   "pos.cart.selectTableDescription":
     "Tap to select a table for the dine-in order.",
   "pos.cart.deliveryPlatform": "Delivery Platform",
+  "pos.cart.customerName": "Customer name",
   "pos.cart.deliveryOrderNumber": "App order number",
   "pos.cart.deliveryOrderNumberPlaceholder": "e.g. GF-1234 / LM-5678",
   "pos.cart.deliveryOrderNumberHelp":
@@ -387,6 +391,7 @@ export const enMessages = {
   "pos.deliveryDialog.description":
     "Pick a delivery platform first. Add the app order number only if you need it.",
   "pos.deliveryDialog.optional": "Optional",
+  "pos.deliveryDialog.customerNamePlaceholder": "e.g. Mr. Somchai",
   "pos.deliveryDialog.platformRequired":
     "Choose a delivery platform to continue.",
   "pos.cart.emptyTitle": "Cart is empty",
@@ -423,6 +428,7 @@ export const enMessages = {
   "pos.payment.stepPayment": "Step 2/2",
   "pos.payment.reviewTitle": "Review order",
   "pos.payment.continueToPayment": "Continue to payment",
+  "pos.payment.confirmOrder": "Confirm order",
   "pos.payment.backToSummary": "Back to summary",
   "pos.payment.orderInfo": "Order Info",
   "pos.payment.type": "Type",
@@ -475,6 +481,7 @@ export const enMessages = {
   "pos.receipt.platform": "Platform",
   "pos.receipt.deliveryOrderNumber": "App order",
   "pos.receipt.paymentMethod": "Payment Method",
+  "pos.receipt.paidViaPlatform": "Paid via platform",
   "pos.receipt.cashReceived": "Cash received",
   "pos.receipt.changeLabel": "Change",
   "pos.receipt.scanForDigital": "Scan to get digital receipt",
@@ -601,6 +608,7 @@ export const enMessages = {
   "serve.item.waiting": "Waiting {minutes} min",
 
   "report.title": "Report",
+  "report.payment.delivery": "Delivery",
   "report.subtitle.today": "{date}",
   "report.subtitle.week": "Last 7 Days",
   "report.subtitle.month": "{month}",

@@ -28,6 +28,7 @@ import {
   formatCurrency,
   getItemName,
   getItemPrice,
+  getPaymentMethodLabelKey,
   toFlowStatus,
   type FlowStatus,
   type TransactionOrderItem,
@@ -144,6 +145,14 @@ const TransactionDetailPage = () => {
         : t(flowStrategy.titleKey as MessageKey),
     hint: flowStrategy.hintKey ? t(flowStrategy.hintKey as MessageKey) : null,
   };
+
+  const paymentMethodKey = getPaymentMethodLabelKey(order.method);
+  const paymentMethodLabel =
+    paymentMethodKey === "transaction.method.viaPlatform"
+      ? t(paymentMethodKey, { platform: order.method })
+      : paymentMethodKey
+        ? t(paymentMethodKey)
+        : "—";
 
   return (
     <>
@@ -289,7 +298,7 @@ const TransactionDetailPage = () => {
                       )}
                       <InfoCell
                         label={t("transaction.detail.info.paymentMethod")}
-                        value={order.method}
+                        value={paymentMethodLabel}
                       />
                       <InfoCell
                         label={t("transaction.detail.info.orderId")}

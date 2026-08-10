@@ -208,7 +208,11 @@ function buildTransactionView(
     customerName: meta?.customerName,
     deliveryPlatform: meta?.deliveryPlatform,
     deliveryOrderNumber: meta?.deliveryOrderNumber,
-    method: primaryPayment?.method ?? "CASH",
+    method:
+      primaryPayment?.method ??
+      (order.type === "DELIVERY" && meta?.deliveryPlatform
+        ? meta.deliveryPlatform
+        : "CASH"),
     amount,
     totalAmount: amount,
     receiptId: primaryPayment?.receiptId ?? `DEMO-${order.orderNumber}`,
@@ -776,6 +780,9 @@ export const localAdapter: DataAdapter = {
     const totalOrders = txns.length;
     const averageOrderValue =
       totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+    const deliveryRevenue = txns
+      .filter((t) => t.type === "DELIVERY")
+      .reduce((sum, t) => sum + t.amount, 0);
 
     // Aggregate top products
     const productMap = new Map<
@@ -818,7 +825,12 @@ export const localAdapter: DataAdapter = {
     );
 
     return {
-      summary: { totalRevenue, totalOrders, averageOrderValue },
+      summary: {
+        totalRevenue,
+        totalOrders,
+        averageOrderValue,
+        deliveryRevenue,
+      },
       topProducts,
       paymentBreakdown,
     };

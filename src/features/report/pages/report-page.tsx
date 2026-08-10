@@ -146,6 +146,7 @@ const ReportPage = () => {
             <ReportContextCard
               products={data.topProducts}
               paymentBreakdown={data.paymentBreakdown}
+              deliveryRevenue={data.summary.deliveryRevenue}
               title={getTopProductsTitle()}
             />
           )}

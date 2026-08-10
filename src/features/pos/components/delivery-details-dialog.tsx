@@ -1,5 +1,5 @@
 import { useEffect, type RefObject } from "react";
-import { LuBike, LuKeyboard, LuX } from "react-icons/lu";
+import { LuBike, LuCheck, LuKeyboard, LuX } from "react-icons/lu";
 import {
   Dialog,
   DialogDescription,
@@ -12,6 +12,7 @@ import { Card } from "@/shared/components/ui/card";
 import { AlphanumericKeypad } from "@/shared/components/ui/alphanumeric-keypad";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { getDeliveryPlatformBrand } from "@/shared/utils/delivery-platform-brands";
 import { cn } from "@/shared/utils/cn";
 
 interface Props {
@@ -20,11 +21,13 @@ interface Props {
   deliveryPlatforms: string[];
   deliveryPlatform: string;
   deliveryOrderNumber: string;
+  customerName: string;
   isDeliveryKeypadOpen: boolean;
   isDeviceKeyboardEnabled: boolean;
   deliveryOrderInputRef: RefObject<HTMLInputElement | null>;
   onDeliveryPlatformChange: (platform: string) => void;
   onDeliveryOrderNumberChange: (orderNumber: string) => void;
+  onCustomerNameChange: (name: string) => void;
   onOpenCustomKeypad: () => void;
   onOpenDeviceKeyboard: () => void;
   onCloseKeypad: () => void;
@@ -40,11 +43,13 @@ export function DeliveryDetailsDialog({
   deliveryPlatforms,
   deliveryPlatform,
   deliveryOrderNumber,
+  customerName,
   isDeliveryKeypadOpen,
   isDeviceKeyboardEnabled,
   deliveryOrderInputRef,
   onDeliveryPlatformChange,
   onDeliveryOrderNumberChange,
+  onCustomerNameChange,
   onOpenCustomKeypad,
   onOpenDeviceKeyboard,
   onCloseKeypad,
@@ -58,6 +63,7 @@ export function DeliveryDetailsDialog({
   const hasOrderNumber = deliveryOrderNumber.trim().length > 0;
   const platformHelpId = "delivery-platform-help";
   const orderNumberInputId = "deliveryOrderNumberDialog";
+  const customerNameInputId = "customerNameDialog";
   const summaryText = hasSelectedPlatform
     ? hasOrderNumber
       ? `${deliveryPlatform.trim()} • ${deliveryOrderNumber.trim()}`
@@ -140,6 +146,7 @@ export function DeliveryDetailsDialog({
             >
               {deliveryPlatforms.map((platform) => {
                 const selected = deliveryPlatform === platform;
+                const brand = getDeliveryPlatformBrand(platform);
 
                 return (
                   <SelectionChip
@@ -148,12 +155,46 @@ export function DeliveryDetailsDialog({
                     role="radio"
                     aria-checked={selected}
                     onClick={() => handlePlatformSelect(platform)}
+                    style={
+                      brand
+                        ? {
+                            backgroundColor: brand.brandColor,
+                            color: brand.onColor,
+                            borderColor: "transparent",
+                            boxShadow: selected
+                              ? `inset 0 0 0 2px ${brand.onColor}, 0 0 0 3px rgba(0,0,0,0.35)`
+                              : undefined,
+                          }
+                        : undefined
+                    }
                     className={cn(
-                      "h-16 justify-center text-center",
-                      selected && "ring-2 ring-accent/20",
+                      "relative h-16 justify-center text-center",
+                      brand && "font-medium",
+                      selected && !brand && "ring-2 ring-accent/20",
+                      brand && !selected && "opacity-85 hover:opacity-100",
+                      selected && "scale-[1.03]",
                     )}
                   >
                     {platform}
+                    {selected && (
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "absolute right-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded-full",
+                          brand ? "" : "bg-accent text-on-accent",
+                        )}
+                        style={
+                          brand
+                            ? {
+                                backgroundColor: brand.onColor,
+                                color: brand.brandColor,
+                              }
+                            : undefined
+                        }
+                      >
+                        <LuCheck size={13} strokeWidth={3.5} />
+                      </span>
+                    )}
                   </SelectionChip>
                 );
               })}
@@ -169,6 +210,26 @@ export function DeliveryDetailsDialog({
           {hasSelectedPlatform && !isDeliveryKeypadOpen && (
             <Card variant="muted" padding="sm" className="page-stack-tight">
               <div className="flex items-center justify-between gap-3">
+                <Label htmlFor={customerNameInputId}>
+                  {t("pos.cart.customerName")}
+                </Label>
+                <span className="text-label text-text-tertiary">
+                  {t("pos.deliveryDialog.optional")}
+                </span>
+              </div>
+              <input
+                id={customerNameInputId}
+                value={customerName}
+                onChange={(event) =>
+                  onCustomerNameChange(event.target.value.slice(0, 40))
+                }
+                inputMode="text"
+                autoComplete="name"
+                className="mt-1 h-input-height w-full rounded-input border border-input-border bg-input-bg px-input-padding-x text-input text-text-primary outline-none transition-colors duration-fast placeholder:text-input-placeholder focus:border-input-border-focus focus:ring-2 focus:ring-accent/25"
+                placeholder={t("pos.deliveryDialog.customerNamePlaceholder")}
+              />
+
+              <div className="mt-4 flex items-center justify-between gap-3">
                 <Label htmlFor={orderNumberInputId}>
                   {t("pos.cart.deliveryOrderNumber")}
                 </Label>
@@ -271,7 +332,7 @@ export function DeliveryDetailsDialog({
         )}
       </div>
 
-      {onConfirm && (
+      {onConfirm && !isDeliveryKeypadOpen && (
         <div className="mt-5 flex justify-end">
           <Button
             type="button"

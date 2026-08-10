@@ -82,10 +82,12 @@ interface Props {
   onPay: () => void;
   orderType: OrderType;
   tableNumber: string | null;
+  customerName: string;
   deliveryPlatform: string;
   deliveryOrderNumber: string;
   onOrderTypeChange: (type: OrderType) => void;
   onTableNumberChange: (tableNumber: string | null) => void;
+  onCustomerNameChange: (name: string) => void;
   onDeliveryPlatformChange: (platform: string) => void;
   onDeliveryOrderNumberChange: (orderNumber: string) => void;
 }
@@ -106,10 +108,12 @@ const CartArea = ({
   onPay,
   orderType,
   tableNumber,
+  customerName,
   deliveryPlatform,
   deliveryOrderNumber,
   onOrderTypeChange,
   onTableNumberChange,
+  onCustomerNameChange,
   onDeliveryPlatformChange,
   onDeliveryOrderNumberChange,
 }: Props) => {
@@ -217,21 +221,14 @@ const CartArea = ({
     setIsConfigExpanded((current) => !current);
   };
 
-  const openOrderTypeRequirements = (
-    nextType: OrderType,
-    source: "config" | "pay",
-  ) => {
+  const openOrderTypeRequirements = (nextType: OrderType) => {
     if (nextType === "DINE_IN") {
       setIsTableDialogOpen(true);
     }
 
     if (nextType === "DELIVERY") {
-      if (source === "config") {
-        ensureDeliveryPlatformSelected();
-        setIsDeliveryKeypadOpen(true);
-      } else {
-        setIsDeliveryKeypadOpen(false);
-      }
+      ensureDeliveryPlatformSelected();
+      setIsDeliveryKeypadOpen(true);
       setIsDeviceKeyboardEnabled(false);
       setIsDeliveryDialogOpen(true);
     }
@@ -242,12 +239,9 @@ const CartArea = ({
     }
   };
 
-  const handleOrderTypeChange = (
-    nextType: OrderType,
-    source: "config" | "pay" = "config",
-  ) => {
+  const handleOrderTypeChange = (nextType: OrderType) => {
     onOrderTypeChange(nextType);
-    openOrderTypeRequirements(nextType, source);
+    openOrderTypeRequirements(nextType);
   };
 
   const continueToPayment = () => {
@@ -304,6 +298,9 @@ const CartArea = ({
     }
 
     if (orderType === "DELIVERY" && deliveryPlatform.trim().length === 0) {
+      ensureDeliveryPlatformSelected();
+      setIsDeliveryKeypadOpen(true);
+      setIsDeviceKeyboardEnabled(false);
       setIsDeliveryDialogOpen(true);
     }
   };
@@ -329,7 +326,7 @@ const CartArea = ({
     }
 
     setPendingPayOrderType(nextType);
-    handleOrderTypeChange(nextType, "pay");
+    handleOrderTypeChange(nextType);
   };
 
   const handleTableDialogClose = () => {
@@ -525,7 +522,11 @@ const CartArea = ({
                     type="button"
                     variant="secondary"
                     size="icon"
-                    onClick={() => setIsDeliveryDialogOpen(true)}
+                    onClick={() => {
+                      setIsDeliveryKeypadOpen(true);
+                      setIsDeviceKeyboardEnabled(false);
+                      setIsDeliveryDialogOpen(true);
+                    }}
                     aria-label={t("common.edit")}
                     title={t("common.edit")}
                   >
@@ -646,17 +647,21 @@ const CartArea = ({
         deliveryPlatforms={deliveryPlatforms}
         deliveryPlatform={deliveryPlatform}
         deliveryOrderNumber={deliveryOrderNumber}
+        customerName={customerName}
         isDeliveryKeypadOpen={isDeliveryKeypadOpen}
         isDeviceKeyboardEnabled={isDeviceKeyboardEnabled}
         deliveryOrderInputRef={deliveryOrderInputRef}
         onDeliveryPlatformChange={onDeliveryPlatformChange}
         onDeliveryOrderNumberChange={onDeliveryOrderNumberChange}
+        onCustomerNameChange={onCustomerNameChange}
         onOpenCustomKeypad={openCustomKeypad}
         onOpenDeviceKeyboard={openDeviceKeyboard}
         onCloseKeypad={closeDeliveryKeypad}
         autoOpenOrderNumberOnPlatformSelect={pendingPayOrderType !== "DELIVERY"}
         onKeypadDone={
-          pendingPayOrderType === "DELIVERY" ? closeDeliveryKeypad : undefined
+          pendingPayOrderType === "DELIVERY"
+            ? handleDeliveryPayConfirm
+            : undefined
         }
         onConfirm={
           pendingPayOrderType === "DELIVERY"
@@ -665,7 +670,7 @@ const CartArea = ({
         }
         confirmLabel={
           pendingPayOrderType === "DELIVERY"
-            ? t("pos.payment.continueToPayment")
+            ? t("pos.payment.confirmOrder")
             : undefined
         }
       />

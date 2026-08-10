@@ -48,10 +48,14 @@ const PaymentPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const isDelivery = orderType === "DELIVERY";
   const paymentStrategy = getPaymentStrategy(paymentMethod);
   const orderTypeStrategy = getOrderTypeStrategy(orderType);
   const orderTypeLabel = t(orderTypeStrategy.labelKey as MessageKey);
-  const paymentMethodOptions: PaymentMethod[] = ["QR", "CASH"];
+  const paymentMethodOptions: Exclude<PaymentMethod, "DELIVERY_PLATFORM">[] = [
+    "QR",
+    "CASH",
+  ];
   const nextStepHint =
     paymentMethod === "CASH"
       ? t("pos.payment.nextStepCash")
@@ -93,6 +97,15 @@ const PaymentPage = () => {
       deliveryOrderNumber,
     });
 
+  const canConfirmOrder =
+    items.length > 0 &&
+    orderTypeStrategy.isValid({
+      tableNumber,
+      customerName,
+      deliveryPlatform,
+      deliveryOrderNumber,
+    });
+
   const validationMessage =
     orderType === "DINE_IN" && !tableNumber
       ? t("pos.payment.selectTableFirst")
@@ -108,10 +121,15 @@ const PaymentPage = () => {
     navigate(`/store/${id}/pos`);
   };
 
-  const handleConfirmPayment = async () => {
+  const handleConfirmPayment = async (method: PaymentMethod) => {
     if (!canConfirm || isProcessing) return;
     setIsProcessing(true);
     setErrorMessage(null);
+
+    const methodChange = getPaymentStrategy(method).calcChange({
+      total: subtotal,
+      received: receivedAmount ? Number(receivedAmount) : undefined,
+    });
 
     try {
       const orderNumber = getNextQueueNumber(ordersQuery);
@@ -138,9 +156,9 @@ const PaymentPage = () => {
         receiptId: orderNumber,
         items: [...items],
         subtotal,
-        paymentMethod,
+        paymentMethod: method,
         receivedAmount: Number(receivedAmount) || subtotal,
-        change,
+        change: methodChange,
         orderType,
         tableNumber,
         customerName,
@@ -251,11 +269,23 @@ const PaymentPage = () => {
                       </div>
                     </div>
                     <Button
-                      onClick={() => setStep("PAYMENT")}
+                      onClick={() => {
+                        if (isDelivery) {
+                          handleConfirmPayment("DELIVERY_PLATFORM");
+                        } else {
+                          setStep("PAYMENT");
+                        }
+                      }}
                       className="h-16 w-full whitespace-normal text-center text-title leading-6"
-                      disabled={items.length === 0}
+                      loading={isProcessing}
+                      loadingText={t("pos.payment.processing")}
+                      disabled={
+                        isDelivery ? !canConfirmOrder : items.length === 0
+                      }
                     >
-                      {t("pos.payment.continueToPayment")}
+                      {isDelivery
+                        ? t("pos.payment.confirmOrder")
+                        : t("pos.payment.continueToPayment")}
                     </Button>
                   </div>
                 </aside>
@@ -374,7 +404,7 @@ const PaymentPage = () => {
                   )}
 
                   <Button
-                    onClick={handleConfirmPayment}
+                    onClick={() => handleConfirmPayment(paymentMethod)}
                     disabled={!canConfirm || isProcessing}
                     loading={isProcessing}
                     loadingText={t("pos.payment.processing")}

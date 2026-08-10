@@ -175,6 +175,7 @@ export function generateMockReportData(
         totalRevenue,
         totalOrders,
         averageOrderValue,
+        deliveryRevenue: Math.round(totalRevenue * 0.18),
       },
       topProducts:
         calendarDays.length > 0
@@ -191,6 +192,7 @@ export function generateMockReportData(
         totalRevenue: 0,
         totalOrders: 0,
         averageOrderValue: 0,
+        deliveryRevenue: 0,
       },
       topProducts: [],
       paymentBreakdown: [],
@@ -209,6 +211,7 @@ export function generateMockReportData(
     totalRevenue,
     totalOrders,
     averageOrderValue,
+    deliveryRevenue: Math.round(totalRevenue * 0.18),
   };
 
   const topProducts = generateTopProducts(99, 3);

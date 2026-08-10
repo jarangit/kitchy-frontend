@@ -131,6 +131,7 @@
   --color-segment-inactive-text: var(--color-text-secondary);
   --color-segment-inactive-text-hover: var(--color-text-primary);
   --radius-segment: var(--radius-lg);
+  --spacing-segment-height: 36px;
   --font-size-segment: var(--text-body-size);
   --font-weight-segment: var(--text-label-weight);
 

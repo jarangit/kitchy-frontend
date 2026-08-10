@@ -209,6 +209,7 @@
   --spacing-chip-height-md: var(--spacing-chip-height-md);
   --spacing-chip-height-lg: var(--spacing-chip-height-lg);
   --spacing-chip-padding-x: var(--spacing-chip-padding-x);
+  --spacing-segment-height: var(--spacing-segment-height);
   /* SelectionChip */
   --spacing-selection-height: var(--spacing-selection-height);
   /* Dialog */

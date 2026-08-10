@@ -3,10 +3,12 @@ import type {
   ITopProduct,
 } from "@/features/report/types/report.model";
 import { Card } from "@/shared/components/ui/card";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   products: ITopProduct[];
   paymentBreakdown: IPaymentBreakdown[];
+  deliveryRevenue?: number;
   title?: string;
 }
 
@@ -19,8 +21,10 @@ const formatCurrency = (value: number): string =>
 const ReportContextCard = ({
   products,
   paymentBreakdown,
+  deliveryRevenue,
   title = "Top Products",
 }: Props) => {
+  const { t } = useTranslation();
   if (products.length === 0 && paymentBreakdown.length === 0) {
     return null;
   }
@@ -73,6 +77,16 @@ const ReportContextCard = ({
                   </span>
                 </div>
               ))}
+              {typeof deliveryRevenue === "number" && (
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-body-sm font-medium text-text-primary">
+                    {t("report.payment.delivery")}
+                  </span>
+                  <span className="text-label font-semibold text-text-secondary shrink-0 whitespace-nowrap">
+                    {formatCurrency(deliveryRevenue)}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         )}

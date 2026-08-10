@@ -20,6 +20,7 @@ import {
 } from "@/shared/components/ui/data-table";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
+import { getPaymentMethodLabelKey } from "@/features/transaction/utils/transaction-formatters";
 
 interface TransactionProduct {
   name?: string;
@@ -308,11 +309,19 @@ const TransactionListPage = () => {
         header: () => <span>{t("transaction.list.col.method")}</span>,
         enableSorting: false,
         meta: { hideBelow: "lg", className: "min-w-[120px]" },
-        cell: ({ row }) => (
-          <span className="text-body-sm text-text-secondary">
-            {row.original.method ?? "—"}
-          </span>
-        ),
+        cell: ({ row }) => {
+          const method = row.original.method;
+          const methodKey = getPaymentMethodLabelKey(method);
+          const label =
+            methodKey === "transaction.method.viaPlatform"
+              ? t(methodKey, { platform: method ?? "" })
+              : methodKey
+                ? t(methodKey)
+                : "—";
+          return (
+            <span className="text-body-sm text-text-secondary">{label}</span>
+          );
+        },
       },
       {
         id: "status",

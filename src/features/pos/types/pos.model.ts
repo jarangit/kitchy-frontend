@@ -7,7 +7,7 @@ export interface ICartItem {
   note?: string;
 }
 
-export type PaymentMethod = "CASH" | "QR";
+export type PaymentMethod = "CASH" | "QR" | "DELIVERY_PLATFORM";
 
 export type OrderType = "DINE_IN" | "TOGO" | "DELIVERY";
 

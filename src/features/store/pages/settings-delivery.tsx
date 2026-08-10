@@ -11,6 +11,8 @@ import {
 } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { getDefaultDeliveryPlatforms } from "@/shared/i18n/presets";
+import { getDeliveryPlatformBrand } from "@/shared/utils/delivery-platform-brands";
+import { cn } from "@/shared/utils/cn";
 
 const getDeliverySettingsKey = (storeId: string) =>
   `store:${storeId}:delivery-platforms`;
@@ -145,39 +147,77 @@ const SettingsDeliveryPage = () => {
         }
       >
         <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {supportedPlatforms.map((platform) => (
-            <Card
-              key={platform}
-              className="flex min-h-32 flex-col justify-between bg-bg px-5 py-4 sm:px-5 sm:py-4"
-            >
-              <div className="min-w-0 space-y-1.5">
-                <div className="font-semibold text-text-primary">
-                  {platform}
-                </div>
-                <div className="text-label leading-6 text-text-secondary">
-                  {enabledPlatforms.includes(platform)
-                    ? t("settings.delivery.available")
-                    : t("settings.delivery.hidden")}
-                </div>
-              </div>
+          {supportedPlatforms.map((platform) => {
+            const brand = getDeliveryPlatformBrand(platform);
 
-              <div className="flex items-center justify-between gap-3 border-t border-border pt-3">
-                <span className="text-label text-text-secondary">
-                  {enabledPlatforms.includes(platform)
-                    ? t("settings.delivery.enabled")
-                    : t("settings.delivery.disabled")}
-                </span>
-                <Toggle
-                  checked={enabledPlatforms.includes(platform)}
-                  onChange={(checked) =>
-                    handleTogglePlatform(platform, checked)
+            return (
+              <Card
+                key={platform}
+                style={
+                  brand
+                    ? {
+                        backgroundColor: brand.brandColor,
+                        color: brand.onColor,
+                        borderColor: "transparent",
+                      }
+                    : undefined
+                }
+                className={cn(
+                  "flex min-h-32 flex-col justify-between px-5 py-4 sm:px-5 sm:py-4",
+                  !brand && "bg-bg",
+                )}
+              >
+                <div className="min-w-0 space-y-1.5">
+                  <div
+                    className={cn(
+                      "font-semibold",
+                      !brand && "text-text-primary",
+                    )}
+                  >
+                    {platform}
+                  </div>
+                  <div
+                    className={cn(
+                      "text-label leading-6",
+                      !brand && "text-text-secondary",
+                    )}
+                  >
+                    {enabledPlatforms.includes(platform)
+                      ? t("settings.delivery.available")
+                      : t("settings.delivery.hidden")}
+                  </div>
+                </div>
+
+                <div
+                  className="flex items-center justify-between gap-3 border-t pt-3"
+                  style={
+                    brand
+                      ? { borderColor: "rgba(255,255,255,0.25)" }
+                      : undefined
                   }
-                  label={`Toggle ${platform}`}
-                  disabled={enabledPlatforms.length === 1}
-                />
-              </div>
-            </Card>
-          ))}
+                >
+                  <span
+                    className={cn(
+                      "text-label",
+                      !brand && "text-text-secondary",
+                    )}
+                  >
+                    {enabledPlatforms.includes(platform)
+                      ? t("settings.delivery.enabled")
+                      : t("settings.delivery.disabled")}
+                  </span>
+                  <Toggle
+                    checked={enabledPlatforms.includes(platform)}
+                    onChange={(checked) =>
+                      handleTogglePlatform(platform, checked)
+                    }
+                    label={`Toggle ${platform}`}
+                    disabled={enabledPlatforms.length === 1}
+                  />
+                </div>
+              </Card>
+            );
+          })}
         </div>
       </SettingsSectionCard>
 

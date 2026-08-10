@@ -61,9 +61,19 @@ const qrStrategy: PaymentStrategy = {
   calcChange: () => 0,
 };
 
+const deliveryPlatformStrategy: PaymentStrategy = {
+  key: "DELIVERY_PLATFORM",
+  labelKey: "pos.payment.platform",
+  receiptLabelKey: "pos.receipt.paidViaPlatform",
+  requiresReceived: false,
+  canConfirm: ({ total }) => total > 0,
+  calcChange: () => 0,
+};
+
 export const paymentStrategies: Record<PaymentMethod, PaymentStrategy> = {
   CASH: cashStrategy,
   QR: qrStrategy,
+  DELIVERY_PLATFORM: deliveryPlatformStrategy,
 };
 
 export const getPaymentStrategy = (method: PaymentMethod): PaymentStrategy =>

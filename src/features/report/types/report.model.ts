@@ -3,6 +3,7 @@ export interface IReportSummary {
   totalRevenue: number;
   totalOrders: number;
   averageOrderValue: number;
+  deliveryRevenue: number;
 }
 
 /** Top selling product */
