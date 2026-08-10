@@ -1,5 +1,5 @@
 import { useEffect, type RefObject } from "react";
-import { LuBike, LuCheck, LuKeyboard, LuX } from "react-icons/lu";
+import { LuBike, LuCheck, LuKeyboard, LuSparkles, LuX } from "react-icons/lu";
 import {
   Dialog,
   DialogDescription,
@@ -21,6 +21,7 @@ interface Props {
   deliveryPlatforms: string[];
   deliveryPlatform: string;
   deliveryOrderNumber: string;
+  suggestedDeliveryOrderNumber?: string | null;
   customerName: string;
   isDeliveryKeypadOpen: boolean;
   isDeviceKeyboardEnabled: boolean;
@@ -43,6 +44,7 @@ export function DeliveryDetailsDialog({
   deliveryPlatforms,
   deliveryPlatform,
   deliveryOrderNumber,
+  suggestedDeliveryOrderNumber,
   customerName,
   isDeliveryKeypadOpen,
   isDeviceKeyboardEnabled,
@@ -276,6 +278,22 @@ export function DeliveryDetailsDialog({
                 </button>
               )}
 
+              {suggestedDeliveryOrderNumber &&
+                suggestedDeliveryOrderNumber !== deliveryOrderNumber && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onDeliveryOrderNumberChange(suggestedDeliveryOrderNumber)
+                    }
+                    className="mt-2 inline-flex items-center gap-1.5 self-start rounded-full border border-accent-border bg-accent-bg px-3 py-1 text-label font-medium text-accent-text transition-colors duration-fast hover:bg-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+                  >
+                    <LuSparkles size={14} />
+                    {t("pos.cart.deliveryOrderNumberSuggest", {
+                      number: suggestedDeliveryOrderNumber,
+                    })}
+                  </button>
+                )}
+
               <p className="mt-2 text-label text-text-tertiary">
                 {t("pos.cart.deliveryOrderNumberHelp")}
               </p>
@@ -320,6 +338,21 @@ export function DeliveryDetailsDialog({
 
         {isDeliveryKeypadOpen && (
           <div className="min-w-0 self-start md:sticky md:top-0">
+            {suggestedDeliveryOrderNumber &&
+              suggestedDeliveryOrderNumber !== deliveryOrderNumber && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    onDeliveryOrderNumberChange(suggestedDeliveryOrderNumber)
+                  }
+                  className="mb-3 inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-accent-border bg-accent-bg px-3 py-2 text-label font-medium text-accent-text transition-colors duration-fast hover:bg-accent/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+                >
+                  <LuSparkles size={14} />
+                  {t("pos.cart.deliveryOrderNumberSuggest", {
+                    number: suggestedDeliveryOrderNumber,
+                  })}
+                </button>
+              )}
             <AlphanumericKeypad
               value={deliveryOrderNumber}
               onChange={onDeliveryOrderNumberChange}

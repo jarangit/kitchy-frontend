@@ -4,6 +4,8 @@ import { LuX } from "react-icons/lu";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
+import { getNextDeliveryOrderNumber } from "@/features/pos/utils/get-next-delivery-order-number";
+import { useOrderService } from "@/features/order/hooks/useOrder";
 import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
@@ -27,6 +29,12 @@ const PosHomePage = () => {
   } = useProductService(selectedCategory);
   const { categoriesQuery } = useCategoryService();
   const cart = useCartContext();
+  const { ordersQuery } = useOrderService({});
+
+  const suggestedDeliveryOrderNumber = useMemo(
+    () => getNextDeliveryOrderNumber(ordersQuery, cart.deliveryPlatform),
+    [ordersQuery, cart.deliveryPlatform],
+  );
 
   const categories = useMemo(
     () =>
@@ -141,6 +149,7 @@ const PosHomePage = () => {
             customerName={cart.customerName}
             deliveryPlatform={cart.deliveryPlatform}
             deliveryOrderNumber={cart.deliveryOrderNumber}
+            suggestedDeliveryOrderNumber={suggestedDeliveryOrderNumber}
             onOrderTypeChange={cart.setOrderType}
             onTableNumberChange={cart.setTableNumber}
             onCustomerNameChange={cart.setCustomerName}
@@ -217,6 +226,7 @@ const PosHomePage = () => {
               customerName={cart.customerName}
               deliveryPlatform={cart.deliveryPlatform}
               deliveryOrderNumber={cart.deliveryOrderNumber}
+              suggestedDeliveryOrderNumber={suggestedDeliveryOrderNumber}
               onOrderTypeChange={cart.setOrderType}
               onTableNumberChange={cart.setTableNumber}
               onCustomerNameChange={cart.setCustomerName}

@@ -475,7 +475,18 @@ export const localAdapter: DataAdapter = {
   // ═══ Order ═══
   async getOrdersByStoreId(_storeId: string) {
     await delay();
-    return get<IOrderItem[]>(KEYS.orders, getSeedOrders());
+    const orders = get<IOrderItem[]>(KEYS.orders, getSeedOrders());
+    const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta());
+    const metaByOrderId = new Map(metas.map((meta) => [meta.id, meta]));
+
+    return orders.map((order) => {
+      const meta = metaByOrderId.get(order.id);
+      return {
+        ...order,
+        deliveryPlatform: meta?.deliveryPlatform,
+        deliveryOrderNumber: meta?.deliveryOrderNumber,
+      };
+    });
   },
 
   async getOrdersByStationId(stationId: string) {

@@ -385,6 +385,7 @@ export const enMessages = {
   "pos.cart.deliveryPlatform": "Delivery Platform",
   "pos.cart.customerName": "Customer name",
   "pos.cart.deliveryOrderNumber": "App order number",
+  "pos.cart.deliveryOrderNumberSuggest": "Suggest: {number}",
   "pos.cart.deliveryOrderNumberPlaceholder": "e.g. GF-1234 / LM-5678",
   "pos.cart.deliveryOrderNumberHelp":
     "Use this number to match the kitchen ticket with the delivery app order.",

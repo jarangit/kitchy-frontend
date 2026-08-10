@@ -85,6 +85,7 @@ interface Props {
   customerName: string;
   deliveryPlatform: string;
   deliveryOrderNumber: string;
+  suggestedDeliveryOrderNumber: string | null;
   onOrderTypeChange: (type: OrderType) => void;
   onTableNumberChange: (tableNumber: string | null) => void;
   onCustomerNameChange: (name: string) => void;
@@ -111,6 +112,7 @@ const CartArea = ({
   customerName,
   deliveryPlatform,
   deliveryOrderNumber,
+  suggestedDeliveryOrderNumber,
   onOrderTypeChange,
   onTableNumberChange,
   onCustomerNameChange,
@@ -647,6 +649,7 @@ const CartArea = ({
         deliveryPlatforms={deliveryPlatforms}
         deliveryPlatform={deliveryPlatform}
         deliveryOrderNumber={deliveryOrderNumber}
+        suggestedDeliveryOrderNumber={suggestedDeliveryOrderNumber}
         customerName={customerName}
         isDeliveryKeypadOpen={isDeliveryKeypadOpen}
         isDeviceKeyboardEnabled={isDeviceKeyboardEnabled}

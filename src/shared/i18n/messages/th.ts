@@ -368,6 +368,7 @@ export const thMessages = {
   "pos.cart.deliveryPlatform": "แพลตฟอร์มเดลิเวอรี",
   "pos.cart.customerName": "ชื่อลูกค้า",
   "pos.cart.deliveryOrderNumber": "เลขออเดอร์จากแอป",
+  "pos.cart.deliveryOrderNumberSuggest": "แนะนำ: {number}",
   "pos.cart.deliveryOrderNumberPlaceholder": "เช่น GF-1234 / LM-5678",
   "pos.cart.deliveryOrderNumberHelp":
     "ใช้เลขนี้ให้ครัวเทียบกับออเดอร์ในแอปเดลิเวอรี",

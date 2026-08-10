@@ -9,6 +9,8 @@ export interface IOrderItem {
   isArchived: boolean;
   archivedAt: null;
   isWaitingInStore: boolean;
+  deliveryPlatform?: string;
+  deliveryOrderNumber?: string;
   createdAt: Date | string;
   updatedAt: Date | string;
 }
