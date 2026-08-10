@@ -102,9 +102,9 @@ const KdsStationTabs = ({
 
 const KdsBoardLoadingState = () => (
   <div className="flex gap-4 overflow-x-auto pb-2">
-    <SkeletonCard className="h-[480px] w-[300px] shrink-0" />
-    <SkeletonCard className="h-[480px] w-[300px] shrink-0" />
-    <SkeletonCard className="h-[480px] w-[300px] shrink-0" />
+    <SkeletonCard className="h-[480px] w-[360px] shrink-0" />
+    <SkeletonCard className="h-[480px] w-[360px] shrink-0" />
+    <SkeletonCard className="h-[480px] w-[360px] shrink-0" />
   </div>
 );
 

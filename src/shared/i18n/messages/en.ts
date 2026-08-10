@@ -584,7 +584,6 @@ export const enMessages = {
   "kds.empty.description": "Items will appear automatically",
   "kds.card.note": "Note: {note}",
   "kds.card.moreItems": "{count} more items",
-  "kds.card.deliveryOrderNumber": "App #{orderNumber}",
   "kds.card.waitingTime": "Waiting",
   "kds.card.minutesUnit": "min",
   "kds.item.markDone": "Done",

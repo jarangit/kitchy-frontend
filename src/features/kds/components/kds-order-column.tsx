@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   LuBike,
   LuCheck,
@@ -12,6 +19,7 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 import type { KdsOrderGroup } from "@/features/kds/types/kds.model";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
+import { getDeliveryPlatformBrand } from "@/shared/utils/delivery-platform-brands";
 import { cn } from "@/shared/utils/cn";
 import type { OrderType } from "@/features/pos/types/pos.model";
 
@@ -64,6 +72,16 @@ const KdsOrderColumn = ({
   const elapsed = useElapsedMinutes(group.createdAt);
   const timeLabel = formatElapsedMinutes(elapsed);
 
+  const brand =
+    group.orderType === "DELIVERY"
+      ? getDeliveryPlatformBrand(group.deliveryPlatform ?? "")
+      : null;
+
+  const displayOrderNumber =
+    group.orderType === "DELIVERY" && group.deliveryOrderNumber
+      ? `#${group.deliveryOrderNumber}`
+      : `#${group.orderNumber}`;
+
   const orderMeta = useMemo(() => {
     if (!group.orderType) return null;
     const strategy = getOrderTypeStrategy(group.orderType);
@@ -75,18 +93,28 @@ const KdsOrderColumn = ({
       deliveryPlatform: group.deliveryPlatform,
       deliveryOrderNumber: group.deliveryOrderNumber,
     });
-    const secondaryContext =
-      group.orderType === "DELIVERY" && group.deliveryOrderNumber
-        ? t("kds.card.deliveryOrderNumber", {
-            orderNumber: group.deliveryOrderNumber,
-          })
-        : null;
-    return { typeLabel, primaryContext, secondaryContext };
+    return { typeLabel, primaryContext };
   }, [group, t]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const [atBottom, setAtBottom] = useState(true);
   const [hiddenCount, setHiddenCount] = useState(0);
+  const [isLargeOrder, setIsLargeOrder] = useState(false);
+
+  const measureOverflow = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el || isLargeOrder) return;
+    if (el.scrollHeight > el.clientHeight + 1) setIsLargeOrder(true);
+  }, [isLargeOrder]);
+
+  useLayoutEffect(() => {
+    measureOverflow();
+  }, [measureOverflow, group.items]);
+
+  useEffect(() => {
+    window.addEventListener("resize", measureOverflow);
+    return () => window.removeEventListener("resize", measureOverflow);
+  }, [measureOverflow]);
 
   const handleScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -95,7 +123,7 @@ const KdsOrderColumn = ({
     setAtBottom(el.scrollHeight - el.scrollTop - el.clientHeight < 2);
 
     let count = 0;
-    const items = el.querySelectorAll<HTMLLIElement>(":scope > ul > li");
+    const items = el.querySelectorAll<HTMLLIElement>(":scope li");
     const containerBottom = el.getBoundingClientRect().bottom;
     items.forEach((item) => {
       if (item.getBoundingClientRect().bottom > containerBottom + 1) {
@@ -107,26 +135,40 @@ const KdsOrderColumn = ({
 
   useEffect(() => {
     handleScroll();
-  }, [handleScroll, group.items.length]);
+  }, [handleScroll, group.items.length, isLargeOrder]);
 
   if (isBumped || isRecentlyCompleted) {
     return (
-      <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-bumped bg-bumped text-text-inverse shadow-sm">
+      <article
+        className={cn(
+          "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-bumped bg-bumped text-text-inverse shadow-sm",
+          isLargeOrder ? "w-[720px]" : "w-[360px]",
+        )}
+      >
         <div className="flex flex-col gap-2 px-4 pb-4 pt-4">
           <p className="font-mono text-title font-bold italic tracking-tight text-text-inverse/95">
             *** {t("kds.bumped.label")} ***
           </p>
           <p className="font-mono text-subtitle font-semibold tabular-nums text-text-inverse/80">
-            #{group.orderNumber}
+            {displayOrderNumber}
           </p>
           <p className="font-mono text-heading font-bold tabular-nums text-text-inverse">
             {timeLabel}
           </p>
         </div>
         <div className="flex-1 bg-surface px-4 py-3 opacity-50">
-          <ul className="flex flex-col gap-2">
+          <ul
+            className={cn(
+              "flex flex-col gap-2",
+              isLargeOrder &&
+                "columns-2 gap-x-2.5 gap-y-2.5 [column-fill:auto]",
+            )}
+          >
             {group.items.map((item) => (
-              <li key={item.orderStationItemId} className="min-w-0">
+              <li
+                key={item.orderStationItemId}
+                className="min-w-0 break-inside-avoid"
+              >
                 <div className="flex items-baseline gap-2">
                   <span className="font-mono text-body font-bold text-text-primary tabular-nums">
                     [{item.quantity}]
@@ -148,34 +190,45 @@ const KdsOrderColumn = ({
     : LuUtensilsCrossed;
 
   return (
-    <article className="flex max-h-full w-[300px] shrink-0 flex-col overflow-hidden rounded-card border border-border-hover bg-surface shadow-md transition-all duration-normal">
+    <article
+      className={cn(
+        "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-border-hover bg-surface shadow-md transition-all duration-normal",
+        isLargeOrder ? "w-[720px]" : "w-[360px]",
+      )}
+    >
       {/* ── Header with order info ── */}
       <div className="flex flex-col gap-1.5 bg-primary px-4 pb-4 pt-4 text-on-primary">
         <div className="flex items-start justify-between gap-2">
           <p className="font-mono text-title font-bold leading-tight tracking-tight">
-            #{group.orderNumber}
+            {displayOrderNumber}
           </p>
           {orderMeta && group.orderType && (
             <Badge
               size="sm"
               className={cn(
                 "gap-1.5 border font-semibold",
-                ORDER_TYPE_BADGE_STYLES[group.orderType],
+                !brand && ORDER_TYPE_BADGE_STYLES[group.orderType],
               )}
+              style={
+                brand
+                  ? {
+                      backgroundColor: brand.brandColor,
+                      color: brand.onColor,
+                      borderColor: brand.brandColor,
+                    }
+                  : undefined
+              }
             >
               <OrderTypeIcon size={14} className="shrink-0" />
-              {orderMeta.typeLabel}
+              {group.orderType === "DELIVERY" && group.deliveryPlatform?.trim()
+                ? group.deliveryPlatform.trim()
+                : orderMeta.typeLabel}
             </Badge>
           )}
         </div>
         {orderMeta?.primaryContext && (
           <p className="text-body-sm font-semibold text-on-primary/88">
             {orderMeta.primaryContext}
-          </p>
-        )}
-        {orderMeta?.secondaryContext && (
-          <p className="text-caption font-medium tracking-wide text-on-primary/72">
-            {orderMeta.secondaryContext}
           </p>
         )}
         <div className="mt-1 flex items-end gap-2">
@@ -203,9 +256,17 @@ const KdsOrderColumn = ({
             "[mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]",
         )}
       >
-        <ul className="flex flex-col gap-3">
+        <ul
+          className={cn(
+            "flex flex-col gap-3",
+            isLargeOrder && "columns-2 gap-x-2.5 gap-y-2.5 [column-fill:auto]",
+          )}
+        >
           {group.items.map((item) => (
-            <li key={item.orderStationItemId} className="min-w-0">
+            <li
+              key={item.orderStationItemId}
+              className="min-w-0 break-inside-avoid"
+            >
               <button
                 type="button"
                 onClick={() => onItemReady(item)}
@@ -261,7 +322,7 @@ const KdsOrderColumn = ({
                   </span>
                 </div>
                 {item.note && (
-                  <p className="mt-0.5 pl-6 text-caption italic leading-snug text-text-secondary">
+                  <p className="mt-0.5 pl-3 text-caption italic leading-snug text-text-secondary">
                     {item.note}
                   </p>
                 )}

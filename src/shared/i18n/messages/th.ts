@@ -561,7 +561,6 @@ export const thMessages = {
   "kds.empty.description": "รายการจะแสดงขึ้นโดยอัตโนมัติ",
   "kds.card.note": "หมายเหตุ: {note}",
   "kds.card.moreItems": "อีก {count} รายการ",
-  "kds.card.deliveryOrderNumber": "แอป #{orderNumber}",
   "kds.card.waitingTime": "รอมาแล้ว",
   "kds.card.minutesUnit": "นาที",
   "kds.item.markDone": "เสร็จแล้ว",
