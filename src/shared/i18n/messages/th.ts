@@ -29,6 +29,8 @@ export const thMessages = {
   "settings.language.description": "เลือกภาษาที่ใช้แสดงผลในระบบ",
   "settings.language.th": "ไทย",
   "settings.language.en": "English",
+  "settings.sound.title": "เสียง",
+  "settings.sound.hint": "เล่นเสียงเมื่อกดปุ่มหรือแตะบนหน้าจอ",
   "settings.menu.products.name": "จัดการสินค้า",
   "settings.menu.products.description": "เพิ่ม แก้ไข และจัดการสินค้า",
   "settings.menu.stations.name": "จัดการสเตชัน",

@@ -8,6 +8,7 @@ import {
   LuMoon,
   LuArrowLeftRight,
   LuTriangleAlert,
+  LuVolume2,
 } from "react-icons/lu";
 import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { Toggle } from "@/shared/components/ui/toggle";
@@ -24,6 +25,8 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import { useTheme } from "@/shared/hooks/useTheme";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
+import { useAppDispatch, useAppSelector } from "@/shared/hooks/hooks";
+import { setSound } from "@/shared/store/slices/notice-slice";
 import { SettingsSectionHeader } from "../settings-section-header";
 
 export function SectionSystem() {
@@ -36,6 +39,8 @@ export function SectionSystem() {
   const { deleteStore } = useStoreService({ userId });
 
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const isSoundOn = useAppSelector((state) => state.sound.isSoundOn);
 
   const handleDelete = () => {
     if (id !== undefined) {
@@ -51,6 +56,21 @@ export function SectionSystem() {
         title={t("settings.cp.section.system")}
         description={t("settings.cp.section.system.description")}
       />
+      <SettingGroup title={t("settings.sound.title")}>
+        <SettingRow
+          variant="control"
+          icon={<LuVolume2 size={18} />}
+          label={t("settings.sound.title")}
+          hint={t("settings.sound.hint")}
+          control={
+            <Toggle
+              checked={isSoundOn}
+              onChange={(checked) => dispatch(setSound(checked))}
+            />
+          }
+        />
+      </SettingGroup>
+
       <SettingGroup title={t("settings.cp.section.display")}>
         <SettingRow
           variant="control"

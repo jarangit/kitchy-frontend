@@ -13,6 +13,7 @@ import Layout from "@/shared/components/layout/layout";
 import { ReadyToServeNotifier } from "@/features/kds/components/ready-to-serve-notifier";
 import { ToastProvider } from "@/shared/components/ui/toast/toast-provider";
 import { Spinner } from "@/shared/components/ui/spinner";
+import { TabSoundFeedback } from "@/shared/audio/tab-sound-feedback";
 
 const LoginPage = lazy(() => import("@/features/auth/pages/login"));
 const RegisterPage = lazy(() => import("@/features/auth/pages/register"));
@@ -71,6 +72,7 @@ function App() {
   return (
     <AuthProvider>
       <ToastProvider />
+      <TabSoundFeedback />
       <ReadyToServeNotifier />
       <Suspense fallback={<RouteFallback />}>
         <Routes>

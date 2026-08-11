@@ -32,6 +32,8 @@ export const enMessages = {
     "Choose the language used throughout the app.",
   "settings.language.th": "Thai",
   "settings.language.en": "English",
+  "settings.sound.title": "Sound",
+  "settings.sound.hint": "Play a sound when you tap buttons",
   "settings.menu.products.name": "Product Management",
   "settings.menu.products.description": "Add, edit, and manage products",
   "settings.menu.stations.name": "Station Management",

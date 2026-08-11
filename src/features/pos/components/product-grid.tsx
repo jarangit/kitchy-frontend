@@ -57,11 +57,13 @@ const ProductGrid = ({
                 onClick={() => onAddToCart(product)}
                 data-onboarding-target={`product-card-${product.id}`}
                 className={cn(
-                  "relative flex min-h-[156px] w-full cursor-pointer flex-col items-center justify-center rounded-card bg-card-bg p-3 transition-all duration-fast",
+                  "relative flex min-h-[156px] w-full cursor-pointer flex-col items-center justify-center rounded-card p-3 transition-all duration-fast",
                   "border border-card-border",
                   "hover:border-border-hover hover:-translate-y-[1px]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-                  isSelected && "accent-inset-ring border-accent",
+                  isSelected
+                    ? "accent-inset-ring border-accent bg-accent-bg"
+                    : "bg-card-bg",
                 )}
                 aria-label={`${product.name} ${formatPrice(product.price)}`}
               >
@@ -70,12 +72,7 @@ const ProductGrid = ({
                     {quantity}
                   </span>
                 )}
-                <div
-                  className={cn(
-                    "mb-3 flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border border-card-border",
-                    isSelected ? "bg-accent-bg" : "bg-surface",
-                  )}
-                >
+                <div className="mb-3 flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border border-card-border bg-surface">
                   {product.imageUrl ? (
                     <img
                       src={product.imageUrl}
