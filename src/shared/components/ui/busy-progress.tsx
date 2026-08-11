@@ -28,7 +28,7 @@ export function BusyProgress({ count, limit, className }: Props) {
   return (
     <div className={cn("w-full", className)}>
       <div
-        className="relative h-7 overflow-hidden rounded-full bg-text-inverse/10"
+        className="relative h-7 overflow-hidden rounded-full bg-on-primary/20 ring-1 ring-inset ring-on-primary/15"
         role="progressbar"
         aria-label={label}
         aria-valuemin={0}

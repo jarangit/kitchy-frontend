@@ -1,5 +1,4 @@
 import React from "react";
-import Sidebar from "./sidebar";
 import { useStoreContextSync } from "@/shared/hooks/use-store-context-sync";
 import { cn } from "@/shared/utils/cn";
 import { AppBar } from "@/shared/components/layout/app-bar";
@@ -21,7 +20,6 @@ const Layout = ({ children, noPadding, hideSidebar, hideAppBar }: Props) => {
         hideSidebar ? "h-dvh overflow-hidden" : "min-h-screen",
       )}
     >
-      {!hideSidebar && <Sidebar />}
       <div
         className={cn(
           "flex min-w-0 flex-grow flex-col transition-all duration-300",
@@ -34,7 +32,6 @@ const Layout = ({ children, noPadding, hideSidebar, hideAppBar }: Props) => {
             "flex min-h-0 flex-1 flex-col",
             hideSidebar && "overflow-hidden",
             !noPadding && "page-shell",
-            !hideSidebar && "pb-36!",
           )}
         >
           {children}

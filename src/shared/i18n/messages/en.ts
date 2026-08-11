@@ -8,6 +8,7 @@ export const enMessages = {
   "common.clear": "Clear",
   "common.close": "Close",
   "appbar.storeFallback": "Loading store",
+  "appbar.backToDashboard": "Back to dashboard",
   "appbar.ready": "Ready {count}",
   "appbar.kdsCounts": "{pending} in progress, {ready} ready to serve",
   "appbar.notch.title": "Kitchen status now",
@@ -51,6 +52,7 @@ export const enMessages = {
   "settings.cp.section.store": "Your Store",
   "settings.cp.section.payments": "Payments",
   "settings.cp.section.sales": "Sales",
+  "settings.cp.section.report": "Report",
   "settings.cp.section.kitchen": "Kitchen",
   "settings.cp.section.devices": "Devices",
   "settings.cp.section.safety": "Safety",
@@ -64,6 +66,8 @@ export const enMessages = {
     "Enable or disable the channels customers use to pay",
   "settings.cp.section.sales.description":
     "Features available on the sales screen and order flow",
+  "settings.cp.section.report.description":
+    "Revenue, orders, and top-selling products",
   "settings.cp.section.kitchen.description":
     "Manage the kitchen, stations, categories, and products",
   "settings.cp.section.devices.description": "Devices connected to this store",
@@ -500,11 +504,13 @@ export const enMessages = {
   "dashboard.orders": "Orders",
   "dashboard.kitchen": "Kitchen",
   "dashboard.storeOverview": "Store overview",
-  "dashboard.todayRevenue": "Revenue today",
-  "dashboard.todayOrders": "Orders today",
-  "dashboard.pendingInKitchen": "Pending in kitchen",
   "dashboard.summaryHistory": "Summary & history",
   "dashboard.viewHistory": "View history",
+  "dashboard.settings": "Store settings",
+  "dashboard.openSettings": "Open settings",
+  "dashboard.ordersByTime": "Orders by time of day",
+  "dashboard.ordersByTimeDesc": "See which time of day is busiest today",
+  "dashboard.noOrdersToday": "No orders today yet",
 
   "common.delete": "Delete",
   "common.edit": "Edit",
@@ -577,6 +583,7 @@ export const enMessages = {
   "kds.stats.level.busy": "Busy",
   "kds.stats.level.veryBusy": "Very busy",
   "kds.stats.overLimit": "Over limit",
+  "kds.stats.longestWait": "Longest wait",
   "kds.empty.noStationTitle": "No station found",
   "kds.empty.noStationDescription":
     "Please create a station to use KDS in single-station mode.",

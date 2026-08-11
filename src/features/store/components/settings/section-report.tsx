@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
 import { format, subMonths } from "date-fns";
-import { useParams } from "react-router-dom";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
-import { PageHeader } from "@/shared/components/ui/page-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useReportData } from "@/features/report/hooks/useReportData";
 import type { DateRangePreset } from "@/features/report/types/report.dto";
@@ -13,6 +11,7 @@ import MetricRow from "@/features/report/components/metric-row";
 import ReportContextCard from "@/features/report/components/report-context-card";
 import MonthReportPanel from "@/features/report/components/month-report-panel";
 import DayDetailDialog from "@/features/report/components/day-detail-dialog";
+import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
 
 function buildMonthOptions(count: number): { value: string; label: string }[] {
   return Array.from({ length: count }, (_, index) => {
@@ -24,8 +23,7 @@ function buildMonthOptions(count: number): { value: string; label: string }[] {
   });
 }
 
-const ReportPage = () => {
-  const { id } = useParams<{ id: string }>();
+export function SectionReport() {
   const { t } = useTranslation();
   const [preset, setPreset] = useState<DateRangePreset>("today");
   const [selectedMonth, setSelectedMonth] = useState(
@@ -34,23 +32,6 @@ const ReportPage = () => {
   const [selectedDay, setSelectedDay] = useState<ICalendarDay | null>(null);
   const monthOptions = useMemo(() => buildMonthOptions(12), []);
   const { data, isLoading, error } = useReportData(preset, selectedMonth);
-
-  const getSubtitle = (): string => {
-    switch (preset) {
-      case "today":
-        return t("report.subtitle.today", {
-          date: format(new Date(), "MMM d"),
-        });
-      case "week":
-        return t("report.subtitle.week");
-      case "month": {
-        const monthLabel =
-          monthOptions.find((option) => option.value === selectedMonth)
-            ?.label ?? format(new Date(), "MMMM yyyy");
-        return t("report.subtitle.month", { month: monthLabel });
-      }
-    }
-  };
 
   const getRevenueLabel = (): string => {
     switch (preset) {
@@ -74,23 +55,11 @@ const ReportPage = () => {
     }
   };
 
-  if (error) {
-    return (
-      <div className="space-y-5">
-        <PageHeader backTo={`/store/${id}`} title={t("report.title")} />
-        <div className="rounded-card border border-card-border bg-danger-bg p-card-padding text-center">
-          <p className="text-danger">{t("report.error")}</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-4">
-      <PageHeader
-        backTo={`/store/${id}`}
-        title={t("report.title")}
-        subtitle={getSubtitle()}
+    <div className="space-y-6">
+      <SettingsSectionHeader
+        title={t("settings.cp.section.report")}
+        description={t("settings.cp.section.report.description")}
         action={
           <TimeSegmentControl
             value={preset}
@@ -100,10 +69,13 @@ const ReportPage = () => {
             }}
           />
         }
-        className="min-w-0"
       />
 
-      {isLoading || !data ? (
+      {error ? (
+        <div className="rounded-card border border-card-border bg-danger-bg p-card-padding text-center">
+          <p className="text-danger">{t("report.error")}</p>
+        </div>
+      ) : isLoading || !data ? (
         <div className="space-y-4">
           <SkeletonCard className="h-24" />
           <div className="grid grid-cols-2 gap-4">
@@ -154,6 +126,6 @@ const ReportPage = () => {
       )}
     </div>
   );
-};
+}
 
-export default ReportPage;
+export default SectionReport;

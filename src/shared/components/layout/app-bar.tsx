@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { LuClock3, LuWifi, LuWifiOff } from "react-icons/lu";
-import { BrandMark } from "@/shared/components/ui/brand-mark";
+import { Link, useLocation } from "react-router-dom";
+import { LuClock3, LuLayoutGrid, LuWifi, LuWifiOff } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
+import { useClock } from "@/shared/hooks/useClock";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
 import { cn } from "@/shared/utils/cn";
@@ -12,26 +11,18 @@ import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-c
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { Pill } from "@/shared/components/ui/pill";
 
-const useClock = () => {
-  const [now, setNow] = useState(() => new Date());
-
-  useEffect(() => {
-    const tick = () => setNow(new Date());
-    const interval = window.setInterval(tick, 1_000);
-    return () => window.clearInterval(interval);
-  }, []);
-
-  return now;
-};
-
 export function AppBar() {
   const { t, language } = useTranslation();
   const now = useClock();
   const isOnline = useNetworkStatus();
+  const location = useLocation();
   const storeId = useAppSelector((state) => state.currentStore.storeId);
   const storeName = useAppSelector((state) => state.currentStore.storeName);
   const { count: pendingOrdersCount } = usePendingOrdersCount();
   const { storeFinOneQuery } = useStoreService({});
+
+  const isPosPage =
+    storeId != null && location.pathname.startsWith(`/store/${storeId}/pos`);
 
   const locale = language === "th" ? "th-TH" : "en-US";
   const timeLabel = now.toLocaleTimeString(locale, {
@@ -62,22 +53,33 @@ export function AppBar() {
     <header className="sticky top-0 z-40 border-b border-border bg-bg relative">
       <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-2 text-caption text-text-secondary sm:px-4 sm:py-2.5 lg:px-6">
         {storeId ? (
-          <Link
-            to={`/store/${storeId}`}
-            aria-label={t("appbar.storeFallback")}
-            className="flex min-h-selection-height min-w-0 flex-1 items-center gap-3 rounded-full text-body text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
-          >
-            <BrandMark size="sm" />
-            <span
-              className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
-              title={storeName || t("appbar.storeFallback")}
+          isPosPage ? (
+            <Link
+              to={`/store/${storeId}`}
+              aria-label={t("appbar.backToDashboard")}
+              title={t("appbar.backToDashboard")}
+              className="group flex min-h-selection-height min-w-0 flex-1 items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
             >
-              {storeName || t("appbar.storeFallback")}
-            </span>
-          </Link>
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border bg-surface text-text-secondary transition-colors duration-fast group-hover:bg-surface-hover group-hover:text-text-primary">
+                <LuLayoutGrid size={18} />
+              </span>
+            </Link>
+          ) : (
+            <Link
+              to={`/store/${storeId}`}
+              aria-label={t("appbar.storeFallback")}
+              className="flex min-h-selection-height min-w-0 flex-1 items-center gap-3 rounded-full text-body text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+            >
+              <span
+                className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
+                title={storeName || t("appbar.storeFallback")}
+              >
+                {storeName || t("appbar.storeFallback")}
+              </span>
+            </Link>
+          )
         ) : (
           <div className="flex min-h-selection-height min-w-0 flex-1 items-center gap-3 text-body text-text-primary">
-            <BrandMark size="sm" />
             <span
               className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
               title={storeName || t("appbar.storeFallback")}

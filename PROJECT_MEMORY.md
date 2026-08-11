@@ -102,7 +102,6 @@ Store-scoped routes using the main shared layout:
 - `/store/:id/transactions`
 - `/store/:id/transactions/:txId`
 - `/store/:id/kds`
-- `/store/:id/report`
 - `/store/:storeId/station/:id`
 
 Store-scoped POS routes using a dedicated POS layout:
@@ -120,11 +119,12 @@ Store-scoped settings routes using the full-screen settings shell:
 - `/store/:id/settings/shop`
 - `/store/:id/settings/delivery`
 - `/store/:id/settings/quick-notes`
-- `/store/:id/settings/:section`
+- `/store/:id/settings/:section` (sections include `report`)
 
 Notes:
 
 - `SettingsPage` redirects missing or unknown sections to `kitchen`
+- The report section lives at `/store/:id/settings/report`
 - Specific legacy settings paths still coexist with the section router
 - `ProtectedRoute` blocks all authenticated surfaces until auth readiness is known
 
@@ -136,8 +136,8 @@ There are three main authenticated shell modes.
 
 Reference: `src/shared/components/layout/layout.tsx`
 
-- Sidebar + app bar + main content area
-- Used by store dashboard, transactions, KDS, report, station detail
+- App bar + main content area (dock menu removed)
+- Used by store dashboard, transactions, KDS, station detail
 - Calls `useStoreContextSync()` on mount
 
 ### 2. POS layout
@@ -271,9 +271,11 @@ Important note:
 
 Owns reporting UI, presets, monthly breakdown views, and report service.
 
+The report UI is exposed as a Settings Control Panel section (see `section-report.tsx`), reachable at `/store/:id/settings/report`.
+
 Key files:
 
-- `src/features/report/pages/report-page.tsx`
+- `src/features/store/components/settings/section-report.tsx`
 - `src/features/report/hooks/useReportData.ts`
 - `src/features/report/services/report.ts`
 

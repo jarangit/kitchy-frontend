@@ -6,6 +6,7 @@ export const thMessages = {
   "common.clear": "ล้าง",
   "common.close": "ปิด",
   "appbar.storeFallback": "กำลังโหลดร้าน",
+  "appbar.backToDashboard": "กลับไปหน้าหลัก",
   "appbar.ready": "พร้อมเสิร์ฟ {count}",
   "appbar.kdsCounts": "กำลังทำ {pending} รายการ, พร้อมเสิร์ฟ {ready} รายการ",
   "appbar.notch.title": "สถานะครัวตอนนี้",
@@ -46,6 +47,7 @@ export const thMessages = {
   "settings.cp.section.store": "ร้านของคุณ",
   "settings.cp.section.payments": "รับเงิน",
   "settings.cp.section.sales": "การขาย",
+  "settings.cp.section.report": "รายงาน",
   "settings.cp.section.kitchen": "ครัว",
   "settings.cp.section.devices": "อุปกรณ์",
   "settings.cp.section.safety": "กันพลาด",
@@ -58,6 +60,7 @@ export const thMessages = {
     "เปิด/ปิดช่องทางที่ลูกค้าใช้จ่ายเงินที่ร้าน",
   "settings.cp.section.sales.description":
     "ฟีเจอร์ที่จะเปิดใช้ในหน้าขายและออเดอร์",
+  "settings.cp.section.report.description": "รายได้ ออเดอร์ และสินค้าขายดี",
   "settings.cp.section.kitchen.description":
     "จัดการครัว สเตชัน หมวดหมู่ และสินค้า",
   "settings.cp.section.devices.description": "อุปกรณ์ที่เชื่อมต่อกับร้าน",
@@ -477,11 +480,13 @@ export const thMessages = {
   "dashboard.orders": "ออเดอร์",
   "dashboard.kitchen": "ครัว",
   "dashboard.storeOverview": "ภาพรวมร้าน",
-  "dashboard.todayRevenue": "รายได้วันนี้",
-  "dashboard.todayOrders": "ออเดอร์วันนี้",
-  "dashboard.pendingInKitchen": "ค้างในครัว",
   "dashboard.summaryHistory": "สรุปและประวัติ",
   "dashboard.viewHistory": "ดูประวัติ",
+  "dashboard.settings": "ตั้งค่าร้าน",
+  "dashboard.openSettings": "เปิดตั้งค่า",
+  "dashboard.ordersByTime": "ออเดอร์ตามช่วงเวลา",
+  "dashboard.ordersByTimeDesc": "ดูว่าช่วงเวลาไหนมีออเดอร์เยอะที่สุดในวันนี้",
+  "dashboard.noOrdersToday": "ยังไม่มีออเดอร์วันนี้",
 
   "common.delete": "ลบ",
   "common.edit": "แก้ไข",
@@ -554,6 +559,7 @@ export const thMessages = {
   "kds.stats.level.busy": "ยุ่ง",
   "kds.stats.level.veryBusy": "ยุ่งมาก",
   "kds.stats.overLimit": "เกินลิมิต",
+  "kds.stats.longestWait": "รอนานสุด",
   "kds.empty.noStationTitle": "ยังไม่มีสเตชัน",
   "kds.empty.noStationDescription":
     "กรุณาสร้างสเตชันเพื่อใช้ KDS ในโหมดสเตชันเดียว",

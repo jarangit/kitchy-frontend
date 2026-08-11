@@ -49,4 +49,4 @@ Storybook runs on `http://localhost:6006`. Stories live next to their components
 
 The root route `/` redirects to `/login`.
 
-All product routes live under app-specific paths such as `/dashboard`, `/store/:id`, `/store/:id/pos`, `/store/:id/kds`, `/store/:id/report`, and `/store/:id/settings`.
+All product routes live under app-specific paths such as `/dashboard`, `/store/:id`, `/store/:id/pos`, `/store/:id/kds`, and `/store/:id/settings` (including `/store/:id/settings/report` for reports).

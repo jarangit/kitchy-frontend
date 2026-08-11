@@ -1,4 +1,5 @@
 import {
+  LuChartBar,
   LuChefHat,
   LuCreditCard,
   LuMonitor,
@@ -10,13 +11,21 @@ import {
 import type { MessageKey } from "@/shared/i18n/messages";
 
 export type SectionId =
-  "store" | "payments" | "sales" | "kitchen" | "devices" | "safety" | "system";
+  | "store"
+  | "payments"
+  | "sales"
+  | "kitchen"
+  | "report"
+  | "devices"
+  | "safety"
+  | "system";
 
 export const SETTINGS_SECTIONS = [
   // Ordered by frequency of use (most-used first) so the default landing
   // lands on what store owners touch the most: the menu (kitchen).
   { id: "kitchen", label: "settings.cp.section.kitchen", icon: LuChefHat },
   { id: "sales", label: "settings.cp.section.sales", icon: LuShoppingCart },
+  { id: "report", label: "settings.cp.section.report", icon: LuChartBar },
   { id: "payments", label: "settings.cp.section.payments", icon: LuCreditCard },
   { id: "store", label: "settings.cp.section.store", icon: LuStore },
   { id: "devices", label: "settings.cp.section.devices", icon: LuMonitor },
