@@ -7,6 +7,7 @@ import { useNetworkStatus } from "@/shared/hooks/useNetworkStatus";
 import { useStoreContextSync } from "@/shared/hooks/use-store-context-sync";
 import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { StoreSideNav } from "@/shared/components/layout/store-side-nav";
 
 interface Props {
   children: ReactNode;
@@ -21,10 +22,8 @@ interface Props {
 /**
  * Full-screen chrome for the Settings experience.
  *
- * Intent: when the user enters Settings, they leave the main app frame and
- * step into a focused "mode" — akin to macOS System Settings or iOS Settings.
- * The global app sidebar is hidden; only a slim top bar with a close action
- * and the section title remains.
+ * The store side nav rail stays visible; only a slim top bar with a close
+ * action and the section title remains on top of the content column.
  *
  * Side-effects (store id / station sync / auto-reload) are preserved via
  * `useStoreContextSync` so behaviour matches the rest of the app.
@@ -46,41 +45,46 @@ export function SettingsFrame({ children, wide = false }: Props) {
 
   return (
     <div className="min-h-screen bg-bg text-text-primary">
-      {/* Top bar */}
-      <header className="sticky top-0 z-40 border-b border-border bg-bg">
-        <div className="flex h-14 items-center gap-3 px-4 sm:px-6">
-          <IconButton
-            onClick={handleClose}
-            aria-label={t("common.close")}
-            title={t("common.close")}
-            size="lg"
-          >
-            <LuX size={20} />
-          </IconButton>
-          <h1 className="text-title font-semibold text-text-primary">
-            {t("settings.cp.title")}
-          </h1>
-        </div>
-        {!isOnline && (
-          <InlineAlert
-            tone="danger"
-            className="rounded-none border-x-0 border-b-0 px-4 py-2 text-center text-label font-medium"
-          >
-            You are offline
-          </InlineAlert>
-        )}
-      </header>
+      <div className="flex">
+        <StoreSideNav />
+        <div className="flex min-w-0 flex-1 flex-col">
+          {/* Top bar */}
+          <header className="sticky top-0 z-40 border-b border-border bg-bg">
+            <div className="flex h-14 items-center gap-3 px-4 sm:px-6">
+              <IconButton
+                onClick={handleClose}
+                aria-label={t("common.close")}
+                title={t("common.close")}
+                size="lg"
+              >
+                <LuX size={20} />
+              </IconButton>
+              <h1 className="text-title font-semibold text-text-primary">
+                {t("settings.cp.title")}
+              </h1>
+            </div>
+            {!isOnline && (
+              <InlineAlert
+                tone="danger"
+                className="rounded-none border-x-0 border-b-0 px-4 py-2 text-center text-label font-medium"
+              >
+                You are offline
+              </InlineAlert>
+            )}
+          </header>
 
-      {/* Content container */}
-      <main
-        className={
-          wide
-            ? "px-4 py-5 sm:px-5 lg:px-8 lg:py-8"
-            : "mx-auto w-full max-w-[1280px] px-4 py-5 sm:px-5 lg:px-8 lg:py-8"
-        }
-      >
-        {children}
-      </main>
+          {/* Content container */}
+          <main
+            className={
+              wide
+                ? "px-4 py-5 sm:px-5 lg:px-8 lg:py-8"
+                : "mx-auto w-full max-w-[1280px] px-4 py-5 sm:px-5 lg:px-8 lg:py-8"
+            }
+          >
+            {children}
+          </main>
+        </div>
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ interface Props {
 
 export function KdsLayout({ children }: Props) {
   return (
-    <Layout noPadding hideSidebar hideAppBar>
+    <Layout noPadding fullViewport hideAppBar>
       {children}
     </Layout>
   );

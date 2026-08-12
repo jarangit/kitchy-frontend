@@ -10,7 +10,7 @@ import Layout from "@/shared/components/layout/layout";
 export function PosLayout() {
   return (
     <CartProvider>
-      <Layout noPadding hideSidebar>
+      <Layout noPadding fullViewport>
         <Outlet />
       </Layout>
     </CartProvider>

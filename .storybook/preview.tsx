@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "@/shared/i18n/language-context";
 import { store } from "@/shared/store/store";
 import "../src/app/index.css";
@@ -16,6 +17,14 @@ function ThemeScope({ theme, children }: { theme: Theme; children: ReactNode }) 
 
   return <>{children}</>;
 }
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+    },
+  },
+});
 
 const preview: Preview = {
   globalTypes: {
@@ -41,11 +50,13 @@ const preview: Preview = {
       return (
         <ThemeScope theme={theme}>
           <Provider store={store}>
-            <LanguageProvider>
-              <MemoryRouter>
-                <Story />
-              </MemoryRouter>
-            </LanguageProvider>
+            <QueryClientProvider client={queryClient}>
+              <LanguageProvider>
+                <MemoryRouter>
+                  <Story />
+                </MemoryRouter>
+              </LanguageProvider>
+            </QueryClientProvider>
           </Provider>
         </ThemeScope>
       );

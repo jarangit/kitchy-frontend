@@ -6,7 +6,6 @@ export const thMessages = {
   "common.clear": "ล้าง",
   "common.close": "ปิด",
   "appbar.storeFallback": "กำลังโหลดร้าน",
-  "appbar.backToDashboard": "กลับไปหน้าหลัก",
   "appbar.ready": "พร้อมเสิร์ฟ {count}",
   "appbar.kdsCounts": "กำลังทำ {pending} รายการ, พร้อมเสิร์ฟ {ready} รายการ",
   "appbar.notch.title": "สถานะครัวตอนนี้",
@@ -476,6 +475,13 @@ export const thMessages = {
   "pos.success.orderLabel": "ออเดอร์",
   "pos.success.newOrder": "เริ่มออเดอร์ใหม่",
   "pos.success.printReceipt": "พิมพ์ใบเสร็จ",
+
+  "nav.home": "หน้าแรก",
+  "nav.pos": "POS",
+  "nav.transactions": "ธุรกรรม",
+  "nav.kds": "KDS",
+  "nav.settings": "ตั้งค่า",
+  "nav.badge": "การแจ้งเตือน",
 
   "dashboard.openPos": "เปิด POS",
   "dashboard.openKds": "เปิด KDS",

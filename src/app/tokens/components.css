@@ -164,8 +164,8 @@
   --color-on-accent: var(--gray-900);
 
   /* ── Sidebar ── */
-  --color-sidebar-bg: #232235;
-  --spacing-sidebar-width: 84px;
+  --color-sidebar-bg: var(--color-surface);
+  --spacing-sidebar-width: 64px;
 
   /* ── Sidebar glass dock ── */
   /* Floating glass pill: translucent white layers over backdrop-blur.

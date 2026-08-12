@@ -8,7 +8,6 @@ export const enMessages = {
   "common.clear": "Clear",
   "common.close": "Close",
   "appbar.storeFallback": "Loading store",
-  "appbar.backToDashboard": "Back to dashboard",
   "appbar.ready": "Ready {count}",
   "appbar.kdsCounts": "{pending} in progress, {ready} ready to serve",
   "appbar.notch.title": "Kitchen status now",
@@ -500,6 +499,13 @@ export const enMessages = {
   "pos.success.orderLabel": "Order",
   "pos.success.newOrder": "New order",
   "pos.success.printReceipt": "Print receipt",
+
+  "nav.home": "Home",
+  "nav.pos": "POS",
+  "nav.transactions": "Transactions",
+  "nav.kds": "KDS",
+  "nav.settings": "Settings",
+  "nav.badge": "Notifications",
 
   "dashboard.openPos": "Open POS",
   "dashboard.openKds": "Open KDS",
