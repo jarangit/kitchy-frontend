@@ -5,7 +5,6 @@ import { SettingsLayout } from "@/features/store/components/settings-layout";
 import { SectionStore } from "@/features/store/components/settings/section-store";
 import { SectionPayments } from "@/features/store/components/settings/section-payments";
 import { SectionSales } from "@/features/store/components/settings/section-sales";
-import { SectionReport } from "@/features/store/components/settings/section-report";
 import { SectionKitchen } from "@/features/store/components/settings/section-kitchen";
 import { SectionDevices } from "@/features/store/components/settings/section-devices";
 import { SectionSafety } from "@/features/store/components/settings/section-safety";
@@ -15,7 +14,6 @@ const SECTIONS: Record<string, ComponentType> = {
   store: SectionStore,
   payments: SectionPayments,
   sales: SectionSales,
-  report: SectionReport,
   kitchen: SectionKitchen,
   devices: SectionDevices,
   safety: SectionSafety,
@@ -31,6 +29,10 @@ const SettingsPage = () => {
 
   if (!section) {
     return <Navigate to={`/store/${id}/settings/${DEFAULT_SECTION}`} replace />;
+  }
+
+  if (section === "report") {
+    return <Navigate to={`/store/${id}/report`} replace />;
   }
 
   const Section = SECTIONS[section];

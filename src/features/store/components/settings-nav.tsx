@@ -6,6 +6,14 @@ import {
   type SectionId,
 } from "@/features/store/components/settings-sections";
 
+const getSettingsSectionHref = (
+  storeId: string,
+  sectionId: SectionId,
+): string =>
+  sectionId === "report"
+    ? `/store/${storeId}/report`
+    : `/store/${storeId}/settings/${sectionId}`;
+
 interface Props {
   storeId: string;
   /** active section id for styling the horizontal chip rail */
@@ -25,7 +33,7 @@ export function SettingsNavSidebar({ storeId }: Props) {
         return (
           <NavLink
             key={s.id}
-            to={`/store/${storeId}/settings/${s.id}`}
+            to={getSettingsSectionHref(storeId, s.id)}
             end
             className={({ isActive }) =>
               cn(
@@ -57,7 +65,7 @@ export function SettingsNavChips({ storeId }: Props) {
         return (
           <NavLink
             key={s.id}
-            to={`/store/${storeId}/settings/${s.id}`}
+            to={getSettingsSectionHref(storeId, s.id)}
             end
             className={({ isActive }) =>
               cn(

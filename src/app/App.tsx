@@ -37,6 +37,7 @@ const TransactionListPage = lazy(
 const TransactionDetailPage = lazy(
   () => import("@/features/transaction/pages/transaction-detail"),
 );
+const ReportPage = lazy(() => import("@/features/report/pages/report"));
 const KdsBoardPage = lazy(() => import("@/features/kds/pages/kds-board"));
 const SettingsPage = lazy(() => import("@/features/store/pages/settings"));
 const SettingsProductsPage = lazy(
@@ -167,6 +168,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <TransactionDetailPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store/:id/report"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <ReportPage />
                 </Layout>
               </ProtectedRoute>
             }

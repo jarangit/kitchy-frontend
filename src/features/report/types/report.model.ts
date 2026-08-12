@@ -19,13 +19,26 @@ export interface IPaymentBreakdown {
   amount: number;
 }
 
+export interface IDeliveryProviderBreakdown {
+  provider: string;
+  amount: number;
+  orders: number;
+}
+
+export interface IHourlyOrderPoint {
+  hour: number;
+  orders: number;
+}
+
 /** Single calendar day data (month mode) */
 export interface ICalendarDay {
   date: string; // YYYY-MM-DD
   revenue: number;
   orders: number;
+  hourlyOrders: IHourlyOrderPoint[];
   topProducts: ITopProduct[];
   paymentBreakdown: IPaymentBreakdown[];
+  deliveryProviderBreakdown: IDeliveryProviderBreakdown[];
 }
 
 /** Complete report data returned from the service */

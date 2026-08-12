@@ -7,6 +7,7 @@ import {
   type SortingState,
 } from "@/shared/components/ui/data-table";
 import type { ICalendarDay } from "@/features/report/types/report.model";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   calendarDays: ICalendarDay[];
@@ -20,6 +21,7 @@ const formatCurrency = (value: number): string =>
   }).format(value)}`;
 
 const MonthReportTable = ({ calendarDays, onSelectDay }: Props) => {
+  const { t } = useTranslation();
   const [sorting, setSorting] = useState<SortingState>([
     { id: "date", desc: true },
   ]);
@@ -29,7 +31,7 @@ const MonthReportTable = ({ calendarDays, onSelectDay }: Props) => {
       id: "date",
       accessorFn: (d) => parseISO(d.date).getTime(),
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Date" />
+        <DataTableColumnHeader column={column} title={t("report.table.date")} />
       ),
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-label text-text-primary">
@@ -41,7 +43,10 @@ const MonthReportTable = ({ calendarDays, onSelectDay }: Props) => {
       id: "revenue",
       accessorFn: (d) => d.revenue,
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Revenue" />
+        <DataTableColumnHeader
+          column={column}
+          title={t("report.table.revenue")}
+        />
       ),
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-body-sm text-text-primary">
@@ -53,7 +58,10 @@ const MonthReportTable = ({ calendarDays, onSelectDay }: Props) => {
       id: "orders",
       accessorFn: (d) => d.orders,
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Orders" />
+        <DataTableColumnHeader
+          column={column}
+          title={t("report.table.orders")}
+        />
       ),
       cell: ({ row }) => (
         <span className="whitespace-nowrap text-body-sm text-text-primary">
@@ -65,7 +73,10 @@ const MonthReportTable = ({ calendarDays, onSelectDay }: Props) => {
       id: "averageOrderValue",
       accessorFn: (d) => (d.orders > 0 ? d.revenue / d.orders : 0),
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Avg / Order" />
+        <DataTableColumnHeader
+          column={column}
+          title={t("report.table.avgOrder")}
+        />
       ),
       meta: { hideBelow: "md" },
       cell: ({ row }) => {
@@ -86,7 +97,10 @@ const MonthReportTable = ({ calendarDays, onSelectDay }: Props) => {
           b.original.topProducts[0]?.name ?? "",
         ),
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Top Product" />
+        <DataTableColumnHeader
+          column={column}
+          title={t("report.table.topProduct")}
+        />
       ),
       meta: { hideBelow: "lg" },
       cell: ({ row }) => (
@@ -107,7 +121,7 @@ const MonthReportTable = ({ calendarDays, onSelectDay }: Props) => {
       getRowId={(d) => d.date}
       emptyState={
         <span className="text-body-sm text-text-secondary">
-          No report data for this month.
+          {t("report.monthly.noData")}
         </span>
       }
     />

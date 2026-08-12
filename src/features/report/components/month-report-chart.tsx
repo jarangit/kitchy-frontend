@@ -1,16 +1,15 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { format, parseISO } from "date-fns";
 import {
-  CartesianGrid,
-  Dot,
-  Line,
-  LineChart,
+  Bar,
+  BarChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 import type { ICalendarDay } from "@/features/report/types/report.model";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   calendarDays: ICalendarDay[];
@@ -32,12 +31,6 @@ const formatAxisValue = (value: number): string =>
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{ payload: ChartPoint }>;
-}
-
-interface DotProps {
-  cx?: number;
-  cy?: number;
-  payload?: ChartPoint;
 }
 
 interface ChartPoint {
@@ -63,22 +56,8 @@ const CustomTooltip = ({ active, payload }: TooltipProps) => {
   );
 };
 
-const ActiveDot = ({ cx, cy, payload }: DotProps) => {
-  if (cx === undefined || cy === undefined || !payload) return null;
-
-  return (
-    <Dot
-      cx={cx}
-      cy={cy}
-      r={5}
-      className="fill-accent stroke-bg"
-      strokeWidth={2}
-    />
-  );
-};
-
 const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
-  const [, setActiveIndex] = useState(Math.max(calendarDays.length - 1, 0));
+  const { t } = useTranslation();
 
   const chartData = useMemo<ChartPoint[]>(
     () =>
@@ -93,7 +72,7 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
   if (calendarDays.length === 0) {
     return (
       <div className="p-5 text-body-sm text-text-secondary">
-        No report data for this month.
+        {t("report.monthly.noData")}
       </div>
     );
   }
@@ -101,15 +80,14 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
   return (
     <div className="px-3 py-2 sm:px-4 sm:py-3">
       <div className="mb-1 text-label font-semibold text-text-primary">
-        Revenue Insights
+        {t("report.monthly.revenueInsights")}
       </div>
 
       <div className="h-[220px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
+          <BarChart
             data={chartData}
             margin={{ top: 8, right: 12, left: -12, bottom: 8 }}
-            onMouseLeave={() => setActiveIndex(chartData.length - 1)}
             onClick={(state: unknown) => {
               const s = state as {
                 activePayload?: Array<{ payload: ChartPoint }>;
@@ -118,13 +96,8 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
                 onSelectDay(s.activePayload[0].payload.day);
               }
             }}
-            onMouseMove={(state) => {
-              if (typeof state?.activeTooltipIndex === "number") {
-                setActiveIndex(state.activeTooltipIndex);
-              }
-            }}
+            barCategoryGap="32%"
           >
-            <CartesianGrid vertical={false} className="stroke-border" />
             <XAxis
               dataKey="dateLabel"
               tick={{ fontSize: 10, className: "fill-text-secondary" }}
@@ -141,21 +114,17 @@ const MonthReportChart = ({ calendarDays, onSelectDay }: Props) => {
             />
             <Tooltip
               cursor={{
-                className: "stroke-text-primary",
-                strokeDasharray: "3 4",
+                className: "fill-primary/10",
               }}
               content={<CustomTooltip />}
             />
-            <Line
-              type="monotone"
+            <Bar
               dataKey="revenue"
-              className="stroke-accent"
-              strokeWidth={2.5}
-              dot={false}
-              activeDot={<ActiveDot />}
+              className="fill-primary"
+              radius={[6, 6, 0, 0]}
               isAnimationActive={false}
             />
-          </LineChart>
+          </BarChart>
         </ResponsiveContainer>
       </div>
     </div>

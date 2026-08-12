@@ -20,6 +20,10 @@ export function SectionStore() {
     "",
   );
   const [hours, setHours] = useLocalSetting(`store.${id}.hours`, "");
+  const [dailyRevenueTarget, setDailyRevenueTarget] = useLocalSetting(
+    `store.${id}.dailyRevenueTarget`,
+    "",
+  );
 
   return (
     <div className="space-y-6">
@@ -52,6 +56,14 @@ export function SectionStore() {
           placeholder={t("settings.cp.store.hours.placeholder")}
           value={hours}
           onSave={setHours}
+        />
+        <SettingRow
+          variant="editable"
+          label={t("settings.cp.store.dailyRevenueTarget.label")}
+          placeholder={t("settings.cp.store.dailyRevenueTarget.placeholder")}
+          value={dailyRevenueTarget}
+          onSave={(next) => setDailyRevenueTarget(next.replace(/[^0-9]/g, ""))}
+          type="number"
         />
       </SettingGroup>
     </div>

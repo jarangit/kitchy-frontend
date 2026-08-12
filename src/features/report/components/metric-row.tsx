@@ -1,5 +1,6 @@
 import { LuShoppingCart, LuTrendingUp } from "react-icons/lu";
 import { Card } from "@/shared/components/ui/card";
+import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
   orders: number;
@@ -13,15 +14,16 @@ const formatCurrency = (value: number): string =>
   }).format(value);
 
 const MetricRow = ({ orders, averageOrderValue }: Props) => {
+  const { t } = useTranslation();
   const metrics = [
     {
-      label: "Orders",
+      label: t("report.metric.orders"),
       value: orders.toLocaleString(),
       icon: <LuShoppingCart size={18} />,
       iconShellClassName: "bg-info-bg text-info",
     },
     {
-      label: "Avg / Order",
+      label: t("report.metric.avgOrder"),
       value: `฿${formatCurrency(averageOrderValue)}`,
       icon: <LuTrendingUp size={18} />,
       iconShellClassName: "bg-warning-bg text-warning",

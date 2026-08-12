@@ -1,17 +1,19 @@
 import { useMemo, useState } from "react";
 import { format, subMonths } from "date-fns";
-import { SkeletonCard } from "@/shared/components/ui/skeleton";
-import { useTranslation } from "@/shared/i18n/use-translation";
-import { useReportData } from "@/features/report/hooks/useReportData";
-import type { DateRangePreset } from "@/features/report/types/report.dto";
-import type { ICalendarDay } from "@/features/report/types/report.model";
+import { useParams } from "react-router-dom";
 import TimeSegmentControl from "@/features/report/components/time-segment-control";
 import RevenueCard from "@/features/report/components/revenue-card";
 import MetricRow from "@/features/report/components/metric-row";
 import ReportContextCard from "@/features/report/components/report-context-card";
 import MonthReportPanel from "@/features/report/components/month-report-panel";
 import DayDetailDialog from "@/features/report/components/day-detail-dialog";
-import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
+import { useReportData } from "@/features/report/hooks/useReportData";
+import type { DateRangePreset } from "@/features/report/types/report.dto";
+import type { ICalendarDay } from "@/features/report/types/report.model";
+import { PageHeader } from "@/shared/components/ui/page-header";
+import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { useTranslation } from "@/shared/i18n/use-translation";
+import { useLocalSetting } from "@/shared/hooks/use-local-setting";
 
 function buildMonthOptions(count: number): { value: string; label: string }[] {
   return Array.from({ length: count }, (_, index) => {
@@ -23,15 +25,24 @@ function buildMonthOptions(count: number): { value: string; label: string }[] {
   });
 }
 
-export function SectionReport() {
+const ReportPage = () => {
   const { t } = useTranslation();
-  const [preset, setPreset] = useState<DateRangePreset>("today");
+  const { id } = useParams<{ id: string }>();
+  const [preset, setPreset] = useState<DateRangePreset>("month");
   const [selectedMonth, setSelectedMonth] = useState(
     format(new Date(), "yyyy-MM"),
   );
   const [selectedDay, setSelectedDay] = useState<ICalendarDay | null>(null);
+  const [dailyRevenueTargetRaw] = useLocalSetting(
+    `store.${id}.dailyRevenueTarget`,
+    "",
+  );
   const monthOptions = useMemo(() => buildMonthOptions(12), []);
   const { data, isLoading, error } = useReportData(preset, selectedMonth);
+  const dailyRevenueTarget =
+    dailyRevenueTargetRaw.trim().length > 0
+      ? Number(dailyRevenueTargetRaw)
+      : null;
 
   const getRevenueLabel = (): string => {
     switch (preset) {
@@ -55,11 +66,22 @@ export function SectionReport() {
     }
   };
 
+  const subtitle =
+    preset === "today"
+      ? t("report.subtitle.today", { date: format(new Date(), "d MMM yyyy") })
+      : preset === "week"
+        ? t("report.subtitle.week")
+        : t("report.subtitle.month", {
+            month:
+              monthOptions.find((option) => option.value === selectedMonth)
+                ?.label ?? selectedMonth,
+          });
+
   return (
     <div className="space-y-6">
-      <SettingsSectionHeader
-        title={t("settings.cp.section.report")}
-        description={t("settings.cp.section.report.description")}
+      <PageHeader
+        title={t("report.title")}
+        subtitle={subtitle}
         action={
           <TimeSegmentControl
             value={preset}
@@ -78,7 +100,7 @@ export function SectionReport() {
       ) : isLoading || !data ? (
         <div className="space-y-4">
           <SkeletonCard className="h-24" />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <SkeletonCard />
             <SkeletonCard />
           </div>
@@ -86,16 +108,6 @@ export function SectionReport() {
         </div>
       ) : (
         <>
-          <RevenueCard
-            value={String(data.summary.totalRevenue)}
-            subtitle={getRevenueLabel()}
-          />
-
-          <MetricRow
-            orders={data.summary.totalOrders}
-            averageOrderValue={data.summary.averageOrderValue}
-          />
-
           {preset === "month" && data.calendarDays ? (
             <>
               <MonthReportPanel
@@ -103,12 +115,20 @@ export function SectionReport() {
                 selectedMonth={selectedMonth}
                 monthOptions={monthOptions}
                 selectedDay={selectedDay}
-                dailyRevenueTarget={null}
+                dailyRevenueTarget={dailyRevenueTarget}
                 onChangeMonth={(month) => {
                   setSelectedMonth(month);
                   setSelectedDay(null);
                 }}
                 onSelectDay={(day) => setSelectedDay(day)}
+              />
+              <RevenueCard
+                value={String(data.summary.totalRevenue)}
+                subtitle={getRevenueLabel()}
+              />
+              <MetricRow
+                orders={data.summary.totalOrders}
+                averageOrderValue={data.summary.averageOrderValue}
               />
               <DayDetailDialog
                 day={selectedDay}
@@ -117,17 +137,29 @@ export function SectionReport() {
               />
             </>
           ) : (
-            <ReportContextCard
-              products={data.topProducts}
-              paymentBreakdown={data.paymentBreakdown}
-              deliveryRevenue={data.summary.deliveryRevenue}
-              title={getTopProductsTitle()}
-            />
+            <>
+              <RevenueCard
+                value={String(data.summary.totalRevenue)}
+                subtitle={getRevenueLabel()}
+              />
+
+              <MetricRow
+                orders={data.summary.totalOrders}
+                averageOrderValue={data.summary.averageOrderValue}
+              />
+
+              <ReportContextCard
+                products={data.topProducts}
+                paymentBreakdown={data.paymentBreakdown}
+                deliveryRevenue={data.summary.deliveryRevenue}
+                title={getTopProductsTitle()}
+              />
+            </>
           )}
         </>
       )}
     </div>
   );
-}
+};
 
-export default SectionReport;
+export default ReportPage;

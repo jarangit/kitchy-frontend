@@ -10,6 +10,8 @@ import type {
   ITopProduct,
   IReportSummary,
   ICalendarDay,
+  IDeliveryProviderBreakdown,
+  IHourlyOrderPoint,
   IPaymentBreakdown,
 } from "@/features/report/types/report.model";
 import type { DateRangePreset } from "@/features/report/types/report.dto";
@@ -36,6 +38,8 @@ const MOCK_PRODUCTS: Omit<ITopProduct, "quantitySold" | "revenue">[] = [
   { productId: "p7", name: "กะเพราหมูสับ" },
   { productId: "p8", name: "กาแฟเย็น" },
 ];
+
+const DELIVERY_PROVIDERS = ["GrabFood", "LINE MAN", "ShopeeFood"] as const;
 
 /* ── generators ── */
 
@@ -77,6 +81,85 @@ function aggregatePaymentBreakdown(
     method,
     amount,
   }));
+}
+
+function generateDeliveryProviderBreakdown(
+  revenue: number,
+  orders: number,
+  seed: number,
+): IDeliveryProviderBreakdown[] {
+  const rand = seededRandom(seed);
+  const deliveryRevenue = Math.round(revenue * (0.08 + rand() * 0.22));
+  const deliveryOrders = Math.max(0, Math.round(orders * (0.1 + rand() * 0.2)));
+
+  if (deliveryRevenue <= 0 || deliveryOrders <= 0) return [];
+
+  const activeProviders = DELIVERY_PROVIDERS.filter(() => rand() > 0.35);
+  const providers =
+    activeProviders.length > 0 ? activeProviders : [DELIVERY_PROVIDERS[0]];
+
+  let remainingRevenue = deliveryRevenue;
+  let remainingOrders = deliveryOrders;
+
+  return providers.map((provider, index) => {
+    if (index === providers.length - 1) {
+      return {
+        provider,
+        amount: remainingRevenue,
+        orders: remainingOrders,
+      };
+    }
+
+    const revenueShare = 0.2 + rand() * 0.45;
+    const orderShare = 0.2 + rand() * 0.45;
+    const amount = Math.max(1, Math.round(deliveryRevenue * revenueShare));
+    const providerOrders = Math.max(1, Math.round(deliveryOrders * orderShare));
+    const clampedAmount = Math.min(
+      amount,
+      remainingRevenue - (providers.length - index - 1),
+    );
+    const clampedOrders = Math.min(
+      providerOrders,
+      remainingOrders - (providers.length - index - 1),
+    );
+    remainingRevenue -= clampedAmount;
+    remainingOrders -= clampedOrders;
+
+    return { provider, amount: clampedAmount, orders: clampedOrders };
+  });
+}
+
+function generateHourlyOrders(
+  totalOrders: number,
+  seed: number,
+): IHourlyOrderPoint[] {
+  const rand = seededRandom(seed);
+  const hours = Array.from({ length: 8 }, (_, index) => ({
+    hour: 10 + index,
+    orders: 0,
+    weight: 0.7 + rand() * 1.8,
+  }));
+
+  const totalWeight = hours.reduce((sum, point) => sum + point.weight, 0);
+  let allocatedOrders = 0;
+
+  for (let index = 0; index < hours.length; index += 1) {
+    const point = hours[index];
+
+    if (index === hours.length - 1) {
+      point.orders = Math.max(0, totalOrders - allocatedOrders);
+      continue;
+    }
+
+    const orders = Math.max(
+      0,
+      Math.round((totalOrders * point.weight) / totalWeight),
+    );
+    point.orders = orders;
+    allocatedOrders += orders;
+  }
+
+  return hours.map(({ hour, orders }) => ({ hour, orders }));
 }
 
 function parseMonth(month?: string): Date {
@@ -126,8 +209,14 @@ function generateCalendarDays(month?: string): ICalendarDay[] {
       date: format(date, "yyyy-MM-dd"),
       revenue,
       orders,
+      hourlyOrders: generateHourlyOrders(orders, seed + 300),
       topProducts: generateTopProducts(seed + 500, 3),
       paymentBreakdown: generatePaymentBreakdown(revenue, seed + 900),
+      deliveryProviderBreakdown: generateDeliveryProviderBreakdown(
+        revenue,
+        orders,
+        seed + 1200,
+      ),
     });
   }
 

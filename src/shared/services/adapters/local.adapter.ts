@@ -32,6 +32,7 @@ import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 import type { ITransaction } from "@/features/transaction/types/transaction.model";
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
 import type { IReportFilter } from "@/features/report/types/report.dto";
+import { generateMockReportData } from "@/features/report/data/mock-report-data";
 import {
   DEMO_SEED_VERSION,
   DEMO_STORE_PRESET_STORAGE_KEY,
@@ -784,8 +785,13 @@ export const localAdapter: DataAdapter = {
   },
 
   // ═══ Report ═══
-  async getReportData(_filter: IReportFilter) {
+  async getReportData(filter: IReportFilter) {
     await delay();
+
+    if (filter.preset === "month") {
+      return generateMockReportData(filter.preset, filter.month);
+    }
+
     const txns = get<ITransaction[]>(KEYS.transactions, getSeedTransactions());
     const totalRevenue = txns.reduce((sum, t) => sum + t.amount, 0);
     const totalOrders = txns.length;

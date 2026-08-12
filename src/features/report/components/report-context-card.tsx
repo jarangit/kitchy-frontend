@@ -22,9 +22,10 @@ const ReportContextCard = ({
   products,
   paymentBreakdown,
   deliveryRevenue,
-  title = "Top Products",
+  title,
 }: Props) => {
   const { t } = useTranslation();
+  const resolvedTitle = title ?? t("report.topProducts.month");
   if (products.length === 0 && paymentBreakdown.length === 0) {
     return null;
   }
@@ -34,7 +35,9 @@ const ReportContextCard = ({
       <div className="grid gap-5 md:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)] md:items-start">
         {products.length > 0 && (
           <div>
-            <h3 className="text-subtitle text-text-primary mb-4">{title}</h3>
+            <h3 className="text-subtitle text-text-primary mb-4">
+              {resolvedTitle}
+            </h3>
             <div className="space-y-2.5">
               {products.map((product, idx) => (
                 <div
@@ -50,7 +53,7 @@ const ReportContextCard = ({
                     </span>
                   </div>
                   <span className="text-caption text-text-tertiary shrink-0 ml-2 whitespace-nowrap">
-                    {product.quantitySold} sold
+                    {t("report.product.sold", { count: product.quantitySold })}
                   </span>
                 </div>
               ))}
@@ -61,7 +64,7 @@ const ReportContextCard = ({
         {paymentBreakdown.length > 0 && (
           <div className="md:border-l md:border-border md:pl-5">
             <h4 className="text-label font-semibold text-text-primary mb-3 md:mt-1">
-              Payment
+              {t("report.payment.title")}
             </h4>
             <div className="space-y-2.5">
               {paymentBreakdown.map((payment) => (

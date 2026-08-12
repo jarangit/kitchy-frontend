@@ -45,7 +45,7 @@ export function SuccessMoment({ amount, onClose }: Props) {
             size="lg"
             onClick={() => {
               onClose();
-              if (storeId) navigate(`/store/${storeId}/settings/report`);
+              if (storeId) navigate(`/store/${storeId}/report`);
             }}
           >
             {t("onboarding.success.viewReport")}
