@@ -384,6 +384,7 @@ export const thMessages = {
   "pos.cart.emptyTitle": "ตะกร้าว่าง",
   "pos.cart.emptyDescription": "แตะสินค้าเพื่อเพิ่มลงตะกร้า",
   "pos.cart.pay": "ชำระ {amount}",
+  "pos.cart.payLabel": "ชำระเงิน",
   "pos.cart.mobileOpen": "ดูตะกร้า / ชำระเงิน",
   "pos.cart.itemCount": "{count} รายการ",
   "pos.cart.total": "รวม",

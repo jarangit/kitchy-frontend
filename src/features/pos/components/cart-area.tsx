@@ -293,20 +293,6 @@ const CartArea = ({
         ? t("pos.cart.selectDeliveryPlatformBeforePay")
         : null;
   const canPay = items.length > 0;
-  const openRequirementDialog = () => {
-    if (orderType === "DINE_IN" && !tableNumber) {
-      setIsTableDialogOpen(true);
-      return;
-    }
-
-    if (orderType === "DELIVERY" && deliveryPlatform.trim().length === 0) {
-      ensureDeliveryPlatformSelected();
-      setIsDeliveryKeypadOpen(true);
-      setIsDeviceKeyboardEnabled(false);
-      setIsDeliveryDialogOpen(true);
-    }
-  };
-
   const handlePayClick = () => {
     if (!canPay) return;
 
@@ -573,23 +559,29 @@ const CartArea = ({
       </div>
 
       <div className="page-stack-tight shadow-cart-dock z-10 shrink-0 border-t border-border bg-card-bg p-card-padding">
-        {requirementMessage && items.length > 0 && (
-          <button
-            type="button"
-            onClick={openRequirementDialog}
-            className="w-full rounded-card bg-warning-bg px-3 py-2 text-left text-label font-medium text-warning transition-colors duration-fast hover:bg-warning-border focus:outline-none focus-visible:ring-2 focus-visible:ring-warning/30"
-          >
-            {requirementMessage}
-          </button>
+        {canPay && (
+          <div className="flex items-end justify-between gap-3 pt-1">
+            <div className="min-w-0">
+              <p className="text-label uppercase tracking-widest text-text-tertiary">
+                {t("pos.cart.total")}
+              </p>
+              <p className="text-body-sm text-text-secondary">
+                {t("pos.cart.itemCount", { count: String(totalItems) })}
+              </p>
+            </div>
+            <p className="shrink-0 text-heading tabular-nums text-text-primary">
+              ฿{subtotal.toFixed(2)}
+            </p>
+          </div>
         )}
         <Button
           onClick={handlePayClick}
           disabled={!canPay}
           size="lg"
           data-onboarding-target="pay-button"
-          className="w-full whitespace-normal text-center text-title tabular-nums leading-6"
+          className="w-full whitespace-normal text-center text-title leading-6"
         >
-          {`${t("pos.cart.pay", { amount: `฿${subtotal.toFixed(2)}` })} • ${t("pos.cart.itemCount", { count: String(totalItems) })}`}
+          {t("pos.cart.payLabel")}
         </Button>
       </div>
 

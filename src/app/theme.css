@@ -491,6 +491,10 @@
   color: var(--color-text-secondary);
 }
 
+thead .table-header-label {
+  color: var(--color-text-inverse);
+}
+
 .accent-inset-ring {
   box-shadow: inset 0 0 0 1px var(--color-accent);
 }

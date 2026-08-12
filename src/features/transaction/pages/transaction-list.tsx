@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { format, formatDistanceToNow, parseISO } from "date-fns";
 import { LuArrowRight, LuReceipt } from "react-icons/lu";
@@ -15,12 +15,14 @@ import { Card } from "@/shared/components/ui/card";
 import {
   DataTable,
   DataTableColumnHeader,
+  DataTablePagination,
   type DataTableColumn,
   type SortingState,
 } from "@/shared/components/ui/data-table";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 import { getPaymentMethodLabelKey } from "@/features/transaction/utils/transaction-formatters";
+import { getDeliveryPlatformBrand } from "@/shared/utils/delivery-platform-brands";
 
 interface TransactionProduct {
   name?: string;
@@ -101,6 +103,31 @@ const orderTypeLabelKey = (value?: string): MessageKey => {
     default:
       return "transaction.card.orderType.default";
   }
+};
+
+const getOrderTypeBadgeStyle = (tx: TransactionListItem) => {
+  const orderType = tx.type ?? tx.orderType;
+  if (orderType !== "DELIVERY") return undefined;
+
+  const brand = getDeliveryPlatformBrand(tx.method ?? "");
+  if (!brand) return undefined;
+
+  return {
+    backgroundColor: brand.brandColor,
+    color: brand.onColor,
+  };
+};
+
+const getOrderTypeBadgeLabel = (
+  tx: TransactionListItem,
+  t: (key: MessageKey) => string,
+) => {
+  const orderType = tx.type ?? tx.orderType;
+  if (orderType === "DELIVERY" && tx.method?.trim()) {
+    return tx.method.trim();
+  }
+
+  return t(orderTypeLabelKey(orderType));
 };
 
 const getItemSummary = (tx: TransactionListItem) => {
@@ -195,6 +222,9 @@ const MobileTransactionCard = ({
   );
 };
 
+const TRANSACTION_PAGE_SIZE_OPTIONS = [10, 20, 50] as const;
+const DEFAULT_TRANSACTION_PAGE_SIZE = TRANSACTION_PAGE_SIZE_OPTIONS[0];
+
 const TransactionListPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -206,11 +236,15 @@ const TransactionListPage = () => {
   const [filter, setFilter] = useState<{
     search: string;
     status: TransactionFilterStatus;
-  }>({ search: "", status: "ALL" });
+  }>({ search: "", status: "IN_PROGRESS" });
 
   const [sorting, setSorting] = useState<SortingState>([
     { id: "createdAt", desc: true },
   ]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const [pageSize, setPageSize] = useState<number>(
+    DEFAULT_TRANSACTION_PAGE_SIZE,
+  );
 
   const allTransactions = useMemo(
     () => (transactions as TransactionListItem[] | undefined) ?? [],
@@ -245,6 +279,32 @@ const TransactionListPage = () => {
     });
   }, [allTransactions, filter]);
 
+  const totalFilteredTransactions = filteredTransactions.length;
+  const totalPages = Math.max(
+    1,
+    Math.ceil(totalFilteredTransactions / pageSize),
+  );
+  const safePageIndex = Math.min(pageIndex, totalPages - 1);
+  const paginatedTransactions = useMemo(() => {
+    const start = safePageIndex * pageSize;
+    return filteredTransactions.slice(start, start + pageSize);
+  }, [filteredTransactions, pageSize, safePageIndex]);
+
+  useEffect(() => {
+    if (pageIndex > totalPages - 1) {
+      setPageIndex(totalPages - 1);
+    }
+  }, [pageIndex, totalPages]);
+
+  const handlePageChange = (nextPageIndex: number) => {
+    setPageIndex(Math.max(0, Math.min(nextPageIndex, totalPages - 1)));
+  };
+
+  const handlePageSizeChange = (nextPageSize: number) => {
+    setPageSize(nextPageSize);
+    setPageIndex(0);
+  };
+
   const columns: DataTableColumn<TransactionListItem>[] = useMemo(
     () => [
       {
@@ -273,11 +333,20 @@ const TransactionListPage = () => {
           />
         ),
         meta: { className: "min-w-[96px]" },
-        cell: ({ row }) => (
-          <Badge variant="default" size="md">
-            {t(orderTypeLabelKey(row.original.type ?? row.original.orderType))}
-          </Badge>
-        ),
+        cell: ({ row }) => {
+          const badgeStyle = getOrderTypeBadgeStyle(row.original);
+
+          return (
+            <Badge
+              variant="default"
+              size="md"
+              className={badgeStyle ? "border-transparent" : undefined}
+              style={badgeStyle}
+            >
+              {getOrderTypeBadgeLabel(row.original, t)}
+            </Badge>
+          );
+        },
       },
       {
         id: "table",
@@ -288,18 +357,6 @@ const TransactionListPage = () => {
         cell: ({ row }) => (
           <span className="text-body-sm text-text-secondary">
             {row.original.tableNumber ?? "—"}
-          </span>
-        ),
-      },
-      {
-        id: "customer",
-        accessorFn: (tx) => tx.customerName ?? "",
-        header: () => <span>{t("transaction.list.col.customer")}</span>,
-        enableSorting: false,
-        meta: { hideBelow: "lg", className: "min-w-[140px]", wrap: true },
-        cell: ({ row }) => (
-          <span className="text-body-sm text-text-secondary">
-            {row.original.customerName ?? "—"}
           </span>
         ),
       },
@@ -376,21 +433,13 @@ const TransactionListPage = () => {
         id: "items",
         header: () => <span>{t("transaction.list.col.items")}</span>,
         enableSorting: false,
-        meta: { hideBelow: "md", className: "min-w-[180px]", wrap: true },
+        meta: { hideBelow: "md", className: "min-w-[100px]" },
         cell: ({ row }) => {
-          const items = row.original.products ?? [];
-          const totalQty = items.reduce((sum, p) => sum + (p.quantity ?? 0), 0);
-          const first = items[0]?.name;
+          const { totalQty } = getItemSummary(row.original);
+
           return (
-            <span className="block text-body-sm leading-6 text-text-secondary">
-              {first
-                ? items.length > 1
-                  ? `${first} +${items.length - 1}`
-                  : first
-                : "—"}
-              {totalQty > 0 && (
-                <span className="ml-1 text-text-tertiary">×{totalQty}</span>
-              )}
+            <span className="block text-body-sm text-text-secondary">
+              {t("transaction.card.itemCount", { count: totalQty })}
             </span>
           );
         },
@@ -466,7 +515,7 @@ const TransactionListPage = () => {
       ) : (
         <>
           <div className="space-y-3 md:hidden">
-            {filteredTransactions.map((tx) => (
+            {paginatedTransactions.map((tx) => (
               <MobileTransactionCard
                 key={tx.id}
                 tx={tx}
@@ -483,7 +532,7 @@ const TransactionListPage = () => {
           </div>
           <Card padding="none" className="hidden overflow-hidden md:block">
             <DataTable<TransactionListItem>
-              data={filteredTransactions}
+              data={paginatedTransactions}
               columns={columns}
               sorting={sorting}
               onSortingChange={setSorting}
@@ -492,6 +541,14 @@ const TransactionListPage = () => {
               }
               getRowId={(row) => row.id}
               isLoading={isLoading}
+            />
+            <DataTablePagination
+              pageIndex={safePageIndex}
+              pageSize={pageSize}
+              totalItems={totalFilteredTransactions}
+              pageSizeOptions={[...TRANSACTION_PAGE_SIZE_OPTIONS]}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
             />
           </Card>
         </>

@@ -403,6 +403,7 @@ export const enMessages = {
   "pos.cart.emptyTitle": "Cart is empty",
   "pos.cart.emptyDescription": "Tap a product to add it",
   "pos.cart.pay": "Pay {amount}",
+  "pos.cart.payLabel": "Pay",
   "pos.cart.mobileOpen": "View cart / Pay",
   "pos.cart.itemCount": "{count} items",
   "pos.cart.total": "Total",

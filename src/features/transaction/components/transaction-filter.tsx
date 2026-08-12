@@ -3,6 +3,7 @@ import { SearchInput } from "@/shared/components/ui/search-input";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
+import { cn } from "@/shared/utils/cn";
 
 export type TransactionFilterStatus =
   "ALL" | "IN_PROGRESS" | "DONE" | "CANCELLED";
@@ -27,7 +28,6 @@ const STATUS_OPTIONS: ReadonlyArray<{
   labelKey: MessageKey;
   countKey: keyof TransactionFilterCounts;
 }> = [
-  { value: "ALL", labelKey: "transaction.filter.all", countKey: "all" },
   {
     value: "IN_PROGRESS",
     labelKey: "transaction.filter.inProgress",
@@ -39,12 +39,13 @@ const STATUS_OPTIONS: ReadonlyArray<{
     labelKey: "transaction.filter.cancelled",
     countKey: "cancelled",
   },
+  { value: "ALL", labelKey: "transaction.filter.all", countKey: "all" },
 ];
 
 const TransactionFilter = ({ counts, onFilterChange }: Props) => {
   const { t } = useTranslation();
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<TransactionFilterStatus>("ALL");
+  const [status, setStatus] = useState<TransactionFilterStatus>("IN_PROGRESS");
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
@@ -68,7 +69,7 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
         value={search}
         onValueChange={handleSearchChange}
         placeholder={t("transaction.filter.searchPlaceholder")}
-        className="lg:min-w-[240px] lg:flex-1"
+        className="lg:min-w-[240px] lg:flex-1 [&>input]:h-segment-height"
       />
       <Tabs
         value={status}
@@ -84,7 +85,14 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
               className="gap-1.5 whitespace-nowrap"
             >
               <span className="whitespace-nowrap">{item.label}</span>
-              <span className="tabular-nums whitespace-nowrap text-text-tertiary">
+              <span
+                className={cn(
+                  "tabular-nums whitespace-nowrap",
+                  status === item.key
+                    ? "text-segment-active-text"
+                    : "text-text-secondary",
+                )}
+              >
                 ({item.count})
               </span>
             </Tab>

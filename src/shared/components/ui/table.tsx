@@ -34,7 +34,10 @@ export function TableHeader({
 }: HTMLAttributes<HTMLTableSectionElement>) {
   return (
     <thead
-      className={cn("bg-surface-muted border-b border-card-border", className)}
+      className={cn(
+        "bg-primary border-b border-card-border text-text-inverse",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -131,7 +134,7 @@ export function TableHead({
   return (
     <th
       scope="col"
-      className={cn("px-4 py-3 align-middle", alignClass, className)}
+      className={cn("px-4 py-4 align-middle", alignClass, className)}
       aria-sort={
         sortable
           ? sortDirection === "asc"
