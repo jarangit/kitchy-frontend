@@ -94,8 +94,8 @@
 
   /* Status — brighter references for dark surfaces, from the same muted families */
   --color-success: var(--green-500);
-  --color-danger: var(--red-500);
-  --color-danger-hover: var(--red-600);
+  --color-danger: var(--red-400);
+  --color-danger-hover: var(--red-500);
   --color-warning: var(--yellow-500);
   --color-info: var(--blue-500);
 

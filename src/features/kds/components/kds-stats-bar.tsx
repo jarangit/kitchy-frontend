@@ -1,32 +1,39 @@
-import { Link } from "react-router-dom";
-import { LuArrowLeft, LuClock3 } from "react-icons/lu";
-import { BusyProgress } from "@/shared/components/ui/busy-progress";
+import { LuMaximize2, LuMinimize2 } from "react-icons/lu";
+import { IconButton } from "@/shared/components/ui/icon-button";
 import { useClock } from "@/shared/hooks/useClock";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useAppSelector } from "@/shared/hooks/hooks";
+import { cn } from "@/shared/utils/cn";
+import { useKdsLayout } from "@/features/kds/components/kds-layout";
 import type { KdsOrderGroup } from "@/features/kds/types/kds.model";
 
 interface Props {
   groups: KdsOrderGroup[];
-  orderLimit: number;
 }
 
-const KdsStatsBar = ({ groups, orderLimit }: Props) => {
+const KdsStatsBar = ({ groups }: Props) => {
   const { t, language } = useTranslation();
-  const storeId = useAppSelector((state) => state.currentStore.storeId);
+  const { fullscreen, toggleFullscreen } = useKdsLayout();
   const now = useClock();
 
-  const itemCount = groups.reduce(
+  const pendingCount = groups.reduce(
     (sum, g) => sum + g.items.reduce((s, i) => s + i.quantity, 0),
     0,
   );
 
-  const longestWaitMinutes = groups.reduce(
-    (max, g) =>
-      Math.max(
-        max,
-        Math.floor((now.getTime() - new Date(g.createdAt).getTime()) / 60000),
-      ),
+  const doneCount = groups.reduce(
+    (sum, g) =>
+      sum +
+      g.items.reduce((s, i) => s + (i.status === "READY" ? i.quantity : 0), 0),
+    0,
+  );
+
+  const overdueCount = groups.reduce(
+    (sum, g) =>
+      sum +
+      (Math.floor((now.getTime() - new Date(g.createdAt).getTime()) / 60000) >=
+      15
+        ? 1
+        : 0),
     0,
   );
 
@@ -37,88 +44,63 @@ const KdsStatsBar = ({ groups, orderLimit }: Props) => {
   });
   const dateLabel = now.toLocaleDateString(locale, {
     day: "numeric",
-    month: "numeric",
+    month: "short",
+    year: "numeric",
   });
+  const fullscreenLabel = fullscreen
+    ? t("kds.fullscreen.exit")
+    : t("kds.fullscreen.enter");
 
   return (
-    <div className="rounded-card bg-primary px-4 py-2.5 text-on-primary">
-      <div className="flex flex-col gap-2.5 sm:grid sm:grid-cols-[minmax(0,1fr)_minmax(0,340px)_minmax(0,1fr)] sm:items-center sm:gap-3">
-        <span className="flex items-baseline gap-2 sm:justify-self-start">
-          <span className="text-caption font-medium tracking-wider text-on-primary/60">
-            {t("kds.stats.itemsLabel")}
-          </span>
-          <span className="font-mono text-title font-bold leading-none tabular-nums text-on-primary">
-            {itemCount}
-          </span>
-          <span className="text-on-primary/30">/</span>
-          <span className="font-mono text-body font-semibold tabular-nums text-on-primary/80">
-            {orderLimit}
-          </span>
-        </span>
+    <div
+      className={cn(
+        "bg-primary px-4 py-3 text-on-primary",
+        fullscreen ? "rounded-none" : "rounded-card",
+      )}
+    >
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:items-stretch lg:gap-6">
+        <div className="grid grid-flow-col auto-cols-max divide-x divide-on-primary/12 lg:w-fit">
+          <div className="flex w-fit flex-col items-center justify-center px-4 py-3 text-center lg:py-0">
+            <span className="text-caption text-on-primary/78">
+              {t("kds.stats.pendingLabel")}
+            </span>
+            <span className="mt-2 font-mono text-display font-bold leading-none tabular-nums text-on-primary">
+              {pendingCount}
+            </span>
+          </div>
+          <div className="flex w-fit flex-col items-center justify-center px-4 py-3 text-center lg:py-0">
+            <span className="text-caption text-on-primary/78">
+              {t("kds.stats.doneLabel")}
+            </span>
+            <span className="mt-2 font-mono text-display font-bold leading-none tabular-nums text-accent">
+              {doneCount}
+            </span>
+          </div>
+          <div className="flex w-fit flex-col items-center justify-center px-4 py-3 text-center lg:py-0">
+            <span className="text-caption text-on-primary/78">
+              {t("kds.stats.overdueLabel")}
+            </span>
+            <span className="mt-2 font-mono text-display font-bold leading-none tabular-nums text-danger">
+              {overdueCount}
+            </span>
+          </div>
+        </div>
 
-        <BusyProgress
-          count={itemCount}
-          limit={orderLimit}
-          className="w-full justify-self-center"
-        />
-
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 sm:justify-self-end">
-          <span
-            aria-label={`${timeLabel} ${dateLabel}`}
-            title={`${timeLabel} · ${dateLabel}`}
-            className="flex items-center gap-2 text-on-primary/80"
-          >
-            <LuClock3
-              size={14}
-              className="text-on-primary/60"
-              aria-hidden="true"
-            />
-            <span className="font-mono text-body tabular-nums text-on-primary">
+        <div className="flex items-center justify-end gap-3 lg:min-w-[240px]">
+          <div className="text-right lg:min-w-[172px]">
+            <p className="font-mono text-display font-bold leading-none tabular-nums text-on-primary">
               {timeLabel}
-            </span>
-            <span
-              className="hidden h-3 w-px bg-on-primary/20 sm:inline-block"
-              aria-hidden="true"
-            />
-            <span className="text-caption font-medium text-on-primary/70">
-              {dateLabel}
-            </span>
-          </span>
-
-          {groups.length > 0 && (
-            <span
-              aria-label={t("kds.stats.longestWait")}
-              title={t("kds.stats.longestWait")}
-              className="flex items-center gap-1.5 text-on-primary/80"
-            >
-              <LuClock3
-                size={14}
-                className="text-on-primary/60"
-                aria-hidden="true"
-              />
-              <span className="text-caption font-medium text-on-primary/70">
-                {t("kds.stats.longestWait")}
-              </span>
-              <span className="font-mono text-body font-semibold tabular-nums text-on-primary">
-                {longestWaitMinutes}
-              </span>
-              <span className="text-caption font-medium text-on-primary/70">
-                {t("kds.card.minutesUnit")}
-              </span>
-            </span>
-          )}
-
-          {storeId ? (
-            <Link
-              to={`/store/${storeId}`}
-              className="inline-flex h-8 items-center gap-1.5 rounded-full border border-on-primary/30 bg-on-primary/10 px-3 text-caption font-semibold tracking-wider text-on-primary transition-colors hover:bg-on-primary/20"
-            >
-              <LuArrowLeft size={15} />
-              {t("kds.header.back")}
-            </Link>
-          ) : (
-            <span className="hidden sm:block" aria-hidden="true" />
-          )}
+            </p>
+            <p className="mt-2 text-subtitle text-on-primary/78">{dateLabel}</p>
+          </div>
+          <IconButton
+            aria-label={fullscreenLabel}
+            title={fullscreenLabel}
+            onClick={toggleFullscreen}
+            className="border border-on-primary/40 bg-on-primary/16 text-on-primary hover:bg-on-primary/24 hover:text-on-primary"
+          >
+            {fullscreen ? <LuMinimize2 size={16} /> : <LuMaximize2 size={16} />}
+          </IconButton>
         </div>
       </div>
     </div>

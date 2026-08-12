@@ -2,16 +2,16 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useKds } from "@/features/kds/hooks/useKds";
 import KdsOrderColumn from "@/features/kds/components/kds-order-column";
 import KdsStatsBar from "@/features/kds/components/kds-stats-bar";
+import { useKdsLayout } from "@/features/kds/components/kds-layout";
 import { useStationService } from "@/features/station/hooks/useStation";
-import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Card } from "@/shared/components/ui/card";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { IconButton } from "@/shared/components/ui/icon-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { LuUtensilsCrossed } from "react-icons/lu";
-
-const DEFAULT_ORDER_LIMIT = 20;
+import { cn } from "@/shared/utils/cn";
+import { LuMaximize2, LuMinimize2, LuUtensilsCrossed } from "react-icons/lu";
 
 type KdsBoardScreenState =
   "loading" | "no-station" | "empty-queue" | "active-board";
@@ -165,12 +165,26 @@ const KdsBoardWorkspace = ({
   </div>
 );
 
+const KdsFullscreenToggle = () => {
+  const { t } = useTranslation();
+  const { fullscreen, toggleFullscreen } = useKdsLayout();
+  const label = fullscreen
+    ? t("kds.fullscreen.exit")
+    : t("kds.fullscreen.enter");
+
+  return (
+    <IconButton aria-label={label} title={label} onClick={toggleFullscreen}>
+      {fullscreen ? <LuMinimize2 size={18} /> : <LuMaximize2 size={18} />}
+    </IconButton>
+  );
+};
+
 const KdsBoardPage = () => {
   const { t } = useTranslation();
+  const { fullscreen } = useKdsLayout();
   const boardScrollRef = useRef<HTMLDivElement | null>(null);
   useDragScroll(boardScrollRef);
   const { stationsQuery } = useStationService({});
-  const { storeFinOneQuery } = useStoreService({});
   const stations = useMemo(() => stationsQuery ?? [], [stationsQuery]);
   const [activeStationId, setActiveStationId] = useState<string | null>(null);
   const activeStation = useMemo(() => {
@@ -189,7 +203,6 @@ const KdsBoardPage = () => {
     bumpedOrderId,
     updateStatus,
   } = useKds(activeStation?.id);
-  const orderLimit = storeFinOneQuery?.orderLimit ?? DEFAULT_ORDER_LIMIT;
 
   const handleBump = (group: Parameters<typeof bumpAndRemove>[0]) => {
     void bumpAndRemove(group);
@@ -207,14 +220,32 @@ const KdsBoardPage = () => {
         ? "empty-queue"
         : "active-board";
 
+  const showStats =
+    screenState === "empty-queue" || screenState === "active-board";
+  const showTopControls = !showStats;
+
   return (
-    <div className="flex h-full min-h-0 flex-col gap-4 page-shell">
-      {/* Top controls: station-scoped board switcher */}
-      <KdsStationTabs
-        stations={stations}
-        activeStationId={activeStation?.id ?? ""}
-        onChange={setActiveStationId}
-      />
+    <div
+      className={cn(
+        "flex h-full min-h-0 flex-col gap-4",
+        fullscreen ? "p-0" : "p-card-padding",
+      )}
+    >
+      {/* Top controls: station-scoped board switcher + fullscreen toggle (when stats bar is hidden) */}
+      {showTopControls && (
+        <div className="flex items-center justify-between gap-3">
+          <KdsStationTabs
+            stations={stations}
+            activeStationId={activeStation?.id ?? ""}
+            onChange={setActiveStationId}
+          />
+          {!showStats && (
+            <div className="ml-auto shrink-0">
+              <KdsFullscreenToggle />
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Screen states: loading, missing station, empty queue, active board */}
       {screenState === "loading" && <KdsBoardLoadingState />}
@@ -226,10 +257,10 @@ const KdsBoardPage = () => {
         />
       )}
 
-      {(screenState === "empty-queue" || screenState === "active-board") && (
+      {showStats && (
         <>
           {/* Queue summary: workload overview for the active station */}
-          <KdsStatsBar groups={pendingGroups} orderLimit={orderLimit} />
+          <KdsStatsBar groups={pendingGroups} />
 
           {screenState === "empty-queue" ? (
             <KdsBoardEmptyState
