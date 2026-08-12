@@ -159,15 +159,18 @@ const KdsOrderColumn = ({
         <div className="flex-1 bg-surface px-4 py-3 opacity-50">
           <ul
             className={cn(
-              "flex flex-col gap-2",
-              isLargeOrder &&
-                "columns-2 gap-x-2.5 gap-y-2.5 [column-fill:auto]",
+              isLargeOrder
+                ? "block max-h-full columns-2 gap-x-2.5 [column-fill:auto]"
+                : "flex flex-col gap-2",
             )}
           >
             {group.items.map((item) => (
               <li
                 key={item.orderStationItemId}
-                className="min-w-0 break-inside-avoid"
+                className={cn(
+                  "min-w-0 break-inside-avoid",
+                  isLargeOrder && "mb-2.5",
+                )}
               >
                 <div className="flex items-baseline gap-2">
                   <span className="font-mono text-body font-bold text-text-primary tabular-nums">
@@ -258,14 +261,18 @@ const KdsOrderColumn = ({
       >
         <ul
           className={cn(
-            "flex flex-col gap-3",
-            isLargeOrder && "columns-2 gap-x-2.5 gap-y-2.5 [column-fill:auto]",
+            isLargeOrder
+              ? "block max-h-full columns-2 gap-x-2.5 [column-fill:auto]"
+              : "flex flex-col gap-3",
           )}
         >
           {group.items.map((item) => (
             <li
               key={item.orderStationItemId}
-              className="min-w-0 break-inside-avoid"
+              className={cn(
+                "min-w-0 break-inside-avoid",
+                isLargeOrder && "mb-2.5",
+              )}
             >
               <button
                 type="button"
@@ -315,7 +322,7 @@ const KdsOrderColumn = ({
                       "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-fast",
                       item.status === "READY"
                         ? "border-success bg-success text-on-status"
-                        : "border-border bg-bg text-transparent",
+                        : "border-border-hover bg-surface-muted text-transparent",
                     )}
                   >
                     <LuCheck size={12} />
