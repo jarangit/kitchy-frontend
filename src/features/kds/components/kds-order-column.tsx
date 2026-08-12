@@ -161,7 +161,7 @@ const KdsOrderColumn = ({
             className={cn(
               isLargeOrder
                 ? "block max-h-full columns-2 gap-x-2.5 [column-fill:auto]"
-                : "flex flex-col gap-2",
+                : "flex flex-col gap-1",
             )}
           >
             {group.items.map((item) => (
@@ -172,11 +172,11 @@ const KdsOrderColumn = ({
                   isLargeOrder && "mb-2.5",
                 )}
               >
-                <div className="flex items-baseline gap-2">
-                  <span className="font-mono text-body font-bold text-text-primary tabular-nums">
+                <div className="flex items-baseline gap-1">
+                  <span className="font-mono text-title font-bold text-text-primary tabular-nums">
                     [{item.quantity}]
                   </span>
-                  <span className="text-body font-semibold text-text-primary">
+                  <span className="text-title font-semibold text-text-primary leading-snug">
                     {item.productName}
                   </span>
                 </div>
@@ -209,7 +209,7 @@ const KdsOrderColumn = ({
             <Badge
               size="sm"
               className={cn(
-                "gap-1.5 border font-semibold",
+                "gap-1.5 border text-label font-semibold",
                 !brand && ORDER_TYPE_BADGE_STYLES[group.orderType],
               )}
               style={
@@ -263,7 +263,7 @@ const KdsOrderColumn = ({
           className={cn(
             isLargeOrder
               ? "block max-h-full columns-2 gap-x-2.5 [column-fill:auto]"
-              : "flex flex-col gap-3",
+              : "flex flex-col gap-1",
           )}
         >
           {group.items.map((item) => (
@@ -297,18 +297,18 @@ const KdsOrderColumn = ({
                     : "hover:bg-surface-hover",
                 )}
               >
-                <div className="flex items-baseline gap-2">
+                <div className="flex items-baseline gap-1">
                   <span
                     className={cn(
                       "shrink-0 font-mono font-bold tabular-nums",
-                      "text-body text-text-primary",
+                      "text-title text-text-primary",
                     )}
                   >
                     [{item.quantity}]
                   </span>
                   <span
                     className={cn(
-                      "min-w-0 flex-1 text-body font-semibold leading-snug",
+                      "min-w-0 flex-1 text-title font-semibold leading-snug",
                       item.status === "READY"
                         ? "text-text-secondary line-through"
                         : "text-text-primary",

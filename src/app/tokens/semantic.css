@@ -7,7 +7,7 @@
 /* ── Semantic Colors ── */
 :root {
   /* Surfaces — clean off-white app chrome like the reference dashboard */
-  --color-bg: var(--gray-50);
+  --color-bg: var(--gray-100);
   --color-surface: var(--gray-0);
   --color-surface-hover: var(--gray-50);
   --color-surface-muted: var(--gray-100);
@@ -95,12 +95,12 @@
   /* Status — brighter references for dark surfaces, from the same muted families */
   --color-success: var(--green-500);
   --color-danger: var(--red-400);
-  --color-danger-hover: var(--red-500);
+  --color-danger-hover: #f08d82;
   --color-warning: var(--yellow-500);
   --color-info: var(--blue-500);
 
   --color-success-bg: #26301a;
-  --color-danger-bg: #3d2622;
+  --color-danger-bg: #4a2622;
   --color-warning-bg: #3c3120;
   --color-info-bg: #26303d;
 

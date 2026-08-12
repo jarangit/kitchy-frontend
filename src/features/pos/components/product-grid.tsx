@@ -45,25 +45,22 @@ const ProductGrid = ({
 
   return (
     <div className="flex min-h-0 flex-1 max-h-[calc(100dvh-14rem)] flex-col overflow-y-auto pr-1">
-      <div className="page-grid grid flex-none content-start grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="page-grid grid auto-rows-fr flex-none content-start grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {products.map((product) => {
           const quantity = quantityByProductId[product.id] ?? 0;
           const isSelected = quantity > 0;
 
           return (
-            <div key={product.id} className="relative">
+            <div key={product.id} className="relative h-full">
               <button
                 type="button"
                 onClick={() => onAddToCart(product)}
                 data-onboarding-target={`product-card-${product.id}`}
                 className={cn(
-                  "relative flex min-h-[156px] w-full cursor-pointer flex-col items-center justify-center rounded-card p-3 transition-all duration-fast",
-                  "border border-card-border",
-                  "hover:border-border-hover hover:-translate-y-[1px]",
+                  "relative flex h-full min-h-[156px] w-full cursor-pointer flex-col overflow-hidden rounded-card transition-all duration-fast",
+                  "hover:-translate-y-[1px]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-                  isSelected
-                    ? "accent-inset-ring border-accent bg-accent-bg"
-                    : "bg-card-bg",
+                  isSelected ? "accent-inset-ring bg-accent-bg" : "bg-card-bg",
                 )}
                 aria-label={`${product.name} ${formatPrice(product.price)}`}
               >
@@ -72,7 +69,7 @@ const ProductGrid = ({
                     {quantity}
                   </span>
                 )}
-                <div className="mb-3 flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg border border-card-border bg-surface">
+                <div className="flex aspect-square w-full items-center justify-center overflow-hidden border-b border-card-border bg-surface">
                   {product.imageUrl ? (
                     <img
                       src={product.imageUrl}
@@ -90,12 +87,14 @@ const ProductGrid = ({
                     </div>
                   )}
                 </div>
-                <span className="line-clamp-2 text-center text-body-sm font-medium leading-tight text-text-primary">
-                  {product.name}
-                </span>
-                <span className="mt-1.5 text-subtitle tabular-nums text-text-primary">
-                  {formatPrice(product.price)}
-                </span>
+                <div className="flex flex-1 flex-col items-center justify-center px-3 py-3">
+                  <span className="line-clamp-2 text-center text-body-sm font-medium leading-tight text-text-primary">
+                    {product.name}
+                  </span>
+                  <span className="mt-1.5 text-subtitle tabular-nums text-text-primary">
+                    {formatPrice(product.price)}
+                  </span>
+                </div>
               </button>
               {isSelected && (
                 <button
