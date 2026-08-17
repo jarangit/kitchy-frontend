@@ -13,7 +13,7 @@ export interface CreateProductRequest {
   cost?: number;
   isActive: boolean;
   isBestSeller?: boolean;
-  imageUrl?: string;
+  imageUrl?: string | null;
 }
 
 export type UpdateProductRequest = Partial<CreateProductRequest>;

@@ -117,7 +117,7 @@ const PosHomePage = () => {
                       id: string;
                       name: string;
                       price?: number;
-                      imageUrl?: string;
+                      imageUrl?: string | null;
                     }) => ({
                       id: String(p.id),
                       name: p.name,

@@ -15,7 +15,7 @@ import { Toggle } from "@/shared/components/ui/toggle";
 import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { useAppSelector } from "@/shared/hooks/hooks";
-import { LuImage, LuTrash2 } from "react-icons/lu";
+import { LuImage, LuTrash2, LuX } from "react-icons/lu";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { productApiService } from "@/features/product/services/product";
 
@@ -59,6 +59,7 @@ const AddUpProductForm = ({
   const [uploadingImage, setUploadingImage] = useState(false);
   const [pendingImageFile, setPendingImageFile] = useState<File | null>(null);
   const [localPreviewUrl, setLocalPreviewUrl] = useState<string | null>(null);
+  const [removedExistingImage, setRemovedExistingImage] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const objectUrlRef = useRef<string | null>(null);
 
@@ -96,30 +97,12 @@ const AddUpProductForm = ({
     setPendingImageFile(null);
   };
 
-  const openFilePicker = () => {
-    const input = fileInputRef.current as
-      (HTMLInputElement & { showPicker?: () => void }) | null;
-
-    if (!input) return;
-
-    try {
-      if (typeof input.showPicker === "function") {
-        input.showPicker();
-        return;
-      }
-    } catch {
-      // Fall back to click() for browsers that expose showPicker but block it.
-    }
-
-    input.click();
-  };
-
   const onSubmit = async (data: ProductFormData) => {
     if (!stationId && !data.stationId) {
       return;
     }
 
-    let nextImageUrl = data.imageUrl || undefined;
+    let nextImageUrl = removedExistingImage ? null : data.imageUrl || undefined;
 
     if (pendingImageFile) {
       setUploadingImage(true);
@@ -128,6 +111,7 @@ const AddUpProductForm = ({
         nextImageUrl =
           await productApiService.uploadProductImage(pendingImageFile);
         setValue("imageUrl", nextImageUrl, { shouldDirty: true });
+        setRemovedExistingImage(false);
         resetPendingImageSelection();
       } catch {
         setImageError(t("settings.products.imageUploadFailed"));
@@ -159,6 +143,7 @@ const AddUpProductForm = ({
   const handleClose = () => {
     setImageError(null);
     resetPendingImageSelection();
+    setRemovedExistingImage(false);
     onClose();
   };
 
@@ -180,6 +165,7 @@ const AddUpProductForm = ({
 
     setImageError(null);
     resetPendingImageSelection();
+    setRemovedExistingImage(false);
     const previewUrl = URL.createObjectURL(file);
     objectUrlRef.current = previewUrl;
     setLocalPreviewUrl(previewUrl);
@@ -187,6 +173,7 @@ const AddUpProductForm = ({
   };
 
   const handleImageRemove = () => {
+    setRemovedExistingImage(true);
     resetPendingImageSelection();
     setValue("imageUrl", undefined, { shouldDirty: true });
     setImageError(null);
@@ -201,6 +188,7 @@ const AddUpProductForm = ({
       }
       setLocalPreviewUrl(null);
       setPendingImageFile(null);
+      setRemovedExistingImage(false);
       setUploadingImage(false);
       reset({
         ...emptyDefaults,
@@ -257,214 +245,235 @@ const AddUpProductForm = ({
         : t("settings.products.create");
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      className="w-[min(92vw,64rem)] max-w-4xl"
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+        <DialogHeader className="flex flex-row items-start justify-between gap-4">
+          <div>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label={t("common.close")}
+            title={t("common.close")}
+            onClick={handleClose}
+            className="-mr-2 -mt-1"
+          >
+            <LuX className="h-5 w-5" aria-hidden="true" />
+          </Button>
         </DialogHeader>
 
-        <div className="space-y-4">
-          {/* Image uploader */}
-          <Controller
-            name="imageUrl"
-            control={control}
-            render={() => (
-              <div className="space-y-2">
-                <label className="text-label font-medium text-text-primary">
-                  {t("settings.products.image")}
-                </label>
+        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+          <div className="space-y-5">
+            <Controller
+              name="imageUrl"
+              control={control}
+              render={() => (
+                <div className="space-y-2">
+                  <label className="text-label font-medium text-text-primary">
+                    {t("settings.products.image")}
+                  </label>
 
-                <input
-                  id={PRODUCT_IMAGE_INPUT_ID}
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={handleImagePick}
-                />
+                  <input
+                    id={PRODUCT_IMAGE_INPUT_ID}
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={handleImagePick}
+                  />
 
-                {previewImageUrl ? (
-                  <InsetPanel className="flex items-center gap-4" padding="sm">
-                    <img
-                      src={previewImageUrl}
-                      alt="Product preview"
-                      className="h-20 w-20 rounded-sm object-cover"
-                    />
-                    <div className="flex flex-1 flex-col gap-2">
-                      <span className="text-label text-text-secondary">
-                        {t("settings.products.imageHint")}
-                      </span>
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          disabled={uploadingImage}
-                          onClick={openFilePicker}
-                        >
-                          {t("settings.products.imageReplace")}
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          disabled={uploadingImage}
-                          onClick={handleImageRemove}
-                        >
-                          <LuTrash2 className="w-4 h-4" />
-                          {t("settings.products.imageRemove")}
-                        </Button>
+                  {previewImageUrl ? (
+                    <InsetPanel className="space-y-4" padding="md">
+                      <div className="overflow-hidden rounded-md bg-surface-muted">
+                        <img
+                          src={previewImageUrl}
+                          alt="Product preview"
+                          className="aspect-[4/3] w-full object-cover"
+                        />
                       </div>
-                    </div>
-                  </InsetPanel>
-                ) : (
-                  <InsetPanel
-                    as="button"
-                    type="button"
-                    disabled={uploadingImage}
-                    onClick={openFilePicker}
-                    variant="dashed"
-                    padding="lg"
-                    className="flex w-full cursor-pointer flex-col items-center justify-center gap-2"
-                  >
-                    <LuImage className="h-8 w-8" />
-                    <span className="text-body font-medium">
-                      {uploadingImage
-                        ? t("settings.products.imageUploading")
-                        : t("settings.products.imageUpload")}
-                    </span>
-                    <span className="text-label">
-                      {t("settings.products.imageHint")}
-                    </span>
-                  </InsetPanel>
-                )}
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <span className="text-label text-text-secondary">
+                          {t("settings.products.imageHint")}
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          <label htmlFor={PRODUCT_IMAGE_INPUT_ID}>
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              disabled={uploadingImage}
+                            >
+                              {t("settings.products.imageReplace")}
+                            </Button>
+                          </label>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            disabled={uploadingImage}
+                            onClick={handleImageRemove}
+                          >
+                            <LuTrash2 className="w-4 h-4" />
+                            {t("settings.products.imageRemove")}
+                          </Button>
+                        </div>
+                      </div>
+                    </InsetPanel>
+                  ) : (
+                    <label htmlFor={PRODUCT_IMAGE_INPUT_ID} className="block">
+                      <InsetPanel
+                        variant="dashed"
+                        padding="lg"
+                        className="flex min-h-72 w-full cursor-pointer flex-col items-center justify-center gap-3 text-center"
+                      >
+                        <LuImage className="h-10 w-10" />
+                        <span className="text-body font-medium">
+                          {uploadingImage
+                            ? t("settings.products.imageUploading")
+                            : t("settings.products.imageUpload")}
+                        </span>
+                        <span className="max-w-sm text-label text-text-secondary">
+                          {t("settings.products.imageHint")}
+                        </span>
+                      </InsetPanel>
+                    </label>
+                  )}
 
-                {imageError && (
-                  <p className="text-danger text-label">{imageError}</p>
-                )}
-              </div>
-            )}
-          />
+                  {imageError && (
+                    <p className="text-danger text-label">{imageError}</p>
+                  )}
+                </div>
+              )}
+            />
 
-          <Input
-            id="product-name"
-            label={t("settings.products.productName")}
-            placeholder={t("settings.products.productNamePlaceholder")}
-            error={errors.name?.message}
-            {...register("name", {
-              required: t("settings.products.productNameRequired"),
-              minLength: {
-                value: 2,
-                message: t("settings.products.productNameMin"),
-              },
-            })}
-          />
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
-              id="product-price"
-              type="number"
-              step="0.01"
-              min="0"
-              label={t("settings.products.price")}
-              placeholder={t("settings.products.pricePlaceholder")}
-              error={errors.price?.message}
-              {...register("price", {
-                required: t("settings.products.priceRequired"),
-                valueAsNumber: true,
-                min: {
-                  value: 0,
-                  message: t("settings.products.priceMin"),
+              id="product-name"
+              label={t("settings.products.productName")}
+              placeholder={t("settings.products.productNamePlaceholder")}
+              error={errors.name?.message}
+              {...register("name", {
+                required: t("settings.products.productNameRequired"),
+                minLength: {
+                  value: 2,
+                  message: t("settings.products.productNameMin"),
                 },
               })}
             />
 
-            <Input
-              id="product-cost"
-              type="number"
-              step="0.01"
-              min="0"
-              label={`${t("settings.products.cost")} (${t("settings.products.costOptional")})`}
-              placeholder={t("settings.products.costPlaceholder")}
-              error={errors.cost?.message}
-              {...register("cost", {
-                valueAsNumber: true,
-                min: {
-                  value: 0,
-                  message: t("settings.products.costMin"),
-                },
-              })}
+            <Controller
+              name="categoryId"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  id="product-category"
+                  label={t("settings.products.category")}
+                  options={optionCategory}
+                  placeholder={t("settings.products.categoryPlaceholder")}
+                  value={field.value || ""}
+                  onChange={(e) => field.onChange(e.target.value || undefined)}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                />
+              )}
             />
           </div>
 
-          <Controller
-            name="categoryId"
-            control={control}
-            render={({ field }) => (
-              <Select
-                id="product-category"
-                label={t("settings.products.category")}
-                options={optionCategory}
-                placeholder={t("settings.products.categoryPlaceholder")}
-                value={field.value || ""}
-                onChange={(e) => field.onChange(e.target.value || undefined)}
-                onBlur={field.onBlur}
-                name={field.name}
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <Input
+                id="product-price"
+                type="number"
+                step="0.01"
+                min="0"
+                label={t("settings.products.price")}
+                placeholder={t("settings.products.pricePlaceholder")}
+                error={errors.price?.message}
+                {...register("price", {
+                  required: t("settings.products.priceRequired"),
+                  valueAsNumber: true,
+                  min: {
+                    value: 0,
+                    message: t("settings.products.priceMin"),
+                  },
+                })}
               />
-            )}
-          />
 
-          <Controller
-            name="isActive"
-            control={control}
-            render={({ field }) => (
-              <InsetPanel className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-body font-medium text-text-primary">
-                    {t("settings.products.isActive")}
-                  </span>
-                  <span className="text-label text-text-secondary">
-                    {t("settings.products.isActiveDescription")}
-                  </span>
-                </div>
-                <Toggle
-                  checked={field.value ?? true}
-                  onChange={(v) => field.onChange(v)}
-                  label={t("settings.products.isActive")}
-                />
-              </InsetPanel>
-            )}
-          />
+              <Input
+                id="product-cost"
+                type="number"
+                step="0.01"
+                min="0"
+                label={`${t("settings.products.cost")} (${t("settings.products.costOptional")})`}
+                placeholder={t("settings.products.costPlaceholder")}
+                error={errors.cost?.message}
+                {...register("cost", {
+                  valueAsNumber: true,
+                  min: {
+                    value: 0,
+                    message: t("settings.products.costMin"),
+                  },
+                })}
+              />
+            </div>
 
-          <Controller
-            name="isBestSeller"
-            control={control}
-            render={({ field }) => (
-              <InsetPanel className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <span className="text-body font-medium text-text-primary">
-                    {t("settings.products.isBestSeller")}
-                  </span>
-                  <span className="text-label text-text-secondary">
-                    {t("settings.products.isBestSellerDescription")}
-                  </span>
-                </div>
-                <Toggle
-                  checked={field.value ?? false}
-                  onChange={(v) => field.onChange(v)}
-                  label={t("settings.products.isBestSeller")}
-                />
-              </InsetPanel>
-            )}
-          />
+            <Controller
+              name="isActive"
+              control={control}
+              render={({ field }) => (
+                <InsetPanel className="flex items-center justify-between gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-body font-medium text-text-primary">
+                      {t("settings.products.isActive")}
+                    </span>
+                    <span className="text-label text-text-secondary">
+                      {t("settings.products.isActiveDescription")}
+                    </span>
+                  </div>
+                  <Toggle
+                    checked={field.value ?? true}
+                    onChange={(v) => field.onChange(v)}
+                    label={t("settings.products.isActive")}
+                  />
+                </InsetPanel>
+              )}
+            />
 
-          {!stationId && (
-            <p className="text-danger text-label">
-              {t("settings.products.stationMissing")}
-            </p>
-          )}
+            <Controller
+              name="isBestSeller"
+              control={control}
+              render={({ field }) => (
+                <InsetPanel className="flex items-center justify-between gap-4">
+                  <div className="flex flex-col">
+                    <span className="text-body font-medium text-text-primary">
+                      {t("settings.products.isBestSeller")}
+                    </span>
+                    <span className="text-label text-text-secondary">
+                      {t("settings.products.isBestSellerDescription")}
+                    </span>
+                  </div>
+                  <Toggle
+                    checked={field.value ?? false}
+                    onChange={(v) => field.onChange(v)}
+                    label={t("settings.products.isBestSeller")}
+                  />
+                </InsetPanel>
+              )}
+            />
+
+            {!stationId && (
+              <p className="text-danger text-label">
+                {t("settings.products.stationMissing")}
+              </p>
+            )}
+          </div>
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="mt-8 border-t border-border pt-5">
           <Button type="button" variant="secondary" onClick={handleClose}>
             {t("common.cancel")}
           </Button>

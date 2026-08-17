@@ -5,7 +5,7 @@ export interface IMenu {
   isBestSeller?: boolean;
   price?: number;
   cost?: number;
-  imageUrl?: string;
+  imageUrl?: string | null;
   categoryId?: string;
   categoryName?: string;
   stationId?: string;
@@ -26,7 +26,7 @@ export interface ProductFormData {
   cost?: number;
   isActive: boolean;
   isBestSeller?: boolean;
-  imageUrl?: string;
+  imageUrl?: string | null;
 }
 
 export interface MenuFormData {

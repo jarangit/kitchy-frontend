@@ -11,7 +11,7 @@ interface ProductCardProps {
   isActive: boolean;
   price?: number;
   cost?: number;
-  imageUrl?: string;
+  imageUrl?: string | null;
   categoryName?: string;
   stationName?: string;
   isToggling?: boolean;
