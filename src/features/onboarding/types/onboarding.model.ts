@@ -1,8 +1,5 @@
-import type { OrderType } from "@/features/pos/types/pos.model";
-
 /** Steps in the onboarding wizard, in visit order. */
-export type OnboardingStep =
-  "welcome" | "store" | "menu" | "shopType" | "pos" | "done";
+export type OnboardingStep = "welcome" | "store" | "menu" | "pos" | "done";
 
 /** One menu item captured in Step 2. */
 export interface OnboardingMenuDraft {
@@ -12,9 +9,6 @@ export interface OnboardingMenuDraft {
   /** Price in THB, stored as string while editing to avoid input jumpiness. */
   price: string;
 }
-
-/** Shop layout choice in Step 3; maps to POS default OrderType. */
-export type OnboardingShopType = OrderType;
 
 /**
  * All data captured during the wizard.
@@ -26,7 +20,6 @@ export interface OnboardingDraft {
   storeName: string;
   promptpay: string;
   menus: OnboardingMenuDraft[];
-  shopType: OnboardingShopType | null;
   storeId?: string;
   stationId?: string;
 }
@@ -35,7 +28,6 @@ export const ONBOARDING_STEP_ORDER: OnboardingStep[] = [
   "welcome",
   "store",
   "menu",
-  "shopType",
   "pos",
   "done",
 ];
@@ -45,6 +37,5 @@ export const ONBOARDING_VISIBLE_STEPS: OnboardingStep[] = [
   "welcome",
   "store",
   "menu",
-  "shopType",
   "pos",
 ];

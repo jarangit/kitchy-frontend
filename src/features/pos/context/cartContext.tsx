@@ -1,9 +1,7 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
 import type { ICartItem, OrderType } from "@/features/pos/types/pos.model";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
-import { useAppSelector } from "@/shared/hooks/hooks";
-import { onboardingStorage } from "@/features/onboarding/utils/onboarding-storage";
 import { CartContext } from "@/features/pos/context/cart-context-value";
 import type {
   CartContextValue,
@@ -13,26 +11,13 @@ import type {
 const createCartItemId = () =>
   `cart-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
-const VALID_ORDER_TYPES: readonly OrderType[] = ["DINE_IN", "TOGO", "DELIVERY"];
-
-function resolveInitialOrderType(storeId: string | null): OrderType {
-  if (!storeId) return "TOGO";
-  const stored = onboardingStorage.getShopType(storeId);
-  if (stored && (VALID_ORDER_TYPES as readonly string[]).includes(stored)) {
-    return stored as OrderType;
-  }
-  return "TOGO";
-}
-
 export function CartProvider({ children }: { children: ReactNode }) {
-  const currentStoreId = useAppSelector((s) => s.currentStore.storeId);
   const [items, setItems] = useState<ICartItem[]>([]);
   const [paymentResult, setPaymentResultState] = useState<PaymentResult | null>(
     null,
   );
-  const [orderType, setOrderTypeState] = useState<OrderType>(() =>
-    resolveInitialOrderType(currentStoreId),
-  );
+  // Default every cart to dine-in; staff can still switch per order in the cart.
+  const [orderType, setOrderTypeState] = useState<OrderType>("DINE_IN");
   const [tableNumber, setTableNumberState] = useState<string | null>(null);
   const [customerName, setCustomerNameState] = useState("");
   const [deliveryPlatform, setDeliveryPlatformState] = useState("");
@@ -97,12 +82,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
     setDeliveryOrderNumberState("");
   }, []);
-
-  useEffect(() => {
-    if (!currentStoreId || items.length > 0) return;
-
-    setOrderTypeState(resolveInitialOrderType(currentStoreId));
-  }, [currentStoreId, items.length]);
 
   const setOrderType = useCallback((type: OrderType) => {
     setOrderTypeState(type);

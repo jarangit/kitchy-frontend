@@ -11,6 +11,21 @@ import {
 } from "@/shared/services/adapters/data-adapter";
 
 export const productApiService = {
+  uploadProductImage: async (file: File) => {
+    if (IS_DEMO_MODE) {
+      const url = await (await getAdapter()).uploadProductImage(file);
+      return url;
+    }
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await axiosClient.post<ApiResponse<{ imageUrl: string }>>(
+      "/uploads/product-image",
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } },
+    );
+    return res.data.data.imageUrl;
+  },
+
   getProductsByStoreId: async (storeId: string) => {
     if (IS_DEMO_MODE) {
       const data = await (await getAdapter()).getProductsByStoreId(storeId);

@@ -63,6 +63,7 @@ export interface DataAdapter {
   getProductsByStoreId(storeId: string): Promise<IMenu[]>;
   getProductById(id: string): Promise<IMenu>;
   getProductsByCategoryId(categoryId: string): Promise<IMenu[]>;
+  uploadProductImage(file: File): Promise<string>;
   createProduct(dto: CreateProductRequest): Promise<IMenu>;
   updateProduct(id: string, dto: UpdateProductRequest): Promise<IMenu>;
   deleteProduct(id: string): Promise<void>;

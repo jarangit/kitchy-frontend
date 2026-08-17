@@ -17,6 +17,7 @@ import { useCategoryService } from "@/features/category/hooks/useCategoryService
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { LuImage, LuTrash2 } from "react-icons/lu";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { productApiService } from "@/features/product/services/product";
 
 export type ProductFormMode = "create" | "edit";
 
@@ -28,15 +29,8 @@ type Props = {
   onSubmit: (data: ProductFormData) => void;
 };
 
-const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
-
-const fileToDataUrl = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file);
-  });
+const MAX_IMAGE_SIZE = 50 * 1024 * 1024; // 50MB
+const PRODUCT_IMAGE_INPUT_ID = "product-image-upload";
 
 const emptyDefaults: ProductFormData = {
   name: "",
@@ -62,7 +56,11 @@ const AddUpProductForm = ({
   >([]);
   const { categoriesQuery } = useCategoryService();
   const [imageError, setImageError] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [pendingImageFile, setPendingImageFile] = useState<File | null>(null);
+  const [localPreviewUrl, setLocalPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const objectUrlRef = useRef<string | null>(null);
 
   const stationId = useAppSelector((state) => state.currentStation.stationId);
 
@@ -83,10 +81,60 @@ const AddUpProductForm = ({
   });
 
   const imageUrl = watch("imageUrl");
+  const previewImageUrl = localPreviewUrl ?? imageUrl;
 
-  const onSubmit = (data: ProductFormData) => {
+  const clearLocalPreview = () => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+    setLocalPreviewUrl(null);
+  };
+
+  const resetPendingImageSelection = () => {
+    clearLocalPreview();
+    setPendingImageFile(null);
+  };
+
+  const openFilePicker = () => {
+    const input = fileInputRef.current as
+      (HTMLInputElement & { showPicker?: () => void }) | null;
+
+    if (!input) return;
+
+    try {
+      if (typeof input.showPicker === "function") {
+        input.showPicker();
+        return;
+      }
+    } catch {
+      // Fall back to click() for browsers that expose showPicker but block it.
+    }
+
+    input.click();
+  };
+
+  const onSubmit = async (data: ProductFormData) => {
     if (!stationId && !data.stationId) {
       return;
+    }
+
+    let nextImageUrl = data.imageUrl || undefined;
+
+    if (pendingImageFile) {
+      setUploadingImage(true);
+      setImageError(null);
+      try {
+        nextImageUrl =
+          await productApiService.uploadProductImage(pendingImageFile);
+        setValue("imageUrl", nextImageUrl, { shouldDirty: true });
+        resetPendingImageSelection();
+      } catch {
+        setImageError(t("settings.products.imageUploadFailed"));
+        return;
+      } finally {
+        setUploadingImage(false);
+      }
     }
 
     const payload: ProductFormData = {
@@ -101,7 +149,7 @@ const AddUpProductForm = ({
           : Number(data.cost),
       isActive: data.isActive ?? true,
       isBestSeller: data.isBestSeller ?? false,
-      imageUrl: data.imageUrl || undefined,
+      imageUrl: nextImageUrl,
     };
 
     onSubmitProp(payload);
@@ -110,6 +158,7 @@ const AddUpProductForm = ({
 
   const handleClose = () => {
     setImageError(null);
+    resetPendingImageSelection();
     onClose();
   };
 
@@ -129,16 +178,16 @@ const AddUpProductForm = ({
       return;
     }
 
-    try {
-      const dataUrl = await fileToDataUrl(file);
-      setValue("imageUrl", dataUrl, { shouldDirty: true });
-      setImageError(null);
-    } catch {
-      setImageError(t("settings.products.imageInvalidType"));
-    }
+    setImageError(null);
+    resetPendingImageSelection();
+    const previewUrl = URL.createObjectURL(file);
+    objectUrlRef.current = previewUrl;
+    setLocalPreviewUrl(previewUrl);
+    setPendingImageFile(file);
   };
 
   const handleImageRemove = () => {
+    resetPendingImageSelection();
     setValue("imageUrl", undefined, { shouldDirty: true });
     setImageError(null);
   };
@@ -146,6 +195,13 @@ const AddUpProductForm = ({
   // Reset form whenever dialog opens with fresh defaults
   useEffect(() => {
     if (open) {
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+        objectUrlRef.current = null;
+      }
+      setLocalPreviewUrl(null);
+      setPendingImageFile(null);
+      setUploadingImage(false);
       reset({
         ...emptyDefaults,
         stationId: stationId ?? "",
@@ -154,6 +210,15 @@ const AddUpProductForm = ({
       setImageError(null);
     }
   }, [open, defaultValues, stationId, reset]);
+
+  useEffect(
+    () => () => {
+      if (objectUrlRef.current) {
+        URL.revokeObjectURL(objectUrlRef.current);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     if (categoriesQuery && categoriesQuery.length > 0) {
@@ -181,8 +246,9 @@ const AddUpProductForm = ({
     mode === "edit"
       ? t("settings.products.editDescription")
       : t("settings.products.createDescription");
-  const submitLabel =
-    mode === "edit"
+  const submitLabel = uploadingImage
+    ? t("settings.products.imageUploading")
+    : mode === "edit"
       ? isSubmitting
         ? t("settings.products.saving")
         : t("settings.products.save")
@@ -210,17 +276,18 @@ const AddUpProductForm = ({
                 </label>
 
                 <input
+                  id={PRODUCT_IMAGE_INPUT_ID}
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  className="hidden"
+                  className="sr-only"
                   onChange={handleImagePick}
                 />
 
-                {imageUrl ? (
+                {previewImageUrl ? (
                   <InsetPanel className="flex items-center gap-4" padding="sm">
                     <img
-                      src={imageUrl}
+                      src={previewImageUrl}
                       alt="Product preview"
                       className="h-20 w-20 rounded-sm object-cover"
                     />
@@ -232,13 +299,15 @@ const AddUpProductForm = ({
                         <Button
                           type="button"
                           variant="secondary"
-                          onClick={() => fileInputRef.current?.click()}
+                          disabled={uploadingImage}
+                          onClick={openFilePicker}
                         >
                           {t("settings.products.imageReplace")}
                         </Button>
                         <Button
                           type="button"
                           variant="secondary"
+                          disabled={uploadingImage}
                           onClick={handleImageRemove}
                         >
                           <LuTrash2 className="w-4 h-4" />
@@ -251,14 +320,17 @@ const AddUpProductForm = ({
                   <InsetPanel
                     as="button"
                     type="button"
-                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadingImage}
+                    onClick={openFilePicker}
                     variant="dashed"
                     padding="lg"
-                    className="flex w-full flex-col items-center justify-center gap-2"
+                    className="flex w-full cursor-pointer flex-col items-center justify-center gap-2"
                   >
                     <LuImage className="h-8 w-8" />
                     <span className="text-body font-medium">
-                      {t("settings.products.imageUpload")}
+                      {uploadingImage
+                        ? t("settings.products.imageUploading")
+                        : t("settings.products.imageUpload")}
                     </span>
                     <span className="text-label">
                       {t("settings.products.imageHint")}
@@ -396,7 +468,10 @@ const AddUpProductForm = ({
           <Button type="button" variant="secondary" onClick={handleClose}>
             {t("common.cancel")}
           </Button>
-          <Button type="submit" disabled={isSubmitting || !stationId}>
+          <Button
+            type="submit"
+            disabled={isSubmitting || uploadingImage || !stationId}
+          >
             {submitLabel}
           </Button>
         </DialogFooter>

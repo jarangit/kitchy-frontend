@@ -20,8 +20,6 @@ export const onboardingStorageKeys = {
   /** First order was placed within the onboarding session. */
   firstOrderDone: (storeId: string) =>
     `${STORAGE_PREFIX}.firstOrderDone.${storeId}`,
-  /** Selected shop type (drives default orderType in cart). */
-  shopType: (storeId: string) => `${STORAGE_PREFIX}.shopType.${storeId}`,
 } as const;
 
 function readBool(key: string): boolean {
@@ -67,28 +65,6 @@ export const onboardingStorage = {
   markFirstOrderDone: (storeId: string) =>
     writeBool(onboardingStorageKeys.firstOrderDone(storeId), true),
 
-  getShopType: (storeId: string): string | null => {
-    if (typeof window === "undefined") return null;
-    try {
-      return window.localStorage.getItem(
-        onboardingStorageKeys.shopType(storeId),
-      );
-    } catch {
-      return null;
-    }
-  },
-  setShopType: (storeId: string, shopType: string) => {
-    if (typeof window === "undefined") return;
-    try {
-      window.localStorage.setItem(
-        onboardingStorageKeys.shopType(storeId),
-        shopType,
-      );
-    } catch {
-      /* ignore */
-    }
-  },
-
   resetStore: (storeId: string) => {
     if (typeof window === "undefined") return;
     try {
@@ -100,7 +76,6 @@ export const onboardingStorage = {
       window.localStorage.removeItem(
         onboardingStorageKeys.firstOrderDone(storeId),
       );
-      window.localStorage.removeItem(onboardingStorageKeys.shopType(storeId));
     } catch {
       /* ignore */
     }

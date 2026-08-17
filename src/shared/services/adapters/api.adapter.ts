@@ -97,6 +97,9 @@ export const apiAdapter: DataAdapter = {
     const res = await productApiService.getProductsByCategoryId(categoryId);
     return unwrapPayload(res);
   },
+  async uploadProductImage(file: File) {
+    return productApiService.uploadProductImage(file);
+  },
   async createProduct(dto: CreateProductRequest) {
     const res = await productApiService.createProduct(dto);
     return res.data.data;

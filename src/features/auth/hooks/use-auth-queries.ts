@@ -87,10 +87,11 @@ export const useRegisterMutation = () => {
 };
 
 /**
- * Google sign-in mutation. Takes a Google ID token from the
- * frontend SDK, sends to the backend to exchange for our own
- * access_token. Works for both sign-up and sign-in — backend
- * decides whether to create or attach to an existing user.
+ * Google sign-in mutation. Takes the Google ID token (a JWT `credential`
+ * from the Google Identity Services credential flow) and sends it to the
+ * backend for verification and exchange against our own access_token. Works
+ * for both sign-up and sign-in — backend decides whether to create or attach
+ * to an existing user.
  */
 export const useGoogleLoginMutation = () => {
   const queryClient = useQueryClient();

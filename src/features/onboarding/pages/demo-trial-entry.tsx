@@ -82,7 +82,6 @@ export default function DemoTrialEntryPage() {
       );
       clearDemoData();
       onboardingStorage.resetStore(DEMO_STORE_ID);
-      onboardingStorage.setShopType(DEMO_STORE_ID, "DINE_IN");
       onboardingStorage.setActive(DEMO_STORE_ID, false);
 
       dispatch(

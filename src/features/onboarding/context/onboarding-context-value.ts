@@ -2,7 +2,6 @@ import { createContext } from "react";
 import type {
   OnboardingDraft,
   OnboardingMenuDraft,
-  OnboardingShopType,
   OnboardingStep,
 } from "@/features/onboarding/types/onboarding.model";
 
@@ -26,8 +25,6 @@ export interface OnboardingContextValue {
     patch: Partial<Omit<OnboardingMenuDraft, "localId">>,
   ) => void;
   removeMenu: (localId: string) => void;
-
-  setShopType: (value: OnboardingShopType | null) => void;
 
   /** Populate backend-issued ids after Step 1 submit succeeds. */
   setCreatedIds: (ids: { storeId: string; stationId: string }) => void;

@@ -22,7 +22,9 @@ export const userServiceApi = {
   },
   googleLogin: async (idToken: string) => {
     if (IS_DEMO_MODE) return (await getAdapter()).login(idToken, "demo");
-    const response = await axiosClient.post("/users/google-login", { idToken });
+    const response = await axiosClient.post("/users/google-login", {
+      idToken,
+    });
     return response.data;
   },
   getBydId: async (id: number) => {

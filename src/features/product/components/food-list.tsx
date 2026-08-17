@@ -148,6 +148,7 @@ const ProductListTemplate = () => {
         price: editingProduct.price ?? 0,
         cost: editingProduct.cost,
         isActive: editingProduct.isActive,
+        isBestSeller: editingProduct.isBestSeller,
         imageUrl: editingProduct.imageUrl,
       }
     : undefined;

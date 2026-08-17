@@ -16,7 +16,6 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { TabSoundFeedback } from "@/shared/audio/tab-sound-feedback";
 
 const LoginPage = lazy(() => import("@/features/auth/pages/login"));
-const RegisterPage = lazy(() => import("@/features/auth/pages/register"));
 const DemoTrialEntryPage = lazy(
   () => import("@/features/onboarding/pages/demo-trial-entry"),
 );
@@ -92,18 +91,7 @@ function App() {
               )
             }
           />
-          <Route
-            path="/login"
-            element={
-              IS_DEMO_MODE ? <Navigate to="/try" replace /> : <LoginPage />
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              IS_DEMO_MODE ? <Navigate to="/try" replace /> : <RegisterPage />
-            }
-          />
+          <Route path="/login" element={<LoginPage />} />
 
           {/* User Dashboard (store selection) */}
           <Route

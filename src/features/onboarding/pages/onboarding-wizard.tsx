@@ -14,7 +14,6 @@ import { WizardShell } from "@/features/onboarding/components/wizard-shell";
 import { StepWelcome } from "@/features/onboarding/components/step-welcome";
 import { StepStoreInfo } from "@/features/onboarding/components/step-store-info";
 import { StepAddMenu } from "@/features/onboarding/components/step-add-menu";
-import { StepShopType } from "@/features/onboarding/components/step-shop-type";
 
 /**
  * Onboarding wizard route.
@@ -61,10 +60,6 @@ function WizardBody() {
         }),
       );
       onboardingStorage.setActive(storeId, true);
-      // Persist shop type so POS can default its orderType
-      if (draft.shopType) {
-        onboardingStorage.setShopType(storeId, draft.shopType);
-      }
       // Persist PromptPay into the existing localStorage keys used by settings
       if (draft.promptpay.trim()) {
         try {
@@ -81,15 +76,7 @@ function WizardBody() {
       queryClient.invalidateQueries({ queryKey: ["products", storeId] });
       navigate(`/store/${storeId}/pos`);
     },
-    [
-      dispatch,
-      draft.promptpay,
-      draft.shopType,
-      navigate,
-      queryClient,
-      t,
-      userId,
-    ],
+    [dispatch, draft.promptpay, navigate, queryClient, t, userId],
   );
 
   // ── Step dispatchers ──
@@ -116,16 +103,18 @@ function WizardBody() {
         stationId: draft.stationId,
         menus: draft.menus,
       });
-      next();
+      goToPosAsActive(draft.storeId, draft.stationId, draft.storeName.trim());
     } catch {
       /* error shown inline */
     }
-  }, [draft.menus, draft.stationId, draft.storeId, flow, next]);
-
-  const handleShopTypeSubmit = useCallback(() => {
-    if (!draft.storeId || !draft.stationId) return;
-    goToPosAsActive(draft.storeId, draft.stationId, draft.storeName.trim());
-  }, [draft.stationId, draft.storeId, draft.storeName, goToPosAsActive]);
+  }, [
+    draft.menus,
+    draft.stationId,
+    draft.storeId,
+    draft.storeName,
+    flow,
+    goToPosAsActive,
+  ]);
 
   const handleSkipToPos = useCallback(() => {
     if (!draft.storeId || !draft.stationId) return;
@@ -182,18 +171,6 @@ function WizardBody() {
               flow.createMenusError ? t("onboarding.menu.submitError") : null
             }
           />
-        </WizardShell>
-      );
-
-    case "shopType":
-      return (
-        <WizardShell
-          stepIndex={stepIndex}
-          totalSteps={totalVisibleSteps}
-          onBack={back}
-          onSkip={handleShopTypeSubmit}
-        >
-          <StepShopType onSubmit={handleShopTypeSubmit} />
         </WizardShell>
       );
 

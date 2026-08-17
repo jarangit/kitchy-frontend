@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState, type ReactNode } from "react";
 import type {
   OnboardingDraft,
   OnboardingMenuDraft,
-  OnboardingShopType,
   OnboardingStep,
 } from "@/features/onboarding/types/onboarding.model";
 import {
@@ -17,7 +16,6 @@ function createInitialDraft(): OnboardingDraft {
     storeName: "",
     promptpay: "",
     menus: [newMenuDraft()],
-    shopType: null,
   };
 }
 
@@ -96,10 +94,6 @@ export function OnboardingProvider({
     });
   }, []);
 
-  const setShopType = useCallback((value: OnboardingShopType | null) => {
-    setDraft((prev) => ({ ...prev, shopType: value }));
-  }, []);
-
   const setCreatedIds = useCallback(
     ({ storeId, stationId }: { storeId: string; stationId: string }) => {
       setDraft((prev) => ({ ...prev, storeId, stationId }));
@@ -131,7 +125,6 @@ export function OnboardingProvider({
       addMenu,
       updateMenu,
       removeMenu,
-      setShopType,
       setCreatedIds,
       resetDraft,
     }),
@@ -147,7 +140,6 @@ export function OnboardingProvider({
       addMenu,
       updateMenu,
       removeMenu,
-      setShopType,
       setCreatedIds,
       resetDraft,
     ],

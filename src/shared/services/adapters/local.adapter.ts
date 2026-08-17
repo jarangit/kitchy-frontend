@@ -373,6 +373,16 @@ export const localAdapter: DataAdapter = {
     );
   },
 
+  async uploadProductImage(file: File) {
+    await delay();
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  },
+
   async createProduct(dto: CreateProductRequest) {
     await delay();
     const products = get<IMenu[]>(KEYS.products, getSeedProducts());
