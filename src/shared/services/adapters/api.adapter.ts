@@ -22,7 +22,6 @@ import type {
   UpdateCategoryRequestDto,
 } from "@/features/category/types/category.dto";
 import type { OrderType } from "@/features/order/types/order.dto";
-import type { IOrderItem } from "@/features/order/types/order.model";
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
 import type { IReportFilter } from "@/features/report/types/report.dto";
 
@@ -34,6 +33,17 @@ import { categoryServiceApi } from "@/features/category/services/category";
 import { orderApiService } from "@/features/order/services/order";
 import { transactionServiceApi } from "@/features/transaction/services/transaction";
 import { reportService } from "@/features/report/services/report";
+import { quickNoteServiceApi } from "@/shared/services/quick-note";
+import {
+  deviceServiceApi,
+  pairingCodeServiceApi,
+} from "@/features/device/services/device";
+import type {
+  DeviceDto,
+  JoinPairingResponse,
+  PairingCodeResponse,
+  UpdateDeviceRequest,
+} from "@/features/device/types/device.dto";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
 
 export const apiAdapter: DataAdapter = {
@@ -142,8 +152,8 @@ export const apiAdapter: DataAdapter = {
   },
   async getOrderById(id) {
     const res = await orderApiService.getById(id);
-    const arr = unwrapPayload<IOrderItem>(res);
-    return arr[0];
+    const data = (res.data as { data?: unknown })?.data ?? res.data;
+    return Array.isArray(data) ? data[0] : data;
   },
   async createOrder(
     storeId,
@@ -174,6 +184,10 @@ export const apiAdapter: DataAdapter = {
   async deleteOrder(id) {
     await orderApiService.delete(id);
   },
+  async payOrder(orderId, payload) {
+    const res = await orderApiService.pay(orderId, payload);
+    return (res.data as { data?: unknown })?.data ?? res.data;
+  },
 
   // ═══ KDS ═══
   async getOrderStationItemsByStationId(stationId) {
@@ -199,5 +213,47 @@ export const apiAdapter: DataAdapter = {
   // ═══ Report ═══
   async getReportData(filter: IReportFilter) {
     return reportService.getReportData(filter);
+  },
+
+  // ═══ Quick note ═══
+  async getQuickNotesByStoreId(storeId) {
+    const res = await quickNoteServiceApi.getByStoreId(storeId);
+    return unwrapPayload(res);
+  },
+  async createQuickNote(dto) {
+    const res = await quickNoteServiceApi.create(dto);
+    return res.data.data;
+  },
+  async updateQuickNote(id, dto) {
+    const res = await quickNoteServiceApi.update(id, dto);
+    return res.data.data;
+  },
+  async deleteQuickNote(id) {
+    await quickNoteServiceApi.delete(id);
+  },
+  async replaceQuickNotes(storeId, notes) {
+    const res = await quickNoteServiceApi.replace(storeId, notes);
+    return unwrapPayload(res);
+  },
+
+  // ═══ Device ═══
+  async getDevicesByStoreId(storeId): Promise<DeviceDto[]> {
+    const res = await deviceServiceApi.getByStoreId(storeId);
+    return unwrapPayload(res);
+  },
+  async updateDevice(id, dto: UpdateDeviceRequest): Promise<DeviceDto> {
+    const res = await deviceServiceApi.update(id, dto);
+    return "data" in res.data ? res.data.data : res.data;
+  },
+  async deleteDevice(id) {
+    await deviceServiceApi.remove(id);
+  },
+
+  // ═══ Pairing ═══
+  async createPairingCode(storeId): Promise<PairingCodeResponse> {
+    return await pairingCodeServiceApi.create(storeId);
+  },
+  async joinPairingCode(code): Promise<JoinPairingResponse> {
+    return await pairingCodeServiceApi.join(code);
   },
 };

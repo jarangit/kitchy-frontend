@@ -127,6 +127,39 @@ export const enMessages = {
   "settings.cp.devices.offline": "Offline",
   "settings.cp.devices.add": "Add device",
   "settings.cp.devices.empty": "No devices yet",
+  "settings.cp.devices.status.paired": "Paired",
+  "settings.cp.devices.status.unpaired": "Unpaired",
+  "settings.cp.devices.status.pending": "Pending",
+  "settings.cp.devices.status.disabled": "Disabled",
+  "settings.cp.devices.noStation": "No station",
+  "settings.cp.devices.station": "Station: {name}",
+  "settings.cp.devices.delete": "Remove",
+  "settings.cp.devices.deleteConfirmTitle": "Remove device?",
+  "settings.cp.devices.deleteConfirmDescription":
+    "This device will be unpaired and removed from this store.",
+  "settings.cp.devices.cancel": "Cancel",
+  "settings.cp.devices.confirm": "Remove",
+  "settings.cp.devices.addTitle": "Pair a new display",
+  "settings.cp.devices.addDescription":
+    "Enter this code on the screen you want to pair with this store.",
+  "settings.cp.devices.pairCodeHint": "Code valid for a limited time",
+  "settings.cp.devices.copy": "Copy",
+  "settings.cp.devices.copied": "Copied",
+  "settings.cp.devices.addError": "Could not create a pairing code. Try again.",
+  "settings.cp.devices.renameLabel": "Display name",
+  "settings.cp.devices.renamePlaceholder": "e.g. Grill screen",
+
+  // Pairing page
+  "pair.title": "Pair this screen",
+  "pair.subtitle":
+    "Enter the pairing code shown in Settings → Devices to link this screen to a store.",
+  "pair.codePlaceholder": "Pairing code",
+  "pair.submit": "Pair device",
+  "pair.pairing": "Pairing…",
+  "pair.error.invalid": "Invalid pairing code. Please check and try again.",
+  "pair.error.generic": "Something went wrong. Please try again.",
+  "pair.backToLogin": "Back to sign in",
+  "pair.loginLink": "Pair a display screen",
 
   // Safety
   "settings.cp.safety.description": "Confirm before irreversible actions",

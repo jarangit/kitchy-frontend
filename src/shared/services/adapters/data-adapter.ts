@@ -28,11 +28,24 @@ import type {
 } from "@/features/category/types/category.dto";
 import type { IOrderItem } from "@/features/order/types/order.model";
 import type { OrderType } from "@/features/order/types/order.dto";
+import type { PaymentMethod } from "@/features/pos/types/pos.model";
+import type { IPaymentResponse } from "@/features/pos/types/pos.dto";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 import type { ITransaction } from "@/features/transaction/types/transaction.model";
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
 import type { IReportData } from "@/features/report/types/report.model";
 import type { IReportFilter } from "@/features/report/types/report.dto";
+import type {
+  CreateQuickNoteRequest,
+  QuickNote,
+  UpdateQuickNoteRequest,
+} from "@/shared/types/quick-note";
+import type {
+  DeviceDto,
+  JoinPairingResponse,
+  PairingCodeResponse,
+  UpdateDeviceRequest,
+} from "@/features/device/types/device.dto";
 
 export interface DataAdapter {
   // Auth
@@ -93,6 +106,14 @@ export interface DataAdapter {
   ): Promise<IOrderItem>;
   updateOrder(id: string, data: Record<string, unknown>): Promise<IOrderItem>;
   deleteOrder(id: string): Promise<void>;
+  payOrder(
+    orderId: string,
+    payload: {
+      method: PaymentMethod;
+      amount: number;
+      receivedAmount?: number;
+    },
+  ): Promise<IPaymentResponse>;
 
   // KDS
   getOrderStationItemsByStationId(
@@ -114,6 +135,22 @@ export interface DataAdapter {
 
   // Report
   getReportData(filter: IReportFilter): Promise<IReportData>;
+
+  // Quick note
+  getQuickNotesByStoreId(storeId: string): Promise<QuickNote[]>;
+  createQuickNote(dto: CreateQuickNoteRequest): Promise<QuickNote>;
+  updateQuickNote(id: string, dto: UpdateQuickNoteRequest): Promise<QuickNote>;
+  deleteQuickNote(id: string): Promise<void>;
+  replaceQuickNotes(storeId: string, notes: string[]): Promise<QuickNote[]>;
+
+  // Device
+  getDevicesByStoreId(storeId: string): Promise<DeviceDto[]>;
+  updateDevice(id: string, dto: UpdateDeviceRequest): Promise<DeviceDto>;
+  deleteDevice(id: string): Promise<void>;
+
+  // Pairing
+  createPairingCode(storeId: string): Promise<PairingCodeResponse>;
+  joinPairingCode(code: string): Promise<JoinPairingResponse>;
 }
 
 export const IS_DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "true";

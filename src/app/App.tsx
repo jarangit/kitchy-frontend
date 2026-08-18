@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "@/features/auth/context/authContext";
 import { ProtectedRoute } from "@/shared/components/protected-route";
+import { KdsRoute } from "@/features/kds/components/kds-route";
 import NotFoundPage from "@/shared/pages/not-found";
 import { IS_DEMO_MODE } from "@/shared/services/adapters/data-adapter";
 
@@ -16,6 +17,7 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { TabSoundFeedback } from "@/shared/audio/tab-sound-feedback";
 
 const LoginPage = lazy(() => import("@/features/auth/pages/login"));
+const PairPage = lazy(() => import("@/features/device/pages/pair"));
 const DemoTrialEntryPage = lazy(
   () => import("@/features/onboarding/pages/demo-trial-entry"),
 );
@@ -92,6 +94,7 @@ function App() {
             }
           />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/pair" element={<PairPage />} />
 
           {/* User Dashboard (store selection) */}
           <Route
@@ -174,11 +177,11 @@ function App() {
           <Route
             path="/store/:id/kds"
             element={
-              <ProtectedRoute>
+              <KdsRoute>
                 <KdsLayout>
                   <KdsBoardPage />
                 </KdsLayout>
-              </ProtectedRoute>
+              </KdsRoute>
             }
           />
 

@@ -5,7 +5,7 @@ import { BrandMark } from "@/shared/components/ui/brand-mark";
 import { GoogleSignInButton } from "@/features/auth/components/google-sign-in-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IS_DEMO_MODE } from "@/shared/services/adapters/data-adapter";
 
 const LoginPage = () => {
@@ -81,6 +81,13 @@ const LoginPage = () => {
                 {t("auth.demo.login")}
               </Button>
             )}
+
+            <Link
+              to="/pair"
+              className="text-center text-body-sm text-accent-text hover:underline"
+            >
+              {t("pair.loginLink")}
+            </Link>
           </CardContent>
         </Card>
       </main>

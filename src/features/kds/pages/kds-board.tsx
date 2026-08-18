@@ -11,6 +11,10 @@ import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { IconButton } from "@/shared/components/ui/icon-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
+import {
+  decodeDeviceToken,
+  hasDeviceToken,
+} from "@/features/device/utils/device-token";
 import { LuMaximize2, LuMinimize2, LuUtensilsCrossed } from "react-icons/lu";
 
 type KdsBoardScreenState =
@@ -186,13 +190,23 @@ const KdsBoardPage = () => {
   useDragScroll(boardScrollRef);
   const { stationsQuery } = useStationService({});
   const stations = useMemo(() => stationsQuery ?? [], [stationsQuery]);
-  const [activeStationId, setActiveStationId] = useState<string | null>(null);
+  const deviceMode = hasDeviceToken();
+  const deviceStationId = decodeDeviceToken()?.station ?? null;
+  const [activeStationId, setActiveStationId] = useState<string | null>(
+    deviceStationId,
+  );
   const activeStation = useMemo(() => {
     if (stations.length === 0) return null;
+    if (deviceMode && deviceStationId) {
+      return (
+        stations.find((station) => station.id === deviceStationId) ??
+        stations[0]
+      );
+    }
     return (
       stations.find((station) => station.id === activeStationId) ?? stations[0]
     );
-  }, [activeStationId, stations]);
+  }, [activeStationId, deviceMode, deviceStationId, stations]);
 
   const {
     pendingGroups,
@@ -234,11 +248,13 @@ const KdsBoardPage = () => {
       {/* Top controls: station-scoped board switcher + fullscreen toggle (when stats bar is hidden) */}
       {showTopControls && (
         <div className="flex items-center justify-between gap-3">
-          <KdsStationTabs
-            stations={stations}
-            activeStationId={activeStation?.id ?? ""}
-            onChange={setActiveStationId}
-          />
+          {!deviceMode && (
+            <KdsStationTabs
+              stations={stations}
+              activeStationId={activeStation?.id ?? ""}
+              onChange={setActiveStationId}
+            />
+          )}
           {!showStats && (
             <div className="ml-auto shrink-0">
               <KdsFullscreenToggle />

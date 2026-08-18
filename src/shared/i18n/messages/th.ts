@@ -119,6 +119,39 @@ export const thMessages = {
   "settings.cp.devices.offline": "ออฟไลน์",
   "settings.cp.devices.add": "เพิ่มเครื่อง",
   "settings.cp.devices.empty": "ยังไม่มีอุปกรณ์",
+  "settings.cp.devices.status.paired": "จับคู่แล้ว",
+  "settings.cp.devices.status.unpaired": "ยังไม่จับคู่",
+  "settings.cp.devices.status.pending": "รออนุมัติ",
+  "settings.cp.devices.status.disabled": "ปิดใช้งาน",
+  "settings.cp.devices.noStation": "ไม่ผูก station",
+  "settings.cp.devices.station": "Station: {name}",
+  "settings.cp.devices.delete": "ลบ",
+  "settings.cp.devices.deleteConfirmTitle": "ลบอุปกรณ์นี้?",
+  "settings.cp.devices.deleteConfirmDescription":
+    "อุปกรณ์นี้จะถูกปลดการจับคู่และลบออกจากร้าน",
+  "settings.cp.devices.cancel": "ยกเลิก",
+  "settings.cp.devices.confirm": "ลบ",
+  "settings.cp.devices.addTitle": "จับคู่จอแสดงผลใหม่",
+  "settings.cp.devices.addDescription":
+    "กรอกรหัสนี้บนจอที่ต้องการจับคู่กับร้าน",
+  "settings.cp.devices.pairCodeHint": "รหัสใช้ได้ในระยะเวลาจำกัด",
+  "settings.cp.devices.copy": "คัดลอก",
+  "settings.cp.devices.copied": "คัดลอกแล้ว",
+  "settings.cp.devices.addError": "สร้างรหัสจับคู่ไม่สำเร็จ ลองอีกครั้ง",
+  "settings.cp.devices.renameLabel": "ชื่อแสดงผล",
+  "settings.cp.devices.renamePlaceholder": "เช่น จอฝั่งครัว",
+
+  // Pairing page
+  "pair.title": "จับคู่จอแสดงผล",
+  "pair.subtitle":
+    "กรอกรหัสจับคู่ที่แสดงใน Settings → Devices เพื่อเชื่อมจอนี้กับร้าน",
+  "pair.codePlaceholder": "รหัสจับคู่",
+  "pair.submit": "จับคู่เครื่อง",
+  "pair.pairing": "กำลังจับคู่…",
+  "pair.error.invalid": "รหัสจับคู่ไม่ถูกต้อง ตรวจสอบแล้วลองอีกครั้ง",
+  "pair.error.generic": "เกิดข้อผิดพลาด ลองใหม่อีกครั้ง",
+  "pair.backToLogin": "กลับไปเข้าสู่ระบบ",
+  "pair.loginLink": "จับคู่จอแสดงผล",
 
   // Safety
   "settings.cp.safety.description": "ยืนยันก่อนทำสิ่งที่แก้ไม่ได้",

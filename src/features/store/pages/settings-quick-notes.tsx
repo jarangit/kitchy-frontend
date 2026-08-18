@@ -10,9 +10,9 @@ import {
 } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { getDefaultQuickNotes } from "@/shared/i18n/presets";
-
-const getQuickNotesSettingsKey = (storeId: string) =>
-  `store:${storeId}:quick-notes`;
+import { quickNoteServiceApi } from "@/shared/services/quick-note";
+import { unwrapPayload } from "@/shared/services/unwrap-payload";
+import type { QuickNote } from "@/shared/types/quick-note";
 
 const SettingsQuickNotesPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,60 +23,84 @@ const SettingsQuickNotesPage = () => {
     [language],
   );
   const [quickNotes, setQuickNotes] = useState<string[]>(defaultQuickNotes);
+  const [savedNotes, setSavedNotes] = useState<QuickNote[]>([]);
   const [customNote, setCustomNote] = useState("");
-  const storageKey = useMemo(
-    () => (id ? getQuickNotesSettingsKey(id) : ""),
-    [id],
-  );
 
   useEffect(() => {
-    setQuickNotes(defaultQuickNotes);
-  }, [defaultQuickNotes]);
+    if (savedNotes.length === 0) {
+      setQuickNotes(defaultQuickNotes);
+    }
+  }, [defaultQuickNotes, savedNotes.length]);
 
   useEffect(() => {
-    if (!storageKey) return;
+    if (!id) return;
+    let cancelled = false;
 
-    const stored = localStorage.getItem(storageKey);
-    if (!stored) return;
+    quickNoteServiceApi
+      .getByStoreId(id)
+      .then((response) => {
+        const notes = unwrapPayload<QuickNote>(response);
+        if (!cancelled && notes.length > 0) {
+          setSavedNotes(notes);
+          setQuickNotes(notes.map((note) => note.text));
+        }
+      })
+      .catch(() => {
+        // Fall back to defaults when the backend is unreachable
+      });
 
-    try {
-      const parsed = JSON.parse(stored) as string[];
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        setQuickNotes(parsed);
-      }
-    } catch {
-      localStorage.removeItem(storageKey);
-    }
-  }, [storageKey]);
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
 
-  const persistQuickNotes = (nextQuickNotes: string[]) => {
-    setQuickNotes(nextQuickNotes);
-    if (storageKey) {
-      localStorage.setItem(storageKey, JSON.stringify(nextQuickNotes));
-    }
-  };
-
-  const handleAddQuickNote = () => {
+  const handleAddQuickNote = async () => {
     const nextNote = customNote.trim();
-    if (!nextNote || quickNotes.includes(nextNote)) {
+    if (!nextNote || !id || quickNotes.includes(nextNote)) {
       setCustomNote("");
       return;
     }
 
-    persistQuickNotes([...quickNotes, nextNote]);
-    setCustomNote("");
-  };
-
-  const handleRemoveQuickNote = (note: string) => {
-    if (quickNotes.length === 1) {
-      return;
+    try {
+      const response = await quickNoteServiceApi.create({
+        storeId: id,
+        text: nextNote,
+      });
+      const created = response.data.data as QuickNote;
+      setSavedNotes((prev) => [...prev, created]);
+      setQuickNotes((prev) => [...prev, nextNote]);
+      setCustomNote("");
+    } catch {
+      // Keep the input value so the user can retry
     }
-
-    persistQuickNotes(quickNotes.filter((item) => item !== note));
   };
 
-  const handleResetDefault = () => {
-    persistQuickNotes(defaultQuickNotes);
+  const handleRemoveQuickNote = async (note: string) => {
+    if (quickNotes.length === 1) return;
+
+    const saved = savedNotes.find((item) => item.text === note);
+    if (saved) {
+      try {
+        await quickNoteServiceApi.delete(saved.id);
+      } catch {
+        return;
+      }
+      setSavedNotes((prev) => prev.filter((item) => item.id !== saved.id));
+    }
+    setQuickNotes((prev) => prev.filter((item) => item !== note));
+  };
+
+  const handleResetDefault = async () => {
+    if (!id) return;
+
+    try {
+      const response = await quickNoteServiceApi.replace(id, defaultQuickNotes);
+      const replaced = unwrapPayload<QuickNote>(response);
+      setSavedNotes(replaced);
+      setQuickNotes(defaultQuickNotes);
+    } catch {
+      // Keep the current notes when the request fails
+    }
   };
 
   return (

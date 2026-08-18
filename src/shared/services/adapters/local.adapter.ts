@@ -28,10 +28,23 @@ import type {
 } from "@/features/category/types/category.dto";
 import type { IOrderItem } from "@/features/order/types/order.model";
 import type { OrderType } from "@/features/order/types/order.dto";
+import type { PaymentMethod } from "@/features/pos/types/pos.model";
+import type { IPaymentResponse } from "@/features/pos/types/pos.dto";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 import type { ITransaction } from "@/features/transaction/types/transaction.model";
 import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
 import type { IReportFilter } from "@/features/report/types/report.dto";
+import type {
+  CreateQuickNoteRequest,
+  QuickNote,
+  UpdateQuickNoteRequest,
+} from "@/shared/types/quick-note";
+import type {
+  DeviceDto,
+  JoinPairingResponse,
+  PairingCodeResponse,
+  UpdateDeviceRequest,
+} from "@/features/device/types/device.dto";
 import { generateMockReportData } from "@/features/report/data/mock-report-data";
 import {
   DEMO_SEED_VERSION,
@@ -64,6 +77,8 @@ const KEYS = {
   orderMeta: "demo:orderMeta",
   orderStationItems: "demo:orderStationItems",
   transactions: "demo:transactions",
+  quickNotes: "demo:quickNotes",
+  devices: "demo:devices",
 } as const;
 
 function getSelectedStorePreset(): DemoStorePreset {
@@ -631,6 +646,69 @@ export const localAdapter: DataAdapter = {
     );
   },
 
+  async payOrder(
+    orderId: string,
+    payload: {
+      method: PaymentMethod;
+      amount: number;
+      receivedAmount?: number;
+    },
+  ) {
+    await delay();
+    const payments = get<ITransaction[]>(
+      KEYS.transactions,
+      getSeedTransactions(),
+    );
+    const orders = get<IOrderItem[]>(KEYS.orders, getSeedOrders());
+    const metas = get<DemoOrderMeta[]>(KEYS.orderMeta, getSeedOrderMeta());
+    const products = get<IMenu[]>(KEYS.products, getSeedProducts());
+
+    const order = orders.find((o) => o.id === orderId);
+    const meta = metas.find((m) => m.id === orderId);
+    const items = buildTransactionItems(meta, products);
+    const change =
+      payload.method === "CASH"
+        ? Math.max(0, (payload.receivedAmount ?? 0) - payload.amount)
+        : 0;
+
+    const payment: IPaymentResponse = {
+      id: orderId,
+      orderId,
+      storeId: meta?.storeId ?? "",
+      method: payload.method,
+      amount: payload.amount,
+      receivedAmount:
+        payload.method === "CASH" ? payload.receivedAmount : undefined,
+      change,
+      receiptId: order?.orderNumber ?? `DEMO-${orderId}`,
+      createdAt: now(),
+    };
+
+    const paymentRecord: ITransaction = {
+      id: orderId,
+      orderId,
+      orderNumber: order?.orderNumber ?? "",
+      storeId: meta?.storeId ?? "",
+      status: order?.status ?? "READY",
+      type: order?.type,
+      method: payload.method,
+      amount: payload.amount,
+      totalAmount: payload.amount,
+      receiptId: payment.receiptId,
+      items,
+      products: items,
+      createdAt: now(),
+      updatedAt: now(),
+    };
+
+    const existingIdx = payments.findIndex((p) => p.orderId === orderId);
+    if (existingIdx >= 0) payments[existingIdx] = paymentRecord;
+    else payments.push(paymentRecord);
+    set(KEYS.transactions, payments);
+
+    return payment;
+  },
+
   // ═══ KDS ═══
   async getOrderStationItemsByStationId(stationId: string) {
     await delay();
@@ -861,5 +939,117 @@ export const localAdapter: DataAdapter = {
       topProducts,
       paymentBreakdown,
     };
+  },
+
+  // ═══ Quick note ═══
+  async getQuickNotesByStoreId(storeId: string) {
+    await delay();
+    return get<QuickNote[]>(KEYS.quickNotes, []).filter(
+      (note) => note.storeId === storeId,
+    );
+  },
+
+  async createQuickNote(dto: CreateQuickNoteRequest) {
+    await delay();
+    const notes = get<QuickNote[]>(KEYS.quickNotes, []);
+    const storeNotes = notes
+      .filter((note) => note.storeId === dto.storeId)
+      .sort((a, b) => b.sortOrder - a.sortOrder);
+    const note: QuickNote = {
+      id: genId(),
+      storeId: dto.storeId,
+      text: dto.text,
+      sortOrder: dto.sortOrder ?? (storeNotes[0]?.sortOrder ?? -1) + 1,
+      createdAt: now(),
+      updatedAt: now(),
+    };
+    notes.push(note);
+    set(KEYS.quickNotes, notes);
+    return note;
+  },
+
+  async updateQuickNote(id: string, dto: UpdateQuickNoteRequest) {
+    await delay();
+    const notes = get<QuickNote[]>(KEYS.quickNotes, []);
+    const idx = notes.findIndex((note) => note.id === id);
+    if (idx >= 0) {
+      notes[idx] = { ...notes[idx], ...dto, updatedAt: now() };
+      set(KEYS.quickNotes, notes);
+      return notes[idx];
+    }
+    throw new Error("Quick note not found");
+  },
+
+  async deleteQuickNote(id: string) {
+    await delay();
+    set(
+      KEYS.quickNotes,
+      get<QuickNote[]>(KEYS.quickNotes, []).filter((note) => note.id !== id),
+    );
+  },
+
+  async replaceQuickNotes(storeId: string, notes: string[]) {
+    await delay();
+    const all = get<QuickNote[]>(KEYS.quickNotes, []).filter(
+      (note) => note.storeId !== storeId,
+    );
+    const replaced = notes.map((text, index) => ({
+      id: genId(),
+      storeId,
+      text,
+      sortOrder: index,
+      createdAt: now(),
+      updatedAt: now(),
+    }));
+    set(KEYS.quickNotes, [...all, ...replaced]);
+    return replaced;
+  },
+
+  // ═══ Device ═══
+  async getDevicesByStoreId(storeId: string) {
+    await delay();
+    return get<DeviceDto[]>(KEYS.devices, []).filter(
+      (device) => device.storeId === storeId,
+    );
+  },
+
+  async updateDevice(id: string, dto: UpdateDeviceRequest) {
+    await delay();
+    const devices = get<DeviceDto[]>(KEYS.devices, []);
+    const idx = devices.findIndex((device) => device.id === id);
+    if (idx < 0) throw new Error("Device not found");
+    devices[idx] = { ...devices[idx], ...dto, updatedAt: now() };
+    set(KEYS.devices, devices);
+    return devices[idx];
+  },
+
+  async deleteDevice(id: string) {
+    await delay();
+    set(
+      KEYS.devices,
+      get<DeviceDto[]>(KEYS.devices, []).filter((device) => device.id !== id),
+    );
+  },
+
+  // ═══ Pairing ═══
+  async createPairingCode(storeId: string) {
+    await delay();
+    const code: PairingCodeResponse = {
+      id: genId(),
+      code: "DEMO1234",
+      storeId,
+      reused: false,
+    };
+    return code;
+  },
+
+  async joinPairingCode(_code: string) {
+    await delay();
+    const result: JoinPairingResponse = {
+      access_token: "demo-device-token",
+      storeId: getSeedStore().id,
+      stationId: null,
+    };
+    return result;
   },
 };

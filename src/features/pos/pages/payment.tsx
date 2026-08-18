@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LuArrowLeft, LuBanknote, LuQrCode } from "react-icons/lu";
 import { useOrderService } from "@/features/order/hooks/useOrder";
+import { orderApiService } from "@/features/order/services/order";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
 import OrderSummary from "@/features/pos/components/order-summary";
@@ -134,7 +135,7 @@ const PaymentPage = () => {
     try {
       const orderNumber = getNextQueueNumber(ordersQuery);
 
-      await createMutation.mutateAsync({
+      const createdResponse = await createMutation.mutateAsync({
         orderNumber,
         orderType,
         tableNumber:
@@ -152,8 +153,32 @@ const PaymentPage = () => {
         })),
       });
 
+      const createdOrder =
+        "data" in createdResponse
+          ? ((createdResponse.data as { data?: { id?: string }; id?: string })
+              ?.data ?? createdResponse.data)
+          : createdResponse;
+
+      const orderId =
+        createdOrder && typeof createdOrder === "object" && "id" in createdOrder
+          ? createdOrder.id
+          : undefined;
+
+      let receiptId = orderNumber;
+      if (orderId) {
+        const payResponse = await orderApiService.pay(orderId, {
+          method,
+          amount: subtotal,
+          receivedAmount: receivedAmount ? Number(receivedAmount) : undefined,
+        });
+        const payData =
+          payResponse?.data?.data ?? payResponse?.data ?? payResponse;
+        const payment = payData?.payment ?? payData;
+        receiptId = payment?.receiptId ?? orderNumber;
+      }
+
       setPaymentResult({
-        receiptId: orderNumber,
+        receiptId,
         items: [...items],
         subtotal,
         paymentMethod: method,

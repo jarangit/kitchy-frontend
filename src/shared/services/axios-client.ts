@@ -13,7 +13,8 @@ axiosClient.interceptors.request.use(
   (config) => {
     // Add any request interceptors here
     // For example, you can add an authorization token if needed
-    const token = localStorage.getItem("token");
+    const token =
+      localStorage.getItem("token") ?? localStorage.getItem("device_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -36,7 +36,7 @@ export const transactionServiceApi = {
   getByStoreId: async (storeId: string) => {
     const response = IS_DEMO_MODE
       ? await (await getAdapter()).getTransactionsByStoreId({ storeId })
-      : (await axiosClient.get(`/orders/store/${storeId}`)).data;
+      : (await axiosClient.get(`/transactions`, { params: { storeId } })).data;
 
     return unwrapPayload<ITransaction[]>(response).map(normalizeTransaction);
   },
@@ -44,7 +44,7 @@ export const transactionServiceApi = {
   getById: async (id: string) => {
     const response = IS_DEMO_MODE
       ? await (await getAdapter()).getTransactionById(id)
-      : (await axiosClient.get(`/orders/${id}`)).data;
+      : (await axiosClient.get(`/transactions/${id}`)).data;
 
     return normalizeTransaction(unwrapPayload<ITransaction>(response));
   },
@@ -52,7 +52,7 @@ export const transactionServiceApi = {
   update: async (id: string, payload: unknown) => {
     const response = IS_DEMO_MODE
       ? await (await getAdapter()).updateTransaction(id, payload)
-      : (await axiosClient.patch(`/orders/${id}`, payload)).data;
+      : (await axiosClient.patch(`/transactions/${id}`, payload)).data;
 
     return normalizeTransaction(unwrapPayload<ITransaction>(response));
   },

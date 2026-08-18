@@ -13,9 +13,10 @@ type OrderProductPayload = {
 };
 
 const sanitizeProducts = (products: OrderProductPayload[]) =>
-  products.map(({ productId, quantity }) => ({
+  products.map(({ productId, quantity, note }) => ({
     productId,
     quantity,
+    ...(note?.trim() ? { note: note.trim() } : {}),
   }));
 
 export const orderApiService = {
@@ -135,5 +136,19 @@ export const orderApiService = {
       `/order-station-item/${orderStationItemId}`,
       orderStationItemData,
     );
+  },
+  pay: async (
+    orderId: string,
+    payload: {
+      method: "CASH" | "QR" | "DELIVERY_PLATFORM";
+      amount: number;
+      receivedAmount?: number;
+    },
+  ) => {
+    if (IS_DEMO_MODE) {
+      const data = await (await getAdapter()).payOrder(orderId, payload);
+      return { data };
+    }
+    return await axiosClient.post(`/orders/${orderId}/pay`, payload);
   },
 };

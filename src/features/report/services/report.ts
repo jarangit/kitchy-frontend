@@ -1,27 +1,27 @@
 import type { IReportData } from "@/features/report/types/report.model";
 import type { IReportFilter } from "@/features/report/types/report.dto";
-import { generateMockReportData } from "@/features/report/data/mock-report-data";
+import axiosClient from "@/shared/services/axios-client";
 import {
   IS_DEMO_MODE,
   getAdapter,
 } from "@/shared/services/adapters/data-adapter";
 
+type ApiResponse<T> = { success: boolean; message: string; data: T };
+
 /**
  * Report service.
  *
- * Currently returns mock data.
- * When a real API is available, swap the implementation inside `getReportData`
- * without changing the public interface.
+ * Fetches from `GET /reports` in production mode; demo mode reads from the
+ * local adapter (which returns generated mock data).
  */
 export const reportService = {
   async getReportData(filter: IReportFilter): Promise<IReportData> {
     if (IS_DEMO_MODE) return (await getAdapter()).getReportData(filter);
 
-    // TODO: replace with real API call
-    // const { data } = await axiosClient.get<IReportData>('/reports', { params: filter });
-    // return data;
-
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    return generateMockReportData(filter.preset, filter.month);
+    const { data } = await axiosClient.get<ApiResponse<IReportData>>(
+      "/reports",
+      { params: filter },
+    );
+    return data.data;
   },
 };

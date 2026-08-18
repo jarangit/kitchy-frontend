@@ -29,6 +29,9 @@ import {
   getDefaultDeliveryPlatforms,
   getDefaultQuickNotes,
 } from "@/shared/i18n/presets";
+import { quickNoteServiceApi } from "@/shared/services/quick-note";
+import { unwrapPayload } from "@/shared/services/unwrap-payload";
+import type { QuickNote } from "@/shared/types/quick-note";
 import { cn } from "@/shared/utils/cn";
 
 const ORDER_TYPE_VALUES: OrderType[] = ["DINE_IN", "TOGO", "DELIVERY"];
@@ -59,12 +62,6 @@ const ORDER_TYPE_STYLES = {
     activeChip: "border-info-border bg-info-bg text-info",
   },
 } as const;
-
-const hasQuickNotes = (value: unknown): value is string[] => {
-  return (
-    Array.isArray(value) && value.every((item) => typeof item === "string")
-  );
-};
 
 const hasEnabledPlatforms = (
   value: string[] | { enabledPlatforms?: string[] },
@@ -150,10 +147,6 @@ const CartArea = ({
     () => `store:${window.location.pathname.split("/")[2]}:delivery-platforms`,
     [],
   );
-  const quickNotesSettingsKey = useMemo(
-    () => `store:${window.location.pathname.split("/")[2]}:quick-notes`,
-    [],
-  );
 
   useEffect(() => {
     setDeliveryPlatforms(defaultDeliveryPlatforms);
@@ -184,18 +177,26 @@ const CartArea = ({
   }, [deliverySettingsKey]);
 
   useEffect(() => {
-    const stored = localStorage.getItem(quickNotesSettingsKey);
-    if (!stored) return;
+    const storeId = window.location.pathname.split("/")[2];
+    if (!storeId) return;
+    let cancelled = false;
 
-    try {
-      const parsed = JSON.parse(stored) as unknown;
-      if (hasQuickNotes(parsed) && parsed.length > 0) {
-        setQuickNotes(parsed);
-      }
-    } catch {
-      localStorage.removeItem(quickNotesSettingsKey);
-    }
-  }, [quickNotesSettingsKey]);
+    quickNoteServiceApi
+      .getByStoreId(storeId)
+      .then((response) => {
+        const notes = unwrapPayload<QuickNote>(response);
+        if (!cancelled && notes.length > 0) {
+          setQuickNotes(notes.map((note) => note.text));
+        }
+      })
+      .catch(() => {
+        // Fall back to the i18n defaults when the backend is unreachable
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!isDeliveryDialogOpen || !isDeviceKeyboardEnabled) return;
