@@ -45,6 +45,7 @@ import type {
   UpdateDeviceRequest,
 } from "@/features/device/types/device.dto";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
+import type { IPromptpayQrResult } from "@/features/pos/types/pos.dto";
 
 export const apiAdapter: DataAdapter = {
   // ═══ Auth ═══
@@ -187,6 +188,11 @@ export const apiAdapter: DataAdapter = {
   async payOrder(orderId, payload) {
     const res = await orderApiService.pay(orderId, payload);
     return (res.data as { data?: unknown })?.data ?? res.data;
+  },
+  async getPromptpayQr(storeId, amount) {
+    const res = await orderApiService.getPromptpayQr(storeId, amount);
+    return ((res.data as { data?: unknown })?.data ??
+      res.data) as IPromptpayQrResult;
   },
 
   // ═══ KDS ═══

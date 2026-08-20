@@ -169,6 +169,18 @@ export const thMessages = {
   "settings.cp.system.clear.hint": "ล้างออเดอร์ที่ค้างในระบบ",
   "settings.cp.system.confirm": "ยืนยัน",
   "settings.cp.system.done": "เสร็จเรียบร้อย",
+  "settings.cp.system.newDayDialogTitle": "เริ่มวันใหม่",
+  "settings.cp.system.newDayDialogDescription":
+    "รีเซ็ตมุมมองและโหลดข้อมูลของวันนี้ใหม่ ข้อมูลของเมื่อวานไม่ถูกลบ",
+  "settings.cp.system.newDayConfirm": "เริ่มวันใหม่",
+  "settings.cp.system.newDayDone": "เริ่มวันใหม่แล้ว",
+  "settings.cp.system.clearDialogTitle": "ล้างออเดอร์ค้าง",
+  "settings.cp.system.clearDialogDescription":
+    "ออเดอร์ที่ยังเปิดอยู่ทั้งหมดจะถูกยกเลิก ออเดอร์ที่ชำระเงินแล้วจะไม่ได้รับผล",
+  "settings.cp.system.clearConfirm": "ล้างออเดอร์",
+  "settings.cp.system.clearDone": "ล้างออเดอร์ค้างแล้ว {count} รายการ",
+  "settings.cp.system.clearDoneZero": "ไม่มีออเดอร์ค้าง",
+  "settings.cp.system.actionFailed": "ดำเนินการไม่สำเร็จ ลองอีกครั้ง",
 
   // Common row
   "settings.cp.row.edit": "แก้ไข",
@@ -429,6 +441,7 @@ export const thMessages = {
   "pos.cart.selectTableBeforePay": "เลือกโต๊ะก่อนชำระเงิน",
   "pos.cart.selectDeliveryPlatformBeforePay":
     "เลือกแพลตฟอร์มเดลิเวอรีก่อนชำระเงิน",
+  "pos.cart.paused": "ร้านปิดรับออเดอร์ชั่วคราว",
   "pos.cart.chooseOrderTypeBeforePay":
     "เลือกประเภทออเดอร์ก่อนเพื่อไปหน้าชำระเงิน",
   "pos.cart.removeItem": "ลบสินค้า",
@@ -474,10 +487,12 @@ export const thMessages = {
   "pos.payment.cash": "เงินสด",
   "pos.payment.qr": "QR",
   "pos.payment.qrTitle": "สแกน QR เพื่อชำระเงิน",
-  "pos.payment.qrPlaceholder": "QR placeholder",
   "pos.payment.scanToPay": "สแกนเพื่อชำระ {amount}",
   "pos.payment.qrConfirmHint":
     "ให้ลูกค้าสแกน QR แล้วกดชำระเมื่อยืนยันว่าได้รับเงินแล้ว",
+  "pos.payment.qrNotConfigured": "ยังไม่ได้ตั้งค่าเลข PromptPay",
+  "pos.payment.qrUnavailable": "QR ไม่พร้อมใช้งานในโหมดนี้",
+  "pos.payment.goConfigure": "ไปตั้งค่า",
   "pos.payment.cashTitle": "รับเงินสด",
   "pos.payment.receivedAmount": "จำนวนเงินที่รับ",
   "pos.payment.quickAmounts": "จำนวนลัด",

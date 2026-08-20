@@ -230,6 +230,7 @@ Behavior notes:
 
 - cart default order type is still derived from onboarding `shopType`
 - in demo mode, `/try` now separates demo data selection from POS order flow selection
+- PromptPay QR is generated server-side (`POST /stores/:storeId/promptpay-qr` → `qrcode` data URL from the store's `settings.promptpay`); rendered on the payment screen (`qr-payment-section.tsx`) and the receipt; when no PromptPay ID is configured the QR slot shows a "configure" hint (button → store settings) instead. Hook: `usePromptpayQr(storeId, amount)` (key `["promptpay-qr", storeId, amount]`). Demo adapter returns `qrDataUrl: null`.
 
 ### `order`
 
@@ -400,9 +401,9 @@ Known important keys/areas:
 - onboarding state via `src/features/onboarding/utils/onboarding-storage.ts`
 - demo store preset: `demo:store-preset`
 - demo seed version: `demo:seed-version`
-- PromptPay per store: `kitchy.setting.store.${storeId}.promptpay`
-- quick notes settings in the store settings area
-- delivery settings in the store settings area
+- store settings (sales / payments / safety / store / delivery groups) and `orderLimit` are persisted on the backend via `PATCH /stores/:id` under the `store.settings` JSON column — no longer localStorage-only
+- `PATCH /stores/:id` is guarded by `JwtAuthGuard` and scoped to the authenticated owner (`owner_id` match); `update()` requires `userId` from the route guard
+- System quick actions in `section-system.tsx` are wired to real behavior: pause → `settings.paused` persisted + enforced in POS `handlePay` (banner + toast, no navigation); new day → query invalidation + toast; clear stale orders → open orders (status not `COMPLETED`/`CANCELLED`) are PATCHed to `CANCELLED` + invalidation + toast
 - KDS dismissal state in `src/features/kds/utils/ready-to-serve-dismissed.ts`
 
 Before adding new persisted settings, search existing keys first.
@@ -463,7 +464,7 @@ These are real current inconsistencies, not hypothetical ones.
 2. `package.json` package name is still `kds-frontend`
 3. store hook naming has legacy drift like `storeFinOneQuery`
 4. service response normalization is inconsistent across features
-5. report service still uses mock data outside demo mode
+5. report service is wired to `GET /reports`; `generateMockReportData` is used only by the demo local adapter
 6. transaction service is still coupled to order endpoints and order-shaped payloads
 7. legacy settings routes coexist with section-based routing
 

@@ -1,29 +1,18 @@
-import { useParams } from "react-router-dom";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
+import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
 import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useLocalSetting } from "@/shared/hooks/use-local-setting";
 
 export function SectionStore() {
-  const { id } = useParams<{ id: string }>();
   const auth = useAuth();
   const userId = auth?.user?.id ? String(auth.user.id) : undefined;
   const { t } = useTranslation();
   const { storeFinOneQuery, updateStore } = useStoreService({ userId });
+  const { settings, updateSettings } = useStoreSettings();
 
   const storeName = storeFinOneQuery?.name ?? "";
-
-  const [promptpay, setPromptpay] = useLocalSetting(
-    `store.${id}.promptpay`,
-    "",
-  );
-  const [hours, setHours] = useLocalSetting(`store.${id}.hours`, "");
-  const [dailyRevenueTarget, setDailyRevenueTarget] = useLocalSetting(
-    `store.${id}.dailyRevenueTarget`,
-    "",
-  );
 
   return (
     <div className="space-y-6">
@@ -46,23 +35,27 @@ export function SectionStore() {
           variant="editable"
           label={t("settings.cp.store.promptpay.label")}
           placeholder={t("settings.cp.store.promptpay.placeholder")}
-          value={promptpay}
-          onSave={setPromptpay}
+          value={settings.promptpay}
+          onSave={(next) => updateSettings({ promptpay: next })}
           type="tel"
         />
         <SettingRow
           variant="editable"
           label={t("settings.cp.store.hours.label")}
           placeholder={t("settings.cp.store.hours.placeholder")}
-          value={hours}
-          onSave={setHours}
+          value={settings.hours}
+          onSave={(next) => updateSettings({ hours: next })}
         />
         <SettingRow
           variant="editable"
           label={t("settings.cp.store.dailyRevenueTarget.label")}
           placeholder={t("settings.cp.store.dailyRevenueTarget.placeholder")}
-          value={dailyRevenueTarget}
-          onSave={(next) => setDailyRevenueTarget(next.replace(/[^0-9]/g, ""))}
+          value={settings.dailyRevenueTarget}
+          onSave={(next) =>
+            updateSettings({
+              dailyRevenueTarget: next.replace(/[^0-9]/g, ""),
+            })
+          }
           type="number"
         />
       </SettingGroup>

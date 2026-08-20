@@ -6,12 +6,15 @@ import { useCategoryService } from "@/features/category/hooks/useCategoryService
 import { useCartContext } from "@/features/pos/context/cart-hooks";
 import { getNextDeliveryOrderNumber } from "@/features/pos/utils/get-next-delivery-order-number";
 import { useOrderService } from "@/features/order/hooks/useOrder";
+import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
+import { toast } from "@/shared/services/toast-service";
 import CategoryTabs from "@/features/pos/components/category-tabs";
 import ProductGrid from "@/features/pos/components/product-grid";
 import CartArea from "@/features/pos/components/cart-area";
 import { PosCoachOverlay } from "@/features/onboarding/components/pos-coach-overlay";
 import { Button } from "@/shared/components/ui/button";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
+import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 const PosHomePage = () => {
@@ -30,6 +33,7 @@ const PosHomePage = () => {
   const { categoriesQuery } = useCategoryService();
   const cart = useCartContext();
   const { ordersQuery } = useOrderService({});
+  const { settings } = useStoreSettings();
 
   const suggestedDeliveryOrderNumber = useMemo(
     () => getNextDeliveryOrderNumber(ordersQuery, cart.deliveryPlatform),
@@ -72,6 +76,10 @@ const PosHomePage = () => {
         : null;
 
   const handlePay = () => {
+    if (settings.paused) {
+      toast.warning({ title: t("pos.cart.paused") });
+      return;
+    }
     setIsCartPanelOpen(false);
     navigate(`/store/${id}/pos/payment`);
   };
@@ -92,6 +100,12 @@ const PosHomePage = () => {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
+      {/* Paused banner */}
+      {settings.paused && (
+        <div className="shrink-0 p-card-padding pb-3">
+          <InlineAlert tone="warning">{t("pos.cart.paused")}</InlineAlert>
+        </div>
+      )}
       {/* Main content */}
       <div className="flex min-h-0 flex-1 overflow-hidden">
         {/* Product area */}

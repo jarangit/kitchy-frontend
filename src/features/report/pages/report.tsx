@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { format, subMonths } from "date-fns";
-import { useParams } from "react-router-dom";
 import TimeSegmentControl from "@/features/report/components/time-segment-control";
 import RevenueCard from "@/features/report/components/revenue-card";
 import MetricRow from "@/features/report/components/metric-row";
@@ -13,7 +12,7 @@ import type { ICalendarDay } from "@/features/report/types/report.model";
 import { PageHeader } from "@/shared/components/ui/page-header";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useLocalSetting } from "@/shared/hooks/use-local-setting";
+import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
 
 function buildMonthOptions(count: number): { value: string; label: string }[] {
   return Array.from({ length: count }, (_, index) => {
@@ -27,21 +26,17 @@ function buildMonthOptions(count: number): { value: string; label: string }[] {
 
 const ReportPage = () => {
   const { t } = useTranslation();
-  const { id } = useParams<{ id: string }>();
   const [preset, setPreset] = useState<DateRangePreset>("month");
   const [selectedMonth, setSelectedMonth] = useState(
     format(new Date(), "yyyy-MM"),
   );
   const [selectedDay, setSelectedDay] = useState<ICalendarDay | null>(null);
-  const [dailyRevenueTargetRaw] = useLocalSetting(
-    `store.${id}.dailyRevenueTarget`,
-    "",
-  );
+  const { settings } = useStoreSettings();
   const monthOptions = useMemo(() => buildMonthOptions(12), []);
   const { data, isLoading, error } = useReportData(preset, selectedMonth);
   const dailyRevenueTarget =
-    dailyRevenueTargetRaw.trim().length > 0
-      ? Number(dailyRevenueTargetRaw)
+    settings.dailyRevenueTarget.trim().length > 0
+      ? Number(settings.dailyRevenueTarget)
       : null;
 
   const getRevenueLabel = (): string => {

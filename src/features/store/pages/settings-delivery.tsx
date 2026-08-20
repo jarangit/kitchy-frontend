@@ -10,32 +10,17 @@ import {
   SettingsShell,
 } from "@/features/store/components/settings-shell";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
 import { getDefaultDeliveryPlatforms } from "@/shared/i18n/presets";
 import { getDeliveryPlatformBrand } from "@/shared/utils/delivery-platform-brands";
 import { cn } from "@/shared/utils/cn";
-
-const getDeliverySettingsKey = (storeId: string) =>
-  `store:${storeId}:delivery-platforms`;
-
-interface DeliveryPlatformSettings {
-  supportedPlatforms: string[];
-  enabledPlatforms: string[];
-}
-
-const isDeliveryPlatformSettings = (
-  value: string[] | DeliveryPlatformSettings,
-): value is DeliveryPlatformSettings => {
-  return (
-    !Array.isArray(value) &&
-    Array.isArray(value.supportedPlatforms) &&
-    Array.isArray(value.enabledPlatforms)
-  );
-};
 
 const SettingsDeliveryPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t, language } = useTranslation();
+  const { settings, updateSettings } = useStoreSettings();
+  const storedDelivery = settings.delivery;
   const defaultDeliveryPlatforms = useMemo(
     () => getDefaultDeliveryPlatforms(language),
     [language],
@@ -47,41 +32,17 @@ const SettingsDeliveryPage = () => {
     defaultDeliveryPlatforms,
   );
   const [customPlatform, setCustomPlatform] = useState("");
-  const storageKey = useMemo(
-    () => (id ? getDeliverySettingsKey(id) : ""),
-    [id],
-  );
 
   useEffect(() => {
-    setSupportedPlatforms(defaultDeliveryPlatforms);
-    setEnabledPlatforms(defaultDeliveryPlatforms);
-  }, [defaultDeliveryPlatforms]);
-
-  useEffect(() => {
-    if (!storageKey) return;
-
-    const stored = localStorage.getItem(storageKey);
-    if (!stored) return;
-
-    try {
-      const parsed = JSON.parse(stored) as DeliveryPlatformSettings | string[];
-
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        setSupportedPlatforms(
-          Array.from(new Set([...defaultDeliveryPlatforms, ...parsed])),
-        );
-        setEnabledPlatforms(parsed);
-        return;
-      }
-
-      if (isDeliveryPlatformSettings(parsed)) {
-        setSupportedPlatforms(parsed.supportedPlatforms);
-        setEnabledPlatforms(parsed.enabledPlatforms);
-      }
-    } catch {
-      localStorage.removeItem(storageKey);
-    }
-  }, [defaultDeliveryPlatforms, storageKey]);
+    const supported = storedDelivery.supportedPlatforms.length
+      ? storedDelivery.supportedPlatforms
+      : defaultDeliveryPlatforms;
+    const enabled = storedDelivery.enabledPlatforms.length
+      ? storedDelivery.enabledPlatforms
+      : defaultDeliveryPlatforms;
+    setSupportedPlatforms(supported);
+    setEnabledPlatforms(enabled);
+  }, [storedDelivery, defaultDeliveryPlatforms]);
 
   const persistPlatforms = (
     nextSupportedPlatforms: string[],
@@ -89,15 +50,12 @@ const SettingsDeliveryPage = () => {
   ) => {
     setSupportedPlatforms(nextSupportedPlatforms);
     setEnabledPlatforms(nextEnabledPlatforms);
-    if (storageKey) {
-      localStorage.setItem(
-        storageKey,
-        JSON.stringify({
-          supportedPlatforms: nextSupportedPlatforms,
-          enabledPlatforms: nextEnabledPlatforms,
-        }),
-      );
-    }
+    updateSettings({
+      delivery: {
+        supportedPlatforms: nextSupportedPlatforms,
+        enabledPlatforms: nextEnabledPlatforms,
+      },
+    });
   };
 
   const handleTogglePlatform = (platform: string, checked: boolean) => {

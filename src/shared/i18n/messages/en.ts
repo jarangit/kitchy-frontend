@@ -177,6 +177,18 @@ export const enMessages = {
   "settings.cp.system.clear.hint": "Clear orders still open in the system",
   "settings.cp.system.confirm": "Confirm",
   "settings.cp.system.done": "Done",
+  "settings.cp.system.newDayDialogTitle": "Start a new day",
+  "settings.cp.system.newDayDialogDescription":
+    "Reset the view and reload today's data. Yesterday's data is not deleted.",
+  "settings.cp.system.newDayConfirm": "Start new day",
+  "settings.cp.system.newDayDone": "New day started",
+  "settings.cp.system.clearDialogTitle": "Clear stale orders",
+  "settings.cp.system.clearDialogDescription":
+    "All orders still open will be cancelled. Paid orders are not affected.",
+  "settings.cp.system.clearConfirm": "Clear orders",
+  "settings.cp.system.clearDone": "Cleared {count} stale orders",
+  "settings.cp.system.clearDoneZero": "No stale orders",
+  "settings.cp.system.actionFailed": "Action failed. Please try again.",
 
   // Common row
   "settings.cp.row.edit": "Edit",
@@ -448,6 +460,7 @@ export const enMessages = {
   "pos.cart.selectTableBeforePay": "Select a table before payment",
   "pos.cart.selectDeliveryPlatformBeforePay":
     "Select a delivery platform before payment",
+  "pos.cart.paused": "Store is paused. New orders are not accepted.",
   "pos.cart.chooseOrderTypeBeforePay":
     "Choose an order type before continuing to payment",
   "pos.cart.removeItem": "Remove item",
@@ -496,10 +509,12 @@ export const enMessages = {
   "pos.payment.cash": "Cash",
   "pos.payment.qr": "QR",
   "pos.payment.qrTitle": "Scan QR to pay",
-  "pos.payment.qrPlaceholder": "QR placeholder",
   "pos.payment.scanToPay": "Scan to pay {amount}",
   "pos.payment.qrConfirmHint":
     "Ask the customer to scan, then press pay once you confirm the money was received.",
+  "pos.payment.qrNotConfigured": "PromptPay ID is not configured",
+  "pos.payment.qrUnavailable": "QR is not available in this mode",
+  "pos.payment.goConfigure": "Configure",
   "pos.payment.cashTitle": "Cash payment",
   "pos.payment.receivedAmount": "Received amount",
   "pos.payment.quickAmounts": "Quick amounts",

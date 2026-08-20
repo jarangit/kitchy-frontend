@@ -83,6 +83,18 @@ export const orderApiService = {
     }
     return await axiosClient.patch(`/orders/${orderId}`, orderData);
   },
+  getPromptpayQr: async (storeId: string, amount: number) => {
+    if (IS_DEMO_MODE) {
+      const data = await (await getAdapter()).getPromptpayQr(storeId, amount);
+      return { data: { success: true, message: "ok", data } } as {
+        data: ApiResponse<unknown>;
+      };
+    }
+    return await axiosClient.post<ApiResponse<unknown>>(
+      `/stores/${storeId}/promptpay-qr`,
+      { amount },
+    );
+  },
   delete: async (orderId: string) => {
     if (IS_DEMO_MODE) {
       await (await getAdapter()).deleteOrder(orderId);

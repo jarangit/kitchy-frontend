@@ -114,6 +114,14 @@ export interface DataAdapter {
       receivedAmount?: number;
     },
   ): Promise<IPaymentResponse>;
+  getPromptpayQr(
+    storeId: string,
+    amount: number,
+  ): Promise<{
+    qrDataUrl: string | null;
+    promptpayId: string | null;
+    amount: number;
+  }>;
 
   // KDS
   getOrderStationItemsByStationId(

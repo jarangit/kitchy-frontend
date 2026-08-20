@@ -10,6 +10,7 @@ interface Props {
   paymentResult: PaymentResult;
   dateLabel?: string;
   showOrderDetails?: boolean;
+  qrDataUrl?: string | null;
   className?: string;
 }
 
@@ -17,6 +18,7 @@ const PaymentReceipt = ({
   paymentResult,
   dateLabel,
   showOrderDetails = false,
+  qrDataUrl,
   className,
 }: Props) => {
   const { t } = useTranslation();
@@ -138,10 +140,18 @@ const PaymentReceipt = ({
         <p className="mb-2 text-center text-label font-semibold text-text-primary">
           {t("pos.receipt.scanForDigital")}
         </p>
-        <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-card border border-border bg-bg text-text-tertiary">
-          <LuQrCode size={44} />
-          <span className="text-caption">{t("pos.receipt.receiptQr")}</span>
-        </div>
+        {qrDataUrl ? (
+          <img
+            src={qrDataUrl}
+            alt={t("pos.payment.qrTitle")}
+            className="mx-auto h-40 w-40 rounded-card border border-border bg-bg"
+          />
+        ) : (
+          <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-card border border-border bg-bg text-text-tertiary">
+            <LuQrCode size={44} />
+            <span className="text-caption">{t("pos.receipt.receiptQr")}</span>
+          </div>
+        )}
         <p className="mt-2 text-center text-caption text-text-tertiary">
           {t("pos.receipt.ref", { id: String(receiptId) })}
         </p>

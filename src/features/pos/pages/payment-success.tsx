@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { LuCircleCheck, LuPrinter, LuArrowRight } from "react-icons/lu";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
+import { usePromptpayQr } from "@/features/pos/hooks/usePromptpayQr";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
@@ -12,6 +13,11 @@ const PaymentSuccessPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { paymentResult, clearPaymentResult } = useCartContext();
+
+  const promptpayQr = usePromptpayQr(
+    id,
+    paymentResult?.paymentMethod === "QR" ? paymentResult.subtotal : 0,
+  );
 
   if (!paymentResult) {
     return (
@@ -116,6 +122,7 @@ const PaymentSuccessPage = () => {
               <PaymentReceipt
                 paymentResult={paymentResult}
                 dateLabel={formattedDate}
+                qrDataUrl={promptpayQr.data?.qrDataUrl}
                 className="w-full bg-card-bg p-6"
               />
             </div>

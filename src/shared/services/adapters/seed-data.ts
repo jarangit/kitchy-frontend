@@ -10,7 +10,10 @@ import type { IOrderItem } from "@/features/order/types/order.model";
 import type { OrderType } from "@/features/pos/types/pos.model";
 import type { IMenu } from "@/features/product/types/product.model";
 import type { IStation } from "@/features/station/types/station.model";
-import type { IStore } from "@/features/store/types/store.model";
+import {
+  DEFAULT_STORE_SETTINGS,
+  type IStore,
+} from "@/features/store/types/store.model";
 import type { ITransaction } from "@/features/transaction/types/transaction.model";
 
 const now = new Date().toISOString();
@@ -75,6 +78,7 @@ const createSeedStore = (preset: DemoStorePreset): IStore => ({
   id: DEMO_STORE_ID,
   name: STORE_NAMES[preset],
   orderLimit: 20,
+  settings: DEFAULT_STORE_SETTINGS,
   userId: "1",
   createdAt: twoHoursAgo,
   updatedAt: now,

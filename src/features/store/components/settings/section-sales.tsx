@@ -5,24 +5,14 @@ import { ChipTab } from "@/shared/components/ui/chip-tab";
 import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useLocalSetting } from "@/shared/hooks/use-local-setting";
-
-type OrderDefault = "dineIn" | "togo";
+import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
 
 export function SectionSales() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const key = (k: string) => `store.${id}.sales.${k}`;
-
-  const [useTable, setUseTable] = useLocalSetting(key("useTable"), true);
-  const [useQueue, setUseQueue] = useLocalSetting(key("useQueue"), true);
-  const [useNote, setUseNote] = useLocalSetting(key("useNote"), true);
-  const [useOptions, setUseOptions] = useLocalSetting(key("useOptions"), false);
-  const [defaultType, setDefaultType] = useLocalSetting<OrderDefault>(
-    key("defaultType"),
-    "dineIn",
-  );
+  const { settings, updateSettings } = useStoreSettings();
+  const sales = settings.sales;
 
   return (
     <div className="space-y-6">
@@ -34,22 +24,50 @@ export function SectionSales() {
         <SettingRow
           variant="control"
           label={t("settings.cp.sales.useTable")}
-          control={<Toggle checked={useTable} onChange={setUseTable} />}
+          control={
+            <Toggle
+              checked={sales.useTable}
+              onChange={(checked) =>
+                updateSettings({ sales: { useTable: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="control"
           label={t("settings.cp.sales.useQueue")}
-          control={<Toggle checked={useQueue} onChange={setUseQueue} />}
+          control={
+            <Toggle
+              checked={sales.useQueue}
+              onChange={(checked) =>
+                updateSettings({ sales: { useQueue: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="control"
           label={t("settings.cp.sales.useNote")}
-          control={<Toggle checked={useNote} onChange={setUseNote} />}
+          control={
+            <Toggle
+              checked={sales.useNote}
+              onChange={(checked) =>
+                updateSettings({ sales: { useNote: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="control"
           label={t("settings.cp.sales.useOptions")}
-          control={<Toggle checked={useOptions} onChange={setUseOptions} />}
+          control={
+            <Toggle
+              checked={sales.useOptions}
+              onChange={(checked) =>
+                updateSettings({ sales: { useOptions: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="control"
@@ -58,15 +76,19 @@ export function SectionSales() {
             <div className="flex gap-3">
               <ChipTab
                 size="sm"
-                active={defaultType === "dineIn"}
-                onClick={() => setDefaultType("dineIn")}
+                active={sales.defaultType === "dineIn"}
+                onClick={() =>
+                  updateSettings({ sales: { defaultType: "dineIn" } })
+                }
               >
                 {t("settings.cp.sales.default.dineIn")}
               </ChipTab>
               <ChipTab
                 size="sm"
-                active={defaultType === "togo"}
-                onClick={() => setDefaultType("togo")}
+                active={sales.defaultType === "togo"}
+                onClick={() =>
+                  updateSettings({ sales: { defaultType: "togo" } })
+                }
               >
                 {t("settings.cp.sales.default.togo")}
               </ChipTab>

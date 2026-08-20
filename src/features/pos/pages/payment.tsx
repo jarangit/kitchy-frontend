@@ -8,6 +8,7 @@ import { useCartContext } from "@/features/pos/context/cart-hooks";
 import OrderSummary from "@/features/pos/components/order-summary";
 import CashPaymentSection from "@/features/pos/components/cash-payment-section";
 import QrPaymentSection from "@/features/pos/components/qr-payment-section";
+import { usePromptpayQr } from "@/features/pos/hooks/usePromptpayQr";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
@@ -48,6 +49,8 @@ const PaymentPage = () => {
   const [receivedAmount, setReceivedAmount] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const promptpayQr = usePromptpayQr(id, paymentMethod === "QR" ? subtotal : 0);
 
   const isDelivery = orderType === "DELIVERY";
   const paymentStrategy = getPaymentStrategy(paymentMethod);
@@ -355,6 +358,8 @@ const PaymentPage = () => {
                     {paymentMethod === "QR" ? (
                       <QrPaymentSection
                         subtotal={subtotal}
+                        qrDataUrl={promptpayQr.data?.qrDataUrl}
+                        promptpayId={promptpayQr.data?.promptpayId}
                         className="border-0 bg-transparent p-0"
                         embedded
                       />

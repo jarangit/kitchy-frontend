@@ -19,3 +19,9 @@ export interface IPaymentResponse {
   receiptId: string;
   createdAt: string;
 }
+
+export interface IPromptpayQrResult {
+  qrDataUrl: string | null;
+  promptpayId: string | null;
+  amount: number;
+}

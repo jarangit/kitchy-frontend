@@ -7,6 +7,7 @@ import type { DataAdapter } from "./data-adapter";
 import type { IUser } from "@/features/auth/types/auth.model";
 import type { IRegisterRequest } from "@/features/auth/types/auth.dto";
 import type { IStore } from "@/features/store/types/store.model";
+import { DEFAULT_STORE_SETTINGS } from "@/features/store/types/store.model";
 import type {
   ICreateStore,
   IUpdateStore,
@@ -288,6 +289,7 @@ export const localAdapter: DataAdapter = {
       id: genId(),
       name: dto.name,
       orderLimit: 20,
+      settings: DEFAULT_STORE_SETTINGS,
       userId: dto.userId,
       createdAt: now(),
       updatedAt: now(),
@@ -707,6 +709,15 @@ export const localAdapter: DataAdapter = {
     set(KEYS.transactions, payments);
 
     return payment;
+  },
+
+  async getPromptpayQr(storeId: string, amount: number) {
+    await delay();
+    const stores = get<IStore[]>(KEYS.stores, [getSeedStore()]);
+    const store = stores.find((s) => s.id === storeId) ?? getSeedStore();
+    const raw = store?.settings?.promptpay;
+    const promptpayId = typeof raw === "string" ? raw.trim() || null : null;
+    return { qrDataUrl: null, promptpayId, amount };
   },
 
   // ═══ KDS ═══

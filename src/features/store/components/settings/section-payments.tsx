@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import {
   LuBanknote,
   LuQrCode,
@@ -10,17 +9,12 @@ import { Toggle } from "@/shared/components/ui/toggle";
 import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { SettingsSectionHeader } from "@/features/store/components/settings-section-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useLocalSetting } from "@/shared/hooks/use-local-setting";
+import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
 
 export function SectionPayments() {
-  const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const key = (k: string) => `store.${id}.payments.${k}`;
-
-  const [cash, setCash] = useLocalSetting(key("cash"), true);
-  const [qr, setQr] = useLocalSetting(key("qr"), true);
-  const [bank, setBank] = useLocalSetting(key("bank"), false);
-  const [truemoney, setTrueMoney] = useLocalSetting(key("truemoney"), false);
+  const { settings, updateSettings } = useStoreSettings();
+  const payments = settings.payments;
 
   return (
     <div className="space-y-6">
@@ -33,27 +27,55 @@ export function SectionPayments() {
           variant="control"
           icon={<LuBanknote size={18} />}
           label={t("settings.cp.payments.cash")}
-          control={<Toggle checked={cash} onChange={setCash} />}
+          control={
+            <Toggle
+              checked={payments.cash}
+              onChange={(checked) =>
+                updateSettings({ payments: { cash: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="control"
           icon={<LuQrCode size={18} />}
           label={t("settings.cp.payments.qr")}
           hint={t("settings.cp.payments.qr.hint")}
-          control={<Toggle checked={qr} onChange={setQr} />}
+          control={
+            <Toggle
+              checked={payments.qr}
+              onChange={(checked) =>
+                updateSettings({ payments: { qr: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="control"
           icon={<LuLandmark size={18} />}
           label={t("settings.cp.payments.bank")}
           hint={t("settings.cp.payments.bank.hint")}
-          control={<Toggle checked={bank} onChange={setBank} />}
+          control={
+            <Toggle
+              checked={payments.bank}
+              onChange={(checked) =>
+                updateSettings({ payments: { bank: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="control"
           icon={<LuWallet size={18} />}
           label={t("settings.cp.payments.truemoney")}
-          control={<Toggle checked={truemoney} onChange={setTrueMoney} />}
+          control={
+            <Toggle
+              checked={payments.truemoney}
+              onChange={(checked) =>
+                updateSettings({ payments: { truemoney: checked } })
+              }
+            />
+          }
         />
         <SettingRow
           variant="action"
