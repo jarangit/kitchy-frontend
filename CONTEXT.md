@@ -6,6 +6,8 @@ This file defines domain language only. It should stay stable and implementation
 
 For architecture, route structure, state flow, and operational repo notes, see `PROJECT_MEMORY.md`.
 
+For implementation detail of a single module, each feature under `src/features/` has its own `README.md` that covers scope, routes, key files, data flow, and gotchas.
+
 ## Language
 
 ### Core Entities

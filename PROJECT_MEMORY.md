@@ -160,6 +160,8 @@ References:
 
 ## Feature Ownership
 
+Each feature under `src/features/<name>/` has its own `README.md` covering scope, routes, structure, key files, data flow, and gotchas. Start with the feature README before reading the files listed below.
+
 ### `auth`
 
 Owns login, register, Google login, current-user hydration, auth context, logout flow, cross-tab auth sync.
@@ -477,7 +479,7 @@ When starting work in this repo, read these first:
 4. `src/app/App.tsx`
 5. `src/app/main.tsx`
 
-Then inspect the relevant feature hook + service pair before changing behavior.
+Then read the owning feature's `README.md` and inspect the relevant feature hook + service pair before changing behavior.
 
 Recommended workflow for changes:
 
