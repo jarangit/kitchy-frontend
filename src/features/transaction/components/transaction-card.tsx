@@ -2,6 +2,7 @@ import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
+import { getDeliveryPlatformBrand } from "@/shared/utils/delivery-platform-brands";
 import { cn } from "@/shared/utils/cn";
 
 export type FlowStatus = "IN_PROGRESS" | "DONE" | "CANCELLED";
@@ -18,6 +19,7 @@ interface Props {
     orderNumber: string;
     type?: string;
     orderType?: string;
+    deliveryPlatform?: string;
     createdAt: string;
     totalAmount?: number;
     products?: OrderProduct[];
@@ -33,6 +35,11 @@ const ORDER_TYPE_KEY: Record<string, MessageKey> = {
   DINE_IN: "transaction.card.orderType.dineIn",
   TOGO: "transaction.card.orderType.togo",
   DELIVERY: "transaction.card.orderType.delivery",
+};
+
+const ORDER_TYPE_BADGE_CLASS: Partial<Record<string, string>> = {
+  DINE_IN: "bg-success text-on-status border-transparent",
+  TOGO: "bg-warning text-on-status border-transparent",
 };
 
 const DOT_CLASS: Record<FlowStatus, string> = {
@@ -69,8 +76,14 @@ const TransactionCard = ({
   const productCount = order.products?.length ?? 0;
 
   const orderType = order.type ?? order.orderType;
+  const brand =
+    orderType === "DELIVERY"
+      ? getDeliveryPlatformBrand(order.deliveryPlatform ?? "")
+      : null;
   const orderTypeLabel =
-    orderType && ORDER_TYPE_KEY[orderType]
+    orderType === "DELIVERY" && order.deliveryPlatform?.trim()
+      ? order.deliveryPlatform.trim()
+      : orderType && ORDER_TYPE_KEY[orderType]
       ? t(ORDER_TYPE_KEY[orderType])
       : (orderType ?? t("transaction.card.orderType.default"));
 
@@ -123,7 +136,26 @@ const TransactionCard = ({
               <p className="text-body font-semibold text-text-primary">
                 {order.orderNumber}
               </p>
-              <Badge variant="default">{orderTypeLabel}</Badge>
+              <Badge
+                variant="default"
+                className={
+                  brand
+                    ? "border-transparent"
+                    : orderType
+                      ? ORDER_TYPE_BADGE_CLASS[orderType]
+                      : undefined
+                }
+                style={
+                  brand
+                    ? {
+                        backgroundColor: brand.brandColor,
+                        color: brand.onColor,
+                      }
+                    : undefined
+                }
+              >
+                {orderTypeLabel}
+              </Badge>
             </div>
             <p className="mt-0.5 line-clamp-1 text-caption text-text-tertiary">
               {summaryLine}

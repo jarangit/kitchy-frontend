@@ -189,6 +189,21 @@ export function AppBarNotch() {
                 <LuExternalLink size={15} />
                 {t("serve.action.view")}
               </Button>
+              {storeId && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => {
+                    navigate(`/store/${storeId}/ready-to-serve`);
+                    setExpanded(false);
+                  }}
+                  size="sm"
+                  className="appbar-notch-action"
+                >
+                  <LuExternalLink size={15} />
+                  {t("serve.action.openPage")}
+                </Button>
+              )}
             </>
           )}
         </div>

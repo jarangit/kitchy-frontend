@@ -631,6 +631,16 @@ export const thMessages = {
   "kds.stats.level.veryBusy": "ยุ่งมาก",
   "kds.stats.overLimit": "เกินลิมิต",
   "kds.stats.longestWait": "รอนานสุด",
+  "kds.realtime.connectedLabel": "เรียลไทม์",
+  "kds.realtime.connectedTitle": "เชื่อมต่อเรียลไทม์แล้ว",
+  "kds.realtime.pollingLabel": "โพลลิง",
+  "kds.realtime.pollingTitle": "กำลังใช้โพลลิงสำรอง",
+  "kds.realtime.disconnectedTitle": "เรียลไทม์หลุดการเชื่อมต่อ",
+  "kds.realtime.disconnectedDescription":
+    "ระบบสลับไปใช้โพลลิงจนกว่าการเชื่อมต่อสดจะกลับมา",
+  "kds.realtime.reconnectedTitle": "เชื่อมต่อเรียลไทม์กลับมาแล้ว",
+  "kds.realtime.reconnectedDescription":
+    "การอัปเดตหน้าครัวแบบสดกลับมาใช้งานได้แล้ว",
   "kds.empty.noStationTitle": "ยังไม่มีสเตชัน",
   "kds.empty.noStationDescription":
     "กรุณาสร้างสเตชันเพื่อใช้ KDS ในโหมดสเตชันเดียว",
@@ -652,13 +662,24 @@ export const thMessages = {
   "kds.status.served": "เสิร์ฟแล้ว",
   "serve.action.view": "ดูรายการ",
   "serve.action.acknowledge": "รับทราบ",
+  "serve.action.served": "เสิร์ฟแล้ว",
+  "serve.action.serving": "กำลังเสิร์ฟ...",
   "serve.action.openKds": "เปิด KDS",
+  "serve.action.openPage": "เปิดหน้าเต็ม",
   "serve.drawer.title": "พร้อมเสิร์ฟ",
   "serve.drawer.subtitle": "{count} รายการรอเสิร์ฟ",
+  "serve.page.subtitle": "มี {count} รายการที่รอทำเครื่องหมายว่าเสิร์ฟแล้ว",
+  "serve.page.summaryTitle": "คิวรอเสิร์ฟ",
+  "serve.page.summaryDescription":
+    "มี {count} รายการที่มองเห็นอยู่ จากทั้งหมด {total} รายการพร้อมเสิร์ฟ",
   "serve.empty.title": "ไม่มีรายการพร้อมเสิร์ฟ",
   "serve.empty.body": "เมื่อครัวกดทำเสร็จแล้ว รายการจะแสดงที่นี่",
   "serve.item.meta": "ออเดอร์ #{order} · {station}",
   "serve.item.waiting": "รอ {minutes} นาที",
+  "serve.feedback.servedTitle": "บันทึกว่าเสิร์ฟแล้ว",
+  "serve.feedback.servedDescription": "เสิร์ฟ {product} แล้ว",
+  "serve.feedback.errorTitle": "บันทึกการเสิร์ฟไม่สำเร็จ",
+  "serve.feedback.errorDescription": "กรุณาลองอีกครั้ง",
 
   "report.title": "รายงาน",
   "report.payment.delivery": "เดลิเวอรี",
@@ -784,6 +805,7 @@ export const thMessages = {
   "transaction.list.viewDetails": "ดูรายละเอียด",
   "transaction.list.countSummary": "{label} · {count}",
   "transaction.list.itemsSuffix": "{items} ชิ้น · {products} รายการ",
+  "transaction.list.itemsServedShort": "เสิร์ฟแล้ว {served}/{total}",
 
   // ── Onboarding wizard ──
   "onboarding.common.back": "ย้อนกลับ",

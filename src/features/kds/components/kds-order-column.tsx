@@ -39,6 +39,9 @@ const formatElapsedMinutes = (totalMinutes: number) => {
   return `${Math.floor(safe)}`;
 };
 
+const isCheckedStatus = (status: Props["group"]["items"][number]["status"]) =>
+  status === "READY" || status === "SERVED";
+
 interface Props {
   group: KdsOrderGroup;
   isBumped: boolean;
@@ -277,22 +280,26 @@ const KdsOrderColumn = ({
               <button
                 type="button"
                 onClick={() => onItemReady(item)}
-                disabled={disabled}
-                aria-pressed={item.status === "READY"}
+                disabled={disabled || item.status === "SERVED"}
+                aria-pressed={isCheckedStatus(item.status)}
                 aria-label={
-                  item.status === "READY"
+                  item.status === "SERVED"
+                    ? t("kds.status.served")
+                    : item.status === "READY"
                     ? t("kds.item.markPending")
                     : t("kds.item.markDone")
                 }
                 title={
-                  item.status === "READY"
+                  item.status === "SERVED"
+                    ? t("kds.status.served")
+                    : item.status === "READY"
                     ? t("kds.item.markPending")
                     : t("kds.item.markDone")
                 }
                 className={cn(
                   "flex w-full flex-col rounded-segment px-2 py-1.5 text-left transition-all duration-fast",
                   "disabled:cursor-not-allowed disabled:opacity-50",
-                  item.status === "READY"
+                  isCheckedStatus(item.status)
                     ? "bg-success-bg/60"
                     : "hover:bg-surface-hover",
                 )}
@@ -309,7 +316,7 @@ const KdsOrderColumn = ({
                   <span
                     className={cn(
                       "min-w-0 flex-1 text-title font-semibold leading-snug",
-                      item.status === "READY"
+                      isCheckedStatus(item.status)
                         ? "text-text-secondary line-through"
                         : "text-text-primary",
                     )}
@@ -320,7 +327,7 @@ const KdsOrderColumn = ({
                     aria-hidden="true"
                     className={cn(
                       "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-fast",
-                      item.status === "READY"
+                      isCheckedStatus(item.status)
                         ? "border-success bg-success text-on-status"
                         : "border-border-hover bg-surface-muted text-transparent",
                     )}

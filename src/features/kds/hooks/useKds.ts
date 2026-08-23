@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { orderApiService } from "@/features/order/services/order";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
 import { appBus } from "@/shared/events/app-events";
+import { useRealtimeConnected } from "@/shared/realtime/realtime-provider";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 import type {
   KdsCard,
@@ -70,6 +71,7 @@ const mapToCards = (items: IOrderStationItemDto[]): KdsCard[] => {
 };
 
 export const useKds = (stationId?: string) => {
+  const isRealtimeConnected = useRealtimeConnected();
   const [isUpdating, setIsUpdating] = useState(false);
   const [bumpedOrderId, setBumpedOrderId] = useState<string | null>(null);
   const [recentlyCompletedGroup, setRecentlyCompletedGroup] =
@@ -88,7 +90,7 @@ export const useKds = (stationId?: string) => {
       return response.data as unknown;
     },
     enabled: !!stationId,
-    refetchInterval: 5000,
+    refetchInterval: isRealtimeConnected ? false : 5000,
     refetchIntervalInBackground: true,
   });
 

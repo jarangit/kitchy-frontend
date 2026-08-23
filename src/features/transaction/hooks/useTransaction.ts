@@ -4,13 +4,16 @@ import { useAppSelector } from "@/shared/hooks/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { appBus } from "@/shared/events/app-events";
 
-export function useTransactionService() {
+type TransactionFlowStatus = 'ALL' | 'IN_PROGRESS' | 'DONE' | 'CANCELLED';
+
+export function useTransactionService(flowStatus: TransactionFlowStatus) {
   const storeId =
     useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
   const transactionsQuery = useQuery({
-    queryKey: ["transactions", storeId],
-    queryFn: () => transactionServiceApi.getByStoreId(storeId as string),
+    queryKey: ["transactions", storeId, flowStatus],
+    queryFn: () =>
+      transactionServiceApi.getByStoreId(storeId as string, { flowStatus }),
     enabled: !!storeId,
   });
 
@@ -32,6 +35,23 @@ export function useTransactionService() {
     refetch: transactionsQuery.refetch,
     updateTransaction: updateMutation.mutateAsync,
     isUpdating: updateMutation.isPending,
+  };
+}
+
+export function useTransactionCounts() {
+  const storeId =
+    useAppSelector((state) => state.currentStore.storeId) ?? undefined;
+
+  const countsQuery = useQuery({
+    queryKey: ["transaction-counts", storeId],
+    queryFn: () => transactionServiceApi.getCountsByStoreId(storeId as string),
+    enabled: !!storeId,
+  });
+
+  return {
+    counts: countsQuery.data,
+    isLoading: countsQuery.isLoading,
+    error: countsQuery.error,
   };
 }
 

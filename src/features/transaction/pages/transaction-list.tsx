@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { format, formatDistanceToNow, parseISO } from "date-fns";
 import { LuArrowRight, LuReceipt } from "react-icons/lu";
-import { useTransactionService } from "@/features/transaction/hooks/useTransaction";
+import {
+  useTransactionCounts,
+  useTransactionService,
+} from "@/features/transaction/hooks/useTransaction";
 import { type FlowStatus } from "@/features/transaction/components/transaction-card";
 import TransactionFilter, {
   type TransactionFilterStatus,
@@ -36,11 +39,14 @@ interface TransactionListItem {
   status: string;
   type?: string;
   orderType?: string;
+  deliveryPlatform?: string;
   tableNumber?: string;
   customerName?: string;
   method?: string;
   createdAt: string;
   totalAmount?: number;
+  servedItemCount?: number;
+  totalItemCount?: number;
   products?: TransactionProduct[];
 }
 
@@ -50,14 +56,6 @@ const getFlowStatus = (status: string): FlowStatus => {
   if (status === "CANCELLED") return "CANCELLED";
   if (DONE_STATUSES.includes(status)) return "DONE";
   return "IN_PROGRESS";
-};
-
-const matchesStatusFilter = (
-  status: string,
-  filterStatus: TransactionFilterStatus,
-) => {
-  if (filterStatus === "ALL") return true;
-  return getFlowStatus(status) === filterStatus;
 };
 
 const formatCurrency = (value: number) =>
@@ -105,11 +103,16 @@ const orderTypeLabelKey = (value?: string): MessageKey => {
   }
 };
 
+const ORDER_TYPE_BADGE_CLASS: Partial<Record<string, string>> = {
+  DINE_IN: "bg-success text-on-status border-transparent",
+  TOGO: "bg-warning text-on-status border-transparent",
+};
+
 const getOrderTypeBadgeStyle = (tx: TransactionListItem) => {
   const orderType = tx.type ?? tx.orderType;
   if (orderType !== "DELIVERY") return undefined;
 
-  const brand = getDeliveryPlatformBrand(tx.method ?? "");
+  const brand = getDeliveryPlatformBrand(tx.deliveryPlatform ?? "");
   if (!brand) return undefined;
 
   return {
@@ -123,8 +126,8 @@ const getOrderTypeBadgeLabel = (
   t: (key: MessageKey) => string,
 ) => {
   const orderType = tx.type ?? tx.orderType;
-  if (orderType === "DELIVERY" && tx.method?.trim()) {
-    return tx.method.trim();
+  if (orderType === "DELIVERY" && tx.deliveryPlatform?.trim()) {
+    return tx.deliveryPlatform.trim();
   }
 
   return t(orderTypeLabelKey(orderType));
@@ -135,7 +138,12 @@ const getItemSummary = (tx: TransactionListItem) => {
   const totalQty = items.reduce((sum, item) => sum + (item.quantity ?? 0), 0);
   const productCount = items.length;
 
-  return { totalQty, productCount };
+  return {
+    totalQty,
+    productCount,
+    servedQty: tx.servedItemCount ?? 0,
+    totalItemCount: tx.totalItemCount ?? totalQty,
+  };
 };
 
 const MobileTransactionCard = ({
@@ -154,14 +162,11 @@ const MobileTransactionCard = ({
   const { t } = useTranslation();
   const flow = getFlowStatus(tx.status);
   const date = parseISO(tx.createdAt);
-  const { totalQty, productCount } = getItemSummary(tx);
-  const itemSummary =
-    productCount > 0
-      ? t("transaction.list.itemsSuffix", {
-          items: totalQty,
-          products: productCount,
-        })
-      : t("transaction.card.itemCount", { count: totalQty });
+  const { servedQty, totalItemCount } = getItemSummary(tx);
+  const itemSummary = t("transaction.list.itemsServedShort", {
+    served: servedQty,
+    total: totalItemCount,
+  });
 
   return (
     <Card padding="none" className="overflow-hidden">
@@ -176,9 +181,9 @@ const MobileTransactionCard = ({
                 {t(flowLabelKey(flow))}
               </Badge>
             </div>
-            <p className="mt-1 text-body-sm text-text-secondary">
-              {t(orderTypeLabelKey(tx.type ?? tx.orderType))} · {itemSummary}
-            </p>
+              <p className="mt-1 text-body-sm text-text-secondary">
+                {getOrderTypeBadgeLabel(tx, t)} · {itemSummary}
+              </p>
             <p className="mt-0.5 text-label tabular-nums text-text-tertiary">
               {formatDistanceToNow(date, { addSuffix: true })}
             </p>
@@ -230,13 +235,14 @@ const TransactionListPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { transactions, isLoading, updateTransaction, isUpdating, refetch } =
-    useTransactionService();
-
   const [filter, setFilter] = useState<{
     search: string;
     status: TransactionFilterStatus;
   }>({ search: "", status: "IN_PROGRESS" });
+
+  const { transactions, isLoading, updateTransaction, isUpdating, refetch } =
+    useTransactionService(filter.status);
+  const { counts: countsData } = useTransactionCounts();
 
   const [sorting, setSorting] = useState<SortingState>([
     { id: "createdAt", desc: true },
@@ -251,33 +257,25 @@ const TransactionListPage = () => {
     [transactions],
   );
 
-  const counts = useMemo(() => {
-    let inProgress = 0;
-    let done = 0;
-    let cancelled = 0;
-    for (const tx of allTransactions) {
-      const flow = getFlowStatus(tx.status);
-      if (flow === "IN_PROGRESS") inProgress++;
-      else if (flow === "DONE") done++;
-      else cancelled++;
-    }
-    return {
-      all: allTransactions.length,
-      inProgress,
-      done,
-      cancelled,
-    };
-  }, [allTransactions]);
+  const counts = useMemo(
+    () =>
+      countsData ?? {
+        all: 0,
+        inProgress: 0,
+        done: 0,
+        cancelled: 0,
+      },
+    [countsData],
+  );
 
   const filteredTransactions = useMemo(() => {
     return allTransactions.filter((tx) => {
       const matchSearch =
         !filter.search ||
         tx.orderNumber.toLowerCase().includes(filter.search.toLowerCase());
-      const matchStatus = matchesStatusFilter(tx.status, filter.status);
-      return matchSearch && matchStatus;
+      return matchSearch;
     });
-  }, [allTransactions, filter]);
+  }, [allTransactions, filter.search]);
 
   const totalFilteredTransactions = filteredTransactions.length;
   const totalPages = Math.max(
@@ -335,12 +333,19 @@ const TransactionListPage = () => {
         meta: { className: "min-w-[96px]" },
         cell: ({ row }) => {
           const badgeStyle = getOrderTypeBadgeStyle(row.original);
+          const orderType = row.original.type ?? row.original.orderType;
 
           return (
             <Badge
               variant="default"
               size="md"
-              className={badgeStyle ? "border-transparent" : undefined}
+              className={
+                badgeStyle
+                  ? "border-transparent"
+                  : orderType
+                    ? ORDER_TYPE_BADGE_CLASS[orderType]
+                    : undefined
+              }
               style={badgeStyle}
             >
               {getOrderTypeBadgeLabel(row.original, t)}
@@ -435,11 +440,14 @@ const TransactionListPage = () => {
         enableSorting: false,
         meta: { hideBelow: "md", className: "min-w-[100px]" },
         cell: ({ row }) => {
-          const { totalQty } = getItemSummary(row.original);
+          const { servedQty, totalItemCount } = getItemSummary(row.original);
 
           return (
             <span className="block text-body-sm text-text-secondary">
-              {t("transaction.card.itemCount", { count: totalQty })}
+              {t("transaction.list.itemsServedShort", {
+                served: servedQty,
+                total: totalItemCount,
+              })}
             </span>
           );
         },

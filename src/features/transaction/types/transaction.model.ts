@@ -12,6 +12,8 @@ export interface ITransaction {
   method: string;
   amount: number;
   totalAmount?: number;
+  servedItemCount?: number;
+  totalItemCount?: number;
   receiptId: string;
   items: ITransactionItem[];
   products?: ITransactionItem[];

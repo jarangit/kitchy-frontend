@@ -3,6 +3,7 @@ import { useQueries } from "@tanstack/react-query";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { orderApiService } from "@/features/order/services/order";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
+import { useRealtimeConnected } from "@/shared/realtime/realtime-provider";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 
 /**
@@ -13,6 +14,8 @@ import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
  * is on the KDS page no duplicate requests are issued.
  */
 export const usePendingOrdersCount = () => {
+  const isRealtimeConnected = useRealtimeConnected();
+  const refetchInterval: number | false = isRealtimeConnected ? false : 5000;
   const { stationsQuery } = useStationService({});
 
   const stations = useMemo(() => {
@@ -29,7 +32,7 @@ export const usePendingOrdersCount = () => {
         return response.data as unknown;
       },
       enabled: !!station.id,
-      refetchInterval: 5000,
+      refetchInterval,
       refetchIntervalInBackground: true,
     })),
   });

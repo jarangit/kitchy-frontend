@@ -655,6 +655,16 @@ export const enMessages = {
   "kds.stats.level.veryBusy": "Very busy",
   "kds.stats.overLimit": "Over limit",
   "kds.stats.longestWait": "Longest wait",
+  "kds.realtime.connectedLabel": "Realtime",
+  "kds.realtime.connectedTitle": "Realtime connected",
+  "kds.realtime.pollingLabel": "Polling",
+  "kds.realtime.pollingTitle": "Polling fallback active",
+  "kds.realtime.disconnectedTitle": "Realtime disconnected",
+  "kds.realtime.disconnectedDescription":
+    "Switched to polling until the live connection returns.",
+  "kds.realtime.reconnectedTitle": "Realtime reconnected",
+  "kds.realtime.reconnectedDescription":
+    "Live kitchen updates are back online.",
   "kds.empty.noStationTitle": "No station found",
   "kds.empty.noStationDescription":
     "Please create a station to use KDS in single-station mode.",
@@ -676,14 +686,25 @@ export const enMessages = {
   "kds.status.served": "Served",
   "serve.action.view": "View list",
   "serve.action.acknowledge": "Acknowledge",
+  "serve.action.served": "Served",
+  "serve.action.serving": "Serving...",
   "serve.action.openKds": "Open KDS",
+  "serve.action.openPage": "Open full page",
   "serve.drawer.title": "Ready to serve",
   "serve.drawer.subtitle": "{count} items waiting to serve",
+  "serve.page.subtitle": "{count} items are waiting to be marked served.",
+  "serve.page.summaryTitle": "Serving queue",
+  "serve.page.summaryDescription":
+    "{count} visible items waiting to serve out of {total} ready items.",
   "serve.empty.title": "No ready items",
   "serve.empty.body":
     "Items will appear here when the kitchen marks them done.",
   "serve.item.meta": "Order #{order} · {station}",
   "serve.item.waiting": "Waiting {minutes} min",
+  "serve.feedback.servedTitle": "Marked as served",
+  "serve.feedback.servedDescription": "{product} has been served.",
+  "serve.feedback.errorTitle": "Could not mark as served",
+  "serve.feedback.errorDescription": "Please try again.",
 
   "report.title": "Report",
   "report.payment.delivery": "Delivery",
@@ -811,6 +832,7 @@ export const enMessages = {
   "transaction.list.viewDetails": "View details",
   "transaction.list.countSummary": "{label} · {count}",
   "transaction.list.itemsSuffix": "{items} items · {products} lines",
+  "transaction.list.itemsServedShort": "{served}/{total} served",
 
   // ── Onboarding wizard ──
   "onboarding.common.back": "Back",

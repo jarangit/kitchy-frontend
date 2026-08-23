@@ -3,10 +3,12 @@ import { useQueries } from "@tanstack/react-query";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { orderApiService } from "@/features/order/services/order";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
+import { useRealtimeConnected } from "@/shared/realtime/realtime-provider";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
 
 export type ReadyToServeItem = {
   id: string;
+  orderId: string;
   stationId: string;
   stationName: string;
   orderItemId: string;
@@ -25,6 +27,8 @@ export type ReadyToServeItem = {
 type StationLite = { id: string; name?: string };
 
 export const useReadyToServeItems = () => {
+  const isRealtimeConnected = useRealtimeConnected();
+  const refetchInterval: number | false = isRealtimeConnected ? false : 5000;
   const { stationsQuery } = useStationService({});
 
   const stations = useMemo(() => {
@@ -41,7 +45,7 @@ export const useReadyToServeItems = () => {
         return response.data as unknown;
       },
       enabled: !!station.id,
-      refetchInterval: 5000,
+      refetchInterval,
       refetchIntervalInBackground: true,
     })),
   });
@@ -61,6 +65,7 @@ export const useReadyToServeItems = () => {
 
         readyItems.push({
           id: item.id,
+          orderId: orderItem.order?.id ?? "",
           stationId: station.id,
           stationName: station.name ?? "Kitchen",
           orderItemId: orderItem.id,

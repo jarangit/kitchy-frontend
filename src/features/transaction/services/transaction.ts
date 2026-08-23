@@ -33,10 +33,20 @@ const normalizeTransaction = (transaction: ITransaction): ITransaction => {
 };
 
 export const transactionServiceApi = {
-  getByStoreId: async (storeId: string) => {
+  getByStoreId: async (
+    storeId: string,
+    filter?: { flowStatus?: 'ALL' | 'IN_PROGRESS' | 'DONE' | 'CANCELLED' },
+  ) => {
     const response = IS_DEMO_MODE
       ? await (await getAdapter()).getTransactionsByStoreId({ storeId })
-      : (await axiosClient.get(`/transactions`, { params: { storeId } })).data;
+      : (
+          await axiosClient.get(`/transactions`, {
+            params: {
+              storeId,
+              ...(filter?.flowStatus ? { flowStatus: filter.flowStatus } : {}),
+            },
+          })
+        ).data;
 
     return unwrapPayload<ITransaction[]>(response).map(normalizeTransaction);
   },
@@ -47,6 +57,33 @@ export const transactionServiceApi = {
       : (await axiosClient.get(`/transactions/${id}`)).data;
 
     return normalizeTransaction(unwrapPayload<ITransaction>(response));
+  },
+
+  getCountsByStoreId: async (storeId: string) => {
+    const response = IS_DEMO_MODE
+      ? await (await getAdapter()).getTransactionsByStoreId({ storeId })
+      : (await axiosClient.get(`/transactions/counts`, { params: { storeId } })).data;
+
+    if (IS_DEMO_MODE) {
+      const transactions = unwrapPayload<ITransaction[]>(response).map(normalizeTransaction);
+      return transactions.reduce(
+        (counts, tx) => {
+          counts.all += 1;
+          if (tx.status === "CANCELLED") counts.cancelled += 1;
+          else if (tx.status === "READY" || tx.status === "COMPLETED") counts.done += 1;
+          else counts.inProgress += 1;
+          return counts;
+        },
+        { all: 0, inProgress: 0, done: 0, cancelled: 0 },
+      );
+    }
+
+    return unwrapPayload<{
+      all: number;
+      inProgress: number;
+      done: number;
+      cancelled: number;
+    }>(response);
   },
 
   update: async (id: string, payload: unknown) => {
