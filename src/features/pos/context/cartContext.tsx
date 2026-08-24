@@ -16,8 +16,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [paymentResult, setPaymentResultState] = useState<PaymentResult | null>(
     null,
   );
-  // Default every cart to dine-in; staff can still switch per order in the cart.
-  const [orderType, setOrderTypeState] = useState<OrderType>("DINE_IN");
+  const [orderType, setOrderTypeState] = useState<OrderType | null>(null);
   const [tableNumber, setTableNumberState] = useState<string | null>(null);
   const [customerName, setCustomerNameState] = useState("");
   const [deliveryPlatform, setDeliveryPlatformState] = useState("");
@@ -80,6 +79,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = useCallback(() => {
     setItems([]);
+    setOrderTypeState(null);
+    setTableNumberState(null);
+    setCustomerNameState("");
+    setDeliveryPlatformState("");
     setDeliveryOrderNumberState("");
   }, []);
 

@@ -77,7 +77,7 @@ interface Props {
   onUpdateItemNote: (cartItemId: string, note: string) => void;
   onClearCart: () => void;
   onPay: () => void;
-  orderType: OrderType;
+  orderType: OrderType | null;
   tableNumber: string | null;
   customerName: string;
   deliveryPlatform: string;
@@ -269,8 +269,8 @@ const CartArea = ({
     setIsDeviceKeyboardEnabled(false);
   };
 
-  const ActiveOrderTypeIcon = ORDER_TYPE_ICONS[orderType];
-  const orderTypeLabel = t(ORDER_TYPE_LABEL_KEYS[orderType]);
+  const ActiveOrderTypeIcon = orderType ? ORDER_TYPE_ICONS[orderType] : null;
+  const orderTypeLabel = orderType ? t(ORDER_TYPE_LABEL_KEYS[orderType]) : "";
   const deliveryOrderNumberValue = deliveryOrderNumber.trim();
   const summaryParts: string[] = [];
 
@@ -288,21 +288,23 @@ const CartArea = ({
   }
 
   const requirementMessage =
-    orderType === "DINE_IN" && !tableNumber
-      ? t("pos.cart.selectTableBeforePay")
-      : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
-        ? t("pos.cart.selectDeliveryPlatformBeforePay")
-        : null;
+    orderType == null
+      ? null
+      : orderType === "DINE_IN" && !tableNumber
+        ? t("pos.cart.selectTableBeforePay")
+        : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
+          ? t("pos.cart.selectDeliveryPlatformBeforePay")
+          : null;
   const canPay = items.length > 0;
   const handlePayClick = () => {
     if (!canPay) return;
 
-    if (requirementMessage === null) {
-      onPay();
+    if (orderType == null || requirementMessage !== null) {
+      setIsOrderTypeGateOpen(true);
       return;
     }
 
-    setIsOrderTypeGateOpen(true);
+    onPay();
   };
 
   const handleOrderTypeGateSelect = (nextType: OrderType) => {
@@ -351,15 +353,22 @@ const CartArea = ({
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
-            <span
-              className={cn(
-                "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-label font-medium",
-                ORDER_TYPE_STYLES[orderType].badge,
-              )}
-            >
-              <ActiveOrderTypeIcon className="h-3.5 w-3.5" aria-hidden="true" />
-              {orderTypeLabel}
-            </span>
+            {orderType && (
+              <span
+                className={cn(
+                  "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-label font-medium",
+                  ORDER_TYPE_STYLES[orderType].badge,
+                )}
+              >
+                {ActiveOrderTypeIcon && (
+                  <ActiveOrderTypeIcon
+                    className="h-3.5 w-3.5"
+                    aria-hidden="true"
+                  />
+                )}
+                {orderTypeLabel}
+              </span>
+            )}
             {summaryParts.length > 0 && (
               <p className="truncate">{summaryParts.join(" • ")}</p>
             )}

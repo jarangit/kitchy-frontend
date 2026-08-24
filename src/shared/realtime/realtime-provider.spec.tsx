@@ -4,28 +4,25 @@ import { render } from "@testing-library/react";
 import { LanguageProvider } from "@/shared/i18n/language-context";
 import { RealtimeProvider } from "@/shared/realtime/realtime-provider";
 
-const {
-  on,
-  off,
-  emit,
-  connect,
-  disconnect,
-  warning,
-  success,
-  dismiss,
-} = vi.hoisted(() => ({
-  on: vi.fn(),
-  off: vi.fn(),
-  emit: vi.fn(),
-  connect: vi.fn(),
-  disconnect: vi.fn(),
-  warning: vi.fn(() => "toast-1"),
-  success: vi.fn(),
-  dismiss: vi.fn(),
-}));
+const { on, off, emit, connect, disconnect, warning, success, dismiss } =
+  vi.hoisted(() => ({
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn(),
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    warning: vi.fn(() => "toast-1"),
+    success: vi.fn(),
+    dismiss: vi.fn(),
+  }));
 
 vi.mock("@/shared/hooks/hooks", () => ({
-  useAppSelector: (selector: (state: any) => unknown) =>
+  useAppSelector: (
+    selector: (state: {
+      currentStore: { storeId: string };
+      currentStation: { stationId: string };
+    }) => unknown,
+  ) =>
     selector({
       currentStore: { storeId: "store-1" },
       currentStation: { stationId: "station-1" },

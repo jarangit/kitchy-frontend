@@ -1,9 +1,8 @@
-import { LuMaximize2, LuMinimize2 } from "react-icons/lu";
-import { IconButton } from "@/shared/components/ui/icon-button";
 import { useClock } from "@/shared/hooks/useClock";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 import { useKdsLayout } from "@/features/kds/components/kds-layout";
+import { KdsControlGroup } from "@/features/kds/components/kds-controls";
 import type { KdsOrderGroup } from "@/features/kds/types/kds.model";
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
 
 const KdsStatsBar = ({ groups }: Props) => {
   const { t, language } = useTranslation();
-  const { fullscreen, toggleFullscreen } = useKdsLayout();
+  const { fullscreen } = useKdsLayout();
   const now = useClock();
 
   const pendingCount = groups.reduce(
@@ -47,10 +46,6 @@ const KdsStatsBar = ({ groups }: Props) => {
     month: "short",
     year: "numeric",
   });
-  const fullscreenLabel = fullscreen
-    ? t("kds.fullscreen.exit")
-    : t("kds.fullscreen.enter");
-
   return (
     <div
       className={cn(
@@ -86,21 +81,14 @@ const KdsStatsBar = ({ groups }: Props) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 lg:min-w-[240px]">
-          <div className="text-right lg:min-w-[172px]">
+        <div className="flex items-center justify-end gap-2 lg:min-w-[200px]">
+          <div className="text-right">
             <p className="font-mono text-display font-bold leading-none tabular-nums text-on-primary">
               {timeLabel}
             </p>
             <p className="mt-2 text-subtitle text-on-primary/78">{dateLabel}</p>
           </div>
-          <IconButton
-            aria-label={fullscreenLabel}
-            title={fullscreenLabel}
-            onClick={toggleFullscreen}
-            className="border border-on-primary/40 bg-on-primary/16 text-on-primary hover:bg-on-primary/24 hover:text-on-primary"
-          >
-            {fullscreen ? <LuMinimize2 size={16} /> : <LuMaximize2 size={16} />}
-          </IconButton>
+          <KdsControlGroup variant="onPrimary" />
         </div>
       </div>
     </div>

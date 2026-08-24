@@ -22,12 +22,13 @@ A KDS Card is one order-station item, not the whole Order. A single Order can pr
 src/features/kds/
 ├── components/
 │   ├── kds-layout.tsx, kds-order-column.tsx, kds-stats-bar.tsx
+│   ├── kds-sound-toggle.tsx
 │   └── ready-to-serve-notifier.tsx
-├── hooks/            # useKds.ts, use-pending-orders-count.ts, use-ready-to-serve.ts
+├── hooks/            # useKds.ts, use-alert-sound.ts, use-new-order-alert.ts, use-pending-orders-count.ts, use-ready-to-serve.ts
 ├── pages/            # kds-board.tsx
 ├── strategies/       # kds-status-strategy.ts
 ├── types/            # kds.dto.ts, kds.model.ts
-└── utils/            # group-by-order.ts, parse-order-number.ts, ready-to-serve-dismissed.ts
+└── utils/            # alert-sound-preference.ts, group-by-order.ts, parse-order-number.ts, play-new-order-chime.ts, ready-to-serve-dismissed.ts
 ```
 
 ## Key files
@@ -45,3 +46,5 @@ src/features/kds/
 - Pending cards are split into priority groups by elapsed time.
 - KDS statuses are `PENDING`, `READY`, `SERVED` (distinct from the store-wide Order Status).
 - Order-station transition work is owned by the `order` feature.
+- New-order alert: `use-new-order-alert.ts` diffs arriving order IDs against a cumulative seen-set (per station scope) and plays a synthesized chime (`play-new-order-chime.ts`) once per batch. The first ready snapshot per station is a silent baseline; tracking continues while disabled so re-enabling never replays a backlog.
+- Alert sound toggle: `kds-sound-toggle.tsx` in the stats bar (and top controls when stats are hidden). Independent of the global click-sound setting; persisted per device under localStorage key `kitchy.kds.alertSoundOn` (default on) via `alert-sound-preference.ts`. Enabling alerts unlocks the AudioContext inside the click gesture (browser autoplay policy).

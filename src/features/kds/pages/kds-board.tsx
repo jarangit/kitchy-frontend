@@ -1,21 +1,23 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useKds } from "@/features/kds/hooks/useKds";
+import { useNewOrderAlert } from "@/features/kds/hooks/use-new-order-alert";
+import { useAlertSound } from "@/features/kds/hooks/use-alert-sound";
 import KdsOrderColumn from "@/features/kds/components/kds-order-column";
 import KdsStatsBar from "@/features/kds/components/kds-stats-bar";
+import { KdsControlGroup } from "@/features/kds/components/kds-controls";
 import { useKdsLayout } from "@/features/kds/components/kds-layout";
 import { useStationService } from "@/features/station/hooks/useStation";
 import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Card } from "@/shared/components/ui/card";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
-import { IconButton } from "@/shared/components/ui/icon-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 import {
   decodeDeviceToken,
   hasDeviceToken,
 } from "@/features/device/utils/device-token";
-import { LuMaximize2, LuMinimize2, LuUtensilsCrossed } from "react-icons/lu";
+import { LuUtensilsCrossed } from "react-icons/lu";
 
 type KdsBoardScreenState =
   "loading" | "no-station" | "empty-queue" | "active-board";
@@ -139,6 +141,7 @@ interface KdsBoardWorkspaceProps {
   onItemReady: (
     item: Parameters<typeof KdsOrderColumn>[0]["group"]["items"][number],
   ) => void;
+  fullscreen?: boolean;
 }
 
 const KdsBoardWorkspace = ({
@@ -148,10 +151,14 @@ const KdsBoardWorkspace = ({
   isUpdating,
   onBump,
   onItemReady,
+  fullscreen = false,
 }: KdsBoardWorkspaceProps) => (
   <div
     ref={scrollRef}
-    className="flex flex-1 min-h-0 gap-4 overflow-x-auto cursor-grab pb-2 select-none"
+    className={cn(
+      "flex flex-1 min-h-0 gap-4 overflow-x-auto cursor-grab pb-2 select-none",
+      fullscreen && "px-3",
+    )}
   >
     {groups.map((group) => (
       <KdsOrderColumn
@@ -169,25 +176,12 @@ const KdsBoardWorkspace = ({
   </div>
 );
 
-const KdsFullscreenToggle = () => {
-  const { t } = useTranslation();
-  const { fullscreen, toggleFullscreen } = useKdsLayout();
-  const label = fullscreen
-    ? t("kds.fullscreen.exit")
-    : t("kds.fullscreen.enter");
-
-  return (
-    <IconButton aria-label={label} title={label} onClick={toggleFullscreen}>
-      {fullscreen ? <LuMinimize2 size={18} /> : <LuMaximize2 size={18} />}
-    </IconButton>
-  );
-};
-
 const KdsBoardPage = () => {
   const { t } = useTranslation();
   const { fullscreen } = useKdsLayout();
   const boardScrollRef = useRef<HTMLDivElement | null>(null);
   useDragScroll(boardScrollRef);
+  const { alertSoundOn } = useAlertSound();
   const { stationsQuery } = useStationService({});
   const stations = useMemo(() => stationsQuery ?? [], [stationsQuery]);
   const deviceMode = hasDeviceToken();
@@ -218,6 +212,14 @@ const KdsBoardPage = () => {
     updateStatus,
   } = useKds(activeStation?.id);
 
+  // Alert scope follows the visible queue: re-baseline per station and
+  // ignore snapshots while the station's query is still loading.
+  useNewOrderAlert(pendingGroups, {
+    enabled: alertSoundOn,
+    scopeKey: activeStation?.id,
+    isSnapshotPending: isLoading,
+  });
+
   const handleBump = (group: Parameters<typeof bumpAndRemove>[0]) => {
     void bumpAndRemove(group);
   };
@@ -245,7 +247,7 @@ const KdsBoardPage = () => {
         fullscreen ? "p-0" : "p-card-padding",
       )}
     >
-      {/* Top controls: station-scoped board switcher + fullscreen toggle (when stats bar is hidden) */}
+      {/* Top controls: station-scoped board switcher + utility controls (when stats bar is hidden) */}
       {showTopControls && (
         <div className="flex items-center justify-between gap-3">
           {!deviceMode && (
@@ -257,7 +259,7 @@ const KdsBoardPage = () => {
           )}
           {!showStats && (
             <div className="ml-auto shrink-0">
-              <KdsFullscreenToggle />
+              <KdsControlGroup />
             </div>
           )}
         </div>
@@ -292,6 +294,7 @@ const KdsBoardPage = () => {
               isUpdating={isUpdating}
               onBump={handleBump}
               onItemReady={handleItemReady}
+              fullscreen={fullscreen}
             />
           )}
         </>

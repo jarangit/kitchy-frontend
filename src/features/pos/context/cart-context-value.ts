@@ -14,7 +14,7 @@ interface CartState {
   clearCart: () => void;
   subtotal: number;
   totalItems: number;
-  orderType: OrderType;
+  orderType: OrderType | null;
   tableNumber: string | null;
   customerName: string;
   deliveryPlatform: string;

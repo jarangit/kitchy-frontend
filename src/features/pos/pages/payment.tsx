@@ -1,6 +1,13 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LuArrowLeft, LuBanknote, LuQrCode } from "react-icons/lu";
+import {
+  LuArrowLeft,
+  LuBanknote,
+  LuBike,
+  LuPackage,
+  LuQrCode,
+  LuUtensilsCrossed,
+} from "react-icons/lu";
 import { useOrderService } from "@/features/order/hooks/useOrder";
 import { orderApiService } from "@/features/order/services/order";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
@@ -11,7 +18,9 @@ import QrPaymentSection from "@/features/pos/components/qr-payment-section";
 import { usePromptpayQr } from "@/features/pos/hooks/usePromptpayQr";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
+import type { OrderType } from "@/features/pos/types/pos.model";
 import type { PaymentMethod } from "@/features/pos/types/pos.model";
+import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { EmptyState } from "@/shared/components/ui/empty-state";
@@ -25,6 +34,21 @@ type PaymentStep = "SUMMARY" | "PAYMENT";
 const PAYMENT_METHOD_ICONS = {
   CASH: LuBanknote,
   QR: LuQrCode,
+} as const;
+
+const ORDER_TYPE_BADGE_VARIANT: Record<
+  OrderType,
+  "success" | "warning" | "info"
+> = {
+  DINE_IN: "success",
+  TOGO: "warning",
+  DELIVERY: "info",
+} as const;
+
+const ORDER_TYPE_ICONS: Record<OrderType, typeof LuUtensilsCrossed> = {
+  DINE_IN: LuUtensilsCrossed,
+  TOGO: LuPackage,
+  DELIVERY: LuBike,
 } as const;
 
 const PaymentPage = () => {
@@ -54,8 +78,11 @@ const PaymentPage = () => {
 
   const isDelivery = orderType === "DELIVERY";
   const paymentStrategy = getPaymentStrategy(paymentMethod);
-  const orderTypeStrategy = getOrderTypeStrategy(orderType);
-  const orderTypeLabel = t(orderTypeStrategy.labelKey as MessageKey);
+  const orderTypeStrategy = orderType ? getOrderTypeStrategy(orderType) : null;
+  const orderTypeLabel = orderTypeStrategy
+    ? t(orderTypeStrategy.labelKey as MessageKey)
+    : "";
+  const OrderTypeIcon = orderType ? ORDER_TYPE_ICONS[orderType] : null;
   const paymentMethodOptions: Exclude<PaymentMethod, "DELIVERY_PLATFORM">[] = [
     "QR",
     "CASH",
@@ -69,7 +96,6 @@ const PaymentPage = () => {
       ? t("pos.payment.confirmQr")
       : t("pos.payment.confirm");
   const orderMeta = [
-    orderTypeLabel,
     orderType === "DINE_IN" && tableNumber ? tableNumber : null,
     orderType === "DELIVERY" && deliveryPlatform.trim().length > 0
       ? deliveryPlatform.trim()
@@ -90,36 +116,60 @@ const PaymentPage = () => {
 
   const canConfirm =
     items.length > 0 &&
+    orderType != null &&
     paymentStrategy.canConfirm({
       total: subtotal,
       received: receivedAmount ? Number(receivedAmount) : undefined,
     }) &&
-    orderTypeStrategy.isValid({
-      tableNumber,
-      customerName,
-      deliveryPlatform,
-      deliveryOrderNumber,
-    });
+    (orderTypeStrategy
+      ? orderTypeStrategy.isValid({
+          tableNumber,
+          customerName,
+          deliveryPlatform,
+          deliveryOrderNumber,
+        })
+      : false);
 
   const canConfirmOrder =
     items.length > 0 &&
-    orderTypeStrategy.isValid({
-      tableNumber,
-      customerName,
-      deliveryPlatform,
-      deliveryOrderNumber,
-    });
+    orderType != null &&
+    (orderTypeStrategy
+      ? orderTypeStrategy.isValid({
+          tableNumber,
+          customerName,
+          deliveryPlatform,
+          deliveryOrderNumber,
+        })
+      : false);
 
   const validationMessage =
-    orderType === "DINE_IN" && !tableNumber
-      ? t("pos.payment.selectTableFirst")
-      : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
-        ? t("pos.payment.selectPlatformFirst")
-        : paymentMethod === "CASH" &&
-            receivedAmount.trim().length > 0 &&
-            Number(receivedAmount) < subtotal
-          ? t("pos.payment.insufficientCash")
-          : null;
+    orderType == null
+      ? t("pos.cart.chooseOrderTypeBeforePay")
+      : orderType === "DINE_IN" && !tableNumber
+        ? t("pos.payment.selectTableFirst")
+        : orderType === "DELIVERY" && deliveryPlatform.trim().length === 0
+          ? t("pos.payment.selectPlatformFirst")
+          : paymentMethod === "CASH" &&
+              receivedAmount.trim().length > 0 &&
+              Number(receivedAmount) < subtotal
+            ? t("pos.payment.insufficientCash")
+            : null;
+
+  if (orderType == null) {
+    return (
+      <div className="flex flex-1 items-center justify-center p-6">
+        <EmptyState
+          title={t("pos.payment.emptyTitle")}
+          description={t("pos.cart.emptyDescription")}
+          action={
+            <Button onClick={() => navigate(`/store/${id}/pos`)}>
+              {t("pos.payment.backToPos")}
+            </Button>
+          }
+        />
+      </div>
+    );
+  }
 
   const handleCancel = () => {
     navigate(`/store/${id}/pos`);
@@ -140,7 +190,7 @@ const PaymentPage = () => {
 
       const createdResponse = await createMutation.mutateAsync({
         orderNumber,
-        orderType,
+        orderType: orderType as OrderType,
         tableNumber:
           orderType === "DINE_IN" ? (tableNumber ?? undefined) : undefined,
         customerName:
@@ -187,7 +237,7 @@ const PaymentPage = () => {
         paymentMethod: method,
         receivedAmount: Number(receivedAmount) || subtotal,
         change: methodChange,
-        orderType,
+        orderType: orderType as OrderType,
         tableNumber,
         customerName,
         deliveryPlatform,
@@ -283,6 +333,15 @@ const PaymentPage = () => {
                     <h1 className="mt-1 text-subtitle text-text-primary">
                       {t("pos.payment.stepSummary")}
                     </h1>
+                    <Badge
+                      variant={ORDER_TYPE_BADGE_VARIANT[orderType as OrderType]}
+                      className="mt-3 gap-1.5"
+                    >
+                      {OrderTypeIcon && (
+                        <OrderTypeIcon size={14} className="shrink-0" />
+                      )}
+                      {orderTypeLabel}
+                    </Badge>
                   </div>
 
                   <div className="space-y-3">
@@ -386,6 +445,15 @@ const PaymentPage = () => {
                     <h1 className="mt-1 text-subtitle text-text-primary">
                       {t("pos.payment.method")}
                     </h1>
+                    <Badge
+                      variant={ORDER_TYPE_BADGE_VARIANT[orderType as OrderType]}
+                      className="mt-3 gap-1.5"
+                    >
+                      {OrderTypeIcon && (
+                        <OrderTypeIcon size={14} className="shrink-0" />
+                      )}
+                      {orderTypeLabel}
+                    </Badge>
                   </div>
 
                   <div

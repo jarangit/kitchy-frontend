@@ -405,6 +405,7 @@ Known important keys/areas:
 - `PATCH /stores/:id` is guarded by `JwtAuthGuard` and scoped to the authenticated owner (`owner_id` match); `update()` requires `userId` from the route guard
 - System quick actions in `section-system.tsx` are wired to real behavior: pause → `settings.paused` persisted + enforced in POS `handlePay` (banner + toast, no navigation); new day → query invalidation + toast; clear stale orders → open orders (status not `COMPLETED`/`CANCELLED`) are PATCHed to `CANCELLED` + invalidation + toast
 - KDS dismissal state in `src/features/kds/utils/ready-to-serve-dismissed.ts`
+- KDS new-order alert sound toggle: `kitchy.kds.alertSoundOn` (per device, default on) in `src/features/kds/utils/alert-sound-preference.ts` — independent of the global Redux `sound.isSoundOn` click-feedback setting
 
 Before adding new persisted settings, search existing keys first.
 

@@ -68,12 +68,14 @@ const PosHomePage = () => {
       ? productsQueryLoading
       : productsByCategoryLoading;
   const mobileRequirementMessage =
-    cart.orderType === "DINE_IN" && !cart.tableNumber
-      ? t("pos.cart.selectTableBeforePay")
-      : cart.orderType === "DELIVERY" &&
-          cart.deliveryPlatform.trim().length === 0
-        ? t("pos.cart.selectDeliveryPlatformBeforePay")
-        : null;
+    cart.orderType == null
+      ? null
+      : cart.orderType === "DINE_IN" && !cart.tableNumber
+        ? t("pos.cart.selectTableBeforePay")
+        : cart.orderType === "DELIVERY" &&
+            cart.deliveryPlatform.trim().length === 0
+          ? t("pos.cart.selectDeliveryPlatformBeforePay")
+          : null;
 
   const handlePay = () => {
     if (settings.paused) {

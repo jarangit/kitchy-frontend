@@ -79,16 +79,18 @@ const getPaymentMethodLabel = (
 
 const DayDetailDialog = ({ day, open, onClose }: Props) => {
   const { t, language } = useTranslation();
-  if (!day) return null;
-
   const dateLocale = language === "en" ? enUS : th;
 
-  const avg = day.orders > 0 ? Math.round(day.revenue / day.orders) : 0;
-  const deliveryRevenue = day.deliveryProviderBreakdown.reduce(
-    (sum, provider) => sum + provider.amount,
-    0,
-  );
+  const avg = day && day.orders > 0 ? Math.round(day.revenue / day.orders) : 0;
+  const deliveryRevenue = day
+    ? day.deliveryProviderBreakdown.reduce(
+        (sum, provider) => sum + provider.amount,
+        0,
+      )
+    : 0;
   const paymentChartData = useMemo<PaymentPoint[]>(() => {
+    if (!day) return [];
+
     const points: PaymentPoint[] = day.paymentBreakdown.map(
       (payment, index) => ({
         label: getPaymentMethodLabel(payment.method, t),
@@ -112,17 +114,19 @@ const DayDetailDialog = ({ day, open, onClose }: Props) => {
     }
 
     return points;
-  }, [day.paymentBreakdown, deliveryRevenue, t]);
+  }, [day, deliveryRevenue, t]);
   const timelineData = useMemo(
     () =>
-      day.hourlyOrders.map((point) => ({
+      (day?.hourlyOrders ?? []).map((point) => ({
         ...point,
         label: format(new Date(2026, 0, 1, point.hour), "HH:mm", {
           locale: dateLocale,
         }),
       })),
-    [dateLocale, day.hourlyOrders],
+    [dateLocale, day],
   );
+
+  if (!day) return null;
 
   return (
     <Dialog
