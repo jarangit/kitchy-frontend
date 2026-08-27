@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Layout from "@/shared/components/layout/layout";
 import { PageHeader } from "@/shared/components/ui/page-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -13,7 +13,6 @@ import {
 import { appBus } from "@/shared/events/app-events";
 
 function ReadyToServePageContent() {
-  const navigate = useNavigate();
   const { id: storeId } = useParams<{ id: string }>();
   const { t } = useTranslation();
   const { items } = useReadyToServeItems();
@@ -45,20 +44,13 @@ function ReadyToServePageContent() {
   return (
     <div className="space-y-6">
       <PageHeader
-        backTo={storeId ? `/store/${storeId}/kds` : true}
-        title={t("serve.drawer.title")}
-        subtitle={t("serve.page.subtitle", {
-          count: String(visibleItems.length),
-        })}
+        title={`${t("serve.drawer.title")} (${visibleItems.length})`}
       />
 
       <ReadyToServeGrid
         items={visibleItems}
         servingIds={servingIds}
         onServed={(item) => void markServed(item)}
-        onOpenKds={() => {
-          if (storeId) navigate(`/store/${storeId}/kds`);
-        }}
       />
     </div>
   );

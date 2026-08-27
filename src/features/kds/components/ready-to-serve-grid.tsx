@@ -60,7 +60,7 @@ export function ReadyToServeGrid({ items, servingIds, onServed }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5 2xl:grid-cols-4 2xl:gap-6">
       {items.map((item) => {
         const orderType = item.orderType as OrderType | undefined;
         const strategy = orderType ? getOrderTypeStrategy(orderType) : null;
