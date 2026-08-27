@@ -1,7 +1,7 @@
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { ErrorState } from "@/shared/components/ui/error-state";
-import { useOrderService } from "@/features/order/hooks/useOrder";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
+import { useStoreOperations } from "@/features/store/hooks/use-store-operations";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { type ReactNode, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -20,28 +20,23 @@ import {
   CardTitle,
 } from "@/shared/components/ui/card";
 import TodayOrderTimeline from "@/features/store/components/today-order-timeline";
-
-/* ── Types ─────────────────────────────────────────────── */
-
-interface DashboardOrder {
-  createdAt?: string;
-  totalAmount?: number;
-}
+import { StoreOperationsOverview } from "@/features/store/components/store-operations-overview";
+import type { OperationsStatusRowProps } from "@/features/store/components/operations-status-row";
 
 /* ── Helpers ───────────────────────────────────────────── */
 
-const isSameCalendarDay = (
-  dateValue: string | undefined,
-  targetDate: Date,
-): boolean => {
-  if (!dateValue) return false;
-  const date = new Date(dateValue);
-  if (Number.isNaN(date.getTime())) return false;
-  return (
-    date.getFullYear() === targetDate.getFullYear() &&
-    date.getMonth() === targetDate.getMonth() &&
-    date.getDate() === targetDate.getDate()
-  );
+// typed helpers — keep MessageKey narrowing
+type TFn = (
+  key: import("@/shared/i18n/messages").MessageKey,
+  values?: Record<string, string | number>,
+) => string;
+
+const formatItemCount = (count: number, t: TFn): string => {
+  return t("dashboard.operations.itemCount", { count: String(count) });
+};
+
+const formatMinutes = (minutes: number, t: TFn): string => {
+  return t("dashboard.operations.minutesAgo", { count: String(minutes) });
 };
 
 /* ── Sub-components ────────────────────────────────────── */
@@ -85,14 +80,124 @@ const StoreDashboardPage = () => {
   const { t } = useTranslation();
   const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
     useStoreService({});
-  const { ordersQuery } = useOrderService({});
+  const {
+    todayOrders,
+    todayOpenOrders,
+    todayOpenOrdersCount,
+    kitchenPending,
+    kitchenPendingCount,
+    readyToServe,
+    readyToServeCount,
+    parseTimeLabel,
+    elapsedMinutesLabel,
+  } = useStoreOperations();
 
-  const todayOrders = useMemo(() => {
-    const today = new Date();
-    return (ordersQuery as DashboardOrder[]).filter((order) =>
-      isSameCalendarDay(order.createdAt, today),
-    );
-  }, [ordersQuery]);
+  const todayOrdersForTimeline = useMemo(() => {
+    return todayOrders.map((o) => ({ createdAt: o.createdAt }));
+  }, [todayOrders]);
+
+  const stages = useMemo(
+    () => [
+      {
+        index: 1,
+        label: t("dashboard.operations.stage.openOrders"),
+        count: todayOpenOrdersCount,
+        helperText: t("dashboard.operations.helper.open"),
+        tone: "default" as const,
+      },
+      {
+        index: 2,
+        label: t("dashboard.operations.stage.kitchen"),
+        count: kitchenPendingCount,
+        helperText: t("dashboard.operations.helper.kitchen"),
+        tone: "warning" as const,
+      },
+      {
+        index: 3,
+        label: t("dashboard.operations.stage.ready"),
+        count: readyToServeCount,
+        helperText: t("dashboard.operations.helper.ready"),
+        tone: "success" as const,
+      },
+    ],
+    [t, todayOpenOrdersCount, kitchenPendingCount, readyToServeCount],
+  );
+
+  const columns = useMemo(() => {
+    const leftRows: OperationsStatusRowProps[] = todayOpenOrders
+      .slice(0, 5)
+      .map((o) => {
+        return {
+          orderNumber: o.orderNumber.padStart(5, "0"),
+          timeLabel: parseTimeLabel(o.createdAt),
+          badgeLabel: t("dashboard.operations.badge.prepare"),
+          badgeTone: "default" as const,
+          trailingVariant: "chevron" as const,
+          to: `/store/${id}/transactions`,
+        };
+      });
+
+    const middleRows: OperationsStatusRowProps[] = kitchenPending
+      .slice(0, 5)
+      .map((o) => ({
+        orderNumber: o.orderNumber.padStart(5, "0"),
+        timeLabel: parseTimeLabel(o.createdAt),
+        itemCountLabel: formatItemCount(o.count, t),
+        badgeLabel: t("dashboard.operations.badge.cooking"),
+        badgeTone: "warning" as const,
+        trailingLabel: formatMinutes(elapsedMinutesLabel(o.createdAt), t),
+        trailingVariant: "text" as const,
+        to: `/store/${id}/kds`,
+      }));
+
+    const rightRows: OperationsStatusRowProps[] = readyToServe
+      .slice(0, 5)
+      .map((o) => ({
+        orderNumber: o.orderNumber.padStart(5, "0"),
+        timeLabel: parseTimeLabel(o.createdAt),
+        itemCountLabel: formatItemCount(o.quantity, t),
+        badgeLabel: t("dashboard.operations.badge.ready"),
+        badgeTone: "success" as const,
+        trailingLabel: formatMinutes(elapsedMinutesLabel(o.createdAt), t),
+        trailingVariant: "text" as const,
+        to: `/store/${id}/ready-to-serve`,
+      }));
+
+    return [
+      {
+        title: t("dashboard.operations.stage.openOrders"),
+        count: todayOpenOrdersCount,
+        tone: "default" as const,
+        rows: leftRows,
+        viewAllTo: `/store/${id}/transactions`,
+      },
+      {
+        title: t("dashboard.operations.stage.kitchen"),
+        count: kitchenPendingCount,
+        tone: "warning" as const,
+        rows: middleRows,
+        viewAllTo: `/store/${id}/kds`,
+      },
+      {
+        title: t("dashboard.operations.stage.ready"),
+        count: readyToServeCount,
+        tone: "success" as const,
+        rows: rightRows,
+        viewAllTo: `/store/${id}/ready-to-serve`,
+      },
+    ];
+  }, [
+    t,
+    id,
+    todayOpenOrders,
+    todayOpenOrdersCount,
+    kitchenPending,
+    kitchenPendingCount,
+    readyToServe,
+    readyToServeCount,
+    parseTimeLabel,
+    elapsedMinutesLabel,
+  ]);
 
   /* Loading state */
   if (storeFinOneLoading) {
@@ -143,6 +248,8 @@ const StoreDashboardPage = () => {
         </Button>
       </header>
 
+      <StoreOperationsOverview stages={stages} columns={columns} />
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <DashboardCard
           icon={<LuShoppingCart size={22} />}
@@ -170,7 +277,7 @@ const StoreDashboardPage = () => {
             <CardTitle>{t("dashboard.ordersByTime")}</CardTitle>
             <CardDescription>{t("dashboard.ordersByTimeDesc")}</CardDescription>
           </CardHeader>
-          <TodayOrderTimeline orders={todayOrders} />
+          <TodayOrderTimeline orders={todayOrdersForTimeline} />
         </Card>
 
         <DashboardCard
