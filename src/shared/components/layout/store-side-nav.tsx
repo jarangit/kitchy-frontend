@@ -1,6 +1,8 @@
+import { useEffect, useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   LuChefHat,
+  LuConciergeBell,
   LuHistory,
   LuLayoutGrid,
   LuSettings,
@@ -14,6 +16,9 @@ import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 import { NavBadge } from "@/shared/components/ui/nav-badge";
 import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
 import { useInProgressTransactionsCount } from "@/features/transaction/hooks/use-in-progress-transactions-count";
+import { useReadyToServeItems } from "@/features/kds/hooks/use-ready-to-serve";
+import { readReadyToServeDismissed } from "@/features/kds/utils/ready-to-serve-dismissed";
+import { appBus } from "@/shared/events/app-events";
 
 const NAV_ITEMS = [
   { id: "home", subpath: "", end: true, icon: LuLayoutGrid, label: "nav.home" },
@@ -33,6 +38,14 @@ const NAV_ITEMS = [
   },
   { id: "kds", subpath: "/kds", end: false, icon: LuChefHat, label: "nav.kds" },
 ] as const;
+
+const READY_TO_SERVE_ITEM = {
+  id: "readyToServe",
+  subpath: "/ready-to-serve",
+  end: false,
+  icon: LuConciergeBell,
+  label: "nav.readyToServe",
+} as const;
 
 const SETTINGS_ITEM = {
   id: "settings",
@@ -62,12 +75,37 @@ export function StoreSideNav() {
   const { count: pendingOrdersCount } = usePendingOrdersCount();
   const { count: inProgressTransactionsCount } =
     useInProgressTransactionsCount();
+  const { items: readyToServeItems } = useReadyToServeItems();
+  const [dismissed, setDismissed] = useState(() =>
+    readReadyToServeDismissed(storeId),
+  );
+
+  useEffect(() => {
+    setDismissed(readReadyToServeDismissed(storeId));
+  }, [storeId]);
+
+  useEffect(() => {
+    return appBus.on("ui:readyToServeDismissed", () => {
+      setDismissed(readReadyToServeDismissed(storeId));
+    });
+  }, [storeId]);
+
+  const visibleReadyToServeCount = useMemo(
+    () => readyToServeItems.filter((item) => !dismissed.has(item.id)).length,
+    [readyToServeItems, dismissed],
+  );
 
   const badgeCounts: Partial<
-    Record<(typeof NAV_ITEMS)[number]["id"] | typeof SETTINGS_ITEM.id, number>
+    Record<
+      | (typeof NAV_ITEMS)[number]["id"]
+      | typeof SETTINGS_ITEM.id
+      | typeof READY_TO_SERVE_ITEM.id,
+      number
+    >
   > = {
     kds: pendingOrdersCount,
     transactions: inProgressTransactionsCount,
+    readyToServe: visibleReadyToServeCount,
   };
 
   if (!storeId) return null;
@@ -79,7 +117,10 @@ export function StoreSideNav() {
     icon: Icon,
     label,
   }: {
-    id: (typeof NAV_ITEMS)[number]["id"] | "settings";
+    id:
+      | (typeof NAV_ITEMS)[number]["id"]
+      | typeof SETTINGS_ITEM.id
+      | typeof READY_TO_SERVE_ITEM.id;
     subpath: string;
     end: boolean;
     icon: typeof LuLayoutGrid;
@@ -117,6 +158,7 @@ export function StoreSideNav() {
         aria-label="Store navigation"
       >
         {NAV_ITEMS.map(renderItem)}
+        {renderItem(READY_TO_SERVE_ITEM)}
         <div className="mt-auto">{renderItem(SETTINGS_ITEM)}</div>
       </nav>
     </aside>

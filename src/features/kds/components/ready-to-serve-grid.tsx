@@ -45,7 +45,7 @@ interface Props {
   onOpenKds?: () => void;
 }
 
-export function ReadyToServeList({ items, servingIds, onServed }: Props) {
+export function ReadyToServeGrid({ items, servingIds, onServed }: Props) {
   const { t } = useTranslation();
 
   if (items.length === 0) {
@@ -60,7 +60,7 @@ export function ReadyToServeList({ items, servingIds, onServed }: Props) {
   }
 
   return (
-    <div className="space-y-3">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6">
       {items.map((item) => {
         const orderType = item.orderType as OrderType | undefined;
         const strategy = orderType ? getOrderTypeStrategy(orderType) : null;
@@ -80,7 +80,12 @@ export function ReadyToServeList({ items, servingIds, onServed }: Props) {
         const isOverdue = waitingMinutes >= 15;
 
         return (
-          <Card as="article" key={item.id} padding="none" className="px-5 py-5">
+          <Card
+            as="article"
+            key={item.id}
+            padding="none"
+            className="flex flex-col px-5 py-5"
+          >
             <div className="mb-4 flex items-center justify-between gap-3">
               {typeLabel && orderType ? (
                 <Badge
@@ -121,7 +126,7 @@ export function ReadyToServeList({ items, servingIds, onServed }: Props) {
             </div>
 
             <div className="mb-4">
-              <p className="truncate text-heading font-bold leading-none tracking-tight text-text-primary">
+              <p className="truncate text-display font-bold leading-none tracking-tight text-text-primary">
                 {getItemContext(item)}
               </p>
             </div>

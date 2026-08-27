@@ -560,6 +560,7 @@ export const enMessages = {
   "nav.transactions": "Transactions",
   "nav.report": "Report",
   "nav.kds": "KDS",
+  "nav.readyToServe": "Ready to Serve",
   "nav.settings": "Settings",
   "nav.badge": "Notifications",
 
@@ -694,7 +695,7 @@ export const enMessages = {
   "kds.status.served": "Served",
   "serve.action.view": "View list",
   "serve.action.acknowledge": "Acknowledge",
-  "serve.action.served": "Served",
+  "serve.action.served": "Tap when served",
   "serve.action.serving": "Serving...",
   "serve.action.openKds": "Open KDS",
   "serve.action.openPage": "Open full page",

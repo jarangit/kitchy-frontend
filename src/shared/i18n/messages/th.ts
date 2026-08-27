@@ -536,6 +536,7 @@ export const thMessages = {
   "nav.transactions": "ธุรกรรม",
   "nav.report": "รายงาน",
   "nav.kds": "KDS",
+  "nav.readyToServe": "พร้อมเสิร์ฟ",
   "nav.settings": "ตั้งค่า",
   "nav.badge": "การแจ้งเตือน",
 
@@ -670,7 +671,7 @@ export const thMessages = {
   "kds.status.served": "เสิร์ฟแล้ว",
   "serve.action.view": "ดูรายการ",
   "serve.action.acknowledge": "รับทราบ",
-  "serve.action.served": "เสิร์ฟแล้ว",
+  "serve.action.served": "กดเมื่อเสิร์ฟแล้ว",
   "serve.action.serving": "กำลังเสิร์ฟ...",
   "serve.action.openKds": "เปิด KDS",
   "serve.action.openPage": "เปิดหน้าเต็ม",

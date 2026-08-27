@@ -1,7 +1,12 @@
 import "./app-bar-notch.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LuBellRing, LuChefHat, LuExternalLink, LuX } from "react-icons/lu";
+import {
+  LuChefHat,
+  LuConciergeBell,
+  LuExternalLink,
+  LuX,
+} from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { appBus } from "@/shared/events/app-events";
@@ -94,7 +99,7 @@ export function AppBarNotch() {
           </span>
           <span className="appbar-notch-divider" aria-hidden="true" />
           <span className="appbar-notch-pill-chip appbar-notch-pill-chip--success">
-            <LuBellRing size={13} />
+            <LuConciergeBell size={13} />
             <span>{readyCount}</span>
           </span>
         </button>
@@ -136,12 +141,12 @@ export function AppBarNotch() {
               type="button"
               className="appbar-notch-stat-card appbar-notch-stat-card--button"
               onClick={() => {
-                appBus.emit("ui:readyToServeRequested", {});
+                if (storeId) navigate(`/store/${storeId}/ready-to-serve`);
                 setExpanded(false);
               }}
             >
               <span className="appbar-notch-stat-label appbar-notch-stat-label--success">
-                <LuBellRing size={15} />
+                <LuConciergeBell size={15} />
                 <span>{t("appbar.notch.ready")}</span>
               </span>
               <p className="appbar-notch-stat-number">{readyCount}</p>
@@ -180,30 +185,15 @@ export function AppBarNotch() {
               <Button
                 type="button"
                 onClick={() => {
-                  appBus.emit("ui:readyToServeRequested", {});
+                  if (storeId) navigate(`/store/${storeId}/ready-to-serve`);
                   setExpanded(false);
                 }}
                 size="sm"
                 className="appbar-notch-action"
               >
                 <LuExternalLink size={15} />
-                {t("serve.action.view")}
+                {t("serve.action.openPage")}
               </Button>
-              {storeId && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => {
-                    navigate(`/store/${storeId}/ready-to-serve`);
-                    setExpanded(false);
-                  }}
-                  size="sm"
-                  className="appbar-notch-action"
-                >
-                  <LuExternalLink size={15} />
-                  {t("serve.action.openPage")}
-                </Button>
-              )}
             </>
           )}
         </div>
