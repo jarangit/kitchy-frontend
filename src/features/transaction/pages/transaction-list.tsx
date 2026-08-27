@@ -181,9 +181,9 @@ const MobileTransactionCard = ({
                 {t(flowLabelKey(flow))}
               </Badge>
             </div>
-              <p className="mt-1 text-body-sm text-text-secondary">
-                {getOrderTypeBadgeLabel(tx, t)} · {itemSummary}
-              </p>
+            <p className="mt-1 text-body-sm text-text-secondary">
+              {getOrderTypeBadgeLabel(tx, t)} · {itemSummary}
+            </p>
             <p className="mt-0.5 text-label tabular-nums text-text-tertiary">
               {formatDistanceToNow(date, { addSuffix: true })}
             </p>

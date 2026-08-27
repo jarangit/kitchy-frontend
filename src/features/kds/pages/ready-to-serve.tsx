@@ -49,7 +49,9 @@ function ReadyToServePageContent() {
       <PageHeader
         backTo={storeId ? `/store/${storeId}/kds` : true}
         title={t("serve.drawer.title")}
-        subtitle={t("serve.page.subtitle", { count: String(visibleItems.length) })}
+        subtitle={t("serve.page.subtitle", {
+          count: String(visibleItems.length),
+        })}
       />
 
       <Card className="flex items-center gap-3">

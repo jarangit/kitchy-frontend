@@ -84,8 +84,8 @@ const TransactionCard = ({
     orderType === "DELIVERY" && order.deliveryPlatform?.trim()
       ? order.deliveryPlatform.trim()
       : orderType && ORDER_TYPE_KEY[orderType]
-      ? t(ORDER_TYPE_KEY[orderType])
-      : (orderType ?? t("transaction.card.orderType.default"));
+        ? t(ORDER_TYPE_KEY[orderType])
+        : (orderType ?? t("transaction.card.orderType.default"));
 
   const summaryLine =
     productCount > 0

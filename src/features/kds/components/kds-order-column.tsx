@@ -286,15 +286,15 @@ const KdsOrderColumn = ({
                   item.status === "SERVED"
                     ? t("kds.status.served")
                     : item.status === "READY"
-                    ? t("kds.item.markPending")
-                    : t("kds.item.markDone")
+                      ? t("kds.item.markPending")
+                      : t("kds.item.markDone")
                 }
                 title={
                   item.status === "SERVED"
                     ? t("kds.status.served")
                     : item.status === "READY"
-                    ? t("kds.item.markPending")
-                    : t("kds.item.markDone")
+                      ? t("kds.item.markPending")
+                      : t("kds.item.markDone")
                 }
                 className={cn(
                   "flex w-full flex-col rounded-segment px-2 py-1.5 text-left transition-all duration-fast",

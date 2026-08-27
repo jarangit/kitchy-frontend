@@ -35,7 +35,7 @@ const normalizeTransaction = (transaction: ITransaction): ITransaction => {
 export const transactionServiceApi = {
   getByStoreId: async (
     storeId: string,
-    filter?: { flowStatus?: 'ALL' | 'IN_PROGRESS' | 'DONE' | 'CANCELLED' },
+    filter?: { flowStatus?: "ALL" | "IN_PROGRESS" | "DONE" | "CANCELLED" },
   ) => {
     const response = IS_DEMO_MODE
       ? await (await getAdapter()).getTransactionsByStoreId({ storeId })
@@ -62,15 +62,18 @@ export const transactionServiceApi = {
   getCountsByStoreId: async (storeId: string) => {
     const response = IS_DEMO_MODE
       ? await (await getAdapter()).getTransactionsByStoreId({ storeId })
-      : (await axiosClient.get(`/transactions/counts`, { params: { storeId } })).data;
+      : (await axiosClient.get(`/transactions/counts`, { params: { storeId } }))
+          .data;
 
     if (IS_DEMO_MODE) {
-      const transactions = unwrapPayload<ITransaction[]>(response).map(normalizeTransaction);
+      const transactions =
+        unwrapPayload<ITransaction[]>(response).map(normalizeTransaction);
       return transactions.reduce(
         (counts, tx) => {
           counts.all += 1;
           if (tx.status === "CANCELLED") counts.cancelled += 1;
-          else if (tx.status === "READY" || tx.status === "COMPLETED") counts.done += 1;
+          else if (tx.status === "READY" || tx.status === "COMPLETED")
+            counts.done += 1;
           else counts.inProgress += 1;
           return counts;
         },

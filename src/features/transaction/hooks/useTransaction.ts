@@ -4,7 +4,7 @@ import { useAppSelector } from "@/shared/hooks/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { appBus } from "@/shared/events/app-events";
 
-type TransactionFlowStatus = 'ALL' | 'IN_PROGRESS' | 'DONE' | 'CANCELLED';
+type TransactionFlowStatus = "ALL" | "IN_PROGRESS" | "DONE" | "CANCELLED";
 
 export function useTransactionService(flowStatus: TransactionFlowStatus) {
   const storeId =

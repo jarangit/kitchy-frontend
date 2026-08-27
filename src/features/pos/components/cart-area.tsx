@@ -1,20 +1,26 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { ICartItem } from "@/features/pos/types/pos.model";
-import type { OrderType } from "@/features/pos/types/pos.model";
+import type { ReactNode } from "react";
 import {
   LuBike,
   LuChevronDown,
   LuChevronUp,
+  LuCircleCheck,
   LuPackage,
   LuShoppingCart,
   LuTableProperties,
   LuUtensilsCrossed,
   LuX,
 } from "react-icons/lu";
+import type {
+  ICartItem,
+  OrderType,
+  PaymentMethod,
+} from "@/features/pos/types/pos.model";
 import CartItem from "./cart-item";
 import TablePickerDialog from "./table-picker-dialog";
 import ItemNoteDialog from "./item-note-dialog";
 import { DeliveryDetailsDialog } from "./delivery-details-dialog";
+import { useCartContext } from "@/features/pos/context/cart-hooks";
 import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
@@ -23,8 +29,9 @@ import {
   DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { useTranslation } from "@/shared/i18n/use-translation";
+import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { SelectionChip } from "@/shared/components/ui/selection-chip";
+import { useTranslation } from "@/shared/i18n/use-translation";
 import {
   getDefaultDeliveryPlatforms,
   getDefaultQuickNotes,
@@ -63,6 +70,9 @@ const ORDER_TYPE_STYLES = {
   },
 } as const;
 
+export type CartMode =
+  "BROWSE" | "PAYMENT_SUMMARY" | "PAYMENT_METHOD" | "SUCCESS";
+
 const hasEnabledPlatforms = (
   value: string[] | { enabledPlatforms?: string[] },
 ): value is { enabledPlatforms: string[] } => {
@@ -88,9 +98,23 @@ interface Props {
   onCustomerNameChange: (name: string) => void;
   onDeliveryPlatformChange: (platform: string) => void;
   onDeliveryOrderNumberChange: (orderNumber: string) => void;
+  mode?: CartMode;
+  onBack?: () => void;
+  onContinue?: () => void;
+  onConfirm?: () => void;
+  onNewOrder?: () => void;
+  onPrint?: () => void;
+  isProcessing?: boolean;
+  errorMessage?: string | null;
+  validationMessage?: string | null;
+  hintText?: string | null;
+  canContinue?: boolean;
+  canConfirm?: boolean;
+  readOnly?: boolean;
+  paymentMethod?: PaymentMethod;
 }
 
-const SectionLabel = ({ children }: { children: React.ReactNode }) => (
+const SectionLabel = ({ children }: { children: ReactNode }) => (
   <p className="mb-2 text-label uppercase tracking-widest text-text-tertiary">
     {children}
   </p>
@@ -115,8 +139,23 @@ const CartArea = ({
   onCustomerNameChange,
   onDeliveryPlatformChange,
   onDeliveryOrderNumberChange,
+  mode = "BROWSE",
+  onBack,
+  onContinue,
+  onConfirm,
+  onNewOrder,
+  onPrint,
+  isProcessing = false,
+  errorMessage = null,
+  validationMessage = null,
+  hintText = null,
+  canContinue = true,
+  canConfirm = true,
+  readOnly = false,
+  paymentMethod = "QR",
 }: Props) => {
   const { t, language } = useTranslation();
+  const { paymentResult } = useCartContext();
   const defaultDeliveryPlatforms = useMemo(
     () => getDefaultDeliveryPlatforms(language),
     [language],
@@ -142,6 +181,8 @@ const CartArea = ({
     useState<OrderType | null>(null);
   const deliveryOrderInputRef = useRef<HTMLInputElement | null>(null);
   const firstDeliveryPlatform = deliveryPlatforms[0] ?? "";
+  const isLocked = readOnly || mode !== "BROWSE";
+  const displayItems = useMemo(() => [...items].reverse(), [items]);
 
   const deliverySettingsKey = useMemo(
     () => `store:${window.location.pathname.split("/")[2]}:delivery-platforms`,
@@ -243,6 +284,7 @@ const CartArea = ({
   };
 
   const handleOrderTypeChange = (nextType: OrderType) => {
+    if (isLocked) return;
     onOrderTypeChange(nextType);
     openOrderTypeRequirements(nextType);
   };
@@ -269,18 +311,37 @@ const CartArea = ({
     setIsDeviceKeyboardEnabled(false);
   };
 
-  const ActiveOrderTypeIcon = orderType ? ORDER_TYPE_ICONS[orderType] : null;
-  const orderTypeLabel = orderType ? t(ORDER_TYPE_LABEL_KEYS[orderType]) : "";
-  const deliveryOrderNumberValue = deliveryOrderNumber.trim();
+  const effectiveOrderType =
+    mode === "SUCCESS" && paymentResult ? paymentResult.orderType : orderType;
+  const effectiveTableNumber =
+    mode === "SUCCESS" && paymentResult
+      ? paymentResult.tableNumber
+      : tableNumber;
+  const effectiveDeliveryPlatform =
+    mode === "SUCCESS" && paymentResult
+      ? paymentResult.deliveryPlatform
+      : deliveryPlatform;
+  const effectiveDeliveryOrderNumber =
+    mode === "SUCCESS" && paymentResult
+      ? paymentResult.deliveryOrderNumber
+      : deliveryOrderNumber;
+
+  const ActiveOrderTypeIcon = effectiveOrderType
+    ? ORDER_TYPE_ICONS[effectiveOrderType]
+    : null;
+  const orderTypeLabel = effectiveOrderType
+    ? t(ORDER_TYPE_LABEL_KEYS[effectiveOrderType])
+    : "";
+  const deliveryOrderNumberValue = effectiveDeliveryOrderNumber.trim();
   const summaryParts: string[] = [];
 
-  if (orderType === "DINE_IN") {
-    summaryParts.push(tableNumber ?? t("pos.cart.tableNotSelected"));
+  if (effectiveOrderType === "DINE_IN") {
+    summaryParts.push(effectiveTableNumber ?? t("pos.cart.tableNotSelected"));
   }
 
-  if (orderType === "DELIVERY") {
-    if (deliveryPlatform.trim().length > 0) {
-      summaryParts.push(deliveryPlatform.trim());
+  if (effectiveOrderType === "DELIVERY") {
+    if (effectiveDeliveryPlatform.trim().length > 0) {
+      summaryParts.push(effectiveDeliveryPlatform.trim());
     }
     if (deliveryOrderNumberValue.length > 0) {
       summaryParts.push(deliveryOrderNumberValue);
@@ -296,6 +357,7 @@ const CartArea = ({
           ? t("pos.cart.selectDeliveryPlatformBeforePay")
           : null;
   const canPay = items.length > 0;
+
   const handlePayClick = () => {
     if (!canPay) return;
 
@@ -339,206 +401,249 @@ const CartArea = ({
 
   return (
     <div className="flex h-full max-h-full w-full min-h-0 flex-col overflow-hidden border-l border-border bg-card-bg">
-      <div
-        className="shrink-0 border-b border-border p-card-padding"
-        role="button"
-        tabIndex={0}
-        aria-expanded={isConfigExpanded}
-        onClick={toggleConfigExpanded}
-        onKeyDown={(event) => {
-          if (event.key !== "Enter" && event.key !== " ") return;
-          event.preventDefault();
-          toggleConfigExpanded();
-        }}
-      >
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
-            {orderType && (
-              <span
-                className={cn(
-                  "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-label font-medium",
-                  ORDER_TYPE_STYLES[orderType].badge,
-                )}
-              >
-                {ActiveOrderTypeIcon && (
-                  <ActiveOrderTypeIcon
-                    className="h-3.5 w-3.5"
-                    aria-hidden="true"
-                  />
-                )}
-                {orderTypeLabel}
-              </span>
-            )}
-            {summaryParts.length > 0 && (
-              <p className="truncate">{summaryParts.join(" • ")}</p>
-            )}
+      {mode === "SUCCESS" && paymentResult ? (
+        <div className="shrink-0 border-b border-border p-card-padding text-center">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-success-bg text-success">
+            <LuCircleCheck size={28} aria-hidden="true" />
           </div>
+          <h2 className="text-title text-text-primary">
+            {t("pos.success.title")}
+          </h2>
+          {effectiveOrderType && (
+            <span
+              className={cn(
+                "mt-3 inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-label font-medium",
+                ORDER_TYPE_STYLES[effectiveOrderType].badge,
+              )}
+            >
+              {ActiveOrderTypeIcon && (
+                <ActiveOrderTypeIcon
+                  className="h-3.5 w-3.5"
+                  aria-hidden="true"
+                />
+              )}
+              {orderTypeLabel}
+            </span>
+          )}
+          {summaryParts.length > 0 && (
+            <p className="mt-2 truncate text-body-sm text-text-secondary">
+              {summaryParts.join(" • ")}
+            </p>
+          )}
+        </div>
+      ) : (
+        <div
+          className="shrink-0 border-b border-border p-card-padding"
+          role="button"
+          tabIndex={0}
+          aria-expanded={isConfigExpanded}
+          onClick={toggleConfigExpanded}
+          onKeyDown={(event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            toggleConfigExpanded();
+          }}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2 text-body font-medium text-text-primary">
+              {effectiveOrderType && (
+                <span
+                  className={cn(
+                    "inline-flex shrink-0 items-center gap-1 rounded-full border px-2.5 py-1 text-label font-medium",
+                    ORDER_TYPE_STYLES[effectiveOrderType].badge,
+                  )}
+                >
+                  {ActiveOrderTypeIcon && (
+                    <ActiveOrderTypeIcon
+                      className="h-3.5 w-3.5"
+                      aria-hidden="true"
+                    />
+                  )}
+                  {orderTypeLabel}
+                </span>
+              )}
+              {summaryParts.length > 0 && (
+                <p className="truncate">{summaryParts.join(" • ")}</p>
+              )}
+            </div>
 
-          <div className="flex shrink-0 items-center gap-2">
-            {items.length > 0 && (
+            <div className="flex shrink-0 items-center gap-2">
+              {items.length > 0 && mode === "BROWSE" && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onClearCart();
+                  }}
+                  className="shrink-0 text-danger hover:bg-danger-bg hover:text-danger"
+                >
+                  {t("pos.cart.clearAll")}
+                </Button>
+              )}
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 onClick={(event) => {
                   event.stopPropagation();
-                  onClearCart();
+                  toggleConfigExpanded();
                 }}
-                className="shrink-0 text-danger hover:bg-danger-bg hover:text-danger"
+                aria-label={t("common.edit")}
+                title={t("common.edit")}
+                className={
+                  isConfigExpanded
+                    ? "shrink-0 text-accent-text hover:text-accent-text"
+                    : "shrink-0"
+                }
               >
-                {t("pos.cart.clearAll")}
+                <span>{t("common.edit")}</span>
+                {isConfigExpanded ? (
+                  <LuChevronUp className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <LuChevronDown className="h-4 w-4" aria-hidden="true" />
+                )}
               </Button>
-            )}
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              onClick={(event) => {
-                event.stopPropagation();
-                toggleConfigExpanded();
-              }}
-              aria-label={t("common.edit")}
-              title={t("common.edit")}
-              className={
-                isConfigExpanded
-                  ? "shrink-0 text-accent-text hover:text-accent-text"
-                  : "shrink-0"
-              }
-            >
-              <span>{t("common.edit")}</span>
-              {isConfigExpanded ? (
-                <LuChevronUp className="h-4 w-4" aria-hidden="true" />
-              ) : (
-                <LuChevronDown className="h-4 w-4" aria-hidden="true" />
-              )}
-            </Button>
-          </div>
-        </div>
-
-        {isConfigExpanded && (
-          <div className="page-stack-tight mt-4">
-            <div>
-              <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
-              <div className="page-grid grid grid-cols-3">
-                {ORDER_TYPE_VALUES.map((value) => {
-                  const Icon = ORDER_TYPE_ICONS[value];
-                  const label = t(ORDER_TYPE_LABEL_KEYS[value]);
-
-                  return (
-                    <SelectionChip
-                      key={value}
-                      active={orderType === value}
-                      onClick={() => handleOrderTypeChange(value)}
-                      className={cn(
-                        "h-auto min-h-16 flex-col gap-1 px-2 py-2",
-                        orderType === value &&
-                          ORDER_TYPE_STYLES[value].activeChip,
-                      )}
-                      aria-label={label}
-                      title={label}
-                    >
-                      <Icon className="h-5 w-5" aria-hidden="true" />
-                      <span className="text-label leading-4">{label}</span>
-                    </SelectionChip>
-                  );
-                })}
-              </div>
             </div>
-
-            {orderType === "DINE_IN" && (
-              <div className="flex items-center justify-between gap-3">
-                <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
-                  <LuTableProperties
-                    className="h-4 w-4 shrink-0 text-text-tertiary"
-                    aria-hidden="true"
-                  />
-                  <p className="truncate">
-                    {tableNumber ?? t("pos.cart.tableNotSelected")}
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  {tableNumber && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => onTableNumberChange(null)}
-                      aria-label={t("common.clear")}
-                      title={t("common.clear")}
-                    >
-                      <LuX className="h-4 w-4" aria-hidden="true" />
-                    </Button>
-                  )}
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="icon"
-                    onClick={() => setIsTableDialogOpen(true)}
-                    aria-label={t("pos.cart.selectTable")}
-                    title={t("pos.cart.selectTable")}
-                  >
-                    <LuTableProperties className="h-4 w-4" aria-hidden="true" />
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {orderType === "DELIVERY" && (
-              <div className="flex items-center justify-between gap-3">
-                <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
-                  <LuBike
-                    className="h-4 w-4 shrink-0 text-text-tertiary"
-                    aria-hidden="true"
-                  />
-                  <p className="truncate">
-                    {deliveryPlatform.trim().length > 0
-                      ? deliveryOrderNumberValue.length > 0
-                        ? `${deliveryPlatform.trim()} • ${deliveryOrderNumberValue}`
-                        : deliveryPlatform.trim()
-                      : t("pos.payment.selectPlatformFirst")}
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  {(deliveryPlatform.trim().length > 0 ||
-                    deliveryOrderNumberValue.length > 0) && (
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        onDeliveryPlatformChange("");
-                        onDeliveryOrderNumberChange("");
-                        closeDeliveryKeypad();
-                      }}
-                      aria-label={t("common.clear")}
-                      title={t("common.clear")}
-                    >
-                      <LuX className="h-4 w-4" aria-hidden="true" />
-                    </Button>
-                  )}
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="icon"
-                    onClick={() => {
-                      setIsDeliveryKeypadOpen(true);
-                      setIsDeviceKeyboardEnabled(false);
-                      setIsDeliveryDialogOpen(true);
-                    }}
-                    aria-label={t("common.edit")}
-                    title={t("common.edit")}
-                  >
-                    <LuBike className="h-4 w-4" aria-hidden="true" />
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
-        )}
-      </div>
+
+          {isConfigExpanded && (
+            <div className="page-stack-tight mt-4">
+              <div>
+                <SectionLabel>{t("pos.cart.orderType")}</SectionLabel>
+                <div className="page-grid grid grid-cols-3">
+                  {ORDER_TYPE_VALUES.map((value) => {
+                    const Icon = ORDER_TYPE_ICONS[value];
+                    const label = t(ORDER_TYPE_LABEL_KEYS[value]);
+
+                    return (
+                      <SelectionChip
+                        key={value}
+                        active={effectiveOrderType === value}
+                        disabled={isLocked}
+                        onClick={() => handleOrderTypeChange(value)}
+                        className={cn(
+                          "h-auto min-h-16 flex-col gap-1 px-2 py-2",
+                          isLocked && "opacity-60",
+                          effectiveOrderType === value &&
+                            ORDER_TYPE_STYLES[value].activeChip,
+                        )}
+                        aria-label={label}
+                        title={label}
+                      >
+                        <Icon className="h-5 w-5" aria-hidden="true" />
+                        <span className="text-label leading-4">{label}</span>
+                      </SelectionChip>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {effectiveOrderType === "DINE_IN" && (
+                <div className="flex items-center justify-between gap-3">
+                  <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
+                    <LuTableProperties
+                      className="h-4 w-4 shrink-0 text-text-tertiary"
+                      aria-hidden="true"
+                    />
+                    <p className="truncate">
+                      {effectiveTableNumber ?? t("pos.cart.tableNotSelected")}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    {effectiveTableNumber && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={isLocked}
+                        onClick={() => onTableNumberChange(null)}
+                        aria-label={t("common.clear")}
+                        title={t("common.clear")}
+                      >
+                        <LuX className="h-4 w-4" aria-hidden="true" />
+                      </Button>
+                    )}
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="icon"
+                      disabled={isLocked}
+                      onClick={() => setIsTableDialogOpen(true)}
+                      aria-label={t("pos.cart.selectTable")}
+                      title={t("pos.cart.selectTable")}
+                    >
+                      <LuTableProperties
+                        className="h-4 w-4"
+                        aria-hidden="true"
+                      />
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {effectiveOrderType === "DELIVERY" && (
+                <div className="flex items-center justify-between gap-3">
+                  <div className="inline-flex min-w-0 items-center gap-2 text-body font-semibold text-text-primary">
+                    <LuBike
+                      className="h-4 w-4 shrink-0 text-text-tertiary"
+                      aria-hidden="true"
+                    />
+                    <p className="truncate">
+                      {effectiveDeliveryPlatform.trim().length > 0
+                        ? deliveryOrderNumberValue.length > 0
+                          ? `${effectiveDeliveryPlatform.trim()} • ${deliveryOrderNumberValue}`
+                          : effectiveDeliveryPlatform.trim()
+                        : t("pos.payment.selectPlatformFirst")}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    {(effectiveDeliveryPlatform.trim().length > 0 ||
+                      deliveryOrderNumberValue.length > 0) && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        disabled={isLocked}
+                        onClick={() => {
+                          onDeliveryPlatformChange("");
+                          onDeliveryOrderNumberChange("");
+                          closeDeliveryKeypad();
+                        }}
+                        aria-label={t("common.clear")}
+                        title={t("common.clear")}
+                      >
+                        <LuX className="h-4 w-4" aria-hidden="true" />
+                      </Button>
+                    )}
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="icon"
+                      disabled={isLocked}
+                      onClick={() => {
+                        setIsDeliveryKeypadOpen(true);
+                        setIsDeviceKeyboardEnabled(false);
+                        setIsDeliveryDialogOpen(true);
+                      }}
+                      aria-label={t("common.edit")}
+                      title={t("common.edit")}
+                    >
+                      <LuBike className="h-4 w-4" aria-hidden="true" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-card-bg p-card-padding [scrollbar-gutter:stable] [-webkit-overflow-scrolling:touch]">
-        {items.length === 0 ? (
+        {mode === "SUCCESS" && paymentResult ? (
+          <div className="flex min-h-full items-center justify-center py-8" />
+        ) : items.length === 0 ? (
           <EmptyState
             icon={<LuShoppingCart size={32} />}
             title={t("pos.cart.emptyTitle")}
@@ -547,7 +652,7 @@ const CartArea = ({
           />
         ) : (
           <div className="page-stack-tight">
-            {items.map((item) => (
+            {displayItems.map((item) => (
               <CartItem
                 key={item.cartItemId}
                 item={item}
@@ -562,6 +667,7 @@ const CartArea = ({
                       : nextItem.cartItemId,
                   )
                 }
+                readOnly={isLocked}
               />
             ))}
           </div>
@@ -569,7 +675,7 @@ const CartArea = ({
       </div>
 
       <div className="page-stack-tight shadow-cart-dock z-10 shrink-0 border-t border-border bg-card-bg p-card-padding">
-        {canPay && (
+        {mode !== "SUCCESS" && canPay && (
           <div className="flex items-end justify-between gap-3 pt-1">
             <div className="min-w-0">
               <p className="text-label uppercase tracking-widest text-text-tertiary">
@@ -584,15 +690,104 @@ const CartArea = ({
             </p>
           </div>
         )}
-        <Button
-          onClick={handlePayClick}
-          disabled={!canPay}
-          size="lg"
-          data-onboarding-target="pay-button"
-          className="w-full whitespace-normal text-center text-title leading-6"
-        >
-          {t("pos.cart.payLabel")}
-        </Button>
+
+        {hintText && mode === "PAYMENT_METHOD" && (
+          <p className="rounded-card bg-bg px-3 py-2 text-caption leading-5 text-text-secondary">
+            {hintText}
+          </p>
+        )}
+
+        {(errorMessage || validationMessage) && mode !== "BROWSE" && (
+          <InlineAlert tone={errorMessage ? "danger" : "warning"}>
+            {errorMessage ?? validationMessage}
+          </InlineAlert>
+        )}
+
+        {mode === "BROWSE" && (
+          <Button
+            onClick={handlePayClick}
+            disabled={!canPay}
+            size="lg"
+            data-onboarding-target="pay-button"
+            className="w-full whitespace-normal text-center text-title leading-6"
+          >
+            {t("pos.cart.payLabel")}
+          </Button>
+        )}
+
+        {mode === "PAYMENT_SUMMARY" && (
+          <div className="space-y-2">
+            {onBack && (
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={onBack}
+                className="w-full"
+                disabled={isProcessing}
+              >
+                {t("pos.payment.backToPos")}
+              </Button>
+            )}
+            <Button
+              onClick={onContinue}
+              disabled={!canContinue || isProcessing}
+              loading={isProcessing}
+              loadingText={t("pos.payment.processing")}
+              size="lg"
+              className="w-full whitespace-normal text-center text-title leading-6"
+            >
+              {orderType === "DELIVERY"
+                ? t("pos.payment.confirmOrder")
+                : t("pos.payment.continueToPayment")}
+            </Button>
+          </div>
+        )}
+
+        {mode === "PAYMENT_METHOD" && (
+          <div className="space-y-2">
+            {onBack && (
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={onBack}
+                className="w-full"
+                disabled={isProcessing}
+              >
+                {t("pos.payment.backToSummary")}
+              </Button>
+            )}
+            <Button
+              onClick={onConfirm}
+              disabled={!canConfirm || isProcessing}
+              loading={isProcessing}
+              loadingText={t("pos.payment.processing")}
+              size="lg"
+              className="w-full whitespace-normal text-center text-title leading-6"
+            >
+              {paymentMethod === "QR"
+                ? t("pos.payment.confirmQr")
+                : t("pos.payment.confirm")}
+            </Button>
+          </div>
+        )}
+
+        {mode === "SUCCESS" && paymentResult && (
+          <div className="space-y-2">
+            {onPrint && (
+              <Button
+                variant="secondary"
+                size="lg"
+                onClick={onPrint}
+                className="w-full"
+              >
+                {t("pos.success.printReceipt")}
+              </Button>
+            )}
+            <Button size="lg" className="w-full" onClick={onNewOrder}>
+              {t("pos.success.newOrder")}
+            </Button>
+          </div>
+        )}
       </div>
 
       <Dialog

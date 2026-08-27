@@ -12,6 +12,7 @@ interface Props {
   onRemove: (cartItemId: string) => void;
   onEditNote: (item: ICartItem) => void;
   onToggleExpand: (item: ICartItem) => void;
+  readOnly?: boolean;
 }
 
 const CartItem = ({
@@ -21,6 +22,7 @@ const CartItem = ({
   onRemove,
   onEditNote,
   onToggleExpand,
+  readOnly = false,
 }: Props) => {
   const { t } = useTranslation();
   const noteActionLabel = item.note
@@ -28,7 +30,7 @@ const CartItem = ({
     : t("pos.cart.addNote");
 
   return (
-    <InsetPanel className="border-accent-border bg-accent-bg px-3 py-3 shadow-xs">
+    <InsetPanel className="border-success-border bg-success-bg px-3 py-3 shadow-xs">
       <div className="flex items-center gap-2">
         <p
           className="min-w-0 flex-1 truncate text-body font-semibold leading-6 text-text-primary"
@@ -42,22 +44,35 @@ const CartItem = ({
         <p className="shrink-0 text-body-sm font-medium tabular-nums text-text-secondary">
           ฿{(item.price * item.quantity).toFixed(2)}
         </p>
-        <button
-          type="button"
-          onClick={() => onToggleExpand(item)}
-          className={cn(
-            "inline-flex w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-fast",
-            "hover:bg-surface hover:text-text-primary",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-1 focus-visible:ring-offset-bg",
-          )}
-          aria-label={expanded ? t("common.close") : t("common.edit")}
-          title={expanded ? t("common.close") : t("common.edit")}
-        >
-          {expanded ? <LuChevronUp size={16} /> : <LuPencil size={16} />}
-        </button>
+        {!readOnly && (
+          <button
+            type="button"
+            onClick={() => onToggleExpand(item)}
+            className={cn(
+              "inline-flex w-7 items-center justify-center rounded-full text-text-secondary transition-colors duration-fast",
+              "hover:bg-surface hover:text-text-primary",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-1 focus-visible:ring-offset-bg",
+            )}
+            aria-label={expanded ? t("common.close") : t("common.edit")}
+            title={expanded ? t("common.close") : t("common.edit")}
+          >
+            {expanded ? <LuChevronUp size={16} /> : <LuPencil size={16} />}
+          </button>
+        )}
       </div>
 
-      {expanded && (
+      {item.note && readOnly && (
+        <InsetPanel className="mt-2 rounded-sm border-border bg-surface px-3 py-2">
+          <p
+            className="line-clamp-2 text-label leading-5 text-text-tertiary"
+            title={item.note}
+          >
+            {item.note}
+          </p>
+        </InsetPanel>
+      )}
+
+      {expanded && !readOnly && (
         <InsetPanel className="mt-2 rounded-sm border-border bg-bg px-3 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="inline-flex items-center gap-0.5 rounded-full border border-card-border bg-card-bg p-0.5">

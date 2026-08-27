@@ -7,9 +7,7 @@ import { Card } from "@/shared/components/ui/card";
 import { IconButton } from "@/shared/components/ui/icon-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { appBus } from "@/shared/events/app-events";
-import {
-  useReadyToServeItems,
-} from "@/features/kds/hooks/use-ready-to-serve";
+import { useReadyToServeItems } from "@/features/kds/hooks/use-ready-to-serve";
 import { ReadyToServeList } from "@/features/kds/components/ready-to-serve-list";
 import { useReadyToServeActions } from "@/features/kds/hooks/use-ready-to-serve-actions";
 import {

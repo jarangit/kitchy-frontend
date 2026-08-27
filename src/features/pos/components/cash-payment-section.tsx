@@ -35,9 +35,6 @@ const CashPaymentSection = ({
 
   const content = (
     <>
-      <h3 className="text-subtitle text-text-primary">
-        {t("pos.payment.cashTitle")}
-      </h3>
       <div className={embedded ? "space-y-3" : "space-y-5"}>
         <Input
           label={t("pos.payment.receivedAmount")}
