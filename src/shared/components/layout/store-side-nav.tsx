@@ -1,4 +1,3 @@
-import { useEffect, useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   LuChefHat,
@@ -14,11 +13,7 @@ import type { MessageKey } from "@/shared/i18n/messages";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 import { NavBadge } from "@/shared/components/ui/nav-badge";
-import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-count";
-import { useInProgressTransactionsCount } from "@/features/transaction/hooks/use-in-progress-transactions-count";
-import { useReadyToServeItems } from "@/features/kds/hooks/use-ready-to-serve";
-import { readReadyToServeDismissed } from "@/features/kds/utils/ready-to-serve-dismissed";
-import { appBus } from "@/shared/events/app-events";
+import { useStoreOverviewCounts } from "@/shared/hooks/use-store-overview-counts";
 
 const NAV_ITEMS = [
   { id: "home", subpath: "", end: true, icon: LuLayoutGrid, label: "nav.home" },
@@ -72,28 +67,8 @@ export function StoreSideNav() {
   const reduxStoreId = useAppSelector((state) => state.currentStore.storeId);
   const storeId =
     routeStoreId ?? (reduxStoreId != null ? String(reduxStoreId) : undefined);
-  const { count: pendingOrdersCount } = usePendingOrdersCount();
-  const { count: inProgressTransactionsCount } =
-    useInProgressTransactionsCount();
-  const { items: readyToServeItems } = useReadyToServeItems();
-  const [dismissed, setDismissed] = useState(() =>
-    readReadyToServeDismissed(storeId),
-  );
-
-  useEffect(() => {
-    setDismissed(readReadyToServeDismissed(storeId));
-  }, [storeId]);
-
-  useEffect(() => {
-    return appBus.on("ui:readyToServeDismissed", () => {
-      setDismissed(readReadyToServeDismissed(storeId));
-    });
-  }, [storeId]);
-
-  const visibleReadyToServeCount = useMemo(
-    () => readyToServeItems.filter((item) => !dismissed.has(item.id)).length,
-    [readyToServeItems, dismissed],
-  );
+  const { openOrdersCount, kitchenPendingCount, readyToServeCount } =
+    useStoreOverviewCounts();
 
   const badgeCounts: Partial<
     Record<
@@ -103,9 +78,9 @@ export function StoreSideNav() {
       number
     >
   > = {
-    kds: pendingOrdersCount,
-    transactions: inProgressTransactionsCount,
-    readyToServe: visibleReadyToServeCount,
+    kds: kitchenPendingCount,
+    transactions: openOrdersCount,
+    readyToServe: readyToServeCount,
   };
 
   if (!storeId) return null;

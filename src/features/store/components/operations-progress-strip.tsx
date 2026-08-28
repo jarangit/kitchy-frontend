@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { cn } from "@/shared/utils/cn";
 
 export type OperationsProgressTone = "default" | "warning" | "success";
@@ -8,6 +9,7 @@ export interface OperationsProgressStage {
   count: number;
   helperText?: string;
   tone: OperationsProgressTone;
+  to?: string;
 }
 
 export interface OperationsProgressStripProps {
@@ -22,21 +24,37 @@ const toneStyles: Record<OperationsProgressTone, string> = {
 };
 
 function StagePill({ stage }: { stage: OperationsProgressStage }) {
-  return (
-    <div
-      className={cn(
-        "flex flex-1 items-center justify-between gap-3 rounded-full px-4 py-3",
-        toneStyles[stage.tone],
-      )}
-    >
+  const content = (
+    <>
       <span className="text-body-sm font-medium leading-5 text-text-primary">
         {stage.label}
       </span>
       <span className="text-title font-semibold leading-none text-text-primary tabular-nums">
         {stage.count}
       </span>
-    </div>
+    </>
   );
+
+  const baseClass = cn(
+    "flex flex-1 items-center justify-between gap-3 rounded-full px-4 py-3 transition-colors duration-fast",
+    toneStyles[stage.tone],
+  );
+
+  if (stage.to) {
+    return (
+      <Link
+        to={stage.to}
+        className={cn(
+          baseClass,
+          "hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+        )}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return <div className={baseClass}>{content}</div>;
 }
 
 function ArrowSeparator() {
