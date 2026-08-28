@@ -44,6 +44,18 @@ function getDateRangeBounds(dateRange?: TransactionDateRange): {
   return {};
 }
 
+function normalizeFlowStatus(
+  status?: TransactionFlowStatus,
+): "IN_PROGRESS" | "DONE" | "CANCELLED" | undefined {
+  return status && status !== "ALL" ? status : undefined;
+}
+
+function normalizeOrderType(
+  orderType?: TransactionOrderType,
+): "DINE_IN" | "TOGO" | "DELIVERY" | undefined {
+  return orderType && orderType !== "ALL" ? orderType : undefined;
+}
+
 export function useTransactionService(
   filter: UseTransactionServiceFilter | TransactionFlowStatus = "ALL",
 ) {
@@ -69,10 +81,9 @@ export function useTransactionService(
     ],
     queryFn: () =>
       transactionServiceApi.getByStoreId(storeId as string, {
-        flowStatus: status,
+        flowStatus: normalizeFlowStatus(status),
         search: search?.trim() ? search.trim() : undefined,
-        orderType,
-        dateRange,
+        orderType: normalizeOrderType(orderType),
         startDate,
         endDate,
       }),
@@ -100,13 +111,30 @@ export function useTransactionService(
   };
 }
 
-export function useTransactionCounts() {
+export function useTransactionCounts(filter?: UseTransactionServiceFilter) {
   const storeId =
     useAppSelector((state) => state.currentStore.storeId) ?? undefined;
 
+  const { search, orderType, dateRange } = filter ?? {};
+  const { startDate, endDate } = getDateRangeBounds(dateRange);
+
   const countsQuery = useQuery({
-    queryKey: ["transaction-counts", storeId],
-    queryFn: () => transactionServiceApi.getCountsByStoreId(storeId as string),
+    queryKey: [
+      "transaction-counts",
+      storeId,
+      search ?? "",
+      orderType ?? "ALL",
+      dateRange ?? "ALL",
+      startDate ?? "",
+      endDate ?? "",
+    ],
+    queryFn: () =>
+      transactionServiceApi.getCountsByStoreId(storeId as string, {
+        search: search?.trim() ? search.trim() : undefined,
+        orderType: normalizeOrderType(orderType),
+        startDate,
+        endDate,
+      }),
     enabled: !!storeId,
   });
 

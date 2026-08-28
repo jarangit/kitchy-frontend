@@ -259,7 +259,7 @@ const TransactionListPage = () => {
 
   const { transactions, isLoading, updateTransaction, isUpdating, refetch } =
     useTransactionService(filter);
-  const { counts: countsData } = useTransactionCounts();
+  const { counts: countsData } = useTransactionCounts(filter);
 
   const [sorting, setSorting] = useState<SortingState>([
     { id: "createdAt", desc: true },

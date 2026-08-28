@@ -225,7 +225,7 @@ export function Tab({
         onKeyDown={handleKeyDown}
         className={cn(
           "flex items-center justify-center rounded-segment text-center",
-          "h-full min-h-0 min-w-0 px-4 text-segment font-segment whitespace-nowrap leading-none sm:px-5",
+          "h-[34px] min-w-0 px-4 text-segment font-segment whitespace-nowrap leading-none sm:px-5",
           "transition-colors duration-fast",
           "flex-1",
           isActive

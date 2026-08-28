@@ -56,9 +56,6 @@ export const transactionServiceApi = {
               ...(apiFilter.orderType
                 ? { orderType: apiFilter.orderType }
                 : {}),
-              ...(apiFilter.dateRange
-                ? { dateRange: apiFilter.dateRange }
-                : {}),
               ...(apiFilter.startDate
                 ? { startDate: apiFilter.startDate }
                 : {}),
@@ -79,11 +76,36 @@ export const transactionServiceApi = {
     return normalizeTransaction(unwrapPayload<ITransaction>(response));
   },
 
-  getCountsByStoreId: async (storeId: string) => {
+  getCountsByStoreId: async (
+    storeId: string,
+    filter?: Omit<ITransactionFilter, "storeId">,
+  ) => {
+    const apiFilter: ITransactionFilter = {
+      storeId,
+      ...filter,
+    };
+
     const response = IS_DEMO_MODE
-      ? await (await getAdapter()).getTransactionsByStoreId({ storeId })
-      : (await axiosClient.get(`/transactions/counts`, { params: { storeId } }))
-          .data;
+      ? await (await getAdapter()).getTransactionsByStoreId(apiFilter)
+      : (
+          await axiosClient.get(`/transactions/counts`, {
+            params: {
+              storeId: apiFilter.storeId,
+              ...(apiFilter.flowStatus
+                ? { flowStatus: apiFilter.flowStatus }
+                : {}),
+              ...(apiFilter.search ? { search: apiFilter.search } : {}),
+              ...(apiFilter.orderType
+                ? { orderType: apiFilter.orderType }
+                : {}),
+              ...(apiFilter.startDate
+                ? { startDate: apiFilter.startDate }
+                : {}),
+              ...(apiFilter.endDate ? { endDate: apiFilter.endDate } : {}),
+              ...(apiFilter.method ? { method: apiFilter.method } : {}),
+            },
+          })
+        ).data;
 
     if (IS_DEMO_MODE) {
       const transactions =
