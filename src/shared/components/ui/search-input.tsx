@@ -29,11 +29,11 @@ export function SearchInput({
         onChange={(e) => onValueChange(e.target.value)}
         placeholder={placeholder}
         className={cn(
-          "w-full h-input-height",
+          "w-full h-segment-height",
           "bg-input-bg",
           "border border-input-border",
           "rounded-full pl-10 pr-10",
-          "text-input text-input-text",
+          "text-segment font-segment text-input-text",
           "placeholder:text-input-placeholder",
           "outline-none",
           "transition-colors duration-fast",

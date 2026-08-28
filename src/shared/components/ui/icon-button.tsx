@@ -8,8 +8,8 @@ interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const sizeStyles: Record<IconButtonSize, string> = {
-  sm: "h-9 w-9",
-  md: "h-button-height-sm w-button-height-sm",
+  sm: "h-segment-height w-segment-height",
+  md: "h-segment-height w-segment-height",
   lg: "h-button-height-md w-button-height-md",
 };
 

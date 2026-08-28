@@ -4,6 +4,7 @@ import {
   getAdapter,
 } from "@/shared/services/adapters/data-adapter";
 import type { ITransaction } from "@/features/transaction/types/transaction.model";
+import type { ITransactionFilter } from "@/features/transaction/types/transaction.dto";
 
 type PayloadResponse<T> = T | { data: T };
 
@@ -35,15 +36,34 @@ const normalizeTransaction = (transaction: ITransaction): ITransaction => {
 export const transactionServiceApi = {
   getByStoreId: async (
     storeId: string,
-    filter?: { flowStatus?: "ALL" | "IN_PROGRESS" | "DONE" | "CANCELLED" },
+    filter?: Omit<ITransactionFilter, "storeId">,
   ) => {
+    const apiFilter: ITransactionFilter = {
+      storeId,
+      ...filter,
+    };
+
     const response = IS_DEMO_MODE
-      ? await (await getAdapter()).getTransactionsByStoreId({ storeId })
+      ? await (await getAdapter()).getTransactionsByStoreId(apiFilter)
       : (
           await axiosClient.get(`/transactions`, {
             params: {
-              storeId,
-              ...(filter?.flowStatus ? { flowStatus: filter.flowStatus } : {}),
+              storeId: apiFilter.storeId,
+              ...(apiFilter.flowStatus
+                ? { flowStatus: apiFilter.flowStatus }
+                : {}),
+              ...(apiFilter.search ? { search: apiFilter.search } : {}),
+              ...(apiFilter.orderType
+                ? { orderType: apiFilter.orderType }
+                : {}),
+              ...(apiFilter.dateRange
+                ? { dateRange: apiFilter.dateRange }
+                : {}),
+              ...(apiFilter.startDate
+                ? { startDate: apiFilter.startDate }
+                : {}),
+              ...(apiFilter.endDate ? { endDate: apiFilter.endDate } : {}),
+              ...(apiFilter.method ? { method: apiFilter.method } : {}),
             },
           })
         ).data;

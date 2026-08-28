@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { format, formatDistanceToNow, parseISO } from "date-fns";
+import {
+  format,
+  formatDistanceToNow,
+  isSameDay,
+  isWithinInterval,
+  parseISO,
+  startOfDay,
+  subDays,
+} from "date-fns";
 import { LuArrowRight, LuReceipt } from "react-icons/lu";
 import {
   useTransactionCounts,
@@ -8,7 +16,9 @@ import {
 } from "@/features/transaction/hooks/useTransaction";
 import { type FlowStatus } from "@/features/transaction/components/transaction-card";
 import TransactionFilter, {
+  type TransactionDateRange,
   type TransactionFilterStatus,
+  type TransactionOrderTypeFilter,
 } from "@/features/transaction/components/transaction-filter";
 import { PageHeader } from "@/shared/components/ui/page-header";
 import { EmptyState } from "@/shared/components/ui/empty-state";
@@ -238,10 +248,17 @@ const TransactionListPage = () => {
   const [filter, setFilter] = useState<{
     search: string;
     status: TransactionFilterStatus;
-  }>({ search: "", status: "IN_PROGRESS" });
+    orderType: TransactionOrderTypeFilter;
+    dateRange: TransactionDateRange;
+  }>({
+    search: "",
+    status: "IN_PROGRESS",
+    orderType: "ALL",
+    dateRange: "TODAY",
+  });
 
   const { transactions, isLoading, updateTransaction, isUpdating, refetch } =
-    useTransactionService(filter.status);
+    useTransactionService(filter);
   const { counts: countsData } = useTransactionCounts();
 
   const [sorting, setSorting] = useState<SortingState>([
@@ -273,9 +290,29 @@ const TransactionListPage = () => {
       const matchSearch =
         !filter.search ||
         tx.orderNumber.toLowerCase().includes(filter.search.toLowerCase());
-      return matchSearch;
+
+      const orderTypeValue = tx.type ?? tx.orderType ?? "";
+      const matchOrderType =
+        filter.orderType === "ALL" || orderTypeValue === filter.orderType;
+
+      const matchDateRange = (() => {
+        if (filter.dateRange === "ALL") return true;
+        const txDate = parseISO(tx.createdAt);
+        const now = new Date();
+        if (filter.dateRange === "TODAY") return isSameDay(txDate, now);
+        if (filter.dateRange === "YESTERDAY")
+          return isSameDay(txDate, subDays(now, 1));
+        if (filter.dateRange === "LAST_7_DAYS") {
+          const start = startOfDay(subDays(now, 6));
+          const end = now;
+          return isWithinInterval(txDate, { start, end });
+        }
+        return true;
+      })();
+
+      return matchSearch && matchOrderType && matchDateRange;
     });
-  }, [allTransactions, filter.search]);
+  }, [allTransactions, filter.search, filter.orderType, filter.dateRange]);
 
   const totalFilteredTransactions = filteredTransactions.length;
   const totalPages = Math.max(
@@ -475,7 +512,10 @@ const TransactionListPage = () => {
 
   const hasAny = filteredTransactions.length > 0;
   const hasActiveFilters =
-    filter.search.trim().length > 0 || filter.status !== "ALL";
+    filter.search.trim().length > 0 ||
+    filter.status !== "ALL" ||
+    filter.orderType !== "ALL" ||
+    filter.dateRange !== "ALL";
   const emptyTitle = hasActiveFilters
     ? t("transaction.empty.filteredTitle")
     : t("transaction.empty.noOrdersTitle");

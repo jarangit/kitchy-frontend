@@ -207,7 +207,8 @@ export const apiAdapter: DataAdapter = {
 
   // ═══ Transaction ═══
   async getTransactionsByStoreId(filter: ITransactionFilter) {
-    return transactionServiceApi.getByStoreId(filter.storeId);
+    const { storeId, ...rest } = filter;
+    return transactionServiceApi.getByStoreId(storeId, rest);
   },
   async getTransactionById(id) {
     return transactionServiceApi.getById(id);
