@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import {
   DEFAULT_STORE_SETTINGS,
   type StoreSettings,
 } from "@/features/store/types/store.model";
+import { getStorePin } from "@/features/store/utils/store-pin-cache";
 
 export type StoreSettingsPatch = Partial<{
   hours: string;
@@ -41,7 +42,9 @@ export function useStoreSettings() {
   const auth = useAuth();
   const userId = auth?.user?.id ? String(auth.user.id) : undefined;
   const { storeFinOneQuery, updateStore, updateStoreLoading } = useStoreService(
-    { userId },
+    {
+      userId,
+    },
   );
 
   const settings = useMemo<StoreSettings>(() => {
@@ -61,15 +64,21 @@ export function useStoreSettings() {
     };
   }, [storeFinOneQuery]);
 
-  const updateSettings = (patch: StoreSettingsPatch) => {
-    if (!storeFinOneQuery) return;
-    updateStore({
-      storeData: {
-        name: storeFinOneQuery.name,
-        settings: mergeSettings(settings, patch),
-      },
-    });
-  };
+  const updateSettings = useCallback(
+    (patch: StoreSettingsPatch) => {
+      if (!storeFinOneQuery) return;
+      const merged = mergeSettings(settings, patch);
+      const pin = getStorePin(String(storeFinOneQuery.id ?? "")) ?? "";
+      updateStore({
+        storeData: {
+          pin,
+          name: storeFinOneQuery.name,
+          settings: merged,
+        },
+      });
+    },
+    [settings, storeFinOneQuery, updateStore],
+  );
 
   return {
     settings,

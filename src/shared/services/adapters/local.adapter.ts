@@ -290,7 +290,7 @@ export const localAdapter: DataAdapter = {
       name: dto.name,
       orderLimit: 20,
       settings: DEFAULT_STORE_SETTINGS,
-      userId: dto.userId,
+      userId: dto.userId ?? "demo-user",
       createdAt: now(),
       updatedAt: now(),
     };
@@ -304,7 +304,8 @@ export const localAdapter: DataAdapter = {
     const stores = get<IStore[]>(KEYS.stores, [getSeedStore()]);
     const idx = stores.findIndex((s) => s.id === id);
     if (idx >= 0) {
-      stores[idx] = { ...stores[idx], ...dto, updatedAt: now() };
+      const { pin: _pin, ...rest } = dto as IUpdateStore & { pin?: string };
+      stores[idx] = { ...stores[idx], ...rest, updatedAt: now() };
       set(KEYS.stores, stores);
       return stores[idx];
     }

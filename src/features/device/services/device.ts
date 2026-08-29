@@ -9,6 +9,7 @@ import type {
   PairingCodeResponse,
   UpdateDeviceRequest,
 } from "@/features/device/types/device.dto";
+import { normalizeResponse } from "@/shared/services/normalize-response";
 
 export const deviceServiceApi = {
   getByStoreId: async (storeId: string) => {
@@ -39,19 +40,18 @@ export const pairingCodeServiceApi = {
     if (IS_DEMO_MODE) {
       return await (await getAdapter()).createPairingCode(storeId);
     }
-    const res = await axiosClient.post<PairingCodeResponse>("/pairing-codes", {
+    const res = await axiosClient.post("/pairing-codes", {
       storeId,
     });
-    return res.data;
+    return normalizeResponse<PairingCodeResponse>(res.data);
   },
   join: async (code: string): Promise<JoinPairingResponse> => {
     if (IS_DEMO_MODE) {
       return await (await getAdapter()).joinPairingCode(code);
     }
-    const res = await axiosClient.post<JoinPairingResponse>(
-      `/pairing-codes/${code}/join`,
-      { deviceName: "KDS Screen" },
-    );
-    return res.data;
+    const res = await axiosClient.post(`/pairing-codes/${code}/join`, {
+      deviceName: "KDS Screen",
+    });
+    return normalizeResponse<JoinPairingResponse>(res.data);
   },
 };

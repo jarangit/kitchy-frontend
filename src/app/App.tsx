@@ -8,6 +8,7 @@ import { IS_DEMO_MODE } from "@/shared/services/adapters/data-adapter";
 
 import { PosLayout } from "@/features/pos/components/pos-layout";
 import { KdsLayout } from "@/features/kds/components/kds-layout";
+import { SettingsPinGuard } from "@/features/store/components/settings-pin-guard";
 
 // Layout
 import Layout from "@/shared/components/layout/layout";
@@ -201,7 +202,9 @@ function App() {
             path="/store/:id/settings"
             element={
               <ProtectedRoute>
-                <SettingsPage />
+                <SettingsPinGuard>
+                  <SettingsPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
@@ -209,7 +212,9 @@ function App() {
             path="/store/:id/settings/products"
             element={
               <ProtectedRoute>
-                <SettingsProductsPage />
+                <SettingsPinGuard>
+                  <SettingsProductsPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
@@ -217,7 +222,9 @@ function App() {
             path="/store/:id/settings/stations"
             element={
               <ProtectedRoute>
-                <SettingsStationsPage />
+                <SettingsPinGuard>
+                  <SettingsStationsPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
@@ -225,7 +232,9 @@ function App() {
             path="/store/:id/settings/categories"
             element={
               <ProtectedRoute>
-                <SettingsCategoriesPage />
+                <SettingsPinGuard>
+                  <SettingsCategoriesPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
@@ -233,7 +242,9 @@ function App() {
             path="/store/:id/settings/shop"
             element={
               <ProtectedRoute>
-                <SettingsShopPage />
+                <SettingsPinGuard>
+                  <SettingsShopPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
@@ -241,7 +252,9 @@ function App() {
             path="/store/:id/settings/delivery"
             element={
               <ProtectedRoute>
-                <SettingsDeliveryPage />
+                <SettingsPinGuard>
+                  <SettingsDeliveryPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
@@ -249,7 +262,9 @@ function App() {
             path="/store/:id/settings/quick-notes"
             element={
               <ProtectedRoute>
-                <SettingsQuickNotesPage />
+                <SettingsPinGuard>
+                  <SettingsQuickNotesPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
@@ -258,7 +273,9 @@ function App() {
             path="/store/:id/settings/:section"
             element={
               <ProtectedRoute>
-                <SettingsPage />
+                <SettingsPinGuard>
+                  <SettingsPage />
+                </SettingsPinGuard>
               </ProtectedRoute>
             }
           />
