@@ -938,12 +938,17 @@ export const thMessages = {
   // ── Auth (Google only) ──
   "auth.login.title": "เข้าสู่ระบบ",
   "auth.login.subtitle": "เข้าสู่ระบบหรือสมัครสมาชิกด้วยบัญชี Google ของคุณ",
+  "auth.login.heroEyebrow": "Kitchy POS",
+  "auth.login.heroTitle": "การทำงานที่สงบ สำหรับทีมร้านอาหารที่ยุ่ง",
+  "auth.login.heroSubtitle":
+    "เข้าสู่ระบบด้วย Google เพื่อจัดการร้าน ติดตามงานบริการ และดูแลทุกสเตชันจากที่เดียว",
   "auth.google.signIn": "เข้าสู่ระบบด้วย Google",
   "auth.google.signUp": "สมัครด้วย Google",
   "auth.google.unavailable": "Google ยังไม่พร้อมใช้งาน",
   "auth.errors.loginFailed": "เข้าสู่ระบบไม่สำเร็จ",
   "auth.errors.googleFailed": "เข้าสู่ระบบด้วย Google ไม่สำเร็จ",
   "auth.demo.login": "เข้าสู่ระบบโหมดทดลอง",
+  "auth.trial.cta": "ทดลองใช้แบบไม่ต้องสมัคร",
   "store.dashboard.header.breadcrumb": "ร้านค้า",
   "store.dashboard.header.signOut": "ออกจากระบบ",
   "store.dashboard.welcome.eyebrow": "พื้นที่ทำงาน",

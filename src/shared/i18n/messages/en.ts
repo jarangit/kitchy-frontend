@@ -967,12 +967,17 @@ export const enMessages = {
   // ── Auth (Google only) ──
   "auth.login.title": "Sign In",
   "auth.login.subtitle": "Sign in or sign up with your Google account.",
+  "auth.login.heroEyebrow": "Kitchy POS",
+  "auth.login.heroTitle": "Calm operations for busy restaurant teams.",
+  "auth.login.heroSubtitle":
+    "Sign in with Google to manage stores, monitor service flow, and keep every station aligned from one quiet workspace.",
   "auth.google.signIn": "Continue with Google",
   "auth.google.signUp": "Sign up with Google",
   "auth.google.unavailable": "Google sign-in unavailable",
   "auth.errors.loginFailed": "Login failed",
   "auth.errors.googleFailed": "Google sign-in failed",
   "auth.demo.login": "Try the demo",
+  "auth.trial.cta": "Try without signing up",
   "store.dashboard.header.breadcrumb": "Workspaces",
   "store.dashboard.header.signOut": "Sign Out",
   "store.dashboard.welcome.eyebrow": "Workspace",
