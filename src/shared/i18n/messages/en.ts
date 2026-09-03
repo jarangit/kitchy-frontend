@@ -630,6 +630,11 @@ export const enMessages = {
   "common.adding": "Adding...",
   "common.saving": "Saving...",
   "common.retry": "Retry",
+  "app.recovery.updating": "Updating app...",
+  "app.recovery.updateTitle": "New version available",
+  "app.recovery.updateDescription":
+    "The app was updated. Reload to get the latest version.",
+  "app.recovery.reload": "Reload app",
   "common.error.title": "Something went wrong",
   "common.error.description": "Please try again.",
   "common.confirm": "Confirm",

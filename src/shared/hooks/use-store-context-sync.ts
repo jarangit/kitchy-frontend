@@ -35,7 +35,8 @@ export function useStoreContextSync() {
   const { storeFinOneQuery } = useStoreService({});
 
   useEffect(() => {
-    setupAutoReload(10);
+    const cleanupAutoReload = setupAutoReload(10);
+    return cleanupAutoReload;
   }, []);
 
   useEffect(() => {

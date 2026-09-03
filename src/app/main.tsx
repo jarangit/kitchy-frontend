@@ -11,10 +11,20 @@ import { LanguageProvider } from "@/shared/i18n/language-context";
 import { QuerySyncProvider } from "@/shared/events/query-sync";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { RealtimeProvider } from "@/shared/realtime/realtime-provider";
+import { ErrorBoundary } from "@/shared/components/error-boundary";
+import { registerPWA } from "@/shared/pwa/register-pwa";
+import { installChunkRecoveryListeners } from "@/shared/utils/chunk-error";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
+
+// Silent PWA updates: activate fresh service worker + reload automatically.
+// Installed once (module scope) so StrictMode double-mount can't duplicate it.
+registerPWA();
+if (typeof window !== "undefined") {
+  installChunkRecoveryListeners();
+}
 
 // Falls back to an empty string when unconfigured. The provider still
 // mounts so `useGoogleLogin` imports don't crash — buttons themselves
@@ -30,7 +40,9 @@ createRoot(document.getElementById("root")!).render(
             <RealtimeProvider />
             <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
               <BrowserRouter>
-                <App />
+                <ErrorBoundary>
+                  <App />
+                </ErrorBoundary>
                 <GlobalModal />
                 <LoadingOverlay />
               </BrowserRouter>

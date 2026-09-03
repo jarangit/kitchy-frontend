@@ -606,6 +606,11 @@ export const thMessages = {
   "common.adding": "กำลังเพิ่ม...",
   "common.saving": "กำลังบันทึก...",
   "common.retry": "ลองอีกครั้ง",
+  "app.recovery.updating": "กำลังอัปเดตแอป...",
+  "app.recovery.updateTitle": "มีเวอร์ชันใหม่",
+  "app.recovery.updateDescription":
+    "แอปมีการอัปเดต กดปุ่มด้านล่างเพื่อโหลดเวอร์ชันใหม่",
+  "app.recovery.reload": "โหลดแอปใหม่",
   "common.error.title": "เกิดข้อผิดพลาด",
   "common.error.description": "กรุณาลองใหม่อีกครั้ง",
   "common.confirm": "ยืนยัน",

@@ -1,5 +1,6 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { lazyWithRetry } from "@/shared/utils/lazy-with-retry";
 import { AuthProvider } from "@/features/auth/context/authContext";
 import { ProtectedRoute } from "@/shared/components/protected-route";
 import { KdsRoute } from "@/features/kds/components/kds-route";
@@ -17,54 +18,64 @@ import { ToastProvider } from "@/shared/components/ui/toast/toast-provider";
 import { Spinner } from "@/shared/components/ui/spinner";
 import { TabSoundFeedback } from "@/shared/audio/tab-sound-feedback";
 
-const LoginPage = lazy(() => import("@/features/auth/pages/login"));
-const PairPage = lazy(() => import("@/features/device/pages/pair"));
-const DemoTrialEntryPage = lazy(
+const LoginPage = lazyWithRetry(() => import("@/features/auth/pages/login"));
+const PairPage = lazyWithRetry(() => import("@/features/device/pages/pair"));
+const DemoTrialEntryPage = lazyWithRetry(
   () => import("@/features/onboarding/pages/demo-trial-entry"),
 );
-const UserDashboardPage = lazy(
+const UserDashboardPage = lazyWithRetry(
   () => import("@/features/store/pages/user-dashboard"),
 );
-const StoreDashboardPage = lazy(
+const StoreDashboardPage = lazyWithRetry(
   () => import("@/features/store/pages/store-dashboard"),
 );
-const PosHomePage = lazy(() => import("@/features/pos/pages/pos-home"));
-const PaymentPage = lazy(() => import("@/features/pos/pages/payment"));
-const PaymentSuccessPage = lazy(
+const PosHomePage = lazyWithRetry(
+  () => import("@/features/pos/pages/pos-home"),
+);
+const PaymentPage = lazyWithRetry(() => import("@/features/pos/pages/payment"));
+const PaymentSuccessPage = lazyWithRetry(
   () => import("@/features/pos/pages/payment-success"),
 );
-const TransactionListPage = lazy(
+const TransactionListPage = lazyWithRetry(
   () => import("@/features/transaction/pages/transaction-list"),
 );
-const TransactionDetailPage = lazy(
+const TransactionDetailPage = lazyWithRetry(
   () => import("@/features/transaction/pages/transaction-detail"),
 );
-const ReportPage = lazy(() => import("@/features/report/pages/report"));
-const KdsBoardPage = lazy(() => import("@/features/kds/pages/kds-board"));
-const ReadyToServePage = lazy(
+const ReportPage = lazyWithRetry(
+  () => import("@/features/report/pages/report"),
+);
+const KdsBoardPage = lazyWithRetry(
+  () => import("@/features/kds/pages/kds-board"),
+);
+const ReadyToServePage = lazyWithRetry(
   () => import("@/features/kds/pages/ready-to-serve"),
 );
-const SettingsPage = lazy(() => import("@/features/store/pages/settings"));
-const SettingsProductsPage = lazy(
+const SettingsPage = lazyWithRetry(
+  () => import("@/features/store/pages/settings"),
+);
+const SettingsProductsPage = lazyWithRetry(
   () => import("@/features/store/pages/settings-products"),
 );
-const SettingsShopPage = lazy(
+const SettingsShopPage = lazyWithRetry(
   () => import("@/features/store/pages/settings-shop"),
 );
-const SettingsDeliveryPage = lazy(
+const SettingsDeliveryPage = lazyWithRetry(
   () => import("@/features/store/pages/settings-delivery"),
 );
-const SettingsQuickNotesPage = lazy(
+const SettingsQuickNotesPage = lazyWithRetry(
   () => import("@/features/store/pages/settings-quick-notes"),
 );
-const SettingsStationsPage = lazy(
+const SettingsStationsPage = lazyWithRetry(
   () => import("@/features/station/pages/settings-stations"),
 );
-const SettingsCategoriesPage = lazy(
+const SettingsCategoriesPage = lazyWithRetry(
   () => import("@/features/category/pages/settings-categories"),
 );
-const StationPage = lazy(() => import("@/features/station/pages/[station]"));
-const OnboardingWizardPage = lazy(
+const StationPage = lazyWithRetry(
+  () => import("@/features/station/pages/[station]"),
+);
+const OnboardingWizardPage = lazyWithRetry(
   () => import("@/features/onboarding/pages/onboarding-wizard"),
 );
 
