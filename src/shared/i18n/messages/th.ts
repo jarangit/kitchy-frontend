@@ -564,6 +564,8 @@ export const thMessages = {
   "nav.readyToServe": "พร้อมเสิร์ฟ",
   "nav.settings": "ตั้งค่า",
   "nav.badge": "การแจ้งเตือน",
+  "nav.openMenu": "เปิดเมนูนำทาง",
+  "nav.closeMenu": "ปิดเมนูนำทาง",
 
   "dashboard.openPos": "เปิด POS",
   "dashboard.openKds": "เปิด KDS",

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LuClock3, LuWifi, LuWifiOff } from "react-icons/lu";
+import { LuClock3, LuMenu, LuWifi, LuWifiOff } from "react-icons/lu";
 import { useAppSelector } from "@/shared/hooks/hooks";
 import { useClock } from "@/shared/hooks/useClock";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -11,7 +11,14 @@ import { usePendingOrdersCount } from "@/features/kds/hooks/use-pending-orders-c
 import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { Pill } from "@/shared/components/ui/pill";
 
-export function AppBar() {
+type AppBarProps = {
+  /** Show the mobile hamburger button that opens the full-screen nav. */
+  showMenuButton?: boolean;
+  /** Called when the mobile hamburger button is pressed. */
+  onMenuClick?: () => void;
+};
+
+export function AppBar({ showMenuButton = false, onMenuClick }: AppBarProps) {
   const { t, language } = useTranslation();
   const now = useClock();
   const isOnline = useNetworkStatus();
@@ -48,11 +55,21 @@ export function AppBar() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg relative">
       <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-2 text-caption text-text-secondary sm:px-4 sm:py-2.5 lg:px-6">
+        {showMenuButton && storeId && onMenuClick && (
+          <button
+            type="button"
+            onClick={onMenuClick}
+            aria-label={t("nav.openMenu")}
+            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-text-primary transition-colors duration-fast hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 md:hidden"
+          >
+            <LuMenu size={20} aria-hidden="true" />
+          </button>
+        )}
         {storeId ? (
           <Link
             to={`/store/${storeId}`}
             aria-label={t("appbar.storeFallback")}
-            className="flex min-h-selection-height min-w-0 flex-1 items-center gap-3 rounded-full text-body text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+            className="hidden min-h-selection-height min-w-0 flex-1 items-center gap-3 rounded-full text-body text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 md:flex"
           >
             <span
               className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
@@ -62,7 +79,7 @@ export function AppBar() {
             </span>
           </Link>
         ) : (
-          <div className="flex min-h-selection-height min-w-0 flex-1 items-center gap-3 text-body text-text-primary">
+          <div className="hidden min-h-selection-height min-w-0 flex-1 items-center gap-3 text-body text-text-primary md:flex">
             <span
               className="max-w-[120px] truncate text-text-primary sm:max-w-[180px] lg:max-w-[260px]"
               title={storeName || t("appbar.storeFallback")}
@@ -77,7 +94,7 @@ export function AppBar() {
         <div className="flex shrink-0 items-center gap-2">
           <Pill
             variant="surface"
-            className="items-center gap-2 px-3.5 hover:bg-surface-hover"
+            className="hidden items-center gap-2 px-3.5 hover:bg-surface-hover sm:inline-flex"
             aria-label={`${timeLabel} ${dateLabel}`}
             title={`${timeLabel} · ${dateLabel}`}
           >

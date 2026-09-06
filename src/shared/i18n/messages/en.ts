@@ -588,6 +588,8 @@ export const enMessages = {
   "nav.readyToServe": "Ready to Serve",
   "nav.settings": "Settings",
   "nav.badge": "Notifications",
+  "nav.openMenu": "Open navigation",
+  "nav.closeMenu": "Close navigation",
 
   "dashboard.openPos": "Open POS",
   "dashboard.openKds": "Open KDS",

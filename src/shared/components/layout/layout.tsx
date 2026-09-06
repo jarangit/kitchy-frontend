@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useStoreContextSync } from "@/shared/hooks/use-store-context-sync";
 import { cn } from "@/shared/utils/cn";
 import { AppBar } from "@/shared/components/layout/app-bar";
@@ -21,6 +21,9 @@ const Layout = ({
   fullViewport,
 }: Props) => {
   useStoreContextSync();
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const openMobileNav = useCallback(() => setIsMobileNavOpen(true), []);
+  const closeMobileNav = useCallback(() => setIsMobileNavOpen(false), []);
 
   return (
     <div
@@ -29,14 +32,25 @@ const Layout = ({
         fullViewport ? "h-dvh overflow-hidden" : "min-h-screen",
       )}
     >
-      {!hideSidebar && <StoreSideNav />}
+      {!hideSidebar && (
+        <>
+          <StoreSideNav variant="desktop" />
+          <StoreSideNav
+            variant="mobile"
+            open={isMobileNavOpen}
+            onClose={closeMobileNav}
+          />
+        </>
+      )}
       <div
         className={cn(
           "flex min-w-0 flex-grow flex-col transition-all duration-300",
           fullViewport ? "h-full min-h-0 overflow-hidden" : "min-h-screen",
         )}
       >
-        {!hideAppBar && <AppBar />}
+        {!hideAppBar && (
+          <AppBar showMenuButton={!hideSidebar} onMenuClick={openMobileNav} />
+        )}
         <main
           className={cn(
             "flex min-h-0 flex-1 flex-col",
