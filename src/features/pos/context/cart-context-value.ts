@@ -30,6 +30,10 @@ interface CartState {
 // can survive route transitions without re-querying transaction detail.
 export interface PaymentResult {
   receiptId: string;
+  receiptUrl?: string;
+  receiptToken?: string;
+  expiresAt?: string;
+  orderStatus?: "NEW" | "PREPARING" | "READY" | "COMPLETED" | "CANCELLED";
   items: ICartItem[];
   subtotal: number;
   paymentMethod: PaymentMethod;

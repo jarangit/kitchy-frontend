@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 import { LuQrCode } from "react-icons/lu";
 import type { PaymentResult } from "@/features/pos/context/cart-context-value";
 import { Card } from "@/shared/components/ui/card";
@@ -21,9 +23,11 @@ const PaymentReceipt = ({
   qrDataUrl,
   className,
 }: Props) => {
+  const [receiptQrDataUrl, setReceiptQrDataUrl] = useState<string | null>(null);
   const { t } = useTranslation();
   const {
     receiptId,
+    receiptUrl,
     items,
     subtotal,
     paymentMethod,
@@ -39,6 +43,32 @@ const PaymentReceipt = ({
   const paymentStrategy = getPaymentStrategy(paymentMethod);
   const orderTypeStrategy = getOrderTypeStrategy(orderType);
   const methodLabel = t(paymentStrategy.receiptLabelKey as MessageKey);
+  const receiptQrUrl = receiptQrDataUrl ?? qrDataUrl;
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (!receiptUrl) {
+      setReceiptQrDataUrl(null);
+      return;
+    }
+
+    QRCode.toDataURL(receiptUrl, {
+      errorCorrectionLevel: "M",
+      margin: 2,
+      width: 220,
+    })
+      .then((dataUrl) => {
+        if (isMounted) setReceiptQrDataUrl(dataUrl);
+      })
+      .catch(() => {
+        if (isMounted) setReceiptQrDataUrl(null);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [receiptUrl]);
 
   return (
     <Card className={className}>
@@ -140,9 +170,9 @@ const PaymentReceipt = ({
         <p className="mb-2 text-center text-label font-semibold text-text-primary">
           {t("pos.receipt.scanForDigital")}
         </p>
-        {qrDataUrl ? (
+        {receiptQrUrl ? (
           <img
-            src={qrDataUrl}
+            src={receiptQrUrl}
             alt={t("pos.payment.qrTitle")}
             className="mx-auto h-40 w-40 rounded-card border border-border bg-bg"
           />
@@ -155,6 +185,16 @@ const PaymentReceipt = ({
         <p className="mt-2 text-center text-caption text-text-tertiary">
           {t("pos.receipt.ref", { id: String(receiptId) })}
         </p>
+        {receiptUrl && (
+          <a
+            href={receiptUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 block break-all text-center text-caption text-accent hover:underline"
+          >
+            {receiptUrl}
+          </a>
+        )}
       </div>
     </Card>
   );

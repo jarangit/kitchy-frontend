@@ -107,7 +107,7 @@ export function useStorePin() {
 
   const executeWithPin = useCallback(
     async <T>(action: (pin: string) => Promise<T>): Promise<T | null> => {
-      let pin = await ensurePin();
+      const pin = await ensurePin();
       if (!pin) return null;
 
       try {
@@ -148,11 +148,7 @@ export function useStorePin() {
             const setPinCode = extractErrorCode(setPinError);
             if (setPinCode === "STORE_PIN_ALREADY_SET") {
               // PIN now exists, retry with the same pin as verification
-              try {
-                return await action(newPin);
-              } catch (finalError) {
-                throw finalError;
-              }
+              return await action(newPin);
             }
             throw setPinError;
           }

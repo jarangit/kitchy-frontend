@@ -36,6 +36,9 @@ const PaymentPage = lazyWithRetry(() => import("@/features/pos/pages/payment"));
 const PaymentSuccessPage = lazyWithRetry(
   () => import("@/features/pos/pages/payment-success"),
 );
+const PublicReceiptPage = lazyWithRetry(
+  () => import("@/features/receipt/pages/public-receipt"),
+);
 const TransactionListPage = lazyWithRetry(
   () => import("@/features/transaction/pages/transaction-list"),
 );
@@ -110,6 +113,10 @@ function App() {
           />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/pair" element={<PairPage />} />
+          <Route
+            path="/receipt/:receiptToken"
+            element={<PublicReceiptPage />}
+          />
 
           {/* User Dashboard (store selection) */}
           <Route

@@ -12,6 +12,7 @@ import PosPaymentView from "@/features/pos/components/pos-payment-view";
 import PosSuccessView from "@/features/pos/components/pos-success-view";
 import ProductGrid from "@/features/pos/components/product-grid";
 import { useCartContext } from "@/features/pos/context/cart-hooks";
+import type { PaymentResult } from "@/features/pos/context/cart-context-value";
 import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
 import type { OrderType, PaymentMethod } from "@/features/pos/types/pos.model";
 import { getNextDeliveryOrderNumber } from "@/features/pos/utils/get-next-delivery-order-number";
@@ -247,6 +248,10 @@ const PosHomePage = () => {
           : undefined;
 
       let receiptId = orderNumber;
+      let receiptUrl: string | undefined;
+      let receiptToken: string | undefined;
+      let expiresAt: string | undefined;
+      let orderStatus: PaymentResult["orderStatus"];
       if (orderId) {
         const payResponse = await orderApiService.pay(orderId, {
           method,
@@ -261,10 +266,27 @@ const PosHomePage = () => {
           (payData as { payment?: { receiptId?: string } })?.payment ?? payData;
         receiptId =
           (payment as { receiptId?: string })?.receiptId ?? orderNumber;
+        const receipt = (
+          payData as {
+            receipt?: { token?: string; url?: string; expiresAt?: string };
+          }
+        )?.receipt;
+        receiptUrl = receipt?.url;
+        receiptToken = receipt?.token;
+        expiresAt = receipt?.expiresAt;
+        orderStatus = (
+          payData as {
+            order?: { status?: PaymentResult["orderStatus"] };
+          }
+        )?.order?.status;
       }
 
       cart.setPaymentResult({
         receiptId,
+        receiptUrl,
+        receiptToken,
+        expiresAt,
+        orderStatus,
         items: [...cart.items],
         subtotal: cart.subtotal,
         paymentMethod: method,
