@@ -22,7 +22,7 @@ export function PosSuccessView({ onBackToBrowse }: Props) {
 
   if (!paymentResult) {
     return (
-      <div className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto p-6 [-webkit-overflow-scrolling:touch]">
+      <div className="flex min-h-0 flex-1 items-center justify-center overflow-y-auto p-6 pb-[calc(11rem+env(safe-area-inset-bottom))] lg:pb-6 [-webkit-overflow-scrolling:touch]">
         <EmptyState
           title="No payment data found"
           description="It looks like you navigated here directly. Please start a new order."
@@ -46,7 +46,7 @@ export function PosSuccessView({ onBackToBrowse }: Props) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-bg">
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5 sm:py-6 [-webkit-overflow-scrolling:touch]">
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-[calc(11rem+env(safe-area-inset-bottom))] pt-4 sm:px-5 sm:pt-6 lg:pb-6 [-webkit-overflow-scrolling:touch]">
         <div className="mx-auto w-full max-w-2xl">
           <PaymentReceipt
             paymentResult={paymentResult}

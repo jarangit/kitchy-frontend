@@ -5,19 +5,24 @@ interface Props {
   pageIndex: number;
   pageSize: number;
   totalItems: number;
+  /** Omit (along with onPageSizeChange) to hide the rows-per-page selector. */
   pageSizeOptions?: number[];
   onPageChange: (pageIndex: number) => void;
-  onPageSizeChange: (pageSize: number) => void;
+  onPageSizeChange?: (pageSize: number) => void;
 }
 
 export function DataTablePagination({
   pageIndex,
   pageSize,
   totalItems,
-  pageSizeOptions = [10, 20, 50],
+  pageSizeOptions,
   onPageChange,
   onPageSizeChange,
 }: Props) {
+  const showPageSizeSelector =
+    onPageSizeChange !== undefined &&
+    pageSizeOptions !== undefined &&
+    pageSizeOptions.length > 0;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const clampedPageIndex = Math.min(pageIndex, totalPages - 1);
   const start = totalItems === 0 ? 0 : clampedPageIndex * pageSize + 1;
@@ -31,18 +36,22 @@ export function DataTablePagination({
         <p className="text-body-sm tabular-nums text-text-secondary">
           {start}-{end} of {totalItems}
         </p>
-        <div className="w-full sm:w-[124px]">
-          <Select
-            aria-label="Rows per page"
-            value={String(pageSize)}
-            className="h-10 rounded-full px-4 text-body-sm"
-            options={pageSizeOptions.map((option) => ({
-              value: String(option),
-              label: `${option} / page`,
-            }))}
-            onChange={(event) => onPageSizeChange(Number(event.target.value))}
-          />
-        </div>
+        {showPageSizeSelector && (
+          <div className="w-full sm:w-[124px]">
+            <Select
+              aria-label="Rows per page"
+              value={String(pageSize)}
+              className="h-10 rounded-full px-4 text-body-sm"
+              options={(pageSizeOptions ?? []).map((option) => ({
+                value: String(option),
+                label: `${option} / page`,
+              }))}
+              onChange={(event) =>
+                onPageSizeChange?.(Number(event.target.value))
+              }
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex items-center justify-end gap-2">

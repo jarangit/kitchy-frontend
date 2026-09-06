@@ -75,6 +75,7 @@ const ReportPage = () => {
   return (
     <div className="space-y-6">
       <PageHeader
+        backTo
         title={t("report.title")}
         subtitle={subtitle}
         action={

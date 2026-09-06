@@ -195,12 +195,12 @@ export function StoreSideNav({
         aria-label={t("nav.openMenu")}
         className="fixed inset-0 z-50 flex flex-col bg-sidebar-bg text-text-primary md:hidden"
       >
-        <div className="flex min-h-14 items-center justify-end border-b border-border px-4">
+        <div className="flex min-h-12 items-center justify-end border-b border-border px-4">
           <button
             type="button"
             onClick={onClose}
             aria-label={t("nav.closeMenu")}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-text-primary transition-colors duration-fast hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+            className="flex h-9 w-9 items-center justify-center rounded-full text-text-primary transition-colors duration-fast hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
           >
             <LuX size={20} aria-hidden="true" />
           </button>

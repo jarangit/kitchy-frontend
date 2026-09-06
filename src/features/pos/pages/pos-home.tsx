@@ -17,12 +17,10 @@ import type { OrderType, PaymentMethod } from "@/features/pos/types/pos.model";
 import { getNextDeliveryOrderNumber } from "@/features/pos/utils/get-next-delivery-order-number";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
 import { useProductService } from "@/features/product/hooks/useProductService";
-import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
 import { Button } from "@/shared/components/ui/button";
 import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { toast } from "@/shared/services/toast-service";
 
 type PosView = "BROWSE" | "PAYMENT_SUMMARY" | "PAYMENT_METHOD" | "SUCCESS";
 
@@ -46,7 +44,6 @@ const PosHomePage = () => {
   const { categoriesQuery } = useCategoryService();
   const cart = useCartContext();
   const { createMutation, ordersQuery } = useOrderService({});
-  const { settings } = useStoreSettings();
 
   const suggestedDeliveryOrderNumber = useMemo(
     () => getNextDeliveryOrderNumber(ordersQuery, cart.deliveryPlatform),
@@ -162,11 +159,6 @@ const PosHomePage = () => {
   };
 
   const handlePay = () => {
-    if (settings.paused) {
-      toast.warning({ title: t("pos.cart.paused") });
-      return;
-    }
-
     setErrorMessage(null);
     setIsCartPanelOpen(false);
     setActiveView("PAYMENT_SUMMARY");
@@ -350,12 +342,6 @@ const PosHomePage = () => {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      {settings.paused && (
-        <div className="shrink-0 p-card-padding pb-3">
-          <InlineAlert tone="warning">{t("pos.cart.paused")}</InlineAlert>
-        </div>
-      )}
-
       <div className="flex min-h-0 flex-1 overflow-hidden">
         <div className="flex min-w-0 flex-1 overflow-hidden bg-bg">
           {activeView === "BROWSE" && (
@@ -485,7 +471,7 @@ const PosHomePage = () => {
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card-bg p-4 shadow-cart-dock lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card-bg px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 shadow-cart-dock lg:hidden">
         {activeView === "BROWSE" && (
           <>
             {cart.totalItems > 0 && (

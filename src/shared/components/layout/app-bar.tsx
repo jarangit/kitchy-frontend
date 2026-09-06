@@ -54,13 +54,13 @@ export function AppBar({ showMenuButton = false, onMenuClick }: AppBarProps) {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-bg relative">
-      <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-2 text-caption text-text-secondary sm:px-4 sm:py-2.5 lg:px-6">
+      <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-1 text-caption text-text-secondary sm:px-4 sm:py-2.5 lg:px-6">
         {showMenuButton && storeId && onMenuClick && (
           <button
             type="button"
             onClick={onMenuClick}
             aria-label={t("nav.openMenu")}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-text-primary transition-colors duration-fast hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 md:hidden"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-text-primary transition-colors duration-fast hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 md:hidden"
           >
             <LuMenu size={20} aria-hidden="true" />
           </button>

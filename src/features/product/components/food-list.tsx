@@ -1,18 +1,18 @@
-import { useMemo, useState } from "react";
-import { LuPackage, LuPlus } from "react-icons/lu";
+import { useEffect, useMemo, useState } from "react";
+import { LuPackage } from "react-icons/lu";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import AddUpProductForm from "@/features/product/components/add-up-product";
 import type { ProductFormMode } from "@/features/product/components/add-up-product";
-import { ProductCard } from "@/features/product/components/product-card";
 import { ProductTable } from "@/features/product/components/product-table";
-import type { SortingState } from "@/shared/components/ui/data-table";
+import {
+  DataTablePagination,
+  type SortingState,
+} from "@/shared/components/ui/data-table";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Button } from "@/shared/components/ui/button";
 import { SearchInput } from "@/shared/components/ui/search-input";
-import { Tabs, TabList, Tab } from "@/shared/components/ui/tabs";
-import { ChipTab } from "@/shared/components/ui/chip-tab";
-import { SettingsSectionCard } from "@/features/store/components/settings-shell";
+import { DropdownSelect } from "@/shared/components/ui/dropdown-select";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type {
   IMenu,
@@ -23,7 +23,18 @@ type StatusFilter = "all" | "active" | "inactive";
 
 const ALL_CATEGORY = "__all__";
 
-const ProductListTemplate = () => {
+const PRODUCT_PAGE_SIZE = 10;
+
+export interface ProductListActions {
+  openCreate: () => void;
+}
+
+interface ProductListTemplateProps {
+  /** Lets a parent (e.g. page header action) trigger the create dialog. */
+  actionsRef?: { current: ProductListActions | null };
+}
+
+const ProductListTemplate = ({ actionsRef }: ProductListTemplateProps) => {
   const { t } = useTranslation();
   const {
     productsQuery,
@@ -50,6 +61,8 @@ const ProductListTemplate = () => {
   const [sorting, setSorting] = useState<SortingState>([
     { id: "name", desc: false },
   ]);
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageSize = PRODUCT_PAGE_SIZE;
 
   const filteredProducts = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -94,6 +107,28 @@ const ProductListTemplate = () => {
     statusFilter !== "all" ||
     categoryFilter !== ALL_CATEGORY;
 
+  const totalFilteredProducts = filteredProducts.length;
+  const totalPages = Math.max(1, Math.ceil(totalFilteredProducts / pageSize));
+  const safePageIndex = Math.min(pageIndex, totalPages - 1);
+  const paginatedProducts = useMemo(() => {
+    const start = safePageIndex * pageSize;
+    return filteredProducts.slice(start, start + pageSize);
+  }, [filteredProducts, pageSize, safePageIndex]);
+
+  useEffect(() => {
+    setPageIndex(0);
+  }, [search, statusFilter, categoryFilter]);
+
+  useEffect(() => {
+    if (pageIndex > totalPages - 1) {
+      setPageIndex(totalPages - 1);
+    }
+  }, [pageIndex, totalPages]);
+
+  const handlePageChange = (nextPageIndex: number) => {
+    setPageIndex(Math.max(0, Math.min(nextPageIndex, totalPages - 1)));
+  };
+
   const handleClearFilters = () => {
     setSearch("");
     setStatusFilter("all");
@@ -105,6 +140,10 @@ const ProductListTemplate = () => {
     setFormMode("create");
     setIsFormOpen(true);
   };
+
+  useEffect(() => {
+    if (actionsRef) actionsRef.current = { openCreate };
+  });
 
   const openEdit = (id: string) => {
     const product = products.find((p) => p.id === id);
@@ -153,10 +192,17 @@ const ProductListTemplate = () => {
       }
     : undefined;
 
-  const statusItems: { key: StatusFilter; label: string }[] = [
-    { key: "all", label: t("settings.products.filterStatusAll") },
-    { key: "active", label: t("settings.products.filterStatusActive") },
-    { key: "inactive", label: t("settings.products.filterStatusInactive") },
+  const statusOptions = [
+    { value: "all", label: t("settings.products.filterStatusAll") },
+    { value: "active", label: t("settings.products.filterStatusActive") },
+    { value: "inactive", label: t("settings.products.filterStatusInactive") },
+  ];
+  const categoryOptions = [
+    { value: ALL_CATEGORY, label: t("settings.products.filterCategoryAll") },
+    ...categoriesQuery.map((category) => ({
+      value: category.id,
+      label: category.name,
+    })),
   ];
 
   const showingCount = t("settings.products.showingCount", {
@@ -171,141 +217,94 @@ const ProductListTemplate = () => {
 
   return (
     <div className="space-y-6">
-      <SettingsSectionCard
-        title={t("settings.products.listTitle")}
-        description={t("settings.products.listDescription")}
-        action={
-          <Button onClick={openCreate}>
-            <LuPlus className="h-4 w-4" />
-            {t("settings.products.addProduct")}
-          </Button>
-        }
-      >
-        {products.length === 0 ? (
-          <EmptyState
-            icon={<LuPackage size={32} />}
-            title={t("settings.products.noProductsTitle")}
-            description={t("settings.products.noProductsDescription")}
-          />
-        ) : (
-          <div className="space-y-5">
-            {/* Toolbar */}
-            <div className="flex flex-col gap-3">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <SearchInput
-                  className="sm:flex-1"
-                  value={search}
-                  onValueChange={setSearch}
-                  placeholder={t("settings.products.searchPlaceholder")}
-                />
-                <Tabs
+      {products.length === 0 ? (
+        <EmptyState
+          icon={<LuPackage size={32} />}
+          title={t("settings.products.noProductsTitle")}
+          description={t("settings.products.noProductsDescription")}
+        />
+      ) : (
+        <div className="space-y-5">
+          {/* Toolbar */}
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <SearchInput
+                className="sm:flex-1"
+                value={search}
+                onValueChange={setSearch}
+                placeholder={t("settings.products.searchPlaceholder")}
+              />
+              <div className="flex flex-col gap-3 sm:shrink-0 sm:flex-row sm:items-center">
+                <DropdownSelect
+                  aria-label={t("settings.products.filterStatus")}
                   value={statusFilter}
-                  onChange={(v) => setStatusFilter(v as StatusFilter)}
-                  variant="segmented"
-                >
-                  <TabList>
-                    {statusItems.map((item) => (
-                      <Tab key={item.key} value={item.key}>
-                        {item.label}
-                      </Tab>
-                    ))}
-                  </TabList>
-                </Tabs>
-              </div>
-
-              {/* Category chips */}
-              {categoriesQuery.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  <ChipTab
-                    size="sm"
-                    active={categoryFilter === ALL_CATEGORY}
-                    onClick={() => setCategoryFilter(ALL_CATEGORY)}
-                  >
-                    {t("settings.products.filterCategoryAll")}
-                  </ChipTab>
-                  {categoriesQuery.map((category) => (
-                    <ChipTab
-                      key={category.id}
-                      size="sm"
-                      active={categoryFilter === category.id}
-                      onClick={() => setCategoryFilter(category.id)}
-                    >
-                      {category.name}
-                    </ChipTab>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex items-center justify-between">
-                <span className="text-label text-text-secondary">
-                  {showingCount}
-                </span>
-                {hasActiveFilters && (
-                  <button
-                    type="button"
-                    onClick={handleClearFilters}
-                    className="text-label text-text-primary hover:text-accent-text hover:underline"
-                  >
-                    {t("settings.products.clearFilters")}
-                  </button>
+                  onValueChange={(v) => setStatusFilter(v as StatusFilter)}
+                  options={statusOptions}
+                  className="sm:min-w-[140px]"
+                />
+                {categoriesQuery.length > 0 && (
+                  <DropdownSelect
+                    aria-label={t("settings.products.filterCategory")}
+                    value={categoryFilter}
+                    onValueChange={setCategoryFilter}
+                    options={categoryOptions}
+                    className="sm:min-w-[160px]"
+                  />
                 )}
               </div>
             </div>
 
-            {/* Results */}
-            {filteredProducts.length > 0 ? (
-              <>
-                {/* Desktop: table */}
-                <div className="hidden md:block">
-                  <ProductTable
-                    products={filteredProducts}
-                    sorting={sorting}
-                    onSortingChange={setSorting}
-                    togglingId={togglingId}
-                    onEdit={openEdit}
-                    onDelete={handleDelete}
-                    onToggleActive={handleToggleActive}
-                  />
-                </div>
-
-                {/* Mobile: cards */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:hidden">
-                  {filteredProducts.map((menu) => (
-                    <ProductCard
-                      key={menu.id}
-                      id={menu.id}
-                      name={menu.name}
-                      isActive={menu.isActive}
-                      price={menu.price}
-                      cost={menu.cost}
-                      imageUrl={menu.imageUrl}
-                      categoryName={menu.categoryName}
-                      stationName={menu.stationName}
-                      isToggling={togglingId === menu.id}
-                      onToggleActive={handleToggleActive}
-                      onEdit={openEdit}
-                      onDelete={handleDelete}
-                    />
-                  ))}
-                </div>
-              </>
-            ) : (
-              <EmptyState
-                icon={<LuPackage size={32} />}
-                title={t("settings.products.noResults")}
-                description={t("settings.products.noResultsDescription")}
-                action={
-                  hasActiveFilters ? (
-                    <Button variant="secondary" onClick={handleClearFilters}>
-                      {t("settings.products.clearFilters")}
-                    </Button>
-                  ) : undefined
-                }
-              />
-            )}
+            <div className="flex items-center justify-between">
+              <span className="text-label text-text-secondary">
+                {showingCount}
+              </span>
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={handleClearFilters}
+                  className="text-label text-text-primary hover:text-accent-text hover:underline"
+                >
+                  {t("settings.products.clearFilters")}
+                </button>
+              )}
+            </div>
           </div>
-        )}
-      </SettingsSectionCard>
+
+          {/* Results: single table-based layout on all screen sizes */}
+          {filteredProducts.length > 0 ? (
+            <div className="space-y-4">
+              <ProductTable
+                products={paginatedProducts}
+                sorting={sorting}
+                onSortingChange={setSorting}
+                togglingId={togglingId}
+                onEdit={openEdit}
+                onDelete={handleDelete}
+                onToggleActive={handleToggleActive}
+              />
+              <DataTablePagination
+                pageIndex={safePageIndex}
+                pageSize={pageSize}
+                totalItems={totalFilteredProducts}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          ) : (
+            <EmptyState
+              icon={<LuPackage size={32} />}
+              title={t("settings.products.noResults")}
+              description={t("settings.products.noResultsDescription")}
+              action={
+                hasActiveFilters ? (
+                  <Button variant="secondary" onClick={handleClearFilters}>
+                    {t("settings.products.clearFilters")}
+                  </Button>
+                ) : undefined
+              }
+            />
+          )}
+        </div>
+      )}
 
       <AddUpProductForm
         open={isFormOpen}

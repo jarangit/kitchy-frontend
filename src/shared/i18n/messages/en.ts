@@ -50,30 +50,30 @@ export const enMessages = {
 
   // ── Control Panel (new) ──
   "settings.cp.title": "Settings",
-  "settings.cp.section.store": "Your Store",
+  "settings.cp.section.store": "Store",
   "settings.cp.section.payments": "Payments",
   "settings.cp.section.sales": "Sales",
   "settings.cp.section.report": "Report",
-  "settings.cp.section.kitchen": "Kitchen",
+  "settings.cp.section.kitchen": "Menu & Kitchen",
   "settings.cp.section.devices": "Devices",
-  "settings.cp.section.safety": "Safety",
+  "settings.cp.section.safety": "Security",
   "settings.cp.section.system": "System",
   "settings.cp.section.display": "Display",
 
   // Section descriptions (shown under the section header inside the content panel)
   "settings.cp.section.store.description":
-    "Basic store info and contact details",
+    "Store info, devices, sound, and display",
   "settings.cp.section.payments.description":
     "Enable or disable the channels customers use to pay",
   "settings.cp.section.sales.description":
-    "Features available on the sales screen and order flow",
+    "Sales-screen features, order flow, and payment channels",
   "settings.cp.section.report.description":
     "Revenue, orders, and top-selling products",
   "settings.cp.section.kitchen.description":
-    "Manage the kitchen, stations, categories, and products",
+    "Manage menus, products, categories, and kitchen stations",
   "settings.cp.section.devices.description": "Devices connected to this store",
   "settings.cp.section.safety.description":
-    "Confirm before actions that cannot be undone",
+    "PINs, confirmations, and sensitive data operations",
   "settings.cp.section.system.description":
     "Display, daily shortcuts, and store management",
 
@@ -328,10 +328,9 @@ export const enMessages = {
   "settings.categories.featureTitle": "Product Categories",
   "settings.categories.featureDescription":
     "This page is for managing the new category feature.",
-  "settings.categories.emptyTitle":
-    "Category management page is being prepared",
+  "settings.categories.emptyTitle": "No categories yet",
   "settings.categories.emptyDescription":
-    "The category feature foundation is added, and CRUD UI is being wired.",
+    "Add your first category to organize products in POS.",
   "settings.categories.stationsTitle": "Stations",
   "settings.categories.stationsDescription":
     "Manage the station groups used as product categories in this store.",
@@ -374,6 +373,16 @@ export const enMessages = {
   "settings.categories.saving": "Saving...",
   "settings.categories.active": "Active",
   "settings.categories.inactive": "Inactive",
+  "settings.categories.searchPlaceholder": "Search categories...",
+  "settings.categories.filterStatus": "Status",
+  "settings.categories.filterStatusAll": "All",
+  "settings.categories.filterStatusActive": "Active",
+  "settings.categories.filterStatusInactive": "Inactive",
+  "settings.categories.showingCount": "Showing {shown} of {total} categories",
+  "settings.categories.clearFilters": "Clear filters",
+  "settings.categories.noResults": "No categories found",
+  "settings.categories.noResultsDescription":
+    "Try a different search term or status filter.",
   "settings.categories.col.name": "Name",
   "settings.categories.col.sortOrder": "Sort",
   "settings.categories.col.status": "Status",
@@ -693,6 +702,7 @@ export const enMessages = {
   "kds.header.autoRefresh": "Auto refresh 5s",
   "kds.fullscreen.enter": "Enter fullscreen",
   "kds.fullscreen.exit": "Exit fullscreen",
+  "kds.exitBoard": "Exit KDS",
   "kds.sound.enable": "Turn on new-order sound",
   "kds.sound.disable": "Turn off new-order sound",
   "kds.controls.sound": "Sound",

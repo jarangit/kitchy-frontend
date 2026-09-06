@@ -72,7 +72,7 @@ export function SettingsNavChips({ storeId }: Props) {
                 "flex min-h-selection-height shrink-0 items-center gap-3 rounded-full px-5 py-3 text-body",
                 "transition-colors duration-fast",
                 isActive
-                  ? "bg-primary text-on-accent"
+                  ? "bg-primary text-on-primary"
                   : "bg-surface text-text-secondary hover:bg-surface-hover",
               )
             }

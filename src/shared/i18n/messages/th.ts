@@ -45,28 +45,29 @@ export const thMessages = {
 
   // ── Control Panel (new) ──
   "settings.cp.title": "ตั้งค่าร้าน",
-  "settings.cp.section.store": "ร้านของคุณ",
+  "settings.cp.section.store": "ร้าน",
   "settings.cp.section.payments": "รับเงิน",
   "settings.cp.section.sales": "การขาย",
   "settings.cp.section.report": "รายงาน",
-  "settings.cp.section.kitchen": "ครัว",
+  "settings.cp.section.kitchen": "เมนูและครัว",
   "settings.cp.section.devices": "อุปกรณ์",
-  "settings.cp.section.safety": "กันพลาด",
+  "settings.cp.section.safety": "ความปลอดภัย",
   "settings.cp.section.system": "ระบบ",
   "settings.cp.section.display": "การแสดงผล",
 
   // Section descriptions (shown under the section header inside the content panel)
-  "settings.cp.section.store.description": "ข้อมูลร้านพื้นฐานและช่องทางติดต่อ",
+  "settings.cp.section.store.description":
+    "ข้อมูลร้าน อุปกรณ์ เสียง และการแสดงผล",
   "settings.cp.section.payments.description":
     "เปิด/ปิดช่องทางที่ลูกค้าใช้จ่ายเงินที่ร้าน",
   "settings.cp.section.sales.description":
-    "ฟีเจอร์ที่จะเปิดใช้ในหน้าขายและออเดอร์",
+    "ฟีเจอร์หน้าขาย ออเดอร์ และช่องทางรับเงิน",
   "settings.cp.section.report.description": "รายได้ ออเดอร์ และสินค้าขายดี",
   "settings.cp.section.kitchen.description":
-    "จัดการครัว สเตชัน หมวดหมู่ และสินค้า",
+    "จัดการเมนู สินค้า หมวดหมู่ และสเตชันครัว",
   "settings.cp.section.devices.description": "อุปกรณ์ที่เชื่อมต่อกับร้าน",
   "settings.cp.section.safety.description":
-    "ตั้งค่าการยืนยันก่อนทำสิ่งที่แก้ไม่ได้",
+    "รหัส PIN การยืนยัน และการจัดการข้อมูลสำคัญ",
   "settings.cp.section.system.description":
     "การแสดงผล ปุ่มลัดประจำวัน และการจัดการร้าน",
 
@@ -314,9 +315,9 @@ export const thMessages = {
   "settings.categories.featureTitle": "หมวดหมู่สินค้า",
   "settings.categories.featureDescription":
     "หน้านี้ใช้สำหรับจัดการหมวดหมู่สินค้าแบบใหม่",
-  "settings.categories.emptyTitle": "กำลังเตรียมหน้าจัดการหมวดหมู่",
+  "settings.categories.emptyTitle": "ยังไม่มีหมวดหมู่",
   "settings.categories.emptyDescription":
-    "โครงสร้าง category feature ถูกเพิ่มแล้ว และกำลังเชื่อมหน้า CRUD",
+    "เพิ่มหมวดหมู่แรกเพื่อจัดกลุ่มสินค้าใน POS",
   "settings.categories.stationsTitle": "สเตชัน",
   "settings.categories.stationsDescription":
     "จัดการสเตชันที่ใช้เป็นหมวดหมู่สินค้าในร้านนี้",
@@ -357,6 +358,16 @@ export const thMessages = {
   "settings.categories.saving": "กำลังบันทึก...",
   "settings.categories.active": "ใช้งาน",
   "settings.categories.inactive": "ไม่ใช้งาน",
+  "settings.categories.searchPlaceholder": "ค้นหาหมวดหมู่...",
+  "settings.categories.filterStatus": "สถานะ",
+  "settings.categories.filterStatusAll": "ทั้งหมด",
+  "settings.categories.filterStatusActive": "ใช้งาน",
+  "settings.categories.filterStatusInactive": "ไม่ใช้งาน",
+  "settings.categories.showingCount": "แสดง {shown} จาก {total} หมวดหมู่",
+  "settings.categories.clearFilters": "ล้างตัวกรอง",
+  "settings.categories.noResults": "ไม่พบหมวดหมู่",
+  "settings.categories.noResultsDescription":
+    "ลองเปลี่ยนคำค้นหาหรือตัวกรองสถานะ",
   "settings.categories.col.name": "ชื่อ",
   "settings.categories.col.sortOrder": "ลำดับ",
   "settings.categories.col.status": "สถานะ",
@@ -669,6 +680,7 @@ export const thMessages = {
   "kds.header.autoRefresh": "รีเฟรชอัตโนมัติ 5 วิ",
   "kds.fullscreen.enter": "แสดงเต็มจอ",
   "kds.fullscreen.exit": "ออกจากโหมดเต็มจอ",
+  "kds.exitBoard": "ออกจาก KDS",
   "kds.sound.enable": "เปิดเสียงแจ้งเตือนออเดอร์ใหม่",
   "kds.sound.disable": "ปิดเสียงแจ้งเตือนออเดอร์ใหม่",
   "kds.controls.sound": "เสียง",

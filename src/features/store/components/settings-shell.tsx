@@ -10,6 +10,8 @@ interface SettingsShellProps {
   description?: string;
   onBack?: () => void;
   backLabel?: string;
+  /** Trailing action (e.g. add button) rendered right of the title. */
+  action?: ReactNode;
   children: ReactNode;
 }
 
@@ -18,6 +20,7 @@ export const SettingsShell = ({
   description,
   onBack,
   backLabel = "Back to Settings",
+  action,
   children,
 }: SettingsShellProps) => {
   const { t } = useTranslation();
@@ -39,15 +42,20 @@ export const SettingsShell = ({
             </Button>
           )}
 
-          <Card className="space-y-2">
-            <h1 className="text-heading leading-tight text-text-primary sm:text-display">
-              {title}
-            </h1>
-            {description && (
-              <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
-                {description}
-              </p>
-            )}
+          <Card>
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0 flex-1 space-y-2">
+                <h1 className="text-heading leading-tight text-text-primary sm:text-display">
+                  {title}
+                </h1>
+                {description && (
+                  <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
+                    {description}
+                  </p>
+                )}
+              </div>
+              {action}
+            </div>
           </Card>
         </div>
 

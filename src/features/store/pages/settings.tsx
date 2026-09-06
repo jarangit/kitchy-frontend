@@ -3,21 +3,25 @@ import { Navigate, useParams } from "react-router-dom";
 import { SettingsFrame } from "@/features/store/components/settings-frame";
 import { SettingsLayout } from "@/features/store/components/settings-layout";
 import { SectionStore } from "@/features/store/components/settings/section-store";
-import { SectionPayments } from "@/features/store/components/settings/section-payments";
 import { SectionSales } from "@/features/store/components/settings/section-sales";
 import { SectionKitchen } from "@/features/store/components/settings/section-kitchen";
-import { SectionDevices } from "@/features/store/components/settings/section-devices";
 import { SectionSafety } from "@/features/store/components/settings/section-safety";
-import { SectionSystem } from "@/features/store/components/settings/section-system";
 
 const SECTIONS: Record<string, ComponentType> = {
   store: SectionStore,
-  payments: SectionPayments,
   sales: SectionSales,
   kitchen: SectionKitchen,
-  devices: SectionDevices,
   safety: SectionSafety,
-  system: SectionSystem,
+};
+
+/**
+ * Legacy section slugs from before the settings consolidation.
+ * They now live inside another section, so redirect instead of 404ing.
+ */
+const LEGACY_SECTION_REDIRECTS: Record<string, string> = {
+  payments: "sales",
+  devices: "store",
+  system: "store",
 };
 
 const DEFAULT_SECTION = "kitchen";
@@ -33,6 +37,11 @@ const SettingsPage = () => {
 
   if (section === "report") {
     return <Navigate to={`/store/${id}/report`} replace />;
+  }
+
+  const legacyTarget = LEGACY_SECTION_REDIRECTS[section];
+  if (legacyTarget) {
+    return <Navigate to={`/store/${id}/settings/${legacyTarget}`} replace />;
   }
 
   const Section = SECTIONS[section];

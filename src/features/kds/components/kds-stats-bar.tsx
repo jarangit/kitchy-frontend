@@ -49,44 +49,46 @@ const KdsStatsBar = ({ groups }: Props) => {
   return (
     <div
       className={cn(
-        "bg-primary px-4 py-3 text-on-primary",
+        "bg-primary px-3 py-2 text-on-primary sm:px-4",
         fullscreen ? "rounded-none" : "rounded-card",
       )}
     >
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:items-stretch lg:gap-6">
-        <div className="grid grid-flow-col auto-cols-max divide-x divide-on-primary/12 lg:w-fit">
-          <div className="flex w-fit flex-col items-center justify-center px-4 py-3 text-center lg:py-0">
+      <div className="flex min-w-0 items-center justify-between gap-3">
+        <div className="grid min-w-0 grid-flow-col auto-cols-max divide-x divide-on-primary/12 overflow-x-auto lg:w-fit">
+          <div className="flex w-fit flex-col items-center justify-center px-3 py-1.5 text-center sm:px-4 lg:py-0">
             <span className="text-caption text-on-primary/78">
               {t("kds.stats.pendingLabel")}
             </span>
-            <span className="mt-2 font-mono text-display font-bold leading-none tabular-nums text-on-primary">
+            <span className="mt-1 font-mono text-title font-bold leading-none tabular-nums text-on-primary sm:text-display">
               {pendingCount}
             </span>
           </div>
-          <div className="flex w-fit flex-col items-center justify-center px-4 py-3 text-center lg:py-0">
+          <div className="flex w-fit flex-col items-center justify-center px-3 py-1.5 text-center sm:px-4 lg:py-0">
             <span className="text-caption text-on-primary/78">
               {t("kds.stats.doneLabel")}
             </span>
-            <span className="mt-2 font-mono text-display font-bold leading-none tabular-nums text-accent">
+            <span className="mt-1 font-mono text-title font-bold leading-none tabular-nums text-accent sm:text-display">
               {doneCount}
             </span>
           </div>
-          <div className="flex w-fit flex-col items-center justify-center px-4 py-3 text-center lg:py-0">
+          <div className="flex w-fit flex-col items-center justify-center px-3 py-1.5 text-center sm:px-4 lg:py-0">
             <span className="text-caption text-on-primary/78">
               {t("kds.stats.overdueLabel")}
             </span>
-            <span className="mt-2 font-mono text-display font-bold leading-none tabular-nums text-danger">
+            <span className="mt-1 font-mono text-title font-bold leading-none tabular-nums text-danger sm:text-display">
               {overdueCount}
             </span>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 lg:min-w-[200px]">
-          <div className="text-right">
-            <p className="font-mono text-display font-bold leading-none tabular-nums text-on-primary">
+        <div className="flex shrink-0 items-center justify-end gap-2 lg:min-w-[200px]">
+          <div className="hidden text-right sm:block">
+            <p className="font-mono text-title font-bold leading-none tabular-nums text-on-primary sm:text-display">
               {timeLabel}
             </p>
-            <p className="mt-2 text-subtitle text-on-primary/78">{dateLabel}</p>
+            <p className="mt-1 text-body-sm text-on-primary/78 sm:text-subtitle">
+              {dateLabel}
+            </p>
           </div>
           <KdsControlGroup variant="onPrimary" />
         </div>

@@ -46,7 +46,7 @@ export function PosPaymentView({
     return (
       <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-bg">
         <div className="min-h-0 flex-1 overflow-y-auto [-webkit-overflow-scrolling:touch]">
-          <div className="flex h-full w-full flex-col px-4 py-3 sm:px-5 sm:py-4">
+          <div className="flex h-full w-full flex-col px-4 pb-[calc(11rem+env(safe-area-inset-bottom))] pt-3 sm:px-5 sm:pt-4 lg:pb-4">
             <div className="flex min-h-0 flex-1 flex-col">
               <div className="min-h-0 flex-1 overflow-y-auto">
                 <OrderSummary items={items} subtotal={subtotal} />
@@ -61,7 +61,7 @@ export function PosPaymentView({
   return (
     <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden bg-bg">
       <div className="min-h-0 flex-1 overflow-y-auto [-webkit-overflow-scrolling:touch]">
-        <div className="flex min-h-full w-full flex-col px-4 py-3 sm:px-5 sm:py-4">
+        <div className="flex min-h-full w-full flex-col px-4 pb-[calc(11rem+env(safe-area-inset-bottom))] pt-3 sm:px-5 sm:pt-4 lg:pb-4">
           <div className="flex min-h-0 flex-1 flex-col gap-4">
             <div>
               <h2 className="text-subtitle text-text-primary">
@@ -102,7 +102,7 @@ export function PosPaymentView({
             </div>
 
             {paymentMethod === "QR" ? (
-              <div className="flex min-h-0 flex-1 items-stretch justify-center">
+              <div className="flex justify-center">
                 <div className="flex w-full max-w-sm flex-1 items-stretch">
                   <QrPaymentSection
                     subtotal={subtotal}
@@ -114,7 +114,7 @@ export function PosPaymentView({
                 </div>
               </div>
             ) : (
-              <div className="flex min-h-0 flex-1 items-stretch">
+              <div className="flex">
                 <div className="flex w-full flex-1 items-stretch">
                   <CashPaymentSection
                     subtotal={subtotal}
