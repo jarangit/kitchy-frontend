@@ -7,11 +7,12 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 interface Props {
   items: ICartItem[];
   subtotal: number;
+  defaultExpanded?: boolean;
 }
 
-const OrderSummary = ({ items, subtotal }: Props) => {
+const OrderSummary = ({ items, subtotal, defaultExpanded = false }: Props) => {
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const toggleLabel = t(
     isExpanded ? "pos.payment.hideOrderItems" : "pos.payment.showOrderItems",
@@ -20,29 +21,32 @@ const OrderSummary = ({ items, subtotal }: Props) => {
 
   const content = (
     <>
-      <div className="space-y-4">
+      <div className="divide-y divide-border">
         {items.map((item) => (
           <div
             key={item.cartItemId}
-            className="flex flex-col gap-2 text-body text-text-secondary sm:flex-row sm:items-start sm:justify-between"
+            className="grid grid-cols-[1fr_auto_auto] items-baseline gap-2 py-2.5 text-body text-text-secondary"
           >
-            <div className="min-w-0 flex-1">
-              <span>
-                {item.name} x{item.quantity}
-              </span>
+            <div className="min-w-0">
+              <p className="truncate font-medium text-text-primary">
+                {item.name}
+              </p>
               {item.note && (
-                <p className="mt-1 text-body leading-6 text-text-tertiary">
+                <p className="mt-0.5 truncate text-caption leading-5 text-text-tertiary">
                   {t("pos.receipt.note", { note: item.note })}
                 </p>
               )}
             </div>
-            <span className="shrink-0 tabular-nums text-text-primary sm:text-right">
+            <span className="shrink-0 text-body-sm tabular-nums">
+              x{item.quantity}
+            </span>
+            <span className="w-20 shrink-0 text-right tabular-nums text-text-primary">
               ฿{(item.price * item.quantity).toFixed(2)}
             </span>
           </div>
         ))}
       </div>
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-5 text-title">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-border pt-4 text-title">
         <span>{t("pos.receipt.total")}</span>
         <span className="tabular-nums">฿{subtotal.toFixed(2)}</span>
       </div>
@@ -79,13 +83,13 @@ const OrderSummary = ({ items, subtotal }: Props) => {
       </button>
 
       <div className="hidden md:block">
-        <h3 className="mb-5 text-title text-text-primary">
+        <h3 className="mb-4 text-title text-text-primary">
           {t("pos.payment.orderSummary")}
         </h3>
         {content}
       </div>
 
-      {isExpanded && <div className="mt-5 md:hidden">{content}</div>}
+      {isExpanded && <div className="mt-4 md:hidden">{content}</div>}
     </Card>
   );
 };

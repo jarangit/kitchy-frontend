@@ -277,30 +277,29 @@ export default function PublicReceiptPage() {
 
           {!isCancelled && (
             <div className="mt-8" aria-label="สถานะออเดอร์">
-              <div className="flex items-start">
+              <div className="grid grid-cols-3 items-start">
                 {steps.map((label, index) => {
                   const isDone = index < statusView.stepIndex;
                   const isCurrent = index === statusView.stepIndex;
                   const isReached = index <= statusView.stepIndex;
+                  const isFirst = index === 0;
+                  const isLast = index === steps.length - 1;
                   return (
                     <div
                       key={label}
-                      className={cn("flex flex-1 flex-col items-center", {
-                        "flex-none": index === 0 || index === steps.length - 1,
-                      })}
+                      className="flex min-w-0 flex-col items-center text-center"
                     >
                       <div className="flex w-full items-center">
-                        {index > 0 && (
-                          <span
-                            className={cn(
-                              "h-0.5 flex-1",
-                              index <= statusView.stepIndex
-                                ? "bg-success"
-                                : "bg-border",
-                            )}
-                            aria-hidden="true"
-                          />
-                        )}
+                        <span
+                          className={cn(
+                            "h-0.5 flex-1",
+                            isFirst && "invisible",
+                            index <= statusView.stepIndex
+                              ? "bg-success"
+                              : "bg-border",
+                          )}
+                          aria-hidden="true"
+                        />
                         <span
                           className={cn(
                             "flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2",
@@ -325,17 +324,16 @@ export default function PublicReceiptPage() {
                             />
                           )}
                         </span>
-                        {index < steps.length - 1 && (
-                          <span
-                            className={cn(
-                              "h-0.5 flex-1",
-                              index < statusView.stepIndex
-                                ? "bg-success"
-                                : "bg-border",
-                            )}
-                            aria-hidden="true"
-                          />
-                        )}
+                        <span
+                          className={cn(
+                            "h-0.5 flex-1",
+                            isLast && "invisible",
+                            index < statusView.stepIndex
+                              ? "bg-success"
+                              : "bg-border",
+                          )}
+                          aria-hidden="true"
+                        />
                       </div>
                       <p
                         className={cn(

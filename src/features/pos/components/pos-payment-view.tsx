@@ -49,7 +49,11 @@ export function PosPaymentView({
           <div className="flex h-full w-full flex-col px-4 pb-[calc(11rem+env(safe-area-inset-bottom))] pt-3 sm:px-5 sm:pt-4 lg:pb-4">
             <div className="flex min-h-0 flex-1 flex-col">
               <div className="min-h-0 flex-1 overflow-y-auto">
-                <OrderSummary items={items} subtotal={subtotal} />
+                <OrderSummary
+                  items={items}
+                  subtotal={subtotal}
+                  defaultExpanded
+                />
               </div>
             </div>
           </div>

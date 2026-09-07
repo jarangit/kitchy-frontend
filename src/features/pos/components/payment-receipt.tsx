@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
-import { LuQrCode } from "react-icons/lu";
+import { LuExternalLink, LuQrCode } from "react-icons/lu";
 import type { PaymentResult } from "@/features/pos/context/cart-context-value";
 import { Card } from "@/shared/components/ui/card";
+import { IconButton } from "@/shared/components/ui/icon-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
 import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
@@ -186,14 +187,21 @@ const PaymentReceipt = ({
           {t("pos.receipt.ref", { id: String(receiptId) })}
         </p>
         {receiptUrl && (
-          <a
-            href={receiptUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-2 block break-all text-center text-caption text-accent hover:underline"
-          >
-            {receiptUrl}
-          </a>
+          <div className="mt-2 flex items-center justify-center gap-1">
+            <span className="text-caption text-text-tertiary">
+              {t("pos.receipt.receiptQr")}
+            </span>
+            <IconButton
+              size="sm"
+              aria-label={t("pos.receipt.receiptQr")}
+              title={t("pos.receipt.receiptQr")}
+              onClick={() =>
+                window.open(receiptUrl, "_blank", "noopener,noreferrer")
+              }
+            >
+              <LuExternalLink size={16} aria-hidden="true" />
+            </IconButton>
+          </div>
         )}
       </div>
     </Card>
