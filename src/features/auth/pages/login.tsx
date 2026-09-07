@@ -37,6 +37,10 @@ const LoginPage = () => {
   // Button stays hidden until the URL is set.
   const demoTrialUrl = getDemoTrialUrl();
 
+  const openInNewTab = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token && auth?.user) {
@@ -102,7 +106,7 @@ const LoginPage = () => {
                   type="button"
                   variant="secondary"
                   className="w-full"
-                  onClick={() => navigate("/try")}
+                  onClick={() => openInNewTab("/try")}
                 >
                   {t("auth.demo.login")}
                 </Button>
@@ -113,7 +117,7 @@ const LoginPage = () => {
                   type="button"
                   variant="secondary"
                   className="w-full"
-                  onClick={() => window.location.assign(demoTrialUrl)}
+                  onClick={() => openInNewTab(demoTrialUrl)}
                 >
                   {t("auth.trial.cta")}
                 </Button>

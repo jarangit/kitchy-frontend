@@ -18,26 +18,30 @@ export interface OperationsProgressStripProps {
 }
 
 const toneStyles: Record<OperationsProgressTone, string> = {
-  default: "bg-info-bg border border-info-border",
-  warning: "bg-warning-bg border border-warning-border",
-  success: "bg-success-bg border border-success-border",
+  default: "border-border bg-surface text-text-secondary",
+  warning: "border-warning bg-warning text-on-status",
+  success: "border-success bg-success text-on-status",
 };
 
 function StagePill({ stage }: { stage: OperationsProgressStage }) {
   const content = (
-    <>
-      <span className="text-body-sm font-medium leading-5 text-text-primary">
-        {stage.label}
-      </span>
-      <span className="text-title font-semibold leading-none text-text-primary tabular-nums">
+    <div className="flex flex-col items-center text-center">
+      <span
+        className={cn(
+          "flex h-8 w-8 items-center justify-center rounded-full border-2 text-caption font-semibold tabular-nums",
+          toneStyles[stage.tone],
+        )}
+      >
         {stage.count}
       </span>
-    </>
+      <span className="mt-3 text-body-sm font-medium leading-5 text-text-primary">
+        {stage.label}
+      </span>
+    </div>
   );
 
   const baseClass = cn(
-    "flex flex-1 items-center justify-between gap-3 rounded-full px-4 py-3 transition-colors duration-fast",
-    toneStyles[stage.tone],
+    "flex flex-1 flex-col items-center justify-start rounded-card px-2 py-2 transition-colors duration-fast",
   );
 
   if (stage.to) {
@@ -46,7 +50,7 @@ function StagePill({ stage }: { stage: OperationsProgressStage }) {
         to={stage.to}
         className={cn(
           baseClass,
-          "hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+          "hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         )}
       >
         {content}
@@ -57,29 +61,36 @@ function StagePill({ stage }: { stage: OperationsProgressStage }) {
   return <div className={baseClass}>{content}</div>;
 }
 
-function ArrowSeparator() {
-  return (
-    <span
-      aria-hidden="true"
-      className="hidden shrink-0 items-center text-text-tertiary lg:flex"
-    >
-      <span className="text-caption tracking-[0.12em]">····</span>
-      <span className="ml-1 text-body leading-none">›</span>
-    </span>
-  );
-}
-
 export function OperationsProgressStrip({
   stages,
   className,
 }: OperationsProgressStripProps) {
   return (
     <div className={cn(className)}>
-      <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-2">
+      <div className="grid grid-cols-3 gap-3 sm:gap-4">
         {stages.map((stage, idx) => (
-          <div key={stage.label} className="flex flex-1 items-center gap-2">
-            <StagePill stage={stage} />
-            {idx < stages.length - 1 ? <ArrowSeparator /> : null}
+          <div key={stage.label} className="relative flex min-w-0 items-start">
+            {idx > 0 && (
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute left-0 right-1/2 top-4 z-0 h-0.5",
+                  "bg-border",
+                )}
+              />
+            )}
+            {idx < stages.length - 1 && (
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute left-1/2 right-0 top-4 z-0 h-0.5",
+                  "bg-border",
+                )}
+              />
+            )}
+            <div className="relative z-10 flex w-full justify-center">
+              <StagePill stage={stage} />
+            </div>
           </div>
         ))}
       </div>
