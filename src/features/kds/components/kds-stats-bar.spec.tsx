@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import KdsStatsBar from "@/features/kds/components/kds-stats-bar";
 import { LanguageProvider } from "@/shared/i18n/language-context";
 
@@ -14,9 +15,11 @@ vi.mock("@/features/kds/components/kds-layout", () => ({
 describe("KdsStatsBar", () => {
   it("renders queue stats without realtime badge", () => {
     render(
-      <LanguageProvider>
-        <KdsStatsBar groups={[]} />
-      </LanguageProvider>,
+      <MemoryRouter>
+        <LanguageProvider>
+          <KdsStatsBar groups={[]} />
+        </LanguageProvider>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText("รอทำ")).toBeInTheDocument();
@@ -26,9 +29,11 @@ describe("KdsStatsBar", () => {
 
   it("still renders done and overdue stats", () => {
     render(
-      <LanguageProvider>
-        <KdsStatsBar groups={[]} />
-      </LanguageProvider>,
+      <MemoryRouter>
+        <LanguageProvider>
+          <KdsStatsBar groups={[]} />
+        </LanguageProvider>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText("เสร็จแล้ว")).toBeInTheDocument();

@@ -5,6 +5,7 @@ import { orderApiService } from "@/features/order/services/order";
 import { unwrapPayload } from "@/shared/services/unwrap-payload";
 import { useRealtimeConnected } from "@/shared/realtime/realtime-provider";
 import type { IOrderStationItemDto } from "@/features/kds/types/kds.dto";
+import type { KdsStatus } from "@/features/kds/types/kds.model";
 
 export type ReadyToServeItem = {
   id: string;
@@ -22,11 +23,23 @@ export type ReadyToServeItem = {
   deliveryPlatform?: string;
   deliveryOrderNumber?: string;
   createdAt: string;
+  /** Preparation state of this station item: PENDING = cooking, READY = ready to serve, SERVED = served. */
+  status: KdsStatus;
+};
+
+const toServeStatus = (backendStatus: string): KdsStatus => {
+  if (backendStatus === "served") return "SERVED";
+  return backendStatus === "complete" ? "READY" : "PENDING";
 };
 
 type StationLite = { id: string; name?: string };
 
-export const useReadyToServeItems = () => {
+/**
+ * All station items across every station, each carrying its own
+ * preparation status (PENDING = cooking, READY = ready to serve,
+ * SERVED = served). Sorted FIFO by order creation time.
+ */
+export const useServeBoardItems = () => {
   const isRealtimeConnected = useRealtimeConnected();
   const refetchInterval: number | false = isRealtimeConnected ? false : 5000;
   const { stationsQuery } = useStationService({});
@@ -51,7 +64,7 @@ export const useReadyToServeItems = () => {
   });
 
   const items = useMemo<ReadyToServeItem[]>(() => {
-    const readyItems: ReadyToServeItem[] = [];
+    const allItems: ReadyToServeItem[] = [];
 
     for (let i = 0; i < results.length; i += 1) {
       const station = stations[i];
@@ -59,11 +72,10 @@ export const useReadyToServeItems = () => {
 
       const stationItems = unwrapPayload<IOrderStationItemDto>(results[i].data);
       for (const item of stationItems) {
-        if (item.status !== "complete") continue;
         const orderItem = item.orderItem;
         if (!orderItem) continue;
 
-        readyItems.push({
+        allItems.push({
           id: item.id,
           orderId: orderItem.order?.id ?? "",
           stationId: station.id,
@@ -79,11 +91,12 @@ export const useReadyToServeItems = () => {
           deliveryPlatform: orderItem.order?.deliveryPlatform,
           deliveryOrderNumber: orderItem.order?.deliveryOrderNumber,
           createdAt: orderItem.order?.createdAt ?? new Date().toISOString(),
+          status: toServeStatus(item.status),
         });
       }
     }
 
-    return readyItems.sort(
+    return allItems.sort(
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
@@ -91,8 +104,28 @@ export const useReadyToServeItems = () => {
 
   const isLoading = results.length > 0 && results.some((r) => r.isLoading);
   const isRefetching = results.some((r) => r.isRefetching);
+  const readyCount = useMemo(
+    () => items.filter((item) => item.status === "READY").length,
+    [items],
+  );
 
-  return { items, count: items.length, isLoading, isRefetching };
+  return { items, count: items.length, readyCount, isLoading, isRefetching };
+};
+
+export const useReadyToServeItems = () => {
+  const { items, isLoading, isRefetching } = useServeBoardItems();
+
+  const readyItems = useMemo(
+    () => items.filter((item) => item.status === "READY"),
+    [items],
+  );
+
+  return {
+    items: readyItems,
+    count: readyItems.length,
+    isLoading,
+    isRefetching,
+  };
 };
 
 export const useReadyToServeCount = () => {

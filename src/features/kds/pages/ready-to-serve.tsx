@@ -3,19 +3,15 @@ import { useParams } from "react-router-dom";
 import Layout from "@/shared/components/layout/layout";
 import { PageHeader } from "@/shared/components/ui/page-header";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import { useReadyToServeItems } from "@/features/kds/hooks/use-ready-to-serve";
+import { useServeBoardItems } from "@/features/kds/hooks/use-ready-to-serve";
 import { ReadyToServeGrid } from "@/features/kds/components/ready-to-serve-grid";
 import { useReadyToServeActions } from "@/features/kds/hooks/use-ready-to-serve-actions";
-import {
-  readReadyToServeDismissed,
-  writeReadyToServeDismissed,
-} from "@/features/kds/utils/ready-to-serve-dismissed";
-import { appBus } from "@/shared/events/app-events";
+import { readReadyToServeDismissed } from "@/features/kds/utils/ready-to-serve-dismissed";
 
 function ReadyToServePageContent() {
   const { id: storeId } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { items } = useReadyToServeItems();
+  const { items } = useServeBoardItems();
   const [dismissed, setDismissed] = useState<Set<string>>(() =>
     readReadyToServeDismissed(storeId),
   );
@@ -29,28 +25,24 @@ function ReadyToServePageContent() {
     [dismissed, items],
   );
 
-  const dismissItem = (itemId: string) => {
-    setDismissed((prev) => {
-      const next = new Set(prev);
-      next.add(itemId);
-      writeReadyToServeDismissed(storeId, next);
-      appBus.emit("ui:readyToServeDismissed", { itemId });
-      return next;
-    });
-  };
+  const readyCount = useMemo(
+    () => visibleItems.filter((item) => item.status === "READY").length,
+    [visibleItems],
+  );
 
-  const { servingIds, markServed } = useReadyToServeActions(dismissItem);
+  // Served items stay visible with their SERVED status (no auto-dismiss),
+  // so every item shows its own state on this board.
+  const { servingIds, markServed } = useReadyToServeActions();
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title={`${t("serve.drawer.title")} (${visibleItems.length})`}
-      />
+    <div className="flex h-full min-h-0 flex-col gap-4 p-card-padding">
+      <PageHeader title={`${t("serve.drawer.title")} (${readyCount})`} />
 
       <ReadyToServeGrid
         items={visibleItems}
         servingIds={servingIds}
         onServed={(item) => void markServed(item)}
+        storeId={storeId}
       />
     </div>
   );
@@ -58,7 +50,7 @@ function ReadyToServePageContent() {
 
 export default function ReadyToServePage() {
   return (
-    <Layout>
+    <Layout noPadding fullViewport>
       <ReadyToServePageContent />
     </Layout>
   );
