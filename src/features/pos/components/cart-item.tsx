@@ -2,6 +2,7 @@ import type { ICartItem } from "@/features/pos/types/pos.model";
 import { LuChevronUp, LuPencil, LuPlus, LuTrash2 } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { InsetPanel } from "@/shared/components/ui/inset-panel";
+import { ModifierSummary } from "@/shared/components/ui/modifier-summary";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { cn } from "@/shared/utils/cn";
 
@@ -60,6 +61,10 @@ const CartItem = ({
           </button>
         )}
       </div>
+
+      {item.selections.length > 0 && (
+        <ModifierSummary selections={item.selections} className="mt-1" />
+      )}
 
       {item.note && readOnly && (
         <InsetPanel className="mt-2 rounded-sm border-border bg-surface px-3 py-2">

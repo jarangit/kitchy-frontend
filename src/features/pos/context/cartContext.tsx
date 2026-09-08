@@ -1,12 +1,17 @@
 import { useState, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
-import type { ICartItem, OrderType } from "@/features/pos/types/pos.model";
+import type {
+  AddToCartInput,
+  ICartItem,
+  OrderType,
+} from "@/features/pos/types/pos.model";
 import { getOrderTypeStrategy } from "@/features/order/strategies/order-type-strategy";
 import { CartContext } from "@/features/pos/context/cart-context-value";
 import type {
   CartContextValue,
   PaymentResult,
 } from "@/features/pos/context/cart-context-value";
+import { areSelectionsEqual } from "@/shared/utils/modifier-selection";
 
 const createCartItemId = () =>
   `cart-item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
@@ -22,33 +27,43 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [deliveryPlatform, setDeliveryPlatformState] = useState("");
   const [deliveryOrderNumber, setDeliveryOrderNumberState] = useState("");
 
-  const addItem = useCallback(
-    (product: { id: string; name: string; price: number }) => {
-      setItems((prev) => {
-        const existing = prev.find((item) => item.productId === product.id);
-        if (existing) {
-          return prev.map((item) =>
-            item.productId === product.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item,
-          );
-        }
+  const addItem = useCallback((product: AddToCartInput) => {
+    const selections = product.selections ?? [];
+    const modifierTotal = product.modifierTotal ?? 0;
+    const basePrice = product.basePrice ?? product.price;
+    setItems((prev) => {
+      // Lines with different modifier selections are different lines.
+      // Merge only when the configuration matches and neither line has a note.
+      const existing = prev.find(
+        (item) =>
+          item.productId === product.id &&
+          areSelectionsEqual(item.selections, selections) &&
+          !item.note?.trim(),
+      );
+      if (existing) {
+        return prev.map((item) =>
+          item.cartItemId === existing.cartItemId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      }
 
-        return [
-          ...prev,
-          {
-            cartItemId: createCartItemId(),
-            productId: product.id,
-            name: product.name,
-            price: product.price,
-            quantity: 1,
-            note: "",
-          },
-        ];
-      });
-    },
-    [],
-  );
+      return [
+        ...prev,
+        {
+          cartItemId: createCartItemId(),
+          productId: product.id,
+          name: product.name,
+          price: basePrice + modifierTotal,
+          basePrice,
+          modifierTotal,
+          selections,
+          quantity: 1,
+          note: "",
+        },
+      ];
+    });
+  }, []);
 
   const removeItem = useCallback((cartItemId: string) => {
     setItems((prev) => prev.filter((item) => item.cartItemId !== cartItemId));

@@ -1,5 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { LuShapes, LuTag, LuPackage } from "react-icons/lu";
+import {
+  LuShapes,
+  LuSlidersHorizontal,
+  LuTag,
+  LuPackage,
+} from "react-icons/lu";
 import { SettingGroup, SettingRow } from "@/shared/components/ui/setting-row";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useStoreService } from "@/features/store/hooks/useStoreService";
@@ -56,6 +61,12 @@ export function SectionKitchen() {
           icon={<LuTag size={18} />}
           label={t("settings.cp.kitchen.categories")}
           onClick={() => navigate(`/store/${id}/settings/categories`)}
+        />
+        <SettingRow
+          variant="link"
+          icon={<LuSlidersHorizontal size={18} />}
+          label={t("settings.cp.kitchen.modifiers")}
+          onClick={() => navigate(`/store/${id}/settings/modifiers`)}
         />
         <SettingRow
           variant="link"

@@ -15,6 +15,13 @@ export type ApiResponse<T> = {
   data: T;
 };
 
+export interface ICreateOrderProduct {
+  productId: string;
+  quantity: number;
+  note?: string;
+  modifiers?: { modifierGroupId: string; modifierOptionIds: string[] }[];
+}
+
 export interface ICreateOrder {
   orderNumber: string;
   orderType: OrderType;
@@ -22,7 +29,7 @@ export interface ICreateOrder {
   customerName?: string;
   deliveryPlatform?: string;
   deliveryOrderNumber?: string;
-  products: { productId: string; quantity: number; note?: string }[];
+  products: ICreateOrderProduct[];
   isWaitingInStore?: boolean;
 }
 

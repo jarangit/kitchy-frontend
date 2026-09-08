@@ -4,7 +4,10 @@ import type {
   CreateProductRequest,
   UpdateProductRequest,
 } from "@/features/product/types/product.dto";
-import type { IMenu } from "@/features/product/types/product.model";
+import type {
+  IMenu,
+  ProductDetail,
+} from "@/features/product/types/product.model";
 import {
   IS_DEMO_MODE,
   getAdapter,
@@ -42,10 +45,10 @@ export const productApiService = {
     if (IS_DEMO_MODE) {
       const data = await (await getAdapter()).getProductById(productId);
       return { data: { success: true, message: "ok", data } } as {
-        data: ApiResponse<IMenu | string>;
+        data: ApiResponse<ProductDetail | string>;
       };
     }
-    return await axiosClient.get<ApiResponse<IMenu | string>>(
+    return await axiosClient.get<ApiResponse<ProductDetail | string>>(
       `/products/${productId}`,
     );
   },

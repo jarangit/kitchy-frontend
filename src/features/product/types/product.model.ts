@@ -1,3 +1,5 @@
+import type { ModifierGroupView } from "@/shared/types/modifier";
+
 export interface IMenu {
   id: string;
   name: string;
@@ -16,6 +18,10 @@ export interface IMenu {
   store?: unknown;
   station?: unknown;
   category?: unknown | null;
+}
+
+export interface ProductDetail extends IMenu {
+  modifierGroups?: ModifierGroupView[];
 }
 
 export interface ProductFormData {

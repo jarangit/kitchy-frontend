@@ -17,7 +17,16 @@ import { getPaymentStrategy } from "@/features/pos/strategies/payment-strategy";
 import type { OrderType, PaymentMethod } from "@/features/pos/types/pos.model";
 import { getNextDeliveryOrderNumber } from "@/features/pos/utils/get-next-delivery-order-number";
 import { getNextQueueNumber } from "@/features/pos/utils/get-next-queue-number";
+import ProductModifierDialog, {
+  type ModifierDialogProduct,
+} from "@/features/pos/components/product-modifier-dialog";
 import { useProductService } from "@/features/product/hooks/useProductService";
+import { productApiService } from "@/features/product/services/product";
+import {
+  calcModifierTotal,
+  snapshotSelections,
+} from "@/shared/utils/modifier-selection";
+import { toast } from "@/shared/services/toast-service";
 import { Button } from "@/shared/components/ui/button";
 import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
@@ -35,6 +44,11 @@ const PosHomePage = () => {
   const [receivedAmount, setReceivedAmount] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [modifierProduct, setModifierProduct] =
+    useState<ModifierDialogProduct | null>(null);
+  const [modifierLoadingId, setModifierLoadingId] = useState<string | null>(
+    null,
+  );
 
   const {
     productsQuery,
@@ -68,7 +82,7 @@ const PosHomePage = () => {
   const quantityByProductId = useMemo(
     () =>
       cart.items.reduce<Record<string, number>>((acc, item) => {
-        acc[item.productId] = item.quantity;
+        acc[item.productId] = (acc[item.productId] ?? 0) + item.quantity;
         return acc;
       }, {}),
     [cart.items],
@@ -146,9 +160,8 @@ const PosHomePage = () => {
           : null;
 
   const handleDecreaseQuantity = (productId: string) => {
-    const existingItem = cart.items.find(
-      (item) => item.productId === productId,
-    );
+    const lines = cart.items.filter((item) => item.productId === productId);
+    const existingItem = lines[lines.length - 1];
     if (!existingItem) return;
 
     if (existingItem.quantity <= 1) {
@@ -157,6 +170,70 @@ const PosHomePage = () => {
     }
 
     cart.updateQuantity(existingItem.cartItemId, existingItem.quantity - 1);
+  };
+
+  const handleProductClick = async (product: {
+    id: string;
+    name: string;
+    price: number;
+  }) => {
+    if (modifierLoadingId) return;
+    setModifierLoadingId(product.id);
+    try {
+      const response = await productApiService.getProductById(product.id);
+      const payload = response.data.data;
+      const detail =
+        typeof payload === "string" || payload == null ? null : payload;
+      const groups = detail?.modifierGroups ?? [];
+      if (groups.length > 0) {
+        setModifierProduct({
+          id: product.id,
+          name: detail?.name ?? product.name,
+          price: detail?.price ?? product.price,
+          imageUrl: detail?.imageUrl,
+          modifierGroups: groups,
+        });
+      } else {
+        cart.addItem({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+        });
+      }
+    } catch {
+      toast.error({ title: t("pos.modifier.loadFailed") });
+    } finally {
+      setModifierLoadingId(null);
+    }
+  };
+
+  const handleModifierConfirm = ({
+    selections,
+    quantity,
+  }: {
+    selections: { modifierGroupId: string; modifierOptionIds: string[] }[];
+    quantity: number;
+  }) => {
+    if (!modifierProduct) return;
+    const snapshot = snapshotSelections(
+      modifierProduct.modifierGroups,
+      selections,
+    );
+    const modifierTotal = calcModifierTotal(
+      modifierProduct.modifierGroups,
+      selections,
+    );
+    for (let i = 0; i < quantity; i += 1) {
+      cart.addItem({
+        id: modifierProduct.id,
+        name: modifierProduct.name,
+        price: modifierProduct.price,
+        basePrice: modifierProduct.price,
+        modifierTotal,
+        selections: snapshot,
+      });
+    }
+    setModifierProduct(null);
   };
 
   const handlePay = () => {
@@ -233,6 +310,14 @@ const PosHomePage = () => {
           productId: item.productId,
           quantity: item.quantity,
           note: item.note?.trim() || undefined,
+          ...(item.selections.length > 0
+            ? {
+                modifiers: item.selections.map((selection) => ({
+                  modifierGroupId: selection.modifierGroupId,
+                  modifierOptionIds: [...selection.modifierOptionIds],
+                })),
+              }
+            : {}),
         })),
       });
 
@@ -398,9 +483,10 @@ const PosHomePage = () => {
                         }),
                       ) || []
                     }
-                    onAddToCart={cart.addItem}
+                    onAddToCart={handleProductClick}
                     onDecreaseQuantity={handleDecreaseQuantity}
                     quantityByProductId={quantityByProductId}
+                    loadingProductId={modifierLoadingId}
                   />
                 )}
               </div>
@@ -666,6 +752,12 @@ const PosHomePage = () => {
           </div>
         </div>
       )}
+
+      <ProductModifierDialog
+        product={modifierProduct}
+        onClose={() => setModifierProduct(null)}
+        onConfirm={handleModifierConfirm}
+      />
 
       {activeView === "BROWSE" && (
         <PosCoachOverlay

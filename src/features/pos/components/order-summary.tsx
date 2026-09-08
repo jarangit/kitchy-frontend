@@ -2,6 +2,7 @@ import { useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import type { ICartItem } from "@/features/pos/types/pos.model";
 import { Card } from "@/shared/components/ui/card";
+import { ModifierSummary } from "@/shared/components/ui/modifier-summary";
 import { useTranslation } from "@/shared/i18n/use-translation";
 
 interface Props {
@@ -31,6 +32,9 @@ const OrderSummary = ({ items, subtotal, defaultExpanded = false }: Props) => {
               <p className="truncate font-medium text-text-primary">
                 {item.name}
               </p>
+              {item.selections.length > 0 && (
+                <ModifierSummary selections={item.selections} />
+              )}
               {item.note && (
                 <p className="mt-0.5 truncate text-caption leading-5 text-text-tertiary">
                   {t("pos.receipt.note", { note: item.note })}

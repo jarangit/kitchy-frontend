@@ -53,6 +53,8 @@ export interface DataTableProps<TData> {
   loadingRowCount?: number;
   /** Rendered when data is empty and not loading. */
   emptyState?: ReactNode;
+  /** Extra class per body row (e.g. selected-state highlight). */
+  getRowClassName?: (row: TData) => string | undefined;
   className?: string;
   /** Reserved for future; currently renders no sticky styles to keep v1 simple. */
   stickyHeader?: boolean;
@@ -73,6 +75,7 @@ export function DataTable<TData>({
   isLoading = false,
   loadingRowCount = 5,
   emptyState,
+  getRowClassName,
   className,
 }: DataTableProps<TData>) {
   const enableSorting = !!onSortingChange;
@@ -188,6 +191,7 @@ export function DataTable<TData>({
           rows.map((row) => (
             <TableRow
               key={row.id}
+              className={getRowClassName?.(row.original)}
               clickable={!!onRowClick}
               onClick={onRowClick ? (e) => handleRowClick(e, row) : undefined}
               tabIndex={onRowClick ? 0 : undefined}

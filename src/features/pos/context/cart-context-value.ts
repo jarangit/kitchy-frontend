@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import type {
+  AddToCartInput,
   ICartItem,
   OrderType,
   PaymentMethod,
@@ -7,7 +8,7 @@ import type {
 
 interface CartState {
   items: ICartItem[];
-  addItem: (product: { id: string; name: string; price: number }) => void;
+  addItem: (product: AddToCartInput) => void;
   removeItem: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, quantity: number) => void;
   setItemNote: (cartItemId: string, note: string) => void;

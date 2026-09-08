@@ -75,6 +75,12 @@ const SettingsStationsPage = lazyWithRetry(
 const SettingsCategoriesPage = lazyWithRetry(
   () => import("@/features/category/pages/settings-categories"),
 );
+const SettingsModifiersPage = lazyWithRetry(
+  () => import("@/features/store/pages/settings-modifiers"),
+);
+const ModifierDetailPage = lazyWithRetry(
+  () => import("@/features/modifier/pages/modifier-detail"),
+);
 const StationPage = lazyWithRetry(
   () => import("@/features/station/pages/[station]"),
 );
@@ -252,6 +258,36 @@ function App() {
               <ProtectedRoute>
                 <SettingsPinGuard>
                   <SettingsCategoriesPage />
+                </SettingsPinGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store/:id/settings/modifiers"
+            element={
+              <ProtectedRoute>
+                <SettingsPinGuard>
+                  <SettingsModifiersPage />
+                </SettingsPinGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store/:id/settings/modifiers/new"
+            element={
+              <ProtectedRoute>
+                <SettingsPinGuard>
+                  <ModifierDetailPage />
+                </SettingsPinGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store/:id/settings/modifiers/:groupId"
+            element={
+              <ProtectedRoute>
+                <SettingsPinGuard>
+                  <ModifierDetailPage />
                 </SettingsPinGuard>
               </ProtectedRoute>
             }

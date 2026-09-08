@@ -3,6 +3,7 @@ import QRCode from "qrcode";
 import { LuExternalLink, LuQrCode } from "react-icons/lu";
 import type { PaymentResult } from "@/features/pos/context/cart-context-value";
 import { Card } from "@/shared/components/ui/card";
+import { ModifierSummary } from "@/shared/components/ui/modifier-summary";
 import { IconButton } from "@/shared/components/ui/icon-button";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { MessageKey } from "@/shared/i18n/messages";
@@ -91,6 +92,9 @@ const PaymentReceipt = ({
           >
             <div>
               <span className="text-text-primary">{item.name}</span>
+              {item.selections.length > 0 && (
+                <ModifierSummary selections={item.selections} />
+              )}
               {item.note && (
                 <p className="mt-1 text-caption leading-5 text-text-tertiary">
                   {t("pos.receipt.note", { note: item.note })}

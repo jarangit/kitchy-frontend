@@ -10,13 +10,22 @@ type OrderProductPayload = {
   productId: string;
   quantity: number;
   note?: string;
+  modifiers?: { modifierGroupId: string; modifierOptionIds: string[] }[];
 };
 
 const sanitizeProducts = (products: OrderProductPayload[]) =>
-  products.map(({ productId, quantity, note }) => ({
+  products.map(({ productId, quantity, note, modifiers }) => ({
     productId,
     quantity,
     ...(note?.trim() ? { note: note.trim() } : {}),
+    ...(modifiers && modifiers.length > 0
+      ? {
+          modifiers: modifiers.map((selection) => ({
+            modifierGroupId: selection.modifierGroupId,
+            modifierOptionIds: [...selection.modifierOptionIds],
+          })),
+        }
+      : {}),
   }));
 
 export const orderApiService = {
