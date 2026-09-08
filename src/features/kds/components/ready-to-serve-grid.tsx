@@ -513,9 +513,9 @@ export function ReadyToServeGrid({
         <section
           key={station.stationId}
           aria-label={station.stationName}
-          className="flex min-h-0 shrink-0 flex-col"
+          className="flex min-h-full shrink-0 flex-col"
         >
-          <div className="flex h-[calc(100dvh-300px)] min-h-[420px] gap-4 overflow-x-auto pb-2">
+          <div className="flex min-h-[420px] flex-1 gap-4 overflow-x-auto pb-2">
             {station.orders.map((group) => (
               <ReadyOrderCard
                 key={group.orderId}
