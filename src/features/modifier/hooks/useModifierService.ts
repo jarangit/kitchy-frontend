@@ -58,9 +58,8 @@ export const useModifierService = () => {
     },
   });
 
-  const deactivateGroupMutation = useMutation({
-    mutationFn: (groupId: string) =>
-      modifierApiService.deactivateGroup(groupId),
+  const deleteGroupMutation = useMutation({
+    mutationFn: (groupId: string) => modifierApiService.deleteGroup(groupId),
     onSuccess: invalidateGroups,
   });
 
@@ -92,9 +91,8 @@ export const useModifierService = () => {
     },
   });
 
-  const deactivateOptionMutation = useMutation({
-    mutationFn: (optionId: string) =>
-      modifierApiService.deactivateOption(optionId),
+  const deleteOptionMutation = useMutation({
+    mutationFn: (optionId: string) => modifierApiService.deleteOption(optionId),
     onSuccess: () => {
       invalidateGroups();
       invalidateGroupDetails();
@@ -162,10 +160,10 @@ export const useModifierService = () => {
     invalidateGroupDetail,
     createGroupMutation,
     updateGroupMutation,
-    deactivateGroupMutation,
+    deleteGroupMutation,
     createOptionMutation,
     updateOptionMutation,
-    deactivateOptionMutation,
+    deleteOptionMutation,
     assignGroupMutation,
     removeGroupMutation,
   };

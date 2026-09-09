@@ -17,7 +17,7 @@ interface Props {
   onSortingChange: OnChangeFn<SortingState>;
   onSelect: (id: string) => void;
   onEdit: (id: string) => void;
-  onDeactivate: (id: string) => void;
+  onDelete: (id: string) => void;
   isLoading?: boolean;
   emptyState?: React.ReactNode;
 }
@@ -28,7 +28,7 @@ export function ModifierGroupTable({
   onSortingChange,
   onSelect,
   onEdit,
-  onDeactivate,
+  onDelete,
   isLoading,
   emptyState,
 }: Props) {
@@ -137,18 +137,16 @@ export function ModifierGroupTable({
           >
             <LuPencil className="h-4 w-4" />
           </Button>
-          {row.original.isActive && (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={t("settings.modifiers.deactivateGroup")}
-              title={t("settings.modifiers.deactivateGroup")}
-              onClick={() => onDeactivate(row.original.id)}
-              className="text-danger hover:bg-danger-bg hover:text-danger"
-            >
-              <LuPower className="h-4 w-4" />
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t("settings.modifiers.deleteGroup")}
+            title={t("settings.modifiers.deleteGroup")}
+            onClick={() => onDelete(row.original.id)}
+            className="text-danger hover:bg-danger-bg hover:text-danger"
+          >
+            <LuPower className="h-4 w-4" />
+          </Button>
         </div>
       ),
     },

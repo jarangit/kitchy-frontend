@@ -150,7 +150,7 @@ export const enMessages = {
   "settings.modifiers.typeMultipleShort": "Multiple",
   "settings.modifiers.active": "Active",
   "settings.modifiers.inactive": "Inactive",
-  "settings.modifiers.deactivateGroup": "Deactivate group",
+  "settings.modifiers.deleteGroup": "Delete this group",
   "settings.modifiers.createGroupTitle": "New modifier group",
   "settings.modifiers.createGroupDescription":
     "Define how customers pick from this group.",
@@ -178,14 +178,13 @@ export const enMessages = {
   "settings.modifiers.saving": "Saving...",
   "settings.modifiers.createGroupFailed": "Could not create group",
   "settings.modifiers.updateGroupFailed": "Could not update group",
-  "settings.modifiers.deactivateGroupFailed": "Could not deactivate group",
-  "settings.modifiers.deactivateGroupTitle": "Deactivate this group?",
-  "settings.modifiers.deactivateGroupDescription":
-    "“{name}” will disappear from POS immediately.",
-  "settings.modifiers.deactivateGroupWarning":
-    "Deactivation cannot be undone from this app. The group stays attached to its products but hidden.",
-  "settings.modifiers.deactivating": "Deactivating...",
-  "settings.modifiers.confirmDeactivate": "Deactivate",
+  "settings.modifiers.deleteGroupFailed": "Could not delete group",
+  "settings.modifiers.deleteGroupSuccess": "Group deleted",
+  "settings.modifiers.deleteGroupTitle": "Delete this group?",
+  "settings.modifiers.deleteGroupDescription":
+    "“{name}” will be permanently removed from the store.",
+  "settings.modifiers.deleteGroupWarning":
+    "Deletion cannot be undone. The group, its options, and all product links disappear immediately.",
   "settings.modifiers.optionsSubtitle":
     "{active} of {total} available • requires at least {min}",
   "settings.modifiers.inactiveGroupHint":
@@ -199,13 +198,17 @@ export const enMessages = {
   "settings.modifiers.available": "Available",
   "settings.modifiers.unavailable": "Unavailable",
   "settings.modifiers.addOption": "Add option",
-  "settings.modifiers.deactivateOption": "Deactivate option",
-  "settings.modifiers.deactivateOptionTitle": "Deactivate this option?",
-  "settings.modifiers.deactivateOptionDescription":
-    "“{name}” will disappear from POS immediately. You can turn it back on later.",
+  "settings.modifiers.deleteOption": "Delete option",
+  "settings.modifiers.deleteOptionTitle": "Delete this option?",
+  "settings.modifiers.deleteOptionDescription":
+    "“{name}” will be permanently removed from the group.",
+  "settings.modifiers.deleteOptionWarning":
+    "Deletion cannot be undone. This option disappears from the group immediately.",
+  "settings.modifiers.deleting": "Deleting...",
+  "settings.modifiers.confirmDelete": "Delete",
   "settings.modifiers.createOptionFailed": "Could not create option",
   "settings.modifiers.updateOptionFailed": "Could not update option",
-  "settings.modifiers.deactivateOptionFailed": "Could not deactivate option",
+  "settings.modifiers.deleteOptionFailed": "Could not delete option",
   "settings.modifiers.assignmentTitle": "Attach to products",
   "settings.modifiers.removeAssignment": "Remove from product",
   "settings.modifiers.assignFailed": "Could not attach group",
@@ -236,6 +239,52 @@ export const enMessages = {
   "settings.modifiers.assignedOrder": "Order {order}",
   "settings.modifiers.attachSelected": "Attach ({count})",
   "settings.modifiers.attachSuccess": "Attached to {count} products",
+  "settings.modifiers.assignSearchPlaceholder": "Search products",
+  "settings.modifiers.assignFilterCategory": "Category",
+  "settings.modifiers.assignCategoryAll": "All categories",
+  "settings.modifiers.assignShowingCount":
+    "Showing {shown} of {total} products",
+  "settings.modifiers.assignNoResults": "No matching products",
+  "settings.modifiers.assignNoResultsDescription":
+    "Try a different search or category.",
+  "settings.modifiers.editGroupTitle": "Edit modifier group",
+  "settings.modifiers.detailSubtitle":
+    "Configure options for drinks and food menus.",
+  "settings.modifiers.previewInPos": "Preview in POS",
+  "settings.modifiers.stepGroupInfo": "Group info",
+  "settings.modifiers.stepSelectionType": "Selection type",
+  "settings.modifiers.selectionTypeHelp": "About selection types",
+  "settings.modifiers.selectionRequiredOne": "Must pick 1",
+  "settings.modifiers.selectionRequiredOneDesc":
+    "Customers must pick one option.",
+  "settings.modifiers.selectionOptionalOne": "Optional pick",
+  "settings.modifiers.selectionOptionalOneDesc":
+    "Customers may skip this group.",
+  "settings.modifiers.selectionMultiple": "Pick multiple",
+  "settings.modifiers.selectionMultipleDesc":
+    "Customers can pick more than one option.",
+  "settings.modifiers.optionsInGroup": "Options in group ({count})",
+  "settings.modifiers.optionsReorderHint":
+    "Drag to reorder • tap to edit details",
+  "settings.modifiers.useWithProducts": "Used with products",
+  "settings.modifiers.useWithProductsDesc":
+    "Choose products that offer this group.",
+  "settings.modifiers.productsCount": "{count} products",
+  "settings.modifiers.posPreviewTitle": "POS preview",
+  "settings.modifiers.posPreviewSubtitle": "This is how customers will see it.",
+  "settings.modifiers.posPreviewEmpty": "No options to preview yet.",
+  "settings.modifiers.tipsTitle": "Tips",
+  "settings.modifiers.tipsLine1":
+    "Use simple names such as Sweetness, Size, Toppings.",
+  "settings.modifiers.tipsLine2":
+    "If selection is not required, use “Optional pick”.",
+  "settings.modifiers.tipsLine3":
+    "You can temporarily disable an option without deleting it.",
+  "settings.modifiers.expandAssignment": "Manage products using this group",
+  "settings.modifiers.collapseAssignment": "Hide",
+  "settings.modifiers.optionPriceWithAdjustment": "{name} • {adjustment}",
+  "settings.modifiers.editOption": "Edit option",
+  "settings.modifiers.optionDetailHint": "Tap to edit details",
 
   // Devices
   "settings.cp.devices.description": "Devices connected to this store",

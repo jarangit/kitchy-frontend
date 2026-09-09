@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { LuArrowLeft, LuCircleAlert } from "react-icons/lu";
+import { useForm } from "react-hook-form";
+import { LuArrowLeft, LuCircleAlert, LuEye, LuTrash2 } from "react-icons/lu";
 import { useModifierService } from "@/features/modifier/hooks/useModifierService";
 import ModifierGroupForm from "@/features/modifier/components/modifier-group-form";
+import { emptyGroupDefaults } from "@/features/modifier/utils/modifier-group-preset";
 import ModifierOptionEditor from "@/features/modifier/components/modifier-option-editor";
 import GroupProductAssignment from "@/features/modifier/components/group-product-assignment";
+import { ModifierPosPreview } from "@/features/modifier/components/modifier-pos-preview";
+import { ModifierTipsCard } from "@/features/modifier/components/modifier-tips-card";
 import { SettingsFrame } from "@/features/store/components/settings-frame";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
@@ -27,6 +31,8 @@ import type {
   UpdateModifierOptionRequest,
 } from "@/features/modifier/types/modifier.dto";
 
+const GROUP_FORM_ID = "modifier-group-form";
+
 const extractServerMessage = (error: unknown, fallback: string): string => {
   if (error && typeof error === "object") {
     const maybeResponse = error as {
@@ -40,13 +46,9 @@ const extractServerMessage = (error: unknown, fallback: string): string => {
 };
 
 /**
- * Full page for one modifier group — both creation (`/new`) and editing
- * (`/:groupId`). Group fields, options, and product assignment live here
- * together; no dialogs except destructive confirmations.
- *
- * Options need a persisted group, so on `/new` the option and assignment
- * sections stay locked until the group is created, then the page replaces
- * its URL with the real group id.
+ * Guided detail page for one modifier group — creation (`/new`) and editing
+ * (`/:groupId`). Steps 1–2 (group fields) submit through the bottom action
+ * bar; options and product assignment mutate immediately, same as before.
  */
 const ModifierDetailPage = () => {
   const navigate = useNavigate();
@@ -59,21 +61,61 @@ const ModifierDetailPage = () => {
     useGroupDetail,
     createGroupMutation,
     updateGroupMutation,
+    deleteGroupMutation,
     createOptionMutation,
     updateOptionMutation,
-    deactivateOptionMutation,
+    deleteOptionMutation,
   } = useModifierService();
   const { group, groupLoading } = useGroupDetail(isNew ? undefined : groupId);
 
-  const [deactivatingOptionId, setDeactivatingOptionId] = useState<
-    string | null
-  >(null);
+  const form = useForm<ModifierGroupFormData>({
+    defaultValues: emptyGroupDefaults,
+  });
+  const { reset, handleSubmit } = form;
+
+  useEffect(() => {
+    if (group) {
+      reset({
+        name: group.name,
+        selectionType: group.selectionType,
+        minSelect: group.minSelect,
+        maxSelect: group.maxSelect,
+      });
+    }
+  }, [group, reset]);
+
+  const [deletingOptionId, setDeletingOptionId] = useState<string | null>(null);
+  const [confirmingDeleteGroup, setConfirmingDeleteGroup] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const listPath = `/store/${resolvedStoreId}/settings/modifiers`;
   const handleBack = () => navigate(listPath);
 
+  const watchedName = form.watch("name");
+  const watchedSelectionType = form.watch("selectionType");
+  const watchedMin = form.watch("minSelect");
+  const watchedMax = form.watch("maxSelect");
+
+  const previewOptions = useMemo(
+    () =>
+      (group?.options ?? []).map((o) => ({
+        id: o.id,
+        name: o.name,
+        priceAdjustment: Number(o.priceAdjustment ?? 0),
+        isAvailable: o.isAvailable,
+      })),
+    [group?.options],
+  );
+
+  const sanitize = (data: ModifierGroupFormData): ModifierGroupFormData => ({
+    name: data.name.trim(),
+    selectionType: data.selectionType,
+    minSelect: Math.max(0, Number(data.minSelect) || 0),
+    maxSelect: Math.max(0, Number(data.maxSelect) || 0),
+  });
+
   const handleCreateGroup = (data: ModifierGroupFormData) => {
-    createGroupMutation.mutate(data, {
+    createGroupMutation.mutate(sanitize(data), {
       onSuccess: (response) => {
         const created = response.data.data as { id?: string } | undefined;
         toast.success({ title: t("settings.modifiers.createGroupSuccess") });
@@ -99,7 +141,7 @@ const ModifierDetailPage = () => {
   const handleUpdateGroup = (data: ModifierGroupFormData) => {
     if (!groupId) return;
     updateGroupMutation.mutate(
-      { groupId, data },
+      { groupId, data: sanitize(data) },
       {
         onSuccess: () =>
           toast.success({ title: t("settings.modifiers.updateGroupSuccess") }),
@@ -148,15 +190,33 @@ const ModifierDetailPage = () => {
     );
   };
 
-  const handleConfirmDeactivateOption = () => {
-    if (!deactivatingOptionId) return;
-    deactivateOptionMutation.mutate(deactivatingOptionId, {
-      onSuccess: () => setDeactivatingOptionId(null),
+  const handleConfirmDeleteOption = () => {
+    if (!deletingOptionId) return;
+    deleteOptionMutation.mutate(deletingOptionId, {
+      onSuccess: () => setDeletingOptionId(null),
       onError: (error) =>
         toast.error({
           title: extractServerMessage(
             error,
-            t("settings.modifiers.deactivateOptionFailed"),
+            t("settings.modifiers.deleteOptionFailed"),
+          ),
+        }),
+    });
+  };
+
+  const handleConfirmDeleteGroup = () => {
+    if (!groupId) return;
+    deleteGroupMutation.mutate(groupId, {
+      onSuccess: () => {
+        setConfirmingDeleteGroup(false);
+        toast.success({ title: t("settings.modifiers.deleteGroupSuccess") });
+        navigate(listPath);
+      },
+      onError: (error) =>
+        toast.error({
+          title: extractServerMessage(
+            error,
+            t("settings.modifiers.deleteGroupFailed"),
           ),
         }),
     });
@@ -169,24 +229,23 @@ const ModifierDetailPage = () => {
 
   const isOptionSubmitting =
     createOptionMutation.isPending || updateOptionMutation.isPending;
+  const isGroupSubmitting =
+    createGroupMutation.isPending || updateGroupMutation.isPending;
 
-  const deactivatingOption = deactivatingOptionId
-    ? ((group?.options ?? []).find((o) => o.id === deactivatingOptionId) ??
-      null)
+  const deletingOption = deletingOptionId
+    ? ((group?.options ?? []).find((o) => o.id === deletingOptionId) ?? null)
     : null;
 
   const activeOptionCount = (group?.options ?? []).filter(
     (o) => o.isAvailable,
   ).length;
+  const minSelect = group?.minSelect ?? 0;
   const showHealthWarning =
-    !!group &&
-    group.isActive &&
-    group.minSelect > 0 &&
-    activeOptionCount < group.minSelect;
+    !!group && group.isActive && minSelect > 0 && activeOptionCount < minSelect;
 
   return (
     <SettingsFrame>
-      <div className="w-full space-y-6 lg:space-y-8">
+      <div className="w-full space-y-6">
         <Button
           type="button"
           variant="ghost"
@@ -198,126 +257,228 @@ const ModifierDetailPage = () => {
           {t("settings.modifiers.backToModifiers")}
         </Button>
 
-        <Card as="section">
-          <div className="mb-5">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div className="min-w-0">
             <h1 className="text-heading leading-tight text-text-primary sm:text-display">
               {isNew
                 ? t("settings.modifiers.createGroupTitle")
-                : (group?.name ?? t("settings.modifiers.detailTitle"))}
+                : t("settings.modifiers.editGroupTitle")}
             </h1>
             <p className="mt-1 text-body-sm text-text-secondary">
-              {isNew
-                ? t("settings.modifiers.createGroupDescription")
-                : t("settings.modifiers.editGroupDescription")}
+              {t("settings.modifiers.detailSubtitle")}
             </p>
           </div>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setPreviewOpen(true)}
+          >
+            <LuEye className="h-4 w-4" />
+            {t("settings.modifiers.previewInPos")}
+          </Button>
+        </div>
 
-          {isNew ? (
-            <ModifierGroupForm
-              onSubmit={handleCreateGroup}
-              isSubmitting={createGroupMutation.isPending}
-              submitLabel={t("settings.modifiers.createAndContinue")}
-            />
-          ) : group ? (
-            <ModifierGroupForm
-              key={group.id + String(group.updatedAt)}
-              defaultValues={{
-                name: group.name,
-                selectionType: group.selectionType,
-                minSelect: group.minSelect,
-                maxSelect: group.maxSelect,
-              }}
-              onSubmit={handleUpdateGroup}
-              isSubmitting={updateGroupMutation.isPending}
-              submitLabel={t("settings.modifiers.save")}
-            />
-          ) : groupLoading ? (
-            <InsetPanel className="text-label text-text-secondary">
-              {t("settings.modifiers.loadingGroup")}
-            </InsetPanel>
-          ) : (
-            <EmptyState
-              icon={<LuCircleAlert size={32} />}
-              title={t("settings.modifiers.groupNotFound")}
-              description={t("settings.modifiers.groupNotFoundDescription")}
-              action={
-                <Button variant="secondary" onClick={handleBack}>
-                  {t("settings.modifiers.backToModifiers")}
-                </Button>
-              }
-            />
-          )}
-        </Card>
-
-        {showHealthWarning && (
-          <InlineAlert tone="warning">
-            {t("settings.modifiers.optionsHealthWarning", {
-              min: String(group.minSelect),
-              active: String(activeOptionCount),
-            })}
-          </InlineAlert>
-        )}
-
-        {isNew ? (
-          <Card as="section">
-            <h2 className="text-title text-text-primary">
-              {t("settings.modifiers.optionsTitle")}
-            </h2>
-            <p className="mt-1 text-body-sm text-text-secondary">
-              {t("settings.modifiers.optionsLockedHint")}
-            </p>
-          </Card>
-        ) : (
-          group && (
-            <>
-              <ModifierOptionEditor
-                group={group}
-                onCreateOption={handleCreateOption}
-                onUpdateOption={handleUpdateOption}
-                onDeactivateOption={setDeactivatingOptionId}
-                isSubmitting={isOptionSubmitting}
-                togglingOptionId={togglingOptionId}
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="min-w-0 space-y-6">
+            {isNew ? (
+              <form
+                id={GROUP_FORM_ID}
+                onSubmit={handleSubmit(handleCreateGroup)}
+              >
+                <ModifierGroupForm form={form} />
+              </form>
+            ) : group ? (
+              <form
+                id={GROUP_FORM_ID}
+                onSubmit={handleSubmit(handleUpdateGroup)}
+              >
+                <ModifierGroupForm form={form} />
+              </form>
+            ) : groupLoading ? (
+              <InsetPanel className="text-label text-text-secondary">
+                {t("settings.modifiers.loadingGroup")}
+              </InsetPanel>
+            ) : (
+              <EmptyState
+                icon={<LuCircleAlert size={32} />}
+                title={t("settings.modifiers.groupNotFound")}
+                description={t("settings.modifiers.groupNotFoundDescription")}
+                action={
+                  <Button variant="secondary" onClick={handleBack}>
+                    {t("settings.modifiers.backToModifiers")}
+                  </Button>
+                }
               />
-              <GroupProductAssignment groupId={group.id} />
-            </>
-          )
+            )}
+
+            {showHealthWarning && (
+              <InlineAlert tone="warning">
+                {t("settings.modifiers.optionsHealthWarning", {
+                  min: String(group.minSelect),
+                  active: String(activeOptionCount),
+                })}
+              </InlineAlert>
+            )}
+
+            {isNew ? (
+              <Card as="section">
+                <h2 className="text-title text-text-primary">
+                  {t("settings.modifiers.optionsTitle")}
+                </h2>
+                <p className="mt-1 text-body-sm text-text-secondary">
+                  {t("settings.modifiers.optionsLockedHint")}
+                </p>
+              </Card>
+            ) : (
+              group && (
+                <>
+                  <ModifierOptionEditor
+                    group={group}
+                    onCreateOption={handleCreateOption}
+                    onUpdateOption={handleUpdateOption}
+                    onDeleteOption={setDeletingOptionId}
+                    isSubmitting={isOptionSubmitting}
+                    togglingOptionId={togglingOptionId}
+                  />
+                  <GroupProductAssignment groupId={group.id} />
+                </>
+              )
+            )}
+
+            <div className="lg:hidden">
+              <ModifierTipsCard />
+            </div>
+          </div>
+
+          <div className="hidden min-w-0 space-y-6 lg:sticky lg:top-20 lg:block">
+            <ModifierPosPreview
+              groupName={isNew ? watchedName : (group?.name ?? watchedName)}
+              selectionType={watchedSelectionType}
+              minSelect={Number(watchedMin) || 0}
+              maxSelect={Number(watchedMax) || 0}
+              options={previewOptions}
+            />
+            <ModifierTipsCard />
+          </div>
+        </div>
+
+        {(isNew || group) && (
+          <div className="sticky bottom-0 flex items-center justify-between gap-3 border-t border-border bg-bg py-4">
+            {!isNew ? (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setConfirmingDeleteGroup(true)}
+                className="text-danger hover:bg-danger-bg hover:text-danger"
+              >
+                <LuTrash2 className="h-4 w-4" />
+                {t("settings.modifiers.deleteGroup")}
+              </Button>
+            ) : (
+              <span />
+            )}
+            <div className="flex items-center gap-3">
+              <Button type="button" variant="secondary" onClick={handleBack}>
+                {t("common.cancel")}
+              </Button>
+              <Button
+                type="submit"
+                form={GROUP_FORM_ID}
+                disabled={isGroupSubmitting}
+              >
+                {isNew
+                  ? t("settings.modifiers.createAndContinue")
+                  : t("settings.modifiers.save")}
+              </Button>
+            </div>
+          </div>
         )}
       </div>
 
+      <Dialog open={previewOpen} onClose={() => setPreviewOpen(false)}>
+        <ModifierPosPreview
+          groupName={isNew ? watchedName : (group?.name ?? watchedName)}
+          selectionType={watchedSelectionType}
+          minSelect={Number(watchedMin) || 0}
+          maxSelect={Number(watchedMax) || 0}
+          options={previewOptions}
+        />
+      </Dialog>
+
       <Dialog
-        open={deactivatingOptionId != null}
-        onClose={() => setDeactivatingOptionId(null)}
+        open={deletingOptionId != null}
+        onClose={() => setDeletingOptionId(null)}
         className="max-w-xl"
       >
         <DialogHeader>
-          <DialogTitle>
-            {t("settings.modifiers.deactivateOptionTitle")}
-          </DialogTitle>
+          <DialogTitle>{t("settings.modifiers.deleteOptionTitle")}</DialogTitle>
           <DialogDescription>
-            {deactivatingOption
-              ? t("settings.modifiers.deactivateOptionDescription", {
-                  name: deactivatingOption.name,
+            {deletingOption
+              ? t("settings.modifiers.deleteOptionDescription", {
+                  name: deletingOption.name,
                 })
               : ""}
           </DialogDescription>
         </DialogHeader>
+        <InlineAlert tone="warning">
+          {t("settings.modifiers.deleteOptionWarning")}
+        </InlineAlert>
         <DialogFooter>
           <Button
             type="button"
             variant="secondary"
-            onClick={() => setDeactivatingOptionId(null)}
+            onClick={() => setDeletingOptionId(null)}
           >
             {t("common.cancel")}
           </Button>
           <Button
             type="button"
             variant="danger"
-            disabled={deactivateOptionMutation.isPending}
-            onClick={handleConfirmDeactivateOption}
+            disabled={deleteOptionMutation.isPending}
+            onClick={handleConfirmDeleteOption}
           >
-            {deactivateOptionMutation.isPending
-              ? t("settings.modifiers.deactivating")
-              : t("settings.modifiers.confirmDeactivate")}
+            {deleteOptionMutation.isPending
+              ? t("settings.modifiers.deleting")
+              : t("settings.modifiers.confirmDelete")}
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
+      <Dialog
+        open={confirmingDeleteGroup}
+        onClose={() => setConfirmingDeleteGroup(false)}
+        className="max-w-xl"
+      >
+        <DialogHeader>
+          <DialogTitle>{t("settings.modifiers.deleteGroupTitle")}</DialogTitle>
+          <DialogDescription>
+            {group
+              ? t("settings.modifiers.deleteGroupDescription", {
+                  name: group.name,
+                })
+              : ""}
+          </DialogDescription>
+        </DialogHeader>
+        <InlineAlert tone="warning">
+          {t("settings.modifiers.deleteGroupWarning")}
+        </InlineAlert>
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setConfirmingDeleteGroup(false)}
+          >
+            {t("common.cancel")}
+          </Button>
+          <Button
+            type="button"
+            variant="danger"
+            disabled={deleteGroupMutation.isPending}
+            onClick={handleConfirmDeleteGroup}
+          >
+            {deleteGroupMutation.isPending
+              ? t("settings.modifiers.deleting")
+              : t("settings.modifiers.confirmDelete")}
           </Button>
         </DialogFooter>
       </Dialog>

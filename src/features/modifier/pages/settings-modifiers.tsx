@@ -44,18 +44,16 @@ const extractServerMessage = (error: unknown, fallback: string): string => {
 /**
  * Modifier group list. Creating, editing, options, and product assignment
  * all live on the full detail page — this screen only lists groups and
- * offers deactivation (with confirmation, since it cannot be undone).
+ * offers permanent deletion (with confirmation, since it cannot be undone).
  */
 const SettingsModifiersPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const resolvedStoreId = useStoreRouteParam();
-  const { groupsQuery, groupsQueryLoading, deactivateGroupMutation } =
+  const { groupsQuery, groupsQueryLoading, deleteGroupMutation } =
     useModifierService();
 
-  const [deactivatingGroupId, setDeactivatingGroupId] = useState<string | null>(
-    null,
-  );
+  const [deletingGroupId, setDeletingGroupId] = useState<string | null>(null);
   const [sorting, setSorting] = useState<SortingState>([
     { id: "name", desc: false },
   ]);
@@ -98,15 +96,18 @@ const SettingsModifiersPage = () => {
     setStatusFilter("all");
   };
 
-  const handleConfirmDeactivateGroup = () => {
-    if (!deactivatingGroupId) return;
-    deactivateGroupMutation.mutate(deactivatingGroupId, {
-      onSuccess: () => setDeactivatingGroupId(null),
+  const handleConfirmDeleteGroup = () => {
+    if (!deletingGroupId) return;
+    deleteGroupMutation.mutate(deletingGroupId, {
+      onSuccess: () => {
+        setDeletingGroupId(null);
+        toast.success({ title: t("settings.modifiers.deleteGroupSuccess") });
+      },
       onError: (error) =>
         toast.error({
           title: extractServerMessage(
             error,
-            t("settings.modifiers.deactivateGroupFailed"),
+            t("settings.modifiers.deleteGroupFailed"),
           ),
         }),
     });
@@ -118,8 +119,8 @@ const SettingsModifiersPage = () => {
     { value: "inactive", label: t("settings.modifiers.filterStatusInactive") },
   ];
 
-  const deactivatingGroup = deactivatingGroupId
-    ? (groupsQuery.find((g) => g.id === deactivatingGroupId) ?? null)
+  const deletingGroup = deletingGroupId
+    ? (groupsQuery.find((g) => g.id === deletingGroupId) ?? null)
     : null;
 
   return (
@@ -201,7 +202,7 @@ const SettingsModifiersPage = () => {
                     onSortingChange={setSorting}
                     onSelect={openDetail}
                     onEdit={openDetail}
-                    onDeactivate={setDeactivatingGroupId}
+                    onDelete={setDeletingGroupId}
                     isLoading={groupsQueryLoading}
                   />
                   <DataTablePagination
@@ -231,42 +232,40 @@ const SettingsModifiersPage = () => {
       </div>
 
       <Dialog
-        open={deactivatingGroupId != null}
-        onClose={() => setDeactivatingGroupId(null)}
+        open={deletingGroupId != null}
+        onClose={() => setDeletingGroupId(null)}
         className="max-w-xl"
       >
         <DialogHeader>
-          <DialogTitle>
-            {t("settings.modifiers.deactivateGroupTitle")}
-          </DialogTitle>
+          <DialogTitle>{t("settings.modifiers.deleteGroupTitle")}</DialogTitle>
           <DialogDescription>
-            {deactivatingGroup
-              ? t("settings.modifiers.deactivateGroupDescription", {
-                  name: deactivatingGroup.name,
+            {deletingGroup
+              ? t("settings.modifiers.deleteGroupDescription", {
+                  name: deletingGroup.name,
                 })
               : ""}
           </DialogDescription>
         </DialogHeader>
         <InlineAlert tone="warning">
-          {t("settings.modifiers.deactivateGroupWarning")}
+          {t("settings.modifiers.deleteGroupWarning")}
         </InlineAlert>
         <DialogFooter>
           <Button
             type="button"
             variant="secondary"
-            onClick={() => setDeactivatingGroupId(null)}
+            onClick={() => setDeletingGroupId(null)}
           >
             {t("common.cancel")}
           </Button>
           <Button
             type="button"
-            disabled={deactivateGroupMutation.isPending}
-            onClick={handleConfirmDeactivateGroup}
+            disabled={deleteGroupMutation.isPending}
+            onClick={handleConfirmDeleteGroup}
             variant="danger"
           >
-            {deactivateGroupMutation.isPending
-              ? t("settings.modifiers.deactivating")
-              : t("settings.modifiers.confirmDeactivate")}
+            {deleteGroupMutation.isPending
+              ? t("settings.modifiers.deleting")
+              : t("settings.modifiers.confirmDelete")}
           </Button>
         </DialogFooter>
       </Dialog>

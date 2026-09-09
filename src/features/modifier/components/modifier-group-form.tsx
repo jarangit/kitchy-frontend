@@ -1,73 +1,57 @@
-import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Button } from "@/shared/components/ui/button";
+import { LuCircleHelp } from "react-icons/lu";
+import type { UseFormReturn } from "react-hook-form";
 import { Input } from "@/shared/components/ui/input";
-import { Select } from "@/shared/components/ui/select";
 import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { ModifierGroupFormData } from "@/features/modifier/types/modifier.model";
+import { ModifierStepSection } from "@/features/modifier/components/modifier-step-section";
+import { ModifierSelectionCards } from "@/features/modifier/components/modifier-selection-cards";
+import {
+  presetFromValues,
+  presetToValues,
+  type SelectionPreset,
+} from "@/features/modifier/utils/modifier-group-preset";
 
-type Props = {
-  defaultValues?: ModifierGroupFormData;
-  onSubmit: (data: ModifierGroupFormData) => void;
-  isSubmitting?: boolean;
-  submitLabel: string;
-};
+interface Props {
+  form: UseFormReturn<ModifierGroupFormData>;
+}
 
-const emptyDefaults: ModifierGroupFormData = {
-  name: "",
-  selectionType: "SINGLE",
-  minSelect: 1,
-  maxSelect: 1,
-};
-
-/** Group fields without any overlay — embed in full pages, not dialogs. */
-const ModifierGroupForm = ({
-  defaultValues,
-  onSubmit: onSubmitProp,
-  isSubmitting,
-  submitLabel,
-}: Props) => {
+/** Steps 1–2 of the detail flow: group name + selection preset. */
+const ModifierGroupForm = ({ form }: Props) => {
   const { t } = useTranslation();
   const {
     register,
-    handleSubmit,
-    control,
     watch,
     setValue,
     formState: { errors },
-    reset,
-  } = useForm<ModifierGroupFormData>({
-    defaultValues: { ...emptyDefaults, ...defaultValues },
-  });
+  } = form;
 
   const selectionType = watch("selectionType");
+  const minSelect = watch("minSelect");
+  const maxSelect = watch("maxSelect");
+  const preset = presetFromValues(selectionType, minSelect, maxSelect);
 
-  useEffect(() => {
-    reset({ ...emptyDefaults, ...defaultValues });
-  }, [defaultValues, reset]);
-
-  // SINGLE groups can have at most one selection — keep maxSelect in bounds.
-  useEffect(() => {
-    if (selectionType !== "SINGLE") return;
-    const currentMax = Number(watch("maxSelect") ?? 1);
-    if (currentMax > 1) {
-      setValue("maxSelect", 1, { shouldValidate: true });
-    }
-  }, [selectionType, setValue, watch]);
-
-  const onSubmit = (data: ModifierGroupFormData) => {
-    onSubmitProp({
-      name: data.name.trim(),
-      selectionType: data.selectionType,
-      minSelect: Math.max(0, Number(data.minSelect) || 0),
-      maxSelect: Math.max(0, Number(data.maxSelect) || 0),
+  const handlePresetChange = (next: SelectionPreset) => {
+    const current: ModifierGroupFormData = {
+      name: watch("name"),
+      selectionType: watch("selectionType"),
+      minSelect: Number(watch("minSelect")) || 0,
+      maxSelect: Number(watch("maxSelect")) || 0,
+    };
+    const values = presetToValues(next, current);
+    setValue("selectionType", values.selectionType, {
+      shouldValidate: true,
     });
+    setValue("minSelect", values.minSelect, { shouldValidate: true });
+    setValue("maxSelect", values.maxSelect, { shouldValidate: true });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="space-y-4">
+    <div className="space-y-6 lg:space-y-8">
+      <ModifierStepSection
+        step={1}
+        title={t("settings.modifiers.stepGroupInfo")}
+      >
         <Input
           id="modifier-group-name"
           label={t("settings.modifiers.groupName")}
@@ -81,108 +65,88 @@ const ModifierGroupForm = ({
             },
           })}
         />
+      </ModifierStepSection>
 
-        <Controller
-          name="selectionType"
-          control={control}
-          render={({ field }) => (
-            <Select
-              id="modifier-group-type"
-              label={t("settings.modifiers.selectionType")}
-              options={[
-                {
-                  value: "SINGLE",
-                  label: t("settings.modifiers.typeSingle"),
-                },
-                {
-                  value: "MULTIPLE",
-                  label: t("settings.modifiers.typeMultiple"),
-                },
-              ]}
-              value={field.value}
-              onChange={(e) => {
-                const next = e.target.value as "SINGLE" | "MULTIPLE";
-                field.onChange(next);
-                // Apply sensible defaults when switching types.
-                if (next === "SINGLE") {
-                  setValue("minSelect", 1, { shouldValidate: true });
-                  setValue("maxSelect", 1, { shouldValidate: true });
-                } else {
-                  setValue("minSelect", 0, { shouldValidate: true });
-                  setValue("maxSelect", 0, { shouldValidate: true });
-                }
-              }}
-              onBlur={field.onBlur}
-              name={field.name}
-            />
-          )}
-        />
-
-        <div className="grid grid-cols-2 gap-4">
-          <Input
-            id="modifier-group-min"
-            type="number"
-            min="0"
-            step="1"
-            label={t("settings.modifiers.minSelect")}
-            error={errors.minSelect?.message}
-            {...register("minSelect", {
-              valueAsNumber: true,
-              min: {
-                value: 0,
-                message: t("settings.modifiers.minSelectMin"),
-              },
-              validate: (value, formValues) => {
-                const min = Number(value) || 0;
-                const max = Number(formValues.maxSelect) || 0;
-                if (min > max) {
-                  return t("settings.modifiers.minExceedsMax");
-                }
-                return true;
-              },
-            })}
-          />
-          <Input
-            id="modifier-group-max"
-            type="number"
-            min="0"
-            step="1"
-            label={t("settings.modifiers.maxSelect")}
-            error={errors.maxSelect?.message}
-            {...register("maxSelect", {
-              valueAsNumber: true,
-              min: {
-                value: 0,
-                message: t("settings.modifiers.maxSelectMin"),
-              },
-              validate: (value, formValues) => {
-                const max = Number(value) || 0;
-                const min = Number(formValues.minSelect) || 0;
-                if (min > max) {
-                  return t("settings.modifiers.minExceedsMax");
-                }
-                if (formValues.selectionType === "SINGLE" && max > 1) {
-                  return t("settings.modifiers.singleMaxExceeded");
-                }
-                return true;
-              },
-            })}
-          />
-        </div>
-
-        <InsetPanel className="text-label leading-5 text-text-secondary">
-          {selectionType === "SINGLE"
-            ? t("settings.modifiers.singleHint")
-            : t("settings.modifiers.multipleHint")}
-        </InsetPanel>
-      </div>
-
-      <div className="mt-6 flex justify-end">
-        <Button type="submit" disabled={isSubmitting}>
-          {submitLabel}
-        </Button>
-      </div>
-    </form>
+      <ModifierStepSection
+        step={2}
+        title={
+          <span className="inline-flex items-center gap-2">
+            {t("settings.modifiers.stepSelectionType")}
+            <span title={t("settings.modifiers.selectionTypeHelp")}>
+              <LuCircleHelp
+                className="h-4 w-4 text-text-tertiary"
+                aria-hidden="true"
+              />
+            </span>
+          </span>
+        }
+      >
+        <ModifierSelectionCards value={preset} onChange={handlePresetChange} />
+        {preset === "multiple" && (
+          <div className="mt-4 space-y-3">
+            <div className="grid grid-cols-2 gap-4">
+              <Input
+                id="modifier-group-min"
+                type="number"
+                min="0"
+                step="1"
+                label={t("settings.modifiers.minSelect")}
+                error={errors.minSelect?.message}
+                {...register("minSelect", {
+                  valueAsNumber: true,
+                  min: {
+                    value: 0,
+                    message: t("settings.modifiers.minSelectMin"),
+                  },
+                  validate: (value, formValues) => {
+                    const min = Number(value) || 0;
+                    const max = Number(formValues.maxSelect) || 0;
+                    if (min > max) {
+                      return t("settings.modifiers.minExceedsMax");
+                    }
+                    return true;
+                  },
+                })}
+              />
+              <Input
+                id="modifier-group-max"
+                type="number"
+                min="0"
+                step="1"
+                label={t("settings.modifiers.maxSelect")}
+                error={errors.maxSelect?.message}
+                {...register("maxSelect", {
+                  valueAsNumber: true,
+                  min: {
+                    value: 0,
+                    message: t("settings.modifiers.maxSelectMin"),
+                  },
+                  validate: (value, formValues) => {
+                    const max = Number(value) || 0;
+                    const min = Number(formValues.minSelect) || 0;
+                    if (min > max) {
+                      return t("settings.modifiers.minExceedsMax");
+                    }
+                    if (formValues.selectionType === "SINGLE" && max > 1) {
+                      return t("settings.modifiers.singleMaxExceeded");
+                    }
+                    return true;
+                  },
+                })}
+              />
+            </div>
+            <InsetPanel className="text-label leading-5 text-text-secondary">
+              {t("settings.modifiers.multipleHint")}
+            </InsetPanel>
+          </div>
+        )}
+        {preset !== "multiple" && (
+          <InsetPanel className="mt-4 text-label leading-5 text-text-secondary">
+            {t("settings.modifiers.singleHint")}
+          </InsetPanel>
+        )}
+      </ModifierStepSection>
+    </div>
   );
 };
 

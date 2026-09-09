@@ -12,6 +12,7 @@ import {
   type ModifierGroupError,
 } from "@/shared/utils/modifier-selection";
 import { Button } from "@/shared/components/ui/button";
+import { SelectionMark } from "@/shared/components/ui/selection-mark";
 import {
   Dialog,
   DialogDescription,
@@ -230,29 +231,14 @@ const ProductModifierDialog = ({ product, onClose, onConfirm }: Props) => {
                           )}
                         >
                           <span className="flex min-w-0 items-center gap-3">
-                            <span
-                              aria-hidden="true"
-                              className={cn(
-                                "flex h-5 w-5 shrink-0 items-center justify-center border",
+                            <SelectionMark
+                              shape={
                                 group.selectionType === "SINGLE"
-                                  ? "rounded-full"
-                                  : "rounded-sm",
-                                isSelected
-                                  ? "border-accent bg-accent"
-                                  : "border-card-border bg-bg",
-                              )}
-                            >
-                              {isSelected && (
-                                <span
-                                  className={cn(
-                                    "bg-on-accent",
-                                    group.selectionType === "SINGLE"
-                                      ? "h-2 w-2 rounded-full"
-                                      : "h-2.5 w-2.5 rounded-[2px]",
-                                  )}
-                                />
-                              )}
-                            </span>
+                                  ? "circle"
+                                  : "square"
+                              }
+                              checked={isSelected}
+                            />
                             <span className="truncate text-body text-text-primary">
                               {option.name}
                             </span>

@@ -39,7 +39,7 @@ export const modifierApiService = {
     );
   },
 
-  deactivateGroup: async (groupId: string) => {
+  deleteGroup: async (groupId: string) => {
     return await axiosClient.delete<ApiResponse<{ message: string }>>(
       `/modifier-groups/${groupId}`,
     );
@@ -59,7 +59,7 @@ export const modifierApiService = {
     );
   },
 
-  deactivateOption: async (optionId: string) => {
+  deleteOption: async (optionId: string) => {
     return await axiosClient.delete<ApiResponse<{ message: string }>>(
       `/modifier-options/${optionId}`,
     );

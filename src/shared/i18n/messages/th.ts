@@ -142,7 +142,7 @@ export const thMessages = {
   "settings.modifiers.typeMultipleShort": "หลายอย่าง",
   "settings.modifiers.active": "ใช้งาน",
   "settings.modifiers.inactive": "ปิดใช้",
-  "settings.modifiers.deactivateGroup": "ปิดใช้กลุ่ม",
+  "settings.modifiers.deleteGroup": "ลบกลุ่มนี้",
   "settings.modifiers.createGroupTitle": "กลุ่มตัวเลือกใหม่",
   "settings.modifiers.createGroupDescription":
     "กำหนดวิธีให้ลูกค้าเลือกในกลุ่มนี้",
@@ -169,14 +169,12 @@ export const thMessages = {
   "settings.modifiers.saving": "กำลังบันทึก...",
   "settings.modifiers.createGroupFailed": "สร้างกลุ่มไม่สำเร็จ",
   "settings.modifiers.updateGroupFailed": "แก้ไขกลุ่มไม่สำเร็จ",
-  "settings.modifiers.deactivateGroupFailed": "ปิดใช้กลุ่มไม่สำเร็จ",
-  "settings.modifiers.deactivateGroupTitle": "ปิดใช้กลุ่มนี้?",
-  "settings.modifiers.deactivateGroupDescription":
-    "“{name}” จะหายจาก POS ทันที",
-  "settings.modifiers.deactivateGroupWarning":
-    "การปิดใช้ย้อนกลับไม่ได้จากแอป กลุ่มยังผูกกับสินค้าเดิมแต่ถูกซ่อนไว้",
-  "settings.modifiers.deactivating": "กำลังปิดใช้...",
-  "settings.modifiers.confirmDeactivate": "ปิดใช้",
+  "settings.modifiers.deleteGroupFailed": "ลบกลุ่มไม่สำเร็จ",
+  "settings.modifiers.deleteGroupSuccess": "ลบกลุ่มแล้ว",
+  "settings.modifiers.deleteGroupTitle": "ลบกลุ่มนี้?",
+  "settings.modifiers.deleteGroupDescription": "“{name}” จะถูกลบออกจากร้านถาวร",
+  "settings.modifiers.deleteGroupWarning":
+    "การลบย้อนกลับไม่ได้ กลุ่ม ตัวเลือก และการผูกกับสินค้าทั้งหมดจะหายไปทันที",
   "settings.modifiers.optionsSubtitle":
     "ใช้ได้ {active} จาก {total} • ต้องเลือกอย่างน้อย {min}",
   "settings.modifiers.inactiveGroupHint":
@@ -190,13 +188,17 @@ export const thMessages = {
   "settings.modifiers.available": "ใช้ได้",
   "settings.modifiers.unavailable": "ปิดใช้",
   "settings.modifiers.addOption": "เพิ่มตัวเลือก",
-  "settings.modifiers.deactivateOption": "ปิดใช้ตัวเลือก",
-  "settings.modifiers.deactivateOptionTitle": "ปิดใช้ตัวเลือกนี้?",
-  "settings.modifiers.deactivateOptionDescription":
-    "“{name}” จะหายจาก POS ทันที เปิดกลับได้ภายหลัง",
+  "settings.modifiers.deleteOption": "ลบตัวเลือก",
+  "settings.modifiers.deleteOptionTitle": "ลบตัวเลือกนี้?",
+  "settings.modifiers.deleteOptionDescription":
+    "“{name}” จะถูกลบออกจากกลุ่มถาวร",
+  "settings.modifiers.deleteOptionWarning":
+    "การลบย้อนกลับไม่ได้ ตัวเลือกนี้จะหายจากกลุ่มทันที",
+  "settings.modifiers.deleting": "กำลังลบ...",
+  "settings.modifiers.confirmDelete": "ลบ",
   "settings.modifiers.createOptionFailed": "เพิ่มตัวเลือกไม่สำเร็จ",
   "settings.modifiers.updateOptionFailed": "แก้ไขตัวเลือกไม่สำเร็จ",
-  "settings.modifiers.deactivateOptionFailed": "ปิดใช้ตัวเลือกไม่สำเร็จ",
+  "settings.modifiers.deleteOptionFailed": "ลบตัวเลือกไม่สำเร็จ",
   "settings.modifiers.assignmentTitle": "ผูกกับสินค้า",
   "settings.modifiers.removeAssignment": "ถอดออกจากสินค้า",
   "settings.modifiers.assignFailed": "ผูกกลุ่มไม่สำเร็จ",
@@ -227,6 +229,48 @@ export const thMessages = {
   "settings.modifiers.assignedOrder": "ลำดับ {order}",
   "settings.modifiers.attachSelected": "ผูก ({count})",
   "settings.modifiers.attachSuccess": "ผูกกับสินค้า {count} รายการแล้ว",
+  "settings.modifiers.assignSearchPlaceholder": "ค้นหาสินค้า",
+  "settings.modifiers.assignFilterCategory": "หมวดหมู่",
+  "settings.modifiers.assignCategoryAll": "ทุกหมวดหมู่",
+  "settings.modifiers.assignShowingCount": "แสดง {shown} จาก {total} สินค้า",
+  "settings.modifiers.assignNoResults": "ไม่พบสินค้าที่ตรง",
+  "settings.modifiers.assignNoResultsDescription":
+    "ลองค้นหาหรือเลือกหมวดหมู่อื่น",
+  "settings.modifiers.editGroupTitle": "แก้ไขกลุ่มตัวเลือก",
+  "settings.modifiers.detailSubtitle":
+    "ตั้งค่าตัวเลือกสำหรับเมนูเครื่องดื่มและอาหาร",
+  "settings.modifiers.previewInPos": "ดูตัวอย่างใน POS",
+  "settings.modifiers.stepGroupInfo": "ข้อมูลกลุ่ม",
+  "settings.modifiers.stepSelectionType": "รูปแบบการเลือก",
+  "settings.modifiers.selectionTypeHelp": "อธิบายรูปแบบการเลือก",
+  "settings.modifiers.selectionRequiredOne": "ต้องเลือก 1 อย่าง",
+  "settings.modifiers.selectionRequiredOneDesc": "ลูกค้าต้องเลือกหนึ่งตัวเลือก",
+  "settings.modifiers.selectionOptionalOne": "เลือกหรือไม่เลือกก็ได้",
+  "settings.modifiers.selectionOptionalOneDesc": "ลูกค้าอาจไม่เลือกก็ได้",
+  "settings.modifiers.selectionMultiple": "เลือกได้หลายอย่าง",
+  "settings.modifiers.selectionMultipleDesc":
+    "ลูกค้าเลือกได้มากกว่าหนึ่งตัวเลือก",
+  "settings.modifiers.optionsInGroup": "ตัวเลือกในกลุ่ม ({count})",
+  "settings.modifiers.optionsReorderHint":
+    "ลากเพื่อจัดลำดับ • แตะเพื่อแก้ไขรายละเอียด",
+  "settings.modifiers.useWithProducts": "ใช้กับสินค้า",
+  "settings.modifiers.useWithProductsDesc": "เลือกสินค้าที่ใช้กลุ่มนี้",
+  "settings.modifiers.productsCount": "{count} สินค้า",
+  "settings.modifiers.posPreviewTitle": "ตัวอย่างใน POS",
+  "settings.modifiers.posPreviewSubtitle": "จะแสดงให้ลูกค้าเห็นแบบนี้",
+  "settings.modifiers.posPreviewEmpty": "ยังไม่มีตัวเลือกให้แสดง",
+  "settings.modifiers.tipsTitle": "เคล็ดลับ",
+  "settings.modifiers.tipsLine1":
+    "ตั้งชื่อให้เข้าใจง่าย เช่น ความหวาน, ไซส์, ท็อปปิง",
+  "settings.modifiers.tipsLine2":
+    "ถ้าไม่ต้องการบังคับเลือก ให้ใช้ “เลือกหรือไม่เลือกก็ได้”",
+  "settings.modifiers.tipsLine3":
+    "สามารถปิดใช้งานตัวเลือกชั่วคราวได้โดยไม่ต้องลบ",
+  "settings.modifiers.expandAssignment": "จัดการสินค้าที่ใช้กลุ่มนี้",
+  "settings.modifiers.collapseAssignment": "ซ่อน",
+  "settings.modifiers.optionPriceWithAdjustment": "{name} • {adjustment}",
+  "settings.modifiers.editOption": "แก้ไขตัวเลือก",
+  "settings.modifiers.optionDetailHint": "แตะเพื่อแก้ไขรายละเอียด",
 
   // Devices
   "settings.cp.devices.description": "เครื่องที่เชื่อมกับร้าน",
