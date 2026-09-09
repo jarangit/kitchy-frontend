@@ -216,7 +216,7 @@ export const enMessages = {
   "settings.modifiers.removeFailed": "Could not remove group",
   "settings.modifiers.detailTitle": "Modifier group",
   "settings.modifiers.backToModifiers": "Back to modifiers",
-  "settings.modifiers.createAndContinue": "Create group and continue",
+  "settings.modifiers.createAndContinue": "Create option group",
   "settings.modifiers.createGroupSuccess":
     "Group created — now add its options",
   "settings.modifiers.updateGroupSuccess": "Group saved",
@@ -251,18 +251,36 @@ export const enMessages = {
   "settings.modifiers.detailSubtitle":
     "Configure options for drinks and food menus.",
   "settings.modifiers.previewInPos": "Preview in POS",
-  "settings.modifiers.stepGroupInfo": "Group info",
-  "settings.modifiers.stepSelectionType": "Selection type",
+  "settings.modifiers.stepGroupInfo": "Name the option group",
+  "settings.modifiers.stepSelectionType": "Set how customers choose",
+  "settings.modifiers.groupNameHint":
+    "Name what the customer must choose, e.g. Size, Sweetness, or Toppings",
+  "settings.modifiers.detailDescription":
+    "Create options such as size, sweetness, or toppings, then attach this group to products",
+  "settings.modifiers.optionSectionDescription":
+    "Add the choices customers can pick, with price adjustments and display order",
+  "settings.modifiers.exampleTitle": "Example setup",
+  "settings.modifiers.exampleGroupLabel": "Group",
+  "settings.modifiers.exampleOptionsLabel": "Options",
+  "settings.modifiers.exampleGroupName": "Size",
+  "settings.modifiers.exampleOptionNames": "Small, Medium, Large",
+  "settings.modifiers.exampleOption1": "Small",
+  "settings.modifiers.exampleOption2": "Medium",
+  "settings.modifiers.exampleOption3": "Large",
+  "settings.modifiers.saveGroupChanges": "Save changes",
+  "settings.modifiers.useExampleData": "Fill example data",
+  "settings.modifiers.exampleFilled":
+    "Example data filled. Review it, then create the group.",
   "settings.modifiers.selectionTypeHelp": "About selection types",
   "settings.modifiers.selectionRequiredOne": "Must pick 1",
   "settings.modifiers.selectionRequiredOneDesc":
-    "Customers must pick one option.",
+    "Customers must pick one item, e.g. size or sweetness level.",
   "settings.modifiers.selectionOptionalOne": "Optional pick",
   "settings.modifiers.selectionOptionalOneDesc":
-    "Customers may skip this group.",
+    "Customers may skip; good for extras like additional toppings.",
   "settings.modifiers.selectionMultiple": "Pick multiple",
   "settings.modifiers.selectionMultipleDesc":
-    "Customers can pick more than one option.",
+    "For multiple extras like toppings, with minimum and maximum limits.",
   "settings.modifiers.optionsInGroup": "Options in group ({count})",
   "settings.modifiers.optionsReorderHint":
     "Drag to reorder • tap to edit details",

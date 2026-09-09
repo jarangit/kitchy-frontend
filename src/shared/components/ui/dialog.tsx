@@ -6,9 +6,16 @@ interface DialogProps {
   onClose: () => void;
   children: ReactNode;
   className?: string;
+  inline?: boolean;
 }
 
-export function Dialog({ open, onClose, children, className }: DialogProps) {
+export function Dialog({
+  open,
+  onClose,
+  children,
+  className,
+  inline = false,
+}: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -21,6 +28,10 @@ export function Dialog({ open, onClose, children, className }: DialogProps) {
       dialog.close();
     }
   }, [open]);
+
+  if (inline) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <dialog

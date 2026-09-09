@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-  LuChevronRight,
-  LuGripVertical,
-  LuPlus,
-  LuPower,
-} from "react-icons/lu";
+import { LuChevronRight, LuGripVertical, LuPlus } from "react-icons/lu";
 import { Button } from "@/shared/components/ui/button";
 import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { Toggle } from "@/shared/components/ui/toggle";
@@ -13,7 +8,6 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import { formatPriceAdjustment } from "@/shared/utils/modifier-selection";
 import { cn } from "@/shared/utils/cn";
 import type {
-  AdminModifierGroupResponse,
   AdminModifierOptionResponse,
   CreateModifierOptionRequest,
   UpdateModifierOptionRequest,
@@ -22,7 +16,9 @@ import { ModifierStepSection } from "@/features/modifier/components/modifier-ste
 import { ModifierOptionDialog } from "@/features/modifier/components/modifier-option-dialog";
 
 interface Props {
-  group: AdminModifierGroupResponse;
+  options: AdminModifierOptionResponse[];
+  minSelect: number;
+  resetKey: string;
   onCreateOption: (data: CreateModifierOptionRequest) => void;
   onUpdateOption: (optionId: string, data: UpdateModifierOptionRequest) => void;
   onDeleteOption: (optionId: string) => void;
@@ -31,7 +27,9 @@ interface Props {
 }
 
 const ModifierOptionEditor = ({
-  group,
+  options,
+  minSelect,
+  resetKey,
   onCreateOption,
   onUpdateOption,
   onDeleteOption,
@@ -47,14 +45,14 @@ const ModifierOptionEditor = ({
   useEffect(() => {
     setIsAdding(false);
     setEditingOption(null);
-  }, [group.id]);
+  }, [resetKey]);
 
   const sortedOptions = useMemo(
     () =>
-      [...(group.options ?? [])].sort(
+      [...(options ?? [])].sort(
         (a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0),
       ),
-    [group.options],
+    [options],
   );
 
   const handleCreate = (data: CreateModifierOptionRequest) => {
@@ -82,10 +80,10 @@ const ModifierOptionEditor = ({
     // below minSelect. Warn up front instead of failing after confirm.
     if (editingOption.isAvailable) {
       const activeCount = sortedOptions.filter((o) => o.isAvailable).length;
-      if (activeCount - 1 < group.minSelect) {
+      if (activeCount - 1 < minSelect) {
         toast.warning({
           title: t("settings.modifiers.optionsHealthWarning", {
-            min: String(group.minSelect),
+            min: String(minSelect),
             active: String(activeCount - 1),
           }),
         });
@@ -104,7 +102,16 @@ const ModifierOptionEditor = ({
         title={t("settings.modifiers.optionsInGroup", {
           count: String(sortedOptions.length),
         })}
-        subtitle={t("settings.modifiers.optionsReorderHint")}
+        subtitle={
+          <>
+            <span className="block">
+              {t("settings.modifiers.optionSectionDescription")}
+            </span>
+            <span className="block">
+              {t("settings.modifiers.optionsReorderHint")}
+            </span>
+          </>
+        }
         action={
           <Button
             type="button"
@@ -164,17 +171,6 @@ const ModifierOptionEditor = ({
                       : t("settings.modifiers.unavailable")
                   }
                 />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("settings.modifiers.deleteOption")}
-                  title={t("settings.modifiers.deleteOption")}
-                  onClick={() => onDeleteOption(option.id)}
-                  className="text-danger hover:bg-danger-bg hover:text-danger"
-                >
-                  <LuPower className="h-4 w-4" />
-                </Button>
                 <button
                   type="button"
                   onClick={() => setEditingOption(option)}

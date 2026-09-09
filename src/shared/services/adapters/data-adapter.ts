@@ -110,7 +110,7 @@ export interface DataAdapter {
     orderId: string,
     payload: {
       method: PaymentMethod;
-      amount: number;
+      amount?: number;
       receivedAmount?: number;
     },
   ): Promise<IPaymentResponse>;

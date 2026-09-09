@@ -4,7 +4,7 @@ export interface ICreatePaymentRequest {
   orderId: string;
   storeId: string;
   method: PaymentMethod;
-  amount: number;
+  amount?: number;
   receivedAmount?: number;
 }
 

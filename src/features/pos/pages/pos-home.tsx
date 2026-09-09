@@ -34,6 +34,18 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 
 type PosView = "BROWSE" | "PAYMENT_SUMMARY" | "PAYMENT_METHOD" | "SUCCESS";
 
+const extractServerMessage = (error: unknown, fallback: string): string => {
+  if (error && typeof error === "object") {
+    const maybeResponse = error as {
+      response?: { data?: { message?: string | string[] } };
+    };
+    const message = maybeResponse.response?.data?.message;
+    if (typeof message === "string" && message.trim()) return message;
+    if (Array.isArray(message) && message.length > 0) return message.join(", ");
+  }
+  return fallback;
+};
+
 const PosHomePage = () => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -337,12 +349,18 @@ const PosHomePage = () => {
       let receiptToken: string | undefined;
       let expiresAt: string | undefined;
       let orderStatus: PaymentResult["orderStatus"];
+      let finalSubtotal = cart.subtotal;
+      let finalReceived = Number(receivedAmount) || cart.subtotal;
+      let finalChange = methodChange;
       if (orderId) {
-        const payResponse = await orderApiService.pay(orderId, {
-          method,
-          amount: cart.subtotal,
-          receivedAmount: receivedAmount ? Number(receivedAmount) : undefined,
-        });
+        // Amount is backend-owned: QR/platform sends method only, CASH
+        // sends receivedAmount. Never send a client-computed amount.
+        const payResponse = await orderApiService.pay(
+          orderId,
+          method === "CASH"
+            ? { method, receivedAmount: Number(receivedAmount) }
+            : { method },
+        );
         const payData =
           (payResponse as { data?: { data?: unknown } })?.data?.data ??
           (payResponse as { data?: unknown })?.data ??
@@ -351,6 +369,23 @@ const PosHomePage = () => {
           (payData as { payment?: { receiptId?: string } })?.payment ?? payData;
         receiptId =
           (payment as { receiptId?: string })?.receiptId ?? orderNumber;
+        // Prefer backend-owned money values; fall back to local calc only
+        // when the response does not carry them (e.g. demo adapter).
+        const backendMoney = payment as {
+          amount?: unknown;
+          receivedAmount?: unknown;
+          change?: unknown;
+        };
+        const backendAmount = Number(backendMoney.amount);
+        const backendReceived = Number(backendMoney.receivedAmount);
+        const backendChange = Number(backendMoney.change);
+        if (Number.isFinite(backendAmount)) finalSubtotal = backendAmount;
+        if (Number.isFinite(backendReceived)) {
+          finalReceived = backendReceived;
+        } else if (method !== "CASH") {
+          finalReceived = finalSubtotal;
+        }
+        if (Number.isFinite(backendChange)) finalChange = backendChange;
         const receipt = (
           payData as {
             receipt?: { token?: string; url?: string; expiresAt?: string };
@@ -373,10 +408,10 @@ const PosHomePage = () => {
         expiresAt,
         orderStatus,
         items: [...cart.items],
-        subtotal: cart.subtotal,
+        subtotal: finalSubtotal,
         paymentMethod: method,
-        receivedAmount: Number(receivedAmount) || cart.subtotal,
-        change: methodChange,
+        receivedAmount: finalReceived,
+        change: finalChange,
         orderType: cart.orderType as OrderType,
         tableNumber: cart.tableNumber,
         customerName: cart.customerName,
@@ -389,7 +424,7 @@ const PosHomePage = () => {
       setActiveView("SUCCESS");
     } catch (error) {
       console.error("Payment failed:", error);
-      setErrorMessage(t("pos.payment.failed"));
+      setErrorMessage(extractServerMessage(error, t("pos.payment.failed")));
     } finally {
       setIsProcessing(false);
     }

@@ -55,6 +55,7 @@ const ModifierGroupForm = ({ form }: Props) => {
         <Input
           id="modifier-group-name"
           label={t("settings.modifiers.groupName")}
+          hint={t("settings.modifiers.groupNameHint")}
           placeholder={t("settings.modifiers.groupNamePlaceholder")}
           error={errors.name?.message}
           {...register("name", {

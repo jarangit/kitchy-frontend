@@ -653,7 +653,7 @@ export const localAdapter: DataAdapter = {
     orderId: string,
     payload: {
       method: PaymentMethod;
-      amount: number;
+      amount?: number;
       receivedAmount?: number;
     },
   ) {
@@ -669,9 +669,15 @@ export const localAdapter: DataAdapter = {
     const order = orders.find((o) => o.id === orderId);
     const meta = metas.find((m) => m.id === orderId);
     const items = buildTransactionItems(meta, products);
+    // Demo mirrors the backend-owned total: compute from items,
+    // fall back to a client-sent amount only transitionally.
+    const total =
+      items.reduce((sum, item) => sum + item.price * item.quantity, 0) ||
+      payload.amount ||
+      0;
     const change =
       payload.method === "CASH"
-        ? Math.max(0, (payload.receivedAmount ?? 0) - payload.amount)
+        ? Math.max(0, (payload.receivedAmount ?? 0) - total)
         : 0;
 
     const payment: IPaymentResponse = {
@@ -679,7 +685,7 @@ export const localAdapter: DataAdapter = {
       orderId,
       storeId: meta?.storeId ?? "",
       method: payload.method,
-      amount: payload.amount,
+      amount: total,
       receivedAmount:
         payload.method === "CASH" ? payload.receivedAmount : undefined,
       change,
@@ -695,8 +701,8 @@ export const localAdapter: DataAdapter = {
       status: order?.status ?? "READY",
       type: order?.type,
       method: payload.method,
-      amount: payload.amount,
-      totalAmount: payload.amount,
+      amount: total,
+      totalAmount: total,
       receiptId: payment.receiptId,
       items,
       products: items,

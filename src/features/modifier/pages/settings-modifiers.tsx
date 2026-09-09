@@ -9,17 +9,8 @@ import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { SearchInput } from "@/shared/components/ui/search-input";
 import { DropdownSelect } from "@/shared/components/ui/dropdown-select";
-import {
-  Dialog,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/shared/components/ui/dialog";
-import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
-import { toast } from "@/shared/services/toast-service";
 import {
   DataTablePagination,
   type SortingState,
@@ -28,18 +19,6 @@ import {
 type StatusFilter = "all" | "active" | "inactive";
 
 const MODIFIER_PAGE_SIZE = 10;
-
-const extractServerMessage = (error: unknown, fallback: string): string => {
-  if (error && typeof error === "object") {
-    const maybeResponse = error as {
-      response?: { data?: { message?: string | string[] } };
-    };
-    const message = maybeResponse.response?.data?.message;
-    if (typeof message === "string" && message.trim()) return message;
-    if (Array.isArray(message) && message.length > 0) return message.join(", ");
-  }
-  return fallback;
-};
 
 /**
  * Modifier group list. Creating, editing, options, and product assignment
@@ -50,10 +29,8 @@ const SettingsModifiersPage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const resolvedStoreId = useStoreRouteParam();
-  const { groupsQuery, groupsQueryLoading, deleteGroupMutation } =
-    useModifierService();
+  const { groupsQuery, groupsQueryLoading } = useModifierService();
 
-  const [deletingGroupId, setDeletingGroupId] = useState<string | null>(null);
   const [sorting, setSorting] = useState<SortingState>([
     { id: "name", desc: false },
   ]);
@@ -96,32 +73,11 @@ const SettingsModifiersPage = () => {
     setStatusFilter("all");
   };
 
-  const handleConfirmDeleteGroup = () => {
-    if (!deletingGroupId) return;
-    deleteGroupMutation.mutate(deletingGroupId, {
-      onSuccess: () => {
-        setDeletingGroupId(null);
-        toast.success({ title: t("settings.modifiers.deleteGroupSuccess") });
-      },
-      onError: (error) =>
-        toast.error({
-          title: extractServerMessage(
-            error,
-            t("settings.modifiers.deleteGroupFailed"),
-          ),
-        }),
-    });
-  };
-
   const statusOptions = [
     { value: "all", label: t("settings.modifiers.filterStatusAll") },
     { value: "active", label: t("settings.modifiers.filterStatusActive") },
     { value: "inactive", label: t("settings.modifiers.filterStatusInactive") },
   ];
-
-  const deletingGroup = deletingGroupId
-    ? (groupsQuery.find((g) => g.id === deletingGroupId) ?? null)
-    : null;
 
   return (
     <SettingsFrame>
@@ -202,7 +158,6 @@ const SettingsModifiersPage = () => {
                     onSortingChange={setSorting}
                     onSelect={openDetail}
                     onEdit={openDetail}
-                    onDelete={setDeletingGroupId}
                     isLoading={groupsQueryLoading}
                   />
                   <DataTablePagination
@@ -230,45 +185,6 @@ const SettingsModifiersPage = () => {
           )}
         </Card>
       </div>
-
-      <Dialog
-        open={deletingGroupId != null}
-        onClose={() => setDeletingGroupId(null)}
-        className="max-w-xl"
-      >
-        <DialogHeader>
-          <DialogTitle>{t("settings.modifiers.deleteGroupTitle")}</DialogTitle>
-          <DialogDescription>
-            {deletingGroup
-              ? t("settings.modifiers.deleteGroupDescription", {
-                  name: deletingGroup.name,
-                })
-              : ""}
-          </DialogDescription>
-        </DialogHeader>
-        <InlineAlert tone="warning">
-          {t("settings.modifiers.deleteGroupWarning")}
-        </InlineAlert>
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => setDeletingGroupId(null)}
-          >
-            {t("common.cancel")}
-          </Button>
-          <Button
-            type="button"
-            disabled={deleteGroupMutation.isPending}
-            onClick={handleConfirmDeleteGroup}
-            variant="danger"
-          >
-            {deleteGroupMutation.isPending
-              ? t("settings.modifiers.deleting")
-              : t("settings.modifiers.confirmDelete")}
-          </Button>
-        </DialogFooter>
-      </Dialog>
     </SettingsFrame>
   );
 };

@@ -162,7 +162,7 @@ export const orderApiService = {
     orderId: string,
     payload: {
       method: "CASH" | "QR" | "DELIVERY_PLATFORM";
-      amount: number;
+      amount?: number;
       receivedAmount?: number;
     },
   ) => {

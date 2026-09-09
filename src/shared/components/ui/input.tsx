@@ -13,6 +13,7 @@ import { cn } from "@/shared/utils/cn";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  hint?: string;
   error?: string;
   keyboardToggle?: boolean;
 }
@@ -34,7 +35,7 @@ function setInputRefs(
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
-  { label, error, keyboardToggle = false, className, readOnly, ...props },
+  { label, hint, error, keyboardToggle = false, className, readOnly, ...props },
   ref,
 ) {
   const [showKeyboard, setShowKeyboard] = useState(false);
@@ -42,8 +43,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const generatedId = useId();
   const inputId = props.id ?? generatedId;
   const errorId = error ? `${inputId}-error` : undefined;
+  const hintId = hint && !error ? `${inputId}-hint` : undefined;
   const describedBy =
-    [props["aria-describedby"], errorId].filter(Boolean).join(" ") || undefined;
+    [props["aria-describedby"], hintId, errorId].filter(Boolean).join(" ") ||
+    undefined;
 
   const handleToggleKeyboard = () => {
     setShowKeyboard((current) => !current);
@@ -98,10 +101,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           </Button>
         )}
       </div>
-      {error && (
+      {error ? (
         <p id={errorId} className="mt-1 text-caption text-danger">
           {error}
         </p>
+      ) : (
+        hint && (
+          <p id={hintId} className="mt-1 text-caption text-text-secondary">
+            {hint}
+          </p>
+        )
       )}
     </div>
   );

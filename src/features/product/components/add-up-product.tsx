@@ -27,6 +27,7 @@ type Props = {
   mode?: ProductFormMode;
   defaultValues?: ProductFormData;
   onSubmit: (data: ProductFormData) => void;
+  page?: boolean;
 };
 
 const MAX_IMAGE_SIZE = 50 * 1024 * 1024; // 50MB
@@ -49,6 +50,7 @@ const AddUpProductForm = ({
   mode = "create",
   defaultValues,
   onSubmit: onSubmitProp,
+  page = false,
 }: Props) => {
   const { t } = useTranslation();
   const [optionCategory, setOptionCategory] = useState<
@@ -248,6 +250,7 @@ const AddUpProductForm = ({
     <Dialog
       open={open}
       onClose={handleClose}
+      inline={page}
       className="w-[min(92vw,64rem)] max-w-4xl"
     >
       <form onSubmit={handleSubmit(onSubmit)}>

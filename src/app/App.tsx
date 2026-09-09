@@ -60,6 +60,9 @@ const SettingsPage = lazyWithRetry(
 const SettingsProductsPage = lazyWithRetry(
   () => import("@/features/store/pages/settings-products"),
 );
+const ProductDetailPage = lazyWithRetry(
+  () => import("@/features/product/pages/product-detail"),
+);
 const SettingsShopPage = lazyWithRetry(
   () => import("@/features/store/pages/settings-shop"),
 );
@@ -74,6 +77,9 @@ const SettingsStationsPage = lazyWithRetry(
 );
 const SettingsCategoriesPage = lazyWithRetry(
   () => import("@/features/category/pages/settings-categories"),
+);
+const CategoryDetailPage = lazyWithRetry(
+  () => import("@/features/category/pages/category-detail"),
 );
 const SettingsModifiersPage = lazyWithRetry(
   () => import("@/features/store/pages/settings-modifiers"),
@@ -243,6 +249,26 @@ function App() {
             }
           />
           <Route
+            path="/store/:id/settings/products/new"
+            element={
+              <ProtectedRoute>
+                <SettingsPinGuard>
+                  <ProductDetailPage />
+                </SettingsPinGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store/:id/settings/products/:productId"
+            element={
+              <ProtectedRoute>
+                <SettingsPinGuard>
+                  <ProductDetailPage />
+                </SettingsPinGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/store/:id/settings/stations"
             element={
               <ProtectedRoute>
@@ -258,6 +284,26 @@ function App() {
               <ProtectedRoute>
                 <SettingsPinGuard>
                   <SettingsCategoriesPage />
+                </SettingsPinGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store/:id/settings/categories/new"
+            element={
+              <ProtectedRoute>
+                <SettingsPinGuard>
+                  <CategoryDetailPage />
+                </SettingsPinGuard>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/store/:id/settings/categories/:categoryId"
+            element={
+              <ProtectedRoute>
+                <SettingsPinGuard>
+                  <CategoryDetailPage />
                 </SettingsPinGuard>
               </ProtectedRoute>
             }

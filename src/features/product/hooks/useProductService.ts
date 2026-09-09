@@ -5,7 +5,10 @@ import type {
   CreateProductRequest,
   UpdateProductRequest,
 } from "@/features/product/types/product.dto";
-import type { IMenu } from "@/features/product/types/product.model";
+import type {
+  IMenu,
+  ProductDetail,
+} from "@/features/product/types/product.model";
 
 const isProductArray = (value: unknown): value is IMenu[] => {
   return Array.isArray(value);
@@ -53,6 +56,19 @@ export function useProductService(selectedCategoryId?: string) {
     retry: (failureCount, error) => {
       if (isNotFoundNoProductsError(error)) return false;
       return failureCount < 2;
+    },
+  });
+
+  const productDetailQuery = useQuery({
+    queryKey: ["product", selectedCategoryId],
+    queryFn: () =>
+      productApiService.getProductById(selectedCategoryId as string),
+    enabled: !!selectedCategoryId,
+    select: (response) => {
+      const product = response.data.data;
+      return typeof product === "object" && product !== null
+        ? (product as ProductDetail)
+        : null;
     },
   });
 
@@ -131,6 +147,8 @@ export function useProductService(selectedCategoryId?: string) {
     productsQueryLoading: productsListQuery.isLoading,
     productsByCategoryQuery: productsByCategoryQuery.data ?? [],
     productsByCategoryLoading: productsByCategoryQuery.isLoading,
+    productDetailQuery: productDetailQuery.data ?? null,
+    productDetailLoading: productDetailQuery.isLoading,
     createProductMutation,
     updateProductMutation,
     deleteProductMutation,

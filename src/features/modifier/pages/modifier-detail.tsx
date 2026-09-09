@@ -1,7 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { LuArrowLeft, LuCircleAlert, LuEye, LuTrash2 } from "react-icons/lu";
+import {
+  LuArrowLeft,
+  LuCircleAlert,
+  LuEye,
+  LuSparkles,
+  LuTrash2,
+} from "react-icons/lu";
 import { useModifierService } from "@/features/modifier/hooks/useModifierService";
 import ModifierGroupForm from "@/features/modifier/components/modifier-group-form";
 import { emptyGroupDefaults } from "@/features/modifier/utils/modifier-group-preset";
@@ -11,7 +17,6 @@ import { ModifierPosPreview } from "@/features/modifier/components/modifier-pos-
 import { ModifierTipsCard } from "@/features/modifier/components/modifier-tips-card";
 import { SettingsFrame } from "@/features/store/components/settings-frame";
 import { Button } from "@/shared/components/ui/button";
-import { Card } from "@/shared/components/ui/card";
 import {
   Dialog,
   DialogDescription,
@@ -27,11 +32,26 @@ import { useStoreRouteParam } from "@/shared/hooks/use-store-route-param";
 import { toast } from "@/shared/services/toast-service";
 import type { ModifierGroupFormData } from "@/features/modifier/types/modifier.model";
 import type {
+  AdminModifierOptionResponse,
   CreateModifierOptionRequest,
   UpdateModifierOptionRequest,
 } from "@/features/modifier/types/modifier.dto";
 
 const GROUP_FORM_ID = "modifier-group-form";
+
+const makeDraftOption = (
+  name: string,
+  sortOrder: number,
+): AdminModifierOptionResponse => ({
+  id: `draft-${Date.now()}-${sortOrder}`,
+  modifierGroupId: null,
+  name,
+  priceAdjustment: 0,
+  sortOrder,
+  isAvailable: true,
+  createdAt: "",
+  updatedAt: "",
+});
 
 const extractServerMessage = (error: unknown, fallback: string): string => {
   if (error && typeof error === "object") {
@@ -91,21 +111,78 @@ const ModifierDetailPage = () => {
   const listPath = `/store/${resolvedStoreId}/settings/modifiers`;
   const handleBack = () => navigate(listPath);
 
+  // Draft options for the new page: kept in local state until the group
+  // is created, so filling the example never calls the API by itself.
+  const [draftOptions, setDraftOptions] = useState<
+    AdminModifierOptionResponse[]
+  >([]);
+
+  // New-page helper: fill the form and draft options with the guided
+  // example (Size group). No API calls here — the user still presses
+  // "Create" to save.
+  const handleFillExample = () => {
+    reset({
+      name: t("settings.modifiers.exampleGroupName"),
+      selectionType: "SINGLE",
+      minSelect: 1,
+      maxSelect: 1,
+    });
+    setDraftOptions([
+      makeDraftOption(t("settings.modifiers.exampleOption1"), 0),
+      makeDraftOption(t("settings.modifiers.exampleOption2"), 1),
+      makeDraftOption(t("settings.modifiers.exampleOption3"), 2),
+    ]);
+    toast.success({ title: t("settings.modifiers.exampleFilled") });
+  };
+
+  const handleCreateDraftOption = (data: CreateModifierOptionRequest) => {
+    setDraftOptions((prev) => [
+      ...prev,
+      {
+        ...makeDraftOption(data.name, data.sortOrder ?? prev.length),
+        priceAdjustment: data.priceAdjustment ?? 0,
+      },
+    ]);
+  };
+
+  const handleUpdateDraftOption = (
+    optionId: string,
+    data: UpdateModifierOptionRequest,
+  ) => {
+    setDraftOptions((prev) =>
+      prev.map((option) => {
+        if (option.id !== optionId) return option;
+        const cleanEntries = Object.entries(data).filter(
+          ([, value]) => value !== undefined,
+        );
+        return {
+          ...option,
+          ...Object.fromEntries(cleanEntries),
+          id: option.id,
+        };
+      }),
+    );
+  };
+
+  const handleDeleteDraftOption = (optionId: string) => {
+    // Drafts were never saved — remove immediately, no confirm needed.
+    setDraftOptions((prev) => prev.filter((option) => option.id !== optionId));
+  };
+
   const watchedName = form.watch("name");
   const watchedSelectionType = form.watch("selectionType");
   const watchedMin = form.watch("minSelect");
   const watchedMax = form.watch("maxSelect");
 
-  const previewOptions = useMemo(
-    () =>
-      (group?.options ?? []).map((o) => ({
-        id: o.id,
-        name: o.name,
-        priceAdjustment: Number(o.priceAdjustment ?? 0),
-        isAvailable: o.isAvailable,
-      })),
-    [group?.options],
-  );
+  const previewOptions = useMemo(() => {
+    const source = isNew ? draftOptions : (group?.options ?? []);
+    return source.map((o) => ({
+      id: o.id,
+      name: o.name,
+      priceAdjustment: Number(o.priceAdjustment ?? 0),
+      isAvailable: o.isAvailable,
+    }));
+  }, [isNew, draftOptions, group?.options]);
 
   const sanitize = (data: ModifierGroupFormData): ModifierGroupFormData => ({
     name: data.name.trim(),
@@ -115,11 +192,36 @@ const ModifierDetailPage = () => {
   });
 
   const handleCreateGroup = (data: ModifierGroupFormData) => {
+    const drafts = draftOptions;
     createGroupMutation.mutate(sanitize(data), {
-      onSuccess: (response) => {
+      onSuccess: async (response) => {
         const created = response.data.data as { id?: string } | undefined;
         toast.success({ title: t("settings.modifiers.createGroupSuccess") });
         if (created?.id) {
+          if (drafts.length > 0) {
+            try {
+              await Promise.all(
+                drafts.map((draft, index) =>
+                  createOptionMutation.mutateAsync({
+                    groupId: created.id as string,
+                    data: {
+                      name: draft.name,
+                      priceAdjustment: draft.priceAdjustment,
+                      sortOrder: index,
+                      isAvailable: draft.isAvailable,
+                    },
+                  }),
+                ),
+              );
+            } catch (error) {
+              toast.error({
+                title: extractServerMessage(
+                  error,
+                  t("settings.modifiers.createOptionFailed"),
+                ),
+              });
+            }
+          }
           navigate(
             `/store/${resolvedStoreId}/settings/modifiers/${created.id}`,
             { replace: true },
@@ -265,17 +367,30 @@ const ModifierDetailPage = () => {
                 : t("settings.modifiers.editGroupTitle")}
             </h1>
             <p className="mt-1 text-body-sm text-text-secondary">
-              {t("settings.modifiers.detailSubtitle")}
+              {isNew
+                ? t("settings.modifiers.detailDescription")
+                : t("settings.modifiers.editGroupDescription")}
             </p>
           </div>
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => setPreviewOpen(true)}
-          >
-            <LuEye className="h-4 w-4" />
-            {t("settings.modifiers.previewInPos")}
-          </Button>
+          {isNew ? (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleFillExample}
+            >
+              <LuSparkles className="h-4 w-4" />
+              {t("settings.modifiers.useExampleData")}
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => setPreviewOpen(true)}
+            >
+              <LuEye className="h-4 w-4" />
+              {t("settings.modifiers.previewInPos")}
+            </Button>
+          )}
         </div>
 
         <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
@@ -311,6 +426,20 @@ const ModifierDetailPage = () => {
               />
             )}
 
+            {(isNew || group) && (
+              <InsetPanel>
+                <p className="text-body-sm font-semibold text-text-primary">
+                  {t("settings.modifiers.exampleTitle")}
+                </p>
+                <p className="mt-1 text-body-sm text-text-secondary">
+                  {t("settings.modifiers.exampleGroupLabel")}:{" "}
+                  {t("settings.modifiers.exampleGroupName")} •{" "}
+                  {t("settings.modifiers.exampleOptionsLabel")}:{" "}
+                  {t("settings.modifiers.exampleOptionNames")}
+                </p>
+              </InsetPanel>
+            )}
+
             {showHealthWarning && (
               <InlineAlert tone="warning">
                 {t("settings.modifiers.optionsHealthWarning", {
@@ -321,19 +450,22 @@ const ModifierDetailPage = () => {
             )}
 
             {isNew ? (
-              <Card as="section">
-                <h2 className="text-title text-text-primary">
-                  {t("settings.modifiers.optionsTitle")}
-                </h2>
-                <p className="mt-1 text-body-sm text-text-secondary">
-                  {t("settings.modifiers.optionsLockedHint")}
-                </p>
-              </Card>
+              <ModifierOptionEditor
+                options={draftOptions}
+                minSelect={Number(watchedMin) || 0}
+                resetKey="draft"
+                onCreateOption={handleCreateDraftOption}
+                onUpdateOption={handleUpdateDraftOption}
+                onDeleteOption={handleDeleteDraftOption}
+                isSubmitting={isOptionSubmitting}
+              />
             ) : (
               group && (
                 <>
                   <ModifierOptionEditor
-                    group={group}
+                    options={group.options ?? []}
+                    minSelect={group.minSelect}
+                    resetKey={group.id}
                     onCreateOption={handleCreateOption}
                     onUpdateOption={handleUpdateOption}
                     onDeleteOption={setDeletingOptionId}
@@ -384,11 +516,11 @@ const ModifierDetailPage = () => {
               <Button
                 type="submit"
                 form={GROUP_FORM_ID}
-                disabled={isGroupSubmitting}
+                disabled={isGroupSubmitting || createOptionMutation.isPending}
               >
                 {isNew
                   ? t("settings.modifiers.createAndContinue")
-                  : t("settings.modifiers.save")}
+                  : t("settings.modifiers.saveGroupChanges")}
               </Button>
             </div>
           </div>

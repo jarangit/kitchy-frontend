@@ -2,10 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuArrowLeft, LuPlus, LuShapes } from "react-icons/lu";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
-import AddUpCategoryForm, {
-  type CategoryFormData,
-  type CategoryFormMode,
-} from "@/features/category/components/add-up-category";
 import { CategoryTable } from "@/features/category/components/category-table";
 import { SettingsFrame } from "@/features/store/components/settings-frame";
 import { EmptyState } from "@/shared/components/ui/empty-state";
@@ -19,7 +15,6 @@ import {
   DataTablePagination,
   type SortingState,
 } from "@/shared/components/ui/data-table";
-import type { CategoryModel } from "@/features/category/types/category.model";
 
 type StatusFilter = "all" | "active" | "inactive";
 
@@ -32,16 +27,10 @@ const SettingsCategoriesPage = () => {
   const {
     categoriesQuery,
     categoriesQueryLoading,
-    createCategoryMutation,
     updateCategoryMutation,
     deleteCategoryMutation,
   } = useCategoryService();
 
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formMode, setFormMode] = useState<CategoryFormMode>("create");
-  const [editingCategory, setEditingCategory] = useState<CategoryModel | null>(
-    null,
-  );
   const [sorting, setSorting] = useState<SortingState>([
     { id: "sortOrder", desc: false },
   ]);
@@ -92,35 +81,11 @@ const SettingsCategoriesPage = () => {
   };
 
   const openCreate = () => {
-    setEditingCategory(null);
-    setFormMode("create");
-    setIsFormOpen(true);
+    navigate(`/store/${resolvedStoreId}/settings/categories/new`);
   };
 
   const openEdit = (id: string) => {
-    const category = categoriesQuery.find((c) => c.id === id);
-    if (!category) return;
-    setEditingCategory(category);
-    setFormMode("edit");
-    setIsFormOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsFormOpen(false);
-    setEditingCategory(null);
-  };
-
-  const handleSubmit = (data: CategoryFormData) => {
-    if (formMode === "edit" && editingCategory) {
-      updateCategoryMutation.mutate(
-        { categoryId: editingCategory.id, data },
-        { onSuccess: () => handleClose() },
-      );
-      return;
-    }
-    createCategoryMutation.mutate(data, {
-      onSuccess: () => handleClose(),
-    });
+    navigate(`/store/${resolvedStoreId}/settings/categories/${id}`);
   };
 
   const handleToggleActive = (id: string, next: boolean) => {
@@ -135,17 +100,6 @@ const SettingsCategoriesPage = () => {
     updateCategoryMutation.isPending && updateCategoryMutation.variables
       ? updateCategoryMutation.variables.categoryId
       : null;
-
-  const editingDefaults: CategoryFormData | undefined = editingCategory
-    ? {
-        name: editingCategory.name,
-        sortOrder: editingCategory.sortOrder,
-        isActive: editingCategory.isActive,
-      }
-    : undefined;
-
-  const isSubmitting =
-    createCategoryMutation.isPending || updateCategoryMutation.isPending;
 
   const statusOptions = [
     { value: "all", label: t("settings.categories.filterStatusAll") },
@@ -266,15 +220,6 @@ const SettingsCategoriesPage = () => {
           )}
         </Card>
       </div>
-
-      <AddUpCategoryForm
-        open={isFormOpen}
-        onClose={handleClose}
-        mode={formMode}
-        defaultValues={editingDefaults}
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-      />
     </SettingsFrame>
   );
 };

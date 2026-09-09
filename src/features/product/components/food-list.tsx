@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { LuPackage } from "react-icons/lu";
 import { useProductService } from "@/features/product/hooks/useProductService";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
-import AddUpProductForm from "@/features/product/components/add-up-product";
-import type { ProductFormMode } from "@/features/product/components/add-up-product";
 import { ProductTable } from "@/features/product/components/product-table";
 import {
   DataTablePagination,
@@ -14,10 +13,7 @@ import { Button } from "@/shared/components/ui/button";
 import { SearchInput } from "@/shared/components/ui/search-input";
 import { DropdownSelect } from "@/shared/components/ui/dropdown-select";
 import { useTranslation } from "@/shared/i18n/use-translation";
-import type {
-  IMenu,
-  ProductFormData,
-} from "@/features/product/types/product.model";
+import type { IMenu } from "@/features/product/types/product.model";
 
 type StatusFilter = "all" | "active" | "inactive";
 
@@ -25,34 +21,17 @@ const ALL_CATEGORY = "__all__";
 
 const PRODUCT_PAGE_SIZE = 10;
 
-export interface ProductListActions {
-  openCreate: () => void;
-}
-
-interface ProductListTemplateProps {
-  /** Lets a parent (e.g. page header action) trigger the create dialog. */
-  actionsRef?: { current: ProductListActions | null };
-}
-
-const ProductListTemplate = ({ actionsRef }: ProductListTemplateProps) => {
+const ProductListTemplate = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const {
-    productsQuery,
-    createProductMutation,
-    updateProductMutation,
-    deleteProductMutation,
-  } = useProductService();
+  const { productsQuery, updateProductMutation, deleteProductMutation } =
+    useProductService();
   const { categoriesQuery } = useCategoryService();
 
   const products = useMemo(
     () => (productsQuery ?? []) as IMenu[],
     [productsQuery],
   );
-
-  // Dialog state
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [formMode, setFormMode] = useState<ProductFormMode>("create");
-  const [editingProduct, setEditingProduct] = useState<IMenu | null>(null);
 
   // Toolbar state
   const [search, setSearch] = useState("");
@@ -135,42 +114,6 @@ const ProductListTemplate = ({ actionsRef }: ProductListTemplateProps) => {
     setCategoryFilter(ALL_CATEGORY);
   };
 
-  const openCreate = () => {
-    setEditingProduct(null);
-    setFormMode("create");
-    setIsFormOpen(true);
-  };
-
-  useEffect(() => {
-    if (actionsRef) actionsRef.current = { openCreate };
-  });
-
-  const openEdit = (id: string) => {
-    const product = products.find((p) => p.id === id);
-    if (!product) return;
-    setEditingProduct(product);
-    setFormMode("edit");
-    setIsFormOpen(true);
-  };
-
-  const handleCloseForm = () => {
-    setIsFormOpen(false);
-    setEditingProduct(null);
-  };
-
-  const handleSubmit = (data: ProductFormData) => {
-    if (formMode === "edit" && editingProduct) {
-      updateProductMutation.mutate(
-        { productId: editingProduct.id, data },
-        { onSuccess: () => handleCloseForm() },
-      );
-      return;
-    }
-    createProductMutation.mutate(data, {
-      onSuccess: () => handleCloseForm(),
-    });
-  };
-
   const handleToggleActive = (id: string, next: boolean) => {
     updateProductMutation.mutate({ productId: id, data: { isActive: next } });
   };
@@ -178,19 +121,6 @@ const ProductListTemplate = ({ actionsRef }: ProductListTemplateProps) => {
   const handleDelete = (id: string) => {
     deleteProductMutation.mutate(id);
   };
-
-  const editingDefaults: ProductFormData | undefined = editingProduct
-    ? {
-        name: editingProduct.name,
-        stationId: editingProduct.stationId ?? "",
-        categoryId: editingProduct.categoryId,
-        price: editingProduct.price ?? 0,
-        cost: editingProduct.cost,
-        isActive: editingProduct.isActive,
-        isBestSeller: editingProduct.isBestSeller,
-        imageUrl: editingProduct.imageUrl,
-      }
-    : undefined;
 
   const statusOptions = [
     { value: "all", label: t("settings.products.filterStatusAll") },
@@ -278,7 +208,7 @@ const ProductListTemplate = ({ actionsRef }: ProductListTemplateProps) => {
                 sorting={sorting}
                 onSortingChange={setSorting}
                 togglingId={togglingId}
-                onEdit={openEdit}
+                onEdit={(id) => navigate(`${window.location.pathname}/${id}`)}
                 onDelete={handleDelete}
                 onToggleActive={handleToggleActive}
               />
@@ -305,14 +235,6 @@ const ProductListTemplate = ({ actionsRef }: ProductListTemplateProps) => {
           )}
         </div>
       )}
-
-      <AddUpProductForm
-        open={isFormOpen}
-        onClose={handleCloseForm}
-        mode={formMode}
-        defaultValues={editingDefaults}
-        onSubmit={handleSubmit}
-      />
     </div>
   );
 };
