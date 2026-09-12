@@ -41,7 +41,7 @@ const extractServerMessage = (error: unknown, fallback: string): string => {
  */
 const GroupProductAssignment = ({ groupId }: Props) => {
   const { t } = useTranslation();
-  const { productsQuery } = useProductService("ALL");
+  const { productsQuery } = useProductService();
   const { categoriesQuery } = useCategoryService();
   const { assignGroupMutation, removeGroupMutation } = useModifierService();
 

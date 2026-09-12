@@ -18,6 +18,7 @@ export interface IMenu {
   store?: unknown;
   station?: unknown;
   category?: unknown | null;
+  modifierGroups?: ModifierGroupView[];
 }
 
 export interface ProductDetail extends IMenu {

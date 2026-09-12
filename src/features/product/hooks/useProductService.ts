@@ -25,7 +25,10 @@ const isNotFoundNoProductsError = (error: unknown) => {
   );
 };
 
-export function useProductService(selectedCategoryId?: string) {
+export function useProductService(
+  selectedCategoryId?: string,
+  productId?: string,
+) {
   const queryClient = useQueryClient();
   const storeId =
     useAppSelector((state) => state.currentStore.storeId) ?? undefined;
@@ -60,10 +63,9 @@ export function useProductService(selectedCategoryId?: string) {
   });
 
   const productDetailQuery = useQuery({
-    queryKey: ["product", selectedCategoryId],
-    queryFn: () =>
-      productApiService.getProductById(selectedCategoryId as string),
-    enabled: !!selectedCategoryId,
+    queryKey: ["product", productId],
+    queryFn: () => productApiService.getProductById(productId as string),
+    enabled: !!productId,
     select: (response) => {
       const product = response.data.data;
       return typeof product === "object" && product !== null
