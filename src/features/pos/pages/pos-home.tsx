@@ -21,12 +21,10 @@ import ProductModifierDialog, {
   type ModifierDialogProduct,
 } from "@/features/pos/components/product-modifier-dialog";
 import { useProductService } from "@/features/product/hooks/useProductService";
-import { productApiService } from "@/features/product/services/product";
 import {
   calcModifierTotal,
   snapshotSelections,
 } from "@/shared/utils/modifier-selection";
-import { toast } from "@/shared/services/toast-service";
 import { Button } from "@/shared/components/ui/button";
 import { InlineAlert } from "@/shared/components/ui/inline-alert";
 import { SkeletonCard } from "@/shared/components/ui/skeleton";
@@ -58,9 +56,6 @@ const PosHomePage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [modifierProduct, setModifierProduct] =
     useState<ModifierDialogProduct | null>(null);
-  const [modifierLoadingId, setModifierLoadingId] = useState<string | null>(
-    null,
-  );
 
   const {
     productsQuery,
@@ -184,38 +179,28 @@ const PosHomePage = () => {
     cart.updateQuantity(existingItem.cartItemId, existingItem.quantity - 1);
   };
 
-  const handleProductClick = async (product: {
+  const handleProductClick = (product: {
     id: string;
     name: string;
     price: number;
+    imageUrl?: string | null;
+    modifierGroups?: ModifierDialogProduct["modifierGroups"];
   }) => {
-    if (modifierLoadingId) return;
-    setModifierLoadingId(product.id);
-    try {
-      const response = await productApiService.getProductById(product.id);
-      const payload = response.data.data;
-      const detail =
-        typeof payload === "string" || payload == null ? null : payload;
-      const groups = detail?.modifierGroups ?? [];
-      if (groups.length > 0) {
-        setModifierProduct({
-          id: product.id,
-          name: detail?.name ?? product.name,
-          price: detail?.price ?? product.price,
-          imageUrl: detail?.imageUrl,
-          modifierGroups: groups,
-        });
-      } else {
-        cart.addItem({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-        });
-      }
-    } catch {
-      toast.error({ title: t("pos.modifier.loadFailed") });
-    } finally {
-      setModifierLoadingId(null);
+    const groups = product.modifierGroups ?? [];
+    if (groups.length > 0) {
+      setModifierProduct({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        modifierGroups: groups,
+      });
+    } else {
+      cart.addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+      });
     }
   };
 
@@ -510,18 +495,19 @@ const PosHomePage = () => {
                           name: string;
                           price?: number;
                           imageUrl?: string | null;
+                          modifierGroups?: ModifierDialogProduct["modifierGroups"];
                         }) => ({
                           id: String(p.id),
                           name: p.name,
                           price: p.price ?? 0,
                           imageUrl: p.imageUrl,
+                          modifierGroups: p.modifierGroups ?? [],
                         }),
                       ) || []
                     }
                     onAddToCart={handleProductClick}
                     onDecreaseQuantity={handleDecreaseQuantity}
                     quantityByProductId={quantityByProductId}
-                    loadingProductId={modifierLoadingId}
                   />
                 )}
               </div>

@@ -1,14 +1,15 @@
 import { LuPackage } from "react-icons/lu";
 import { EmptyState } from "@/shared/components/ui/empty-state";
-import { Spinner } from "@/shared/components/ui/spinner";
 import { cn } from "@/shared/utils/cn";
 import { useTranslation } from "@/shared/i18n/use-translation";
+import type { ModifierGroupView } from "@/shared/types/modifier";
 
 interface Product {
   id: string;
   name: string;
   price: number;
   imageUrl?: string | null;
+  modifierGroups?: ModifierGroupView[];
 }
 
 interface Props {
@@ -16,7 +17,6 @@ interface Props {
   onAddToCart: (product: Product) => void;
   onDecreaseQuantity: (productId: string) => void;
   quantityByProductId: Record<string, number>;
-  loadingProductId?: string | null;
 }
 
 function formatPrice(value: number) {
@@ -32,7 +32,6 @@ const ProductGrid = ({
   onAddToCart,
   onDecreaseQuantity,
   quantityByProductId,
-  loadingProductId = null,
 }: Props) => {
   const { t } = useTranslation();
 
@@ -52,14 +51,12 @@ const ProductGrid = ({
         {products.map((product) => {
           const quantity = quantityByProductId[product.id] ?? 0;
           const isSelected = quantity > 0;
-          const isLoading = loadingProductId === product.id;
 
           return (
             <div key={product.id} className="relative h-full">
               <button
                 type="button"
                 onClick={() => onAddToCart(product)}
-                disabled={isLoading}
                 data-onboarding-target={`product-card-${product.id}`}
                 className={cn(
                   "relative flex h-full min-h-[156px] w-full cursor-pointer flex-col overflow-hidden rounded-card transition-all duration-fast",
@@ -69,16 +66,10 @@ const ProductGrid = ({
                 )}
                 aria-label={`${product.name} ${formatPrice(product.price)}`}
               >
-                {isLoading ? (
-                  <span className="absolute right-2 top-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full bg-card-bg text-text-secondary shadow-xs">
-                    <Spinner size="sm" />
+                {isSelected && (
+                  <span className="absolute right-2 top-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent shadow-xs tabular-nums">
+                    {quantity}
                   </span>
-                ) : (
-                  isSelected && (
-                    <span className="absolute right-2 top-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent shadow-xs tabular-nums">
-                      {quantity}
-                    </span>
-                  )
                 )}
                 <div className="flex aspect-square w-full items-center justify-center overflow-hidden border-b border-card-border bg-surface">
                   {product.imageUrl ? (

@@ -17,7 +17,7 @@ const ProductDetailPage = () => {
     productDetailLoading,
     createProductMutation,
     updateProductMutation,
-  } = useProductService(productId);
+  } = useProductService(undefined, productId);
   const listPath = `/store/${id}/settings/products`;
 
   const defaults = productDetailQuery
