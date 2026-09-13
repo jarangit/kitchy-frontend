@@ -357,6 +357,7 @@ export const thMessages = {
   "settings.pin.error.required": "ต้องตั้ง PIN ก่อนแก้ไขตั้งค่า",
   "settings.pin.error.invalidFormat": "PIN ต้องเป็นตัวเลข 4-6 หลัก",
   "settings.pin.error.alreadySet": "ตั้ง PIN ไว้แล้ว",
+  "settings.pin.error.mustBeDifferent": "PIN ใหม่ต้องไม่ตรงกับ PIN เดิม",
   "settings.pin.backspace": "ลบ",
   "settings.pin.success.created": "ตั้ง PIN แล้ว",
   "settings.pin.success.changed": "เปลี่ยน PIN แล้ว",

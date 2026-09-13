@@ -68,6 +68,8 @@ export interface IStore {
   orderLimit?: number;
   settings?: StoreSettings | null;
   userId: string;
+  /** True when the store already has a settings PIN (server-derived, never the hash). */
+  pinSet?: boolean;
   createdAt: Date | string;
   updatedAt: Date | string;
 }

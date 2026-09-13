@@ -16,8 +16,8 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 import { useStoreSettings } from "@/features/store/hooks/useStoreSettings";
 import { SettingsPinDialog } from "@/features/store/components/settings-pin-dialog";
 import {
-  clearStorePinCache,
   hasStorePin,
+  isValidStorePin,
   setStorePinCache,
 } from "@/features/store/utils/store-pin-cache";
 import { useStorePin } from "@/features/store/hooks/useStorePin";
@@ -41,10 +41,18 @@ export function SectionSafety() {
   const safety = settings.safety;
   const cached = storeId ? hasStorePin(storeId) : false;
   const [flow, setFlow] = useState<PinFlow>("none");
-  const { setPinFirstTime } = useStorePin();
+  const { setPinFirstTime, changePin, getCachedPin } = useStorePin();
+  // Real server-side PIN change: current PIN -> new PIN (entered twice).
+  const [changeStep, setChangeStep] = useState<"none" | "current" | "new">(
+    "none",
+  );
+  const [changeCurrentPin, setChangeCurrentPin] = useState("");
   const auth = useAuth();
   const userId = auth?.user?.id ? String(auth.user.id) : undefined;
-  const { deleteStore } = useStoreService({ userId });
+  const { deleteStore, storeFinOneQuery } = useStoreService({ userId });
+  // Server truth for whether the store has a PIN yet (cache alone can't tell).
+  // Falls back to the local cache while the query is loading or in demo mode.
+  const hasPinOnServer = storeFinOneQuery?.pinSet ?? cached;
   const queryClient = useQueryClient();
 
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -68,9 +76,36 @@ export function SectionSafety() {
     return true;
   };
 
-  const handleClear = () => {
-    if (storeId) clearStorePinCache(storeId);
-    closeFlow();
+  const openChangeFlow = () => {
+    // Skip asking for the current PIN when it's already cached on this device.
+    const cachedPin = getCachedPin();
+    if (cachedPin && isValidStorePin(cachedPin)) {
+      setChangeCurrentPin(cachedPin);
+      setChangeStep("new");
+    } else {
+      setChangeCurrentPin("");
+      setChangeStep("current");
+    }
+  };
+
+  const closeChangeFlow = () => {
+    setChangeStep("none");
+    setChangeCurrentPin("");
+  };
+
+  const handleChangeCurrentVerify = (pin: string) => {
+    setChangeCurrentPin(pin);
+    setChangeStep("new");
+    return true;
+  };
+
+  const handleChangeNewConfirm = async (newPin: string) => {
+    try {
+      await changePin(changeCurrentPin, newPin);
+      closeChangeFlow();
+    } catch {
+      // error handled inside hook with toast; keep dialog open for retry
+    }
   };
 
   const invalidateStoreData = async () => {
@@ -160,44 +195,34 @@ export function SectionSafety() {
       >
         <SettingRow
           variant="display"
-          icon={cached ? <LuLock size={18} /> : <LuLockOpen size={18} />}
+          icon={
+            hasPinOnServer ? <LuLock size={18} /> : <LuLockOpen size={18} />
+          }
           label={t("settings.cp.safety.settingsPin")}
           value={
-            cached
+            hasPinOnServer
               ? t("settings.cp.safety.settingsPin.set")
               : t("settings.cp.safety.settingsPin.notSet")
           }
         />
-        {!cached ? (
-          <>
-            <SettingRow
-              variant="action"
-              label={t("settings.cp.safety.settingsPin.setPin")}
-              onClick={() => setFlow("create")}
-            />
-            <SettingRow
-              variant="action"
-              label={t("settings.pin.verify.title")}
-              onClick={() => setFlow("enter")}
-            />
-          </>
+        {!hasPinOnServer ? (
+          <SettingRow
+            variant="action"
+            label={t("settings.cp.safety.settingsPin.setPin")}
+            onClick={() => setFlow("create")}
+          />
+        ) : !cached ? (
+          <SettingRow
+            variant="action"
+            label={t("settings.pin.verify.title")}
+            onClick={() => setFlow("enter")}
+          />
         ) : (
-          <>
-            <SettingRow
-              variant="action"
-              label={t("settings.cp.safety.settingsPin.changePin")}
-              onClick={() => setFlow("enter")}
-            />
-            <SettingRow
-              variant="action"
-              label={
-                <span className="text-danger">
-                  {t("settings.cp.safety.settingsPin.removePin")}
-                </span>
-              }
-              onClick={handleClear}
-            />
-          </>
+          <SettingRow
+            variant="action"
+            label={t("settings.cp.safety.settingsPin.changePin")}
+            onClick={openChangeFlow}
+          />
         )}
       </SettingGroup>
 
@@ -237,6 +262,21 @@ export function SectionSafety() {
         mode="verify"
         onClose={closeFlow}
         onVerify={handleEnterVerify}
+      />
+
+      <SettingsPinDialog
+        open={changeStep === "current"}
+        mode="verify"
+        onClose={closeChangeFlow}
+        onVerify={handleChangeCurrentVerify}
+      />
+
+      <SettingsPinDialog
+        open={changeStep === "new"}
+        mode="create"
+        onClose={closeChangeFlow}
+        onVerify={() => {}}
+        onCreateConfirm={handleChangeNewConfirm}
       />
 
       <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)}>

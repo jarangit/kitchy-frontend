@@ -369,6 +369,8 @@ export const enMessages = {
   "settings.pin.error.required": "PIN must be set before updating settings",
   "settings.pin.error.invalidFormat": "PIN must be 4-6 digits",
   "settings.pin.error.alreadySet": "PIN already set",
+  "settings.pin.error.mustBeDifferent":
+    "New PIN must be different from current PIN",
   "settings.pin.backspace": "Delete",
   "settings.pin.success.created": "PIN set",
   "settings.pin.success.changed": "PIN changed",

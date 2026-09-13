@@ -3,6 +3,7 @@ import type {
   ICreateStore,
   ISetStorePinPayload,
   IUpdateStore,
+  IUpdateStorePinPayload,
 } from "@/features/store/types/store.dto";
 import {
   IS_DEMO_MODE,
@@ -36,6 +37,17 @@ export const storeServiceApi = {
       return { data: { id: storeId } };
     }
     const response = await axiosClient.post(`/stores/${storeId}/pin`, payload);
+    return response.data;
+  },
+  updateStorePin: async (storeId: string, payload: IUpdateStorePinPayload) => {
+    if (IS_DEMO_MODE) {
+      // Demo mode has no real PIN — simulate success and store new pin in memory cache
+      const { setStorePinCache } =
+        await import("@/features/store/utils/store-pin-cache");
+      setStorePinCache(storeId, payload.newPin);
+      return { data: { id: storeId } };
+    }
+    const response = await axiosClient.patch(`/stores/${storeId}/pin`, payload);
     return response.data;
   },
   updateStore: async (storeId: string, storeData: IUpdateStore) => {
