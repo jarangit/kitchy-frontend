@@ -13,6 +13,8 @@ import { useTranslation } from "@/shared/i18n/use-translation";
 
 type StorePinErrorCode =
   | "STORE_PIN_REQUIRED"
+  | "STORE_PIN_NOT_SET"
+  | "STORE_PIN_MUST_BE_DIFFERENT"
   | "INVALID_STORE_PIN"
   | "STORE_PIN_ALREADY_SET"
   | "STORE_NOT_FOUND";
@@ -31,14 +33,29 @@ function extractErrorCode(error: unknown): StorePinErrorCode | null {
     const code = (msg as { errorCode?: string }).errorCode;
     if (
       code === "STORE_PIN_REQUIRED" ||
+      code === "STORE_PIN_NOT_SET" ||
+      code === "STORE_PIN_MUST_BE_DIFFERENT" ||
       code === "INVALID_STORE_PIN" ||
       code === "STORE_PIN_ALREADY_SET" ||
       code === "STORE_NOT_FOUND"
     )
       return code;
   }
-  if (typeof msg === "string" && msg.includes("STORE_PIN_REQUIRED"))
-    return "STORE_PIN_REQUIRED";
+  if (typeof msg === "string") {
+    // The API sometimes serializes errors with a plain message string and
+    // drops the errorCode, so match the known backend messages as fallback.
+    if (msg.includes("STORE_PIN_REQUIRED")) return "STORE_PIN_REQUIRED";
+    if (msg.includes("Store PIN must be set before updating settings"))
+      return "STORE_PIN_REQUIRED";
+    if (msg.includes("PIN is required for this operation"))
+      return "STORE_PIN_REQUIRED";
+    if (msg.includes("Store PIN has not been set")) return "STORE_PIN_NOT_SET";
+    if (msg.includes("New PIN must be different"))
+      return "STORE_PIN_MUST_BE_DIFFERENT";
+    if (msg.includes("Invalid PIN")) return "INVALID_STORE_PIN";
+    if (msg.includes("already set")) return "STORE_PIN_ALREADY_SET";
+    if (msg.includes("Store not found")) return "STORE_NOT_FOUND";
+  }
   return null;
 }
 
@@ -160,6 +177,33 @@ export function useStorePin() {
     [ensurePin, ensurePinForCreate, queryClient, requestPin, storeId, t],
   );
 
+  const changePin = useCallback(
+    async (currentPin: string, newPin: string) => {
+      if (!isValidStorePin(currentPin) || !isValidStorePin(newPin)) {
+        toast.error({ title: t("settings.pin.error.invalidFormat") });
+        throw new Error("Invalid PIN format");
+      }
+      try {
+        await storeServiceApi.updateStorePin(storeId, { currentPin, newPin });
+        setStorePinCache(storeId, newPin);
+        queryClient.invalidateQueries({ queryKey: ["store", storeId] });
+        toast.success({ title: t("settings.pin.success.changed") });
+      } catch (error) {
+        const code = extractErrorCode(error);
+        if (code === "INVALID_STORE_PIN") {
+          toast.error({ title: t("settings.pin.error.incorrect") });
+          clearStorePinCache(storeId);
+        } else if (code === "STORE_PIN_MUST_BE_DIFFERENT") {
+          toast.error({ title: t("settings.pin.error.mustBeDifferent") });
+        } else if (code === "STORE_PIN_NOT_SET") {
+          toast.error({ title: t("settings.pin.error.required") });
+        }
+        throw error;
+      }
+    },
+    [queryClient, storeId, t],
+  );
+
   const setPinFirstTime = useCallback(
     async (pin: string) => {
       if (!isValidStorePin(pin)) {
@@ -190,6 +234,7 @@ export function useStorePin() {
     ensurePin,
     executeWithPin,
     setPinFirstTime,
+    changePin,
     getCachedPin: () => getStorePin(storeId),
     clearPin: () => clearStorePinCache(storeId),
   };

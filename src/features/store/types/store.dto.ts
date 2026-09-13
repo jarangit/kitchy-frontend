@@ -16,8 +16,15 @@ export interface ISetStorePinPayload {
   pin: string;
 }
 
+export interface IUpdateStorePinPayload {
+  currentPin: string;
+  newPin: string;
+}
+
 export type StorePinErrorCode =
   | "STORE_PIN_REQUIRED"
+  | "STORE_PIN_NOT_SET"
+  | "STORE_PIN_MUST_BE_DIFFERENT"
   | "INVALID_STORE_PIN"
   | "STORE_PIN_ALREADY_SET"
   | "STORE_NOT_FOUND"

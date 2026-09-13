@@ -68,7 +68,7 @@ export function StationCard({
       <CardContent>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-card border border-card-border bg-bg px-4 py-3 text-center">
+            <div className="rounded-card bg-bg px-4 py-3 text-center">
               <div className="text-heading font-semibold tabular-nums text-warning">
                 {activeOrders}
               </div>
@@ -76,7 +76,7 @@ export function StationCard({
                 {t("station.card.activeOrders")}
               </div>
             </div>
-            <div className="rounded-card border border-card-border bg-bg px-4 py-3 text-center">
+            <div className="rounded-card bg-bg px-4 py-3 text-center">
               <div className="text-heading font-semibold tabular-nums text-success">
                 {completedToday}
               </div>

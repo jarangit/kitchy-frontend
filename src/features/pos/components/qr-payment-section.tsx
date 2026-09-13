@@ -60,7 +60,7 @@ const QrPaymentSection = ({
   const amountLabel = `฿${subtotal.toFixed(2)}`;
 
   const card = (
-    <div className="overflow-hidden rounded-card border border-border bg-card-bg text-center">
+    <div className="overflow-hidden rounded-card bg-card-bg text-center">
       <div className="bg-[#00427a] px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-[#ffffff]">
@@ -114,7 +114,7 @@ const QrPaymentSection = ({
             </span>
           </div>
         ) : (
-          <div className="flex h-56 w-full max-w-[18rem] flex-col items-center justify-center gap-3 rounded-card border border-dashed border-border bg-surface px-4 text-text-tertiary sm:h-64 sm:max-w-[20rem]">
+          <div className="flex h-56 w-full max-w-[18rem] flex-col items-center justify-center gap-3 rounded-card bg-surface px-4 text-text-tertiary sm:h-64 sm:max-w-[20rem]">
             <LuQrCode size={48} />
             <span className="text-center text-body-sm">{hintLabel}</span>
             {showConfigure && (

@@ -67,7 +67,7 @@ const CartItem = ({
       )}
 
       {item.note && readOnly && (
-        <InsetPanel className="mt-2 rounded-sm border-border bg-surface px-3 py-2">
+        <InsetPanel className="mt-2 rounded-sm bg-surface px-3 py-2">
           <p
             className="line-clamp-2 text-label leading-5 text-text-tertiary"
             title={item.note}
@@ -78,9 +78,9 @@ const CartItem = ({
       )}
 
       {expanded && !readOnly && (
-        <InsetPanel className="mt-2 rounded-sm border-border bg-bg px-3 py-3">
+        <InsetPanel className="mt-2 rounded-sm bg-bg px-3 py-3">
           <div className="flex items-center justify-between gap-3">
-            <div className="inline-flex items-center gap-0.5 rounded-full border border-card-border bg-card-bg p-0.5">
+            <div className="inline-flex items-center gap-0.5 rounded-full bg-card-bg p-0.5">
               <Button
                 type="button"
                 variant="ghost"
@@ -141,7 +141,7 @@ const CartItem = ({
           </div>
 
           {item.note ? (
-            <InsetPanel className="mt-2 rounded-sm border-border bg-surface px-3 py-2">
+            <InsetPanel className="mt-2 rounded-sm bg-surface px-3 py-2">
               <p
                 className="line-clamp-2 text-label leading-5 text-text-tertiary"
                 title={item.note}

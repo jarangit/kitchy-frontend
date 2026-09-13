@@ -121,9 +121,6 @@ export default function DemoTrialEntryPage() {
             <h1 className="text-title text-text-primary xl:text-display">
               {t("demo.trial.title")}
             </h1>
-            <p className="mx-auto max-w-2xl text-body-sm leading-6 text-text-secondary sm:text-body">
-              {t("demo.trial.subtitle")}
-            </p>
           </div>
         </section>
 
@@ -140,11 +137,11 @@ export default function DemoTrialEntryPage() {
                   onClick={() => setSelectedStorePreset(option.value)}
                   disabled={isStarting}
                   className={cn(
-                    "group relative min-h-32 rounded-card border border-card-border bg-card-bg px-4 py-4 text-center transition-colors duration-fast sm:min-h-38 sm:px-4 sm:py-5 xl:min-h-44 xl:px-5 xl:py-6",
-                    "hover:border-border-hover hover:bg-card-bg-hover",
+                    "group relative min-h-32 rounded-card bg-card-bg px-4 py-4 text-center transition-colors duration-fast sm:min-h-38 sm:px-4 sm:py-5 xl:min-h-44 xl:px-5 xl:py-6",
+                    "hover:bg-card-bg-hover",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                     "disabled:cursor-not-allowed disabled:opacity-60",
-                    selected && "border-accent bg-accent-bg",
+                    selected && "bg-accent-bg",
                   )}
                   aria-pressed={selected}
                   aria-label={`${selected ? `${t("demo.trial.selectedBadge")} ` : ""}${t(option.labelKey)}`}
@@ -179,9 +176,6 @@ export default function DemoTrialEntryPage() {
                         )}
                       >
                         {t(option.labelKey)}
-                      </p>
-                      <p className="max-w-40 text-label leading-5 text-text-secondary">
-                        {t(option.descriptionKey)}
                       </p>
                       {selected && (
                         <span className="mt-1 rounded-full bg-accent-bg px-2 py-0.5 text-label font-medium text-accent-text">

@@ -13,7 +13,7 @@ export function Table({
   ...props
 }: HTMLAttributes<HTMLTableElement>) {
   return (
-    <div className="overflow-x-auto rounded-card border border-card-border bg-card-bg">
+    <div className="overflow-x-auto rounded-card bg-card-bg">
       <table
         className={cn(
           "w-full min-w-[640px] border-collapse text-left",
@@ -34,10 +34,7 @@ export function TableHeader({
 }: HTMLAttributes<HTMLTableSectionElement>) {
   return (
     <thead
-      className={cn(
-        "bg-surface-muted border-b border-card-border text-text-secondary",
-        className,
-      )}
+      className={cn("bg-surface-hover text-text-secondary", className)}
       {...props}
     >
       {children}

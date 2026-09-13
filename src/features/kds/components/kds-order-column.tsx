@@ -144,7 +144,7 @@ const KdsOrderColumn = ({
     return (
       <article
         className={cn(
-          "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-bumped bg-bumped text-text-inverse",
+          "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card bg-bumped text-text-inverse",
           isLargeOrder ? "w-[720px]" : "w-[360px]",
         )}
       >
@@ -198,7 +198,7 @@ const KdsOrderColumn = ({
   return (
     <article
       className={cn(
-        "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-border-hover bg-surface transition-colors duration-normal",
+        "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card bg-surface transition-colors duration-normal",
         isLargeOrder ? "w-[720px]" : "w-[360px]",
       )}
     >

@@ -12,7 +12,6 @@ interface ErrorStateProps {
 
 export function ErrorState({
   title = "Something went wrong",
-  description,
   onRetry,
   retryLabel = "Retry",
   className,
@@ -30,11 +29,6 @@ export function ErrorState({
       <h3 className="mb-1 text-subtitle font-medium text-text-primary">
         {title}
       </h3>
-      {description && (
-        <p className="max-w-xs text-center text-body-sm leading-6 text-text-secondary">
-          {description}
-        </p>
-      )}
       {onRetry && (
         <div className="mt-5">
           <Button variant="secondary" size="sm" onClick={onRetry}>

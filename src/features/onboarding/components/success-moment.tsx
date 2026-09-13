@@ -24,14 +24,11 @@ export function SuccessMoment({ amount, onClose }: Props) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="w-full max-w-md rounded-card bg-card-bg border border-card-border p-8 text-center">
+      <div className="w-full max-w-md rounded-card bg-card-bg p-8 text-center">
         <div className="mb-4 text-[56px] leading-none">🎉</div>
         <h2 className="mb-2 text-heading text-text-primary tracking-tight">
           {t("onboarding.success.title")}
         </h2>
-        <p className="mb-2 text-body text-text-secondary">
-          {t("onboarding.success.subtitle")}
-        </p>
         <p className="mb-8 text-title text-text-primary tabular-nums">
           {t("onboarding.success.amount", { amount: amount.toFixed(2) })}
         </p>

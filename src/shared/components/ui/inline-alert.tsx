@@ -9,11 +9,11 @@ interface InlineAlertProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const toneStyles: Record<InlineAlertTone, string> = {
-  default: "border-border bg-surface-muted text-text-secondary",
-  danger: "border-danger-border bg-danger-bg text-danger",
-  warning: "border-warning-border bg-warning-bg text-warning",
-  success: "border-success-border bg-success-bg text-success",
-  info: "border-info-border bg-info-bg text-info",
+  default: "bg-surface-muted text-text-secondary",
+  danger: "bg-danger-bg text-danger",
+  warning: "bg-warning-bg text-warning",
+  success: "bg-success-bg text-success",
+  info: "bg-info-bg text-info",
 };
 
 export function InlineAlert({
@@ -25,7 +25,7 @@ export function InlineAlert({
   return (
     <div
       className={cn(
-        "rounded-card border px-3 py-2 text-body-sm",
+        "rounded-card px-3 py-2 text-body-sm",
         toneStyles[tone],
         className,
       )}

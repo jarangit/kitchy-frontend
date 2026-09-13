@@ -15,7 +15,6 @@ interface Props {
 export function ModifierStepSection({
   step,
   title,
-  subtitle,
   action,
   children,
   className,
@@ -32,11 +31,6 @@ export function ModifierStepSection({
           </span>
           <div className="min-w-0">
             <h2 className="text-title text-text-primary">{title}</h2>
-            {subtitle && (
-              <p className="mt-0.5 text-body-sm text-text-secondary">
-                {subtitle}
-              </p>
-            )}
           </div>
         </div>
         {action && <div className="shrink-0">{action}</div>}

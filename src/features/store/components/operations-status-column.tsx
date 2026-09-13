@@ -21,16 +21,9 @@ export interface OperationsStatusColumnProps {
   className?: string;
 }
 
-const toneTopBorder: Record<OperationsColumnTone, string> = {
-  default: "border-t-border",
-  warning: "border-t-warning-border",
-  success: "border-t-success-border",
-};
-
 export function OperationsStatusColumn({
   title,
   count,
-  tone,
   rows,
   viewAllTo,
   viewAllLabel,
@@ -44,13 +37,9 @@ export function OperationsStatusColumn({
   return (
     <Card
       padding="none"
-      className={cn(
-        "flex min-h-64 flex-col overflow-hidden border-t-2",
-        toneTopBorder[tone],
-        className,
-      )}
+      className={cn("flex min-h-64 flex-col overflow-hidden", className)}
     >
-      <div className="border-b border-border/70 px-4 py-3">
+      <div className="px-4 py-3">
         <h3 className="text-body font-semibold leading-6 text-text-primary">
           {title} ({count})
         </h3>

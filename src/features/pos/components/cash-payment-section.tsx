@@ -65,7 +65,7 @@ const CashPaymentSection = ({
         </div>
 
         {Number(receivedAmount) > 0 && (
-          <div className="rounded-card border border-success-border bg-success-bg px-4 py-3">
+          <div className="rounded-card bg-success-bg px-4 py-3">
             <p className="text-label font-medium text-success">
               {t("pos.payment.change", { amount: `฿${change.toFixed(2)}` })}
             </p>

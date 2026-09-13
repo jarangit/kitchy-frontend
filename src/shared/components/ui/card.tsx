@@ -18,11 +18,10 @@ type CardProps<T extends ElementType = "div"> = {
 } & Omit<ComponentPropsWithoutRef<T>, "as" | "className" | "children">;
 
 const variantStyles: Record<CardVariant, string> = {
-  default: "bg-card-bg border border-card-border",
-  muted: "bg-surface-muted border border-border",
-  interactive:
-    "bg-card-bg border border-card-border hover:bg-card-bg-hover hover:border-card-border-hover",
-  dashed: "bg-bg border border-dashed border-border",
+  default: "bg-card-bg",
+  muted: "bg-surface-muted",
+  interactive: "bg-card-bg hover:bg-card-bg-hover",
+  dashed: "bg-bg",
 };
 
 const paddingStyles: Record<CardPadding, string> = {
@@ -86,22 +85,8 @@ export function CardTitle({
   );
 }
 
-export function CardDescription({
-  className,
-  children,
-  ...props
-}: HTMLAttributes<HTMLParagraphElement>) {
-  return (
-    <p
-      className={cn(
-        "mt-1 text-card-desc leading-6 text-text-secondary",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-    </p>
-  );
+export function CardDescription(_props: HTMLAttributes<HTMLParagraphElement>) {
+  return null;
 }
 
 export function CardContent({

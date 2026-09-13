@@ -239,7 +239,7 @@ export function SectionDevices() {
           </p>
         ) : pairCode ? (
           <div className="space-y-4">
-            <div className="rounded-card border border-border bg-surface px-4 py-5 text-center">
+            <div className="rounded-card bg-surface px-4 py-5 text-center">
               <p className="font-mono text-3xl font-semibold tracking-[0.3em] text-text-primary">
                 {pairCode}
               </p>

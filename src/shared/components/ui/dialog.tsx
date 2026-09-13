@@ -43,7 +43,6 @@ export function Dialog({
       className={cn(
         "backdrop:bg-dialog-overlay",
         "bg-dialog-bg",
-        "border border-dialog-border",
         "rounded-dialog",
         "p-dialog-padding",
         "w-full max-w-md m-auto",
@@ -86,18 +85,11 @@ export function DialogTitle({
   );
 }
 
-export function DialogDescription({
-  className,
-  children,
-}: {
+export function DialogDescription(_props: {
   className?: string;
   children: ReactNode;
 }) {
-  return (
-    <p className={cn("text-dialog-desc text-text-secondary mt-1", className)}>
-      {children}
-    </p>
-  );
+  return null;
 }
 
 export function DialogFooter({

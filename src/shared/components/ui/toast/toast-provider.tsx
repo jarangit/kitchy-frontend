@@ -13,27 +13,27 @@ const variantStyles: Record<
   { shell: string; icon: string; iconNode: React.ReactNode }
 > = {
   default: {
-    shell: "border-border bg-surface",
+    shell: "bg-surface",
     icon: "bg-surface-hover text-text-secondary",
     iconNode: <LuBell size={20} />,
   },
   success: {
-    shell: "border-success-border bg-surface",
+    shell: "bg-surface",
     icon: "bg-success-bg text-success",
     iconNode: <LuCheck size={20} />,
   },
   warning: {
-    shell: "border-warning-border bg-surface",
+    shell: "bg-surface",
     icon: "bg-warning-bg text-warning",
     iconNode: <LuTriangleAlert size={20} />,
   },
   error: {
-    shell: "border-danger-border bg-surface",
+    shell: "bg-surface",
     icon: "bg-danger-bg text-danger",
     iconNode: <LuX size={20} />,
   },
   info: {
-    shell: "border-info-border bg-surface",
+    shell: "bg-surface",
     icon: "bg-info-bg text-info",
     iconNode: <LuInfo size={20} />,
   },
@@ -59,7 +59,7 @@ function ToastItem({
   }, [record.durationMs, record.id, onDismiss]);
 
   return (
-    <div className={cn("rounded-card border p-4", styles.shell)}>
+    <div className={cn("rounded-card p-4", styles.shell)}>
       <div className="flex items-start gap-3">
         <span
           className={cn(
@@ -73,11 +73,6 @@ function ToastItem({
           <p className="text-title font-semibold text-text-primary">
             {record.title}
           </p>
-          {record.description && (
-            <p className="text-body-sm text-text-secondary">
-              {record.description}
-            </p>
-          )}
           {record.action && (
             <div className="pt-2">
               <Button

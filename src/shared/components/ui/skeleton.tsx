@@ -31,7 +31,7 @@ export function SkeletonCard({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "bg-card-bg border border-card-border",
+        "bg-card-bg",
         "rounded-card p-card-padding",
         "space-y-3",
         className,

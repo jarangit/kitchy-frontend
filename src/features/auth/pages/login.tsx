@@ -78,7 +78,7 @@ const LoginPage = () => {
           <Card className="w-full max-w-md">
             <CardContent className="page-stack-tight">
               {IS_DEMO_MODE && (
-                <div className="rounded-lg border border-accent-border bg-accent-bg px-3 py-2 text-center text-caption text-accent-text">
+                <div className="rounded-lg bg-accent-bg px-3 py-2 text-center text-caption text-accent-text">
                   Demo Mode — ข้อมูลจำลองเก็บใน localStorage
                 </div>
               )}
@@ -86,9 +86,6 @@ const LoginPage = () => {
                 <h2 className="text-heading text-text-primary">
                   {t("auth.login.title")}
                 </h2>
-                <p className="text-body-sm leading-6 text-text-secondary">
-                  {t("auth.login.subtitle")}
-                </p>
               </div>
 
               {error && <p className="text-label text-danger">{error}</p>}

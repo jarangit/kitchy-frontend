@@ -72,7 +72,7 @@ export function SectionReport() {
       />
 
       {error ? (
-        <div className="rounded-card border border-card-border bg-danger-bg p-card-padding text-center">
+        <div className="rounded-card bg-danger-bg p-card-padding text-center">
           <p className="text-danger">{t("report.error")}</p>
         </div>
       ) : isLoading || !data ? (

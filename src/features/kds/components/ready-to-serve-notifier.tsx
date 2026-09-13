@@ -71,7 +71,7 @@ export function ReadyToServeNotifier() {
             className="absolute inset-0 bg-dialog-overlay"
             onClick={() => setDrawerOpen(false)}
           />
-          <aside className="absolute inset-x-0 bottom-0 max-h-[82vh] overflow-y-auto rounded-t-[28px] border border-border bg-bg p-4 shadow-2xl sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:max-h-none sm:w-[400px] sm:rounded-none sm:border-y-0 sm:border-r-0 sm:p-4">
+          <aside className="absolute inset-x-0 bottom-0 max-h-[82vh] overflow-y-auto rounded-t-[28px] bg-bg p-4 shadow-2xl sm:inset-y-0 sm:left-auto sm:right-0 sm:h-full sm:max-h-none sm:w-[400px] sm:rounded-none sm:p-4">
             <div className="mb-4 flex items-start justify-between gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">

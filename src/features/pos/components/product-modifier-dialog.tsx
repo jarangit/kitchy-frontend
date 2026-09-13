@@ -222,11 +222,11 @@ const ProductModifierDialog = ({ product, onClose, onConfirm }: Props) => {
                           disabled={isDisabled}
                           onClick={() => toggleOption(group, option.id)}
                           className={cn(
-                            "flex w-full items-center justify-between gap-3 rounded-card border px-4 py-3 text-left transition-colors duration-fast",
+                            "flex w-full items-center justify-between gap-3 rounded-card px-4 py-3 text-left transition-colors duration-fast",
                             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                             isSelected
-                              ? "border-transparent bg-accent-bg accent-inset-ring"
-                              : "border-card-border bg-card-bg hover:bg-surface",
+                              ? "bg-accent-bg accent-inset-ring"
+                              : "bg-card-bg hover:bg-surface",
                             isDisabled && "cursor-not-allowed opacity-50",
                           )}
                         >
@@ -264,7 +264,7 @@ const ProductModifierDialog = ({ product, onClose, onConfirm }: Props) => {
           </div>
 
           <DialogFooter className="mt-6 flex-col items-stretch gap-3 border-t border-border pt-5 sm:flex-row sm:items-center">
-            <div className="inline-flex items-center gap-0.5 self-start rounded-full border border-card-border bg-card-bg p-0.5">
+            <div className="inline-flex items-center gap-0.5 self-start rounded-full bg-card-bg p-0.5">
               <Button
                 type="button"
                 variant="ghost"

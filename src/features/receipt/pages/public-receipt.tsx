@@ -201,16 +201,13 @@ export default function PublicReceiptPage() {
   if (errorState || !receipt) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-bg p-4 sm:p-6">
-        <section className="w-full max-w-md rounded-card border border-border bg-card-bg p-6 text-center sm:p-8">
+        <section className="w-full max-w-md rounded-card bg-card-bg p-6 text-center sm:p-8">
           <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted">
             <LuClock className="text-text-tertiary" size={32} />
           </span>
           <h1 className="text-title font-semibold text-text-primary">
             {errorState?.title ?? "ไม่พบใบเสร็จ"}
           </h1>
-          <p className="mt-2 text-body-sm text-text-secondary">
-            {errorState?.description ?? "กรุณาตรวจสอบลิงก์อีกครั้ง"}
-          </p>
           <Button className="mt-6 w-full" onClick={() => navigate("/login")}>
             กลับไป Kitchy
           </Button>
@@ -226,7 +223,7 @@ export default function PublicReceiptPage() {
 
   return (
     <main className="min-h-screen bg-bg px-4 py-6 sm:px-6 sm:py-10">
-      <section className="mx-auto w-full max-w-lg overflow-hidden rounded-card border border-border bg-card-bg">
+      <section className="mx-auto w-full max-w-lg overflow-hidden rounded-card bg-card-bg">
         <div className="p-5 sm:p-7">
           <header className="flex items-start justify-between gap-3 border-b border-border pb-5">
             <div className="flex min-w-0 items-start gap-3">
@@ -270,9 +267,6 @@ export default function PublicReceiptPage() {
             <h2 className="mt-4 text-heading font-semibold text-text-primary">
               {statusView.title}
             </h2>
-            <p className="mt-1 text-body-sm text-text-secondary">
-              {statusView.subtitle}
-            </p>
           </div>
 
           {!isCancelled && (
@@ -393,7 +387,7 @@ export default function PublicReceiptPage() {
             </ul>
           </div>
 
-          <div className="mt-5 flex items-center gap-4 rounded-card border border-success-border bg-success-bg p-4 sm:p-5">
+          <div className="mt-5 flex items-center gap-4 rounded-card bg-success-bg p-4 sm:p-5">
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-success text-on-status">
               <LuCheck size={26} aria-hidden="true" />
             </span>

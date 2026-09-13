@@ -9,7 +9,6 @@ interface LoadingStateProps {
 
 export function LoadingState({
   title = "Loading...",
-  description,
   className,
 }: LoadingStateProps) {
   return (
@@ -25,11 +24,6 @@ export function LoadingState({
       <h3 className="mb-1 text-subtitle font-medium text-text-primary">
         {title}
       </h3>
-      {description && (
-        <p className="max-w-xs text-center text-body-sm leading-6 text-text-secondary">
-          {description}
-        </p>
-      )}
     </div>
   );
 }

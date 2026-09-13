@@ -88,13 +88,9 @@ export default function UserDashboard() {
       <main className="page-shell-loose mx-auto max-w-6xl">
         <div className="page-stack-loose">
           <div className="page-title-stack">
-            <p className="text-label text-text-secondary">
-              {t("store.dashboard.welcome.eyebrow")}
-            </p>
             <h1 className="text-display text-text-primary">
               {t("store.dashboard.welcome.title")}
             </h1>
-            <p className="text-body-sm text-text-tertiary">{user?.email}</p>
           </div>
 
           <section className="page-stack-tight">
@@ -102,9 +98,6 @@ export default function UserDashboard() {
               <h2 className="text-heading text-text-primary">
                 {t("store.dashboard.section.title")}
               </h2>
-              <p className="text-body-sm text-text-tertiary">
-                {t("store.dashboard.section.description")}
-              </p>
             </div>
 
             {hasStores ? (
@@ -144,7 +137,7 @@ export default function UserDashboard() {
 
                 {isMultiStoreLocked ? (
                   <div role="group" aria-disabled="true" className="text-left">
-                    <Card className="flex min-h-44 items-center justify-center border-dashed border-border bg-bg text-center">
+                    <Card className="flex min-h-44 items-center justify-center bg-bg text-center">
                       <CardContent className="flex flex-col items-center gap-3 py-8">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
                           <LuPlus size={18} />
@@ -169,7 +162,7 @@ export default function UserDashboard() {
                     className="cursor-pointer text-left"
                     onClick={handleCreateStore}
                   >
-                    <Card className="flex min-h-44 items-center justify-center border-dashed bg-bg text-center transition-colors duration-fast hover:bg-card-bg-hover">
+                    <Card className="flex min-h-44 items-center justify-center bg-bg text-center transition-colors duration-fast hover:bg-card-bg-hover">
                       <CardContent className="flex flex-col items-center gap-3 py-8">
                         <div className="flex h-9 w-9 items-center justify-center rounded-full bg-transparent text-text-tertiary">
                           <LuPlus size={18} />

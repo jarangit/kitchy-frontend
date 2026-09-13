@@ -12,12 +12,7 @@ interface Props {
  * Section header used at the top of each Settings Control Panel section.
  * Owns the "where am I" moment so the page no longer needs a separate page title.
  */
-export function SettingsSectionHeader({
-  title,
-  description,
-  action,
-  className,
-}: Props) {
+export function SettingsSectionHeader({ title, action, className }: Props) {
   return (
     <header
       className={cn(
@@ -29,11 +24,6 @@ export function SettingsSectionHeader({
         <h2 className="text-heading leading-tight text-text-primary sm:text-display">
           {title}
         </h2>
-        {description && (
-          <p className="max-w-prose text-body-sm leading-6 text-text-secondary">
-            {description}
-          </p>
-        )}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </header>

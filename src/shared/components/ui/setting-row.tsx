@@ -223,7 +223,6 @@ export function SettingRow(props: Props) {
 /** Group of rows with a soft divider between each row. */
 export function SettingGroup({
   title,
-  description,
   children,
   className,
 }: {
@@ -234,14 +233,9 @@ export function SettingGroup({
 }) {
   return (
     <section className={cn("space-y-3", className)}>
-      {(title || description) && (
+      {title && (
         <div className="space-y-1 px-1">
-          {title && (
-            <h3 className="text-subtitle text-text-primary">{title}</h3>
-          )}
-          {description && (
-            <p className="text-body-sm text-text-secondary">{description}</p>
-          )}
+          <h3 className="text-subtitle text-text-primary">{title}</h3>
         </div>
       )}
       <div className="divide-y divide-border overflow-hidden rounded-card bg-surface">

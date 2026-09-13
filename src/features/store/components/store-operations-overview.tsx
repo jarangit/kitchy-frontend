@@ -16,9 +16,6 @@ export function StoreOperationsOverview({
   return (
     <section className="space-y-4">
       <div className="space-y-1">
-        <p className="text-caption font-medium tracking-wide text-text-tertiary">
-          {t("dashboard.operations.eyebrow")}
-        </p>
         <h2 className="text-heading font-semibold tracking-tight text-text-primary">
           {t("dashboard.operations.title")}
         </h2>
