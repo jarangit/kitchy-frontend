@@ -12,7 +12,6 @@ interface EmptyStateProps {
 export function EmptyState({
   icon,
   title,
-  description,
   action,
   className,
 }: EmptyStateProps) {
@@ -27,11 +26,6 @@ export function EmptyState({
       <h3 className="mb-1 text-subtitle font-medium text-text-primary">
         {title}
       </h3>
-      {description && (
-        <p className="max-w-xs text-center text-body-sm leading-6 text-text-secondary">
-          {description}
-        </p>
-      )}
       {action && <div className="mt-5">{action}</div>}
     </div>
   );

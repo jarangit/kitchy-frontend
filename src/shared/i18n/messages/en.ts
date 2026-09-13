@@ -799,6 +799,8 @@ export const enMessages = {
   "nav.badge": "Notifications",
   "nav.openMenu": "Open navigation",
   "nav.closeMenu": "Close navigation",
+  "nav.expandMenu": "Expand navigation",
+  "nav.collapseMenu": "Collapse navigation",
 
   "dashboard.openPos": "Open POS",
   "dashboard.openKds": "Open KDS",
@@ -822,6 +824,9 @@ export const enMessages = {
   "dashboard.operations.helper.open": "Orders still in progress today",
   "dashboard.operations.helper.kitchen": "Cooking in kitchen",
   "dashboard.operations.helper.ready": "Waiting to serve",
+  "dashboard.operations.action.open": "Review orders",
+  "dashboard.operations.action.kitchen": "Open kitchen",
+  "dashboard.operations.action.ready": "Serve now",
   "dashboard.operations.viewAll": "View all",
   "dashboard.operations.emptyTitle": "No items yet",
   "dashboard.operations.emptyDescription":
@@ -833,6 +838,24 @@ export const enMessages = {
   "dashboard.operations.minutesAgo": "{count} min",
   "dashboard.operations.expand": "Show status",
   "dashboard.operations.collapse": "Hide status",
+  "dashboard.queue.eyebrow": "Order queue",
+  "dashboard.queue.title": "Kitchen flow",
+  "dashboard.queue.pending.title": "In progress",
+  "dashboard.queue.pending.description": "Orders still being prepared.",
+  "dashboard.queue.pending.status": "Cooking",
+  "dashboard.queue.pending.count": "{count} pending stations/items",
+  "dashboard.queue.pending.emptyTitle": "Kitchen is clear",
+  "dashboard.queue.pending.emptyDescription":
+    "Orders that need preparation will appear here.",
+  "dashboard.queue.pending.action": "Open kitchen",
+  "dashboard.queue.ready.title": "Ready to serve",
+  "dashboard.queue.ready.description": "Orders waiting for service.",
+  "dashboard.queue.ready.status": "Ready",
+  "dashboard.queue.ready.count": "{count} ready stations/items",
+  "dashboard.queue.ready.emptyTitle": "Nothing waiting to serve",
+  "dashboard.queue.ready.emptyDescription":
+    "Ready orders will appear here until they are served.",
+  "dashboard.queue.ready.action": "Serve orders",
 
   "common.delete": "Delete",
   "common.edit": "Edit",

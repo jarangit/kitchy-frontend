@@ -179,10 +179,10 @@ const PaymentReceipt = ({
           <img
             src={receiptQrUrl}
             alt={t("pos.payment.qrTitle")}
-            className="mx-auto h-40 w-40 rounded-card border border-border bg-bg"
+            className="mx-auto h-40 w-40 rounded-card bg-bg"
           />
         ) : (
-          <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-card border border-border bg-bg text-text-tertiary">
+          <div className="mx-auto flex h-40 w-40 flex-col items-center justify-center gap-2 rounded-card bg-bg text-text-tertiary">
             <LuQrCode size={44} />
             <span className="text-caption">{t("pos.receipt.receiptQr")}</span>
           </div>

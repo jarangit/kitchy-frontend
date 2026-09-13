@@ -771,6 +771,8 @@ export const thMessages = {
   "nav.badge": "การแจ้งเตือน",
   "nav.openMenu": "เปิดเมนูนำทาง",
   "nav.closeMenu": "ปิดเมนูนำทาง",
+  "nav.expandMenu": "ขยายเมนูนำทาง",
+  "nav.collapseMenu": "ย่อเมนูนำทาง",
 
   "dashboard.openPos": "เปิด POS",
   "dashboard.openKds": "เปิด KDS",
@@ -794,6 +796,9 @@ export const thMessages = {
   "dashboard.operations.helper.open": "ออเดอร์ที่ยังต้องดำเนินการวันนี้",
   "dashboard.operations.helper.kitchen": "กำลังทำในครัว",
   "dashboard.operations.helper.ready": "รอเสิร์ฟลูกค้า",
+  "dashboard.operations.action.open": "ตรวจออเดอร์",
+  "dashboard.operations.action.kitchen": "เปิดครัว",
+  "dashboard.operations.action.ready": "เสิร์ฟเลย",
   "dashboard.operations.viewAll": "ดูทั้งหมด",
   "dashboard.operations.emptyTitle": "ยังไม่มีรายการ",
   "dashboard.operations.emptyDescription":
@@ -805,6 +810,24 @@ export const thMessages = {
   "dashboard.operations.minutesAgo": "{count} นาที",
   "dashboard.operations.expand": "ดูสถานะงาน",
   "dashboard.operations.collapse": "ซ่อนสถานะงาน",
+  "dashboard.queue.eyebrow": "คิวออเดอร์",
+  "dashboard.queue.title": "งานในครัว",
+  "dashboard.queue.pending.title": "กำลังทำ",
+  "dashboard.queue.pending.description": "ออเดอร์ที่ยังต้องทำในครัว",
+  "dashboard.queue.pending.status": "กำลังทำ",
+  "dashboard.queue.pending.count": "{count} จุด/รายการที่ยังทำอยู่",
+  "dashboard.queue.pending.emptyTitle": "ครัวว่างแล้ว",
+  "dashboard.queue.pending.emptyDescription":
+    "ออเดอร์ที่ต้องทำในครัวจะแสดงที่นี่",
+  "dashboard.queue.pending.action": "เปิดครัว",
+  "dashboard.queue.ready.title": "พร้อมเสิร์ฟ",
+  "dashboard.queue.ready.description": "ออเดอร์ที่รอเสิร์ฟให้ลูกค้า",
+  "dashboard.queue.ready.status": "พร้อมเสิร์ฟ",
+  "dashboard.queue.ready.count": "{count} จุด/รายการที่พร้อมเสิร์ฟ",
+  "dashboard.queue.ready.emptyTitle": "ยังไม่มีออเดอร์รอเสิร์ฟ",
+  "dashboard.queue.ready.emptyDescription":
+    "ออเดอร์พร้อมเสิร์ฟจะแสดงที่นี่จนกว่าจะเสิร์ฟแล้ว",
+  "dashboard.queue.ready.action": "ไปเสิร์ฟ",
 
   "common.delete": "ลบ",
   "common.edit": "แก้ไข",

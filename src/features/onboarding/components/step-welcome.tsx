@@ -17,9 +17,6 @@ export function StepWelcome({ onStart }: Props) {
       <h1 className="mb-3 text-heading text-text-primary tracking-tight">
         {t("onboarding.welcome.title")}
       </h1>
-      <p className="mb-10 text-body text-text-secondary">
-        {t("onboarding.welcome.subtitle")}
-      </p>
 
       <Button size="lg" onClick={onStart} className="min-w-[200px]">
         {t("onboarding.welcome.cta")}

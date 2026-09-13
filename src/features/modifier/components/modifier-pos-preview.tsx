@@ -89,8 +89,8 @@ export function ModifierPosPreview({
         {t("settings.modifiers.posPreviewSubtitle")}
       </p>
 
-      <div className="mt-4 rounded-card border border-border bg-surface-muted p-3">
-        <div className="rounded-card border border-card-border bg-card-bg p-4">
+      <div className="mt-4 rounded-card bg-surface-muted p-3">
+        <div className="rounded-card bg-card-bg p-4">
           <p className="text-body font-semibold text-text-primary">
             {groupName || "—"}
           </p>

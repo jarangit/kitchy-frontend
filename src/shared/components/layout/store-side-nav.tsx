@@ -1,10 +1,12 @@
-import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   LuChefHat,
   LuConciergeBell,
   LuHistory,
   LuLayoutGrid,
+  LuPanelLeftClose,
+  LuPanelLeftOpen,
   LuSettings,
   LuShoppingCart,
   LuX,
@@ -52,6 +54,8 @@ const SETTINGS_ITEM = {
   label: "nav.settings",
 } as const;
 
+const SIDEBAR_EXPANDED_STORAGE_KEY = "kitchy.storeSideNav.expanded";
+
 type NavItemId =
   | (typeof NAV_ITEMS)[number]["id"]
   | typeof SETTINGS_ITEM.id
@@ -94,6 +98,13 @@ export function StoreSideNav({
   onClose,
 }: StoreSideNavProps) {
   const { t } = useTranslation();
+  const location = useLocation();
+  const [isExpanded, setIsExpanded] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return (
+      window.localStorage.getItem(SIDEBAR_EXPANDED_STORAGE_KEY) !== "false"
+    );
+  });
   const routeStoreId = useStoreRouteParam();
   const reduxStoreId = useAppSelector((state) => state.currentStore.storeId);
   const storeId =
@@ -102,6 +113,19 @@ export function StoreSideNav({
     useStoreOverviewCounts();
 
   const isMobile = variant === "mobile";
+
+  const collapseSidebar = useCallback(() => {
+    setIsExpanded(false);
+    window.localStorage.setItem(SIDEBAR_EXPANDED_STORAGE_KEY, "false");
+  }, []);
+
+  const toggleExpanded = () => {
+    setIsExpanded((current) => {
+      const next = !current;
+      window.localStorage.setItem(SIDEBAR_EXPANDED_STORAGE_KEY, String(next));
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!isMobile || !open) return;
@@ -117,6 +141,13 @@ export function StoreSideNav({
     };
   }, [isMobile, open, onClose]);
 
+  useEffect(() => {
+    if (isMobile || !storeId) return;
+    if (location.pathname.startsWith(`/store/${storeId}/pos`)) {
+      collapseSidebar();
+    }
+  }, [collapseSidebar, isMobile, location.pathname, storeId]);
+
   if (!storeId) return null;
   if (isMobile && !open) return null;
 
@@ -126,31 +157,60 @@ export function StoreSideNav({
     readyToServe: readyToServeCount,
   };
 
-  const renderRailItem = ({ id, subpath, end, icon: Icon, label }: NavItem) => (
-    <NavLink
-      key={id}
-      to={`/store/${storeId}${subpath}`}
-      end={end}
-      title={t(label)}
-      aria-label={t(label)}
-      className={({ isActive }) =>
-        cn(
-          "relative flex h-9 w-9 items-center justify-center rounded-full border transition-colors duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar-bg",
-          isActive
-            ? "border-transparent bg-accent text-on-accent"
-            : "border-transparent text-text-secondary hover:bg-surface-hover hover:text-text-primary",
-        )
-      }
-    >
-      <Icon size={18} aria-hidden="true" />
-      {badgeCounts[id] != null && badgeCounts[id] > 0 && (
-        <NavBadge
-          count={badgeCounts[id]}
-          aria-label={t("nav.badge") + ` ${badgeCounts[id]}`}
-        />
-      )}
-    </NavLink>
-  );
+  const renderDesktopItem = ({
+    id,
+    subpath,
+    end,
+    icon: Icon,
+    label,
+  }: NavItem) => {
+    const badgeCount = badgeCounts[id];
+
+    return (
+      <NavLink
+        key={id}
+        to={`/store/${storeId}${subpath}`}
+        end={end}
+        title={t(label)}
+        aria-label={t(label)}
+        onClick={id === "pos" ? collapseSidebar : undefined}
+        onMouseEnter={id === "pos" ? collapseSidebar : undefined}
+        className={({ isActive }) =>
+          cn(
+            "relative flex h-9 items-center rounded-card text-body-sm transition-colors duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar-bg",
+            isExpanded
+              ? "w-full justify-start gap-2.5 px-2.5"
+              : "w-9 justify-center",
+            isActive
+              ? "bg-accent text-on-accent"
+              : "text-text-secondary hover:bg-surface-hover hover:text-text-primary",
+          )
+        }
+      >
+        <span className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full">
+          <Icon size={17} aria-hidden="true" />
+          {!isExpanded && badgeCount != null && badgeCount > 0 && (
+            <NavBadge
+              count={badgeCount}
+              aria-label={t("nav.badge") + ` ${badgeCount}`}
+            />
+          )}
+        </span>
+        {isExpanded && (
+          <>
+            <span className="min-w-0 flex-1 truncate">{t(label)}</span>
+            {badgeCount != null && badgeCount > 0 && (
+              <NavBadge
+                count={badgeCount}
+                aria-label={t("nav.badge") + ` ${badgeCount}`}
+                className="static translate-x-0 translate-y-0"
+              />
+            )}
+          </>
+        )}
+      </NavLink>
+    );
+  };
 
   const renderDrawerItem = ({
     id,
@@ -167,10 +227,10 @@ export function StoreSideNav({
       onClick={onClose}
       className={({ isActive }) =>
         cn(
-          "flex min-h-14 w-full items-center gap-4 rounded-card border px-4 py-3 text-body transition-colors duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+          "flex min-h-14 w-full items-center gap-4 rounded-card px-4 py-3 text-body transition-colors duration-fast focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
           isActive
-            ? "border-transparent bg-accent text-on-accent"
-            : "border-transparent text-text-primary hover:bg-surface-hover",
+            ? "bg-accent text-on-accent"
+            : "text-text-primary hover:bg-surface-hover",
         )
       }
     >
@@ -220,14 +280,46 @@ export function StoreSideNav({
   }
 
   return (
-    <aside className="sticky top-0 z-30 hidden h-dvh w-sidebar-width shrink-0 border-r border-border bg-sidebar-bg md:block">
+    <aside
+      className={cn(
+        "sticky top-0 z-30 hidden h-dvh shrink-0 bg-sidebar-bg transition-all duration-normal md:block",
+        isExpanded ? "w-64" : "w-sidebar-width",
+      )}
+    >
       <nav
-        className="flex h-full flex-col items-center gap-3 py-4"
+        className={cn(
+          "flex h-full flex-col gap-2 py-3",
+          isExpanded ? "items-stretch px-3" : "items-center",
+        )}
         aria-label="Store navigation"
       >
-        {NAV_ITEMS.map(renderRailItem)}
-        {renderRailItem(READY_TO_SERVE_ITEM)}
-        <div className="mt-auto">{renderRailItem(SETTINGS_ITEM)}</div>
+        <button
+          type="button"
+          onClick={toggleExpanded}
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? t("nav.collapseMenu") : t("nav.expandMenu")}
+          title={isExpanded ? t("nav.collapseMenu") : t("nav.expandMenu")}
+          className={cn(
+            "flex h-9 items-center rounded-card text-text-secondary transition-colors duration-fast hover:bg-surface-hover hover:text-text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-sidebar-bg",
+            isExpanded
+              ? "w-full justify-start gap-2.5 px-2.5"
+              : "w-9 justify-center",
+          )}
+        >
+          {isExpanded ? (
+            <LuPanelLeftClose size={17} aria-hidden="true" />
+          ) : (
+            <LuPanelLeftOpen size={17} aria-hidden="true" />
+          )}
+          {isExpanded && (
+            <span className="min-w-0 flex-1 truncate text-body-sm">
+              {t("nav.collapseMenu")}
+            </span>
+          )}
+        </button>
+        {NAV_ITEMS.map(renderDesktopItem)}
+        {renderDesktopItem(READY_TO_SERVE_ITEM)}
+        <div className="mt-auto">{renderDesktopItem(SETTINGS_ITEM)}</div>
       </nav>
     </aside>
   );

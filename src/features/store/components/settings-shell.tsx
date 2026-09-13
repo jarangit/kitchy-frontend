@@ -17,7 +17,6 @@ interface SettingsShellProps {
 
 export const SettingsShell = ({
   title,
-  description,
   onBack,
   backLabel = "Back to Settings",
   action,
@@ -48,11 +47,6 @@ export const SettingsShell = ({
                 <h1 className="text-heading leading-tight text-text-primary sm:text-display">
                   {title}
                 </h1>
-                {description && (
-                  <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
-                    {description}
-                  </p>
-                )}
               </div>
               {action}
             </div>
@@ -74,22 +68,16 @@ interface SettingsSectionCardProps {
 
 export const SettingsSectionCard = ({
   title,
-  description,
   action,
   children,
 }: SettingsSectionCardProps) => {
   return (
     <Card as="section">
-      {(title || description || action) && (
+      {(title || action) && (
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="space-y-1">
             {title && (
               <h2 className="text-subtitle text-text-primary">{title}</h2>
-            )}
-            {description && (
-              <p className="max-w-2xl text-body-sm leading-7 text-text-secondary">
-                {description}
-              </p>
             )}
           </div>
           {action}

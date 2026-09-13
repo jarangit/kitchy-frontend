@@ -13,11 +13,11 @@ type InsetPanelProps<T extends ElementType = "div"> = {
 } & Omit<ComponentPropsWithoutRef<T>, "as" | "className" | "children">;
 
 const variantStyles: Record<InsetPanelVariant, string> = {
-  default: "border border-border bg-surface-muted",
+  default: "bg-surface-muted",
   interactive:
-    "border border-border bg-surface-muted transition-colors duration-fast hover:bg-surface-muted-hover",
+    "bg-surface-muted transition-colors duration-fast hover:bg-surface-muted-hover",
   dashed:
-    "border border-dashed border-border bg-surface-muted text-text-secondary transition-colors duration-fast hover:bg-surface-muted-hover hover:text-text-primary",
+    "bg-surface-muted text-text-secondary transition-colors duration-fast hover:bg-surface-muted-hover hover:text-text-primary",
 };
 
 const paddingStyles: Record<InsetPanelPadding, string> = {

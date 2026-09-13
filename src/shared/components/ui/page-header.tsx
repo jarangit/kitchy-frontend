@@ -33,7 +33,6 @@ export function PageHeader({
   backTo,
   backLabel,
   title,
-  subtitle,
   action,
   children,
   className,
@@ -70,9 +69,6 @@ export function PageHeader({
             <h1 className="text-heading font-semibold text-text-primary tracking-tight">
               {title}
             </h1>
-            {subtitle && (
-              <p className="text-label text-text-tertiary">{subtitle}</p>
-            )}
           </div>
           {action && <div className="min-w-0 lg:shrink-0">{action}</div>}
         </div>

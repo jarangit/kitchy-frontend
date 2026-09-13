@@ -368,7 +368,7 @@ const TransactionDetailPage = () => {
             {editableItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between gap-4 rounded-card border border-card-border px-4 py-3"
+                className="flex items-center justify-between gap-4 rounded-card bg-surface px-4 py-3"
               >
                 <p className="min-w-0 flex-1 truncate text-body-sm text-text-primary">
                   {item.name}

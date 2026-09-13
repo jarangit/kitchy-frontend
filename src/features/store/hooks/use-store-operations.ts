@@ -159,6 +159,11 @@ export function useStoreOperations() {
       {
         orderNumber: string;
         createdAt: string;
+        orderType?: "DINE_IN" | "TOGO" | "DELIVERY";
+        tableNumber?: string;
+        customerName?: string;
+        deliveryPlatform?: string;
+        deliveryOrderNumber?: string;
         statuses: string[];
         count: number;
       }
@@ -178,6 +183,11 @@ export function useStoreOperations() {
           byOrder.set(key, {
             orderNumber: order.orderNumber,
             createdAt: order.createdAt ?? new Date().toISOString(),
+            orderType: order.orderType,
+            tableNumber: order.tableNumber,
+            customerName: order.customerName,
+            deliveryPlatform: order.deliveryPlatform,
+            deliveryOrderNumber: order.deliveryOrderNumber,
             statuses: [item.status],
             count: 1,
           });
@@ -191,6 +201,11 @@ export function useStoreOperations() {
     const pending: Array<{
       orderNumber: string;
       createdAt: string;
+      orderType?: "DINE_IN" | "TOGO" | "DELIVERY";
+      tableNumber?: string;
+      customerName?: string;
+      deliveryPlatform?: string;
+      deliveryOrderNumber?: string;
       count: number;
     }> = [];
     byOrder.forEach((v) => {
@@ -199,6 +214,11 @@ export function useStoreOperations() {
         pending.push({
           orderNumber: v.orderNumber,
           createdAt: v.createdAt,
+          orderType: v.orderType,
+          tableNumber: v.tableNumber,
+          customerName: v.customerName,
+          deliveryPlatform: v.deliveryPlatform,
+          deliveryOrderNumber: v.deliveryOrderNumber,
           count: v.count,
         });
       }

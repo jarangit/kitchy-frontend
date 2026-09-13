@@ -46,11 +46,11 @@ export function ModifierSelectionCards({ value, onChange }: Props) {
             aria-checked={checked}
             onClick={() => onChange(card.key)}
             className={cn(
-              "flex min-h-[96px] flex-col gap-2 rounded-card border p-4 text-left transition-colors duration-fast",
+              "flex min-h-[96px] flex-col gap-2 rounded-card p-4 text-left transition-colors duration-fast",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
               checked
-                ? "border-transparent bg-accent-bg accent-inset-ring"
-                : "border-card-border bg-card-bg hover:bg-surface",
+                ? "bg-accent-bg accent-inset-ring"
+                : "bg-card-bg hover:bg-surface",
             )}
           >
             <span className="flex items-center gap-2">

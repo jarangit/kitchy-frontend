@@ -93,17 +93,12 @@ function ErrorFallback({
   const { t } = useTranslation();
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg px-4">
-      <div className="w-full max-w-md rounded-card border border-card-border bg-card-bg p-6 text-center">
+      <div className="w-full max-w-md rounded-card bg-card-bg p-6 text-center">
         <h1 className="text-title font-semibold text-text-primary">
           {isChunkError
             ? t("app.recovery.updateTitle")
             : t("common.error.title")}
         </h1>
-        <p className="mt-2 text-body-sm leading-6 text-text-secondary">
-          {isChunkError
-            ? t("app.recovery.updateDescription")
-            : t("common.error.description")}
-        </p>
         <div className="mt-5 flex flex-col gap-2">
           <Button onClick={onReload} className="w-full">
             {t("app.recovery.reload")}

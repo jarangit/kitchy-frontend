@@ -113,3 +113,11 @@ export const WithBadges: Story = {
     </BadgeSeed>
   ),
 };
+
+export const CollapsibleWithLabels: Story = {
+  render: () => (
+    <BadgeSeed>
+      <NavPreview path="/store/abc/transactions" />
+    </BadgeSeed>
+  ),
+};

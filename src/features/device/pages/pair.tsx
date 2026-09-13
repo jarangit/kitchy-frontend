@@ -52,9 +52,6 @@ const PairPage = () => {
             <h1 className="text-display text-text-primary">
               {t("pair.title")}
             </h1>
-            <p className="max-w-xl text-body text-text-secondary">
-              {t("pair.subtitle")}
-            </p>
           </div>
         </section>
 
@@ -64,9 +61,6 @@ const PairPage = () => {
               <h2 className="text-heading text-text-primary">
                 {t("pair.title")}
               </h2>
-              <p className="text-body-sm leading-6 text-text-secondary">
-                {t("pair.subtitle")}
-              </p>
             </div>
 
             {error && <p className="text-label text-danger">{error}</p>}

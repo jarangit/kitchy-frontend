@@ -1,4 +1,10 @@
 import { Link } from "react-router-dom";
+import {
+  LuBell,
+  LuChevronRight,
+  LuClipboardList,
+  LuCookingPot,
+} from "react-icons/lu";
 import { cn } from "@/shared/utils/cn";
 
 export type OperationsProgressTone = "default" | "warning" | "success";
@@ -8,6 +14,7 @@ export interface OperationsProgressStage {
   label: string;
   count: number;
   helperText?: string;
+  actionText?: string;
   tone: OperationsProgressTone;
   to?: string;
 }
@@ -17,40 +24,73 @@ export interface OperationsProgressStripProps {
   className?: string;
 }
 
-const toneStyles: Record<OperationsProgressTone, string> = {
-  default: "border-border bg-surface text-text-secondary",
-  warning: "border-warning bg-warning text-on-status",
-  success: "border-success bg-success text-on-status",
+const toneIconWrap: Record<OperationsProgressTone, string> = {
+  default: "bg-surface-muted text-text-secondary",
+  warning: "bg-warning-bg text-warning",
+  success: "bg-success-bg text-success",
 };
 
-function StagePill({ stage }: { stage: OperationsProgressStage }) {
+const toneIcon: Record<OperationsProgressTone, typeof LuClipboardList> = {
+  default: LuClipboardList,
+  warning: LuCookingPot,
+  success: LuBell,
+};
+
+function StageCard({ stage }: { stage: OperationsProgressStage }) {
+  const Icon = toneIcon[stage.tone];
+  const ariaLabel = [stage.label, String(stage.count), stage.helperText]
+    .filter(Boolean)
+    .join(", ");
+
   const content = (
-    <div className="flex flex-col items-center text-center">
-      <span
-        className={cn(
-          "flex h-8 w-8 items-center justify-center rounded-full border-2 text-caption font-semibold tabular-nums",
-          toneStyles[stage.tone],
-        )}
-      >
-        {stage.count}
-      </span>
-      <span className="mt-3 text-body-sm font-medium leading-5 text-text-primary">
-        {stage.label}
-      </span>
+    <div className="flex h-full min-h-40 flex-col gap-4 p-5 sm:min-h-44 sm:p-6">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-caption font-medium tracking-wide text-text-tertiary">
+          Step {stage.index}
+        </span>
+        <span
+          className={cn(
+            "flex h-10 w-10 items-center justify-center rounded-full",
+            toneIconWrap[stage.tone],
+          )}
+        >
+          <Icon size={20} aria-hidden="true" />
+        </span>
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <span className="text-display tabular-nums tracking-tight text-text-primary">
+          {stage.count}
+        </span>
+        <span className="text-subtitle font-semibold text-text-primary">
+          {stage.label}
+        </span>
+        {stage.helperText ? (
+          <span className="text-body-sm leading-6 text-text-tertiary">
+            {stage.helperText}
+          </span>
+        ) : null}
+      </div>
+
+      <div className="mt-auto flex items-center gap-1 pt-1 text-body-sm font-medium text-info">
+        {stage.actionText ? <span>{stage.actionText}</span> : null}
+        <LuChevronRight size={16} aria-hidden="true" />
+      </div>
     </div>
   );
 
   const baseClass = cn(
-    "flex flex-1 flex-col items-center justify-start rounded-card px-2 py-2 transition-colors duration-fast",
+    "block h-full rounded-card bg-card-bg transition-colors duration-fast",
   );
 
   if (stage.to) {
     return (
       <Link
         to={stage.to}
+        aria-label={ariaLabel}
         className={cn(
           baseClass,
-          "hover:bg-surface-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+          "hover:bg-card-bg-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         )}
       >
         {content}
@@ -58,7 +98,11 @@ function StagePill({ stage }: { stage: OperationsProgressStage }) {
     );
   }
 
-  return <div className={baseClass}>{content}</div>;
+  return (
+    <div className={baseClass} aria-label={ariaLabel}>
+      {content}
+    </div>
+  );
 }
 
 export function OperationsProgressStrip({
@@ -67,31 +111,9 @@ export function OperationsProgressStrip({
 }: OperationsProgressStripProps) {
   return (
     <div className={cn(className)}>
-      <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        {stages.map((stage, idx) => (
-          <div key={stage.label} className="relative flex min-w-0 items-start">
-            {idx > 0 && (
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "absolute left-0 right-1/2 top-4 z-0 h-0.5",
-                  "bg-border",
-                )}
-              />
-            )}
-            {idx < stages.length - 1 && (
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "absolute left-1/2 right-0 top-4 z-0 h-0.5",
-                  "bg-border",
-                )}
-              />
-            )}
-            <div className="relative z-10 flex w-full justify-center">
-              <StagePill stage={stage} />
-            </div>
-          </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {stages.map((stage) => (
+          <StageCard key={stage.label} stage={stage} />
         ))}
       </div>
     </div>

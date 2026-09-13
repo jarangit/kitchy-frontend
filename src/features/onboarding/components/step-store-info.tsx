@@ -27,9 +27,6 @@ export function StepStoreInfo({ onSubmit, submitting, error }: Props) {
         <h1 className="mb-2 text-title text-text-primary tracking-tight">
           {t("onboarding.store.title")}
         </h1>
-        <p className="text-body text-text-secondary">
-          {t("onboarding.store.subtitle")}
-        </p>
       </div>
 
       <div className="flex flex-col gap-4">

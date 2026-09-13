@@ -95,7 +95,7 @@ export function AlphanumericKeypad({
   ];
 
   return (
-    <div className="rounded-card border border-card-border bg-surface p-3">
+    <div className="rounded-card bg-surface p-3">
       {label !== undefined && (
         <div className="mb-3">
           <p className="mb-1 text-caption text-text-tertiary">{label}</p>
