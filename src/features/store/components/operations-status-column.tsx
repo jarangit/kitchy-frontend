@@ -45,7 +45,7 @@ export function OperationsStatusColumn({
     <Card
       padding="none"
       className={cn(
-        "flex min-h-64 flex-col overflow-hidden border-t-2 shadow-sm",
+        "flex min-h-64 flex-col overflow-hidden border-t-2",
         toneTopBorder[tone],
         className,
       )}

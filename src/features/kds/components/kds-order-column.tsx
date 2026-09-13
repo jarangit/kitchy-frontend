@@ -144,7 +144,7 @@ const KdsOrderColumn = ({
     return (
       <article
         className={cn(
-          "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-bumped bg-bumped text-text-inverse shadow-sm",
+          "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-bumped bg-bumped text-text-inverse",
           isLargeOrder ? "w-[720px]" : "w-[360px]",
         )}
       >
@@ -198,7 +198,7 @@ const KdsOrderColumn = ({
   return (
     <article
       className={cn(
-        "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-border-hover bg-surface shadow-md transition-all duration-normal",
+        "flex max-h-full shrink-0 flex-col overflow-hidden rounded-card border border-border-hover bg-surface transition-colors duration-normal",
         isLargeOrder ? "w-[720px]" : "w-[360px]",
       )}
     >
@@ -297,7 +297,7 @@ const KdsOrderColumn = ({
                       : t("kds.item.markDone")
                 }
                 className={cn(
-                  "flex w-full flex-col rounded-segment px-2 py-1.5 text-left transition-all duration-fast",
+                  "flex w-full flex-col rounded-segment px-2 py-1.5 text-left transition-colors duration-fast",
                   "disabled:cursor-not-allowed disabled:opacity-50",
                   isCheckedStatus(item.status)
                     ? "bg-success-bg/60"
@@ -326,7 +326,7 @@ const KdsOrderColumn = ({
                   <span
                     aria-hidden="true"
                     className={cn(
-                      "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-fast",
+                      "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors duration-fast",
                       isCheckedStatus(item.status)
                         ? "border-success bg-success text-on-status"
                         : "border-border-hover bg-surface-muted text-transparent",

@@ -50,7 +50,7 @@ export function Button({
         "rounded-button",
         "font-button",
         "whitespace-nowrap",
-        "transition-all duration-fast ease-standard",
+        "transition-colors duration-fast ease-standard",
         "outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         "shrink-0",

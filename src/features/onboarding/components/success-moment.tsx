@@ -24,7 +24,7 @@ export function SuccessMoment({ amount, onClose }: Props) {
       role="dialog"
       aria-modal="true"
     >
-      <div className="w-full max-w-md rounded-card bg-card-bg border border-card-border p-8 text-center shadow-xl">
+      <div className="w-full max-w-md rounded-card bg-card-bg border border-card-border p-8 text-center">
         <div className="mb-4 text-[56px] leading-none">🎉</div>
         <h2 className="mb-2 text-heading text-text-primary tracking-tight">
           {t("onboarding.success.title")}

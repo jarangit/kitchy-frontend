@@ -209,7 +209,7 @@ const TransactionFilter = ({ counts, onFilterChange }: Props) => {
             title={t("transaction.filter.searchPlaceholder")}
             onClick={handleOpenSearch}
             size="sm"
-            className="border border-border bg-surface shadow-sm hover:bg-surface-hover"
+            className="border border-border bg-surface hover:bg-surface-hover"
           >
             <LuSearch size={18} aria-hidden="true" />
           </IconButton>

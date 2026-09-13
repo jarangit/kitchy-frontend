@@ -83,7 +83,7 @@ function NumpadButton({
       aria-label={ariaLabel ?? label}
       onClick={onPress}
       className={cn(
-        "flex h-14 w-14 items-center justify-center rounded-full text-title font-medium transition-colors duration-fast active:scale-[0.98]",
+        "flex h-14 w-14 items-center justify-center rounded-full text-title font-medium transition-colors duration-fast",
         variant === "default"
           ? "bg-surface text-text-primary hover:bg-surface-hover border border-border"
           : "bg-transparent text-text-secondary hover:bg-surface-hover",
@@ -277,7 +277,7 @@ export function SettingsPinDialog({
             type="button"
             aria-label={t("settings.pin.backspace")}
             onClick={handleBackspace}
-            className="flex h-14 w-14 items-center justify-center rounded-full text-text-secondary transition-colors duration-fast hover:bg-surface-hover active:scale-[0.98]"
+            className="flex h-14 w-14 items-center justify-center rounded-full text-text-secondary transition-colors duration-fast hover:bg-surface-hover"
           >
             <LuDelete size={22} />
           </button>

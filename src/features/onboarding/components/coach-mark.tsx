@@ -144,7 +144,7 @@ export function CoachMark({
       <div
         className={cn(
           "absolute pointer-events-auto",
-          "rounded-card bg-card-bg border border-card-border shadow-lg",
+          "rounded-card bg-card-bg border border-card-border",
           "px-4 py-3 max-w-[280px]",
         )}
         style={tooltipStyle}

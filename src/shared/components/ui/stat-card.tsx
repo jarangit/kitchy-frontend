@@ -38,11 +38,11 @@ export function StatCard({
 }: StatCardProps) {
   const content = (
     <>
-      <div className="min-w-0 flex-1 space-y-0.5">
+      <div className="min-w-0 flex-1 space-y-1">
         <p className="text-caption text-text-tertiary">{label}</p>
         <p
           className={cn(
-            "text-title font-semibold tabular-nums",
+            "text-heading font-semibold tabular-nums tracking-tight",
             toneText[tone],
           )}
         >
@@ -55,7 +55,7 @@ export function StatCard({
   );
 
   const shellClassName = cn(
-    "flex w-full items-center gap-3 px-4 py-3 text-left",
+    "flex w-full items-center gap-4 px-5 py-4 text-left",
     "transition-colors duration-fast",
     onClick && "cursor-pointer hover:bg-card-bg-hover",
     className,

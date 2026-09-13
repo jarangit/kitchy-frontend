@@ -1,6 +1,3 @@
-import { SkeletonCard } from "@/shared/components/ui/skeleton";
-import { ErrorState } from "@/shared/components/ui/error-state";
-import { useStoreService } from "@/features/store/hooks/useStoreService";
 import { useStoreOperations } from "@/features/store/hooks/use-store-operations";
 import { useStoreOverviewCounts } from "@/shared/hooks/use-store-overview-counts";
 import { useTranslation } from "@/shared/i18n/use-translation";
@@ -23,8 +20,6 @@ const StoreDashboardPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { storeFinOneQuery, storeFinOneLoading, storeFinOneQueryError } =
-    useStoreService({});
   const { todayOrders } = useStoreOperations();
   const { openOrdersCount, kitchenPendingCount, readyToServeCount } =
     useStoreOverviewCounts();
@@ -63,45 +58,9 @@ const StoreDashboardPage = () => {
     [t, id, openOrdersCount, kitchenPendingCount, readyToServeCount],
   );
 
-  /* Loading state */
-  if (storeFinOneLoading) {
-    return (
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 py-6">
-        <SkeletonCard className="h-16 w-full max-w-sm" />
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <SkeletonCard className="h-56" />
-          <SkeletonCard className="h-56" />
-          <SkeletonCard className="h-56" />
-        </div>
-      </div>
-    );
-  }
-
-  /* Error state */
-  if (storeFinOneQueryError) {
-    return (
-      <ErrorState
-        title={t("common.error.title")}
-        description={t("common.error.description")}
-        className="min-h-[60vh]"
-      />
-    );
-  }
-
-  const storeName = storeFinOneQuery?.name ?? "";
-
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 sm:gap-6">
-      <header className="flex w-full items-start justify-between gap-4">
-        <div className="flex min-w-0 flex-col gap-1">
-          <p className="text-label uppercase tracking-widest text-text-tertiary">
-            {t("dashboard.storeOverview")}
-          </p>
-          <h1 className="truncate text-heading font-semibold tracking-tight text-text-primary">
-            {storeName}
-          </h1>
-        </div>
-
+      <header className="flex w-full items-center justify-end gap-4">
         <Button
           size="lg"
           onClick={() => navigate(`/store/${id}/pos`)}
@@ -114,7 +73,7 @@ const StoreDashboardPage = () => {
 
       <StoreOperationsOverview stages={stages} />
 
-      <Card className="shadow-sm">
+      <Card>
         <CardHeader>
           <CardTitle>{t("dashboard.ordersByTime")}</CardTitle>
           <CardDescription>{t("dashboard.ordersByTimeDesc")}</CardDescription>

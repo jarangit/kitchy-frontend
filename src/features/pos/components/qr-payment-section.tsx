@@ -60,7 +60,7 @@ const QrPaymentSection = ({
   const amountLabel = `฿${subtotal.toFixed(2)}`;
 
   const card = (
-    <div className="overflow-hidden rounded-card border border-border bg-card-bg text-center shadow-sm">
+    <div className="overflow-hidden rounded-card border border-border bg-card-bg text-center">
       <div className="bg-[#00427a] px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-[#ffffff]">
@@ -100,7 +100,7 @@ const QrPaymentSection = ({
 
       <div className="mx-auto mt-5 flex justify-center px-6">
         {qrDataUrl ? (
-          <div className="relative rounded-card bg-[#ffffff] p-3 shadow-sm ring-1 ring-border">
+          <div className="relative rounded-card bg-[#ffffff] p-3 ring-1 ring-border">
             <img
               src={qrDataUrl}
               alt={t("pos.payment.qrTitle")}

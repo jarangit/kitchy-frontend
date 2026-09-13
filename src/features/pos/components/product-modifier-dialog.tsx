@@ -222,7 +222,7 @@ const ProductModifierDialog = ({ product, onClose, onConfirm }: Props) => {
                           disabled={isDisabled}
                           onClick={() => toggleOption(group, option.id)}
                           className={cn(
-                            "flex w-full items-center justify-between gap-3 rounded-card border px-4 py-3 text-left transition-all duration-fast",
+                            "flex w-full items-center justify-between gap-3 rounded-card border px-4 py-3 text-left transition-colors duration-fast",
                             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                             isSelected
                               ? "border-transparent bg-accent-bg accent-inset-ring"

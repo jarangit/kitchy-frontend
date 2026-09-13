@@ -31,7 +31,7 @@ const CartItem = ({
     : t("pos.cart.addNote");
 
   return (
-    <InsetPanel className="border-success-border bg-success-bg px-3 py-3 shadow-xs">
+    <InsetPanel className="border-success-border bg-success-bg px-3 py-3">
       <div className="flex items-center gap-2">
         <p
           className="min-w-0 flex-1 truncate text-body font-semibold leading-6 text-text-primary"

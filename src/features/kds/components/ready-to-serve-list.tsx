@@ -110,8 +110,7 @@ export function ReadyToServeList({ items, servingIds, onServed }: Props) {
                 size="sm"
                 className={cn(
                   "shrink-0",
-                  isOverdue &&
-                    "border-danger bg-danger text-on-status shadow-sm",
+                  isOverdue && "border-danger bg-danger text-on-status",
                 )}
               >
                 {t("serve.item.waiting", {

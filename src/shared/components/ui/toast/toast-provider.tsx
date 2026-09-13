@@ -59,7 +59,7 @@ function ToastItem({
   }, [record.durationMs, record.id, onDismiss]);
 
   return (
-    <div className={cn("rounded-card border p-4 shadow-xl", styles.shell)}>
+    <div className={cn("rounded-card border p-4", styles.shell)}>
       <div className="flex items-start gap-3">
         <span
           className={cn(

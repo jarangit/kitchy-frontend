@@ -201,7 +201,7 @@ export default function PublicReceiptPage() {
   if (errorState || !receipt) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-bg p-4 sm:p-6">
-        <section className="w-full max-w-md rounded-card border border-border bg-card-bg p-6 text-center shadow-card sm:p-8">
+        <section className="w-full max-w-md rounded-card border border-border bg-card-bg p-6 text-center sm:p-8">
           <span className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted">
             <LuClock className="text-text-tertiary" size={32} />
           </span>
@@ -226,7 +226,7 @@ export default function PublicReceiptPage() {
 
   return (
     <main className="min-h-screen bg-bg px-4 py-6 sm:px-6 sm:py-10">
-      <section className="mx-auto w-full max-w-lg overflow-hidden rounded-card border border-border bg-card-bg shadow-card">
+      <section className="mx-auto w-full max-w-lg overflow-hidden rounded-card border border-border bg-card-bg">
         <div className="p-5 sm:p-7">
           <header className="flex items-start justify-between gap-3 border-b border-border pb-5">
             <div className="flex min-w-0 items-start gap-3">

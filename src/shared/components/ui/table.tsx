@@ -35,7 +35,7 @@ export function TableHeader({
   return (
     <thead
       className={cn(
-        "bg-primary border-b border-card-border text-text-inverse",
+        "bg-surface-muted border-b border-card-border text-text-secondary",
         className,
       )}
       {...props}
