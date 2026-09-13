@@ -203,7 +203,7 @@ export function DropdownSelect({
           aria-label={ariaLabel}
           className={cn(
             "absolute left-0 right-0 z-50 mt-1 max-h-60 overflow-auto",
-            "bg-surface border border-border rounded-select shadow-md",
+            "bg-surface border border-border rounded-select",
             "p-1",
           )}
         >

@@ -59,15 +59,14 @@ const ProductGrid = ({
                 onClick={() => onAddToCart(product)}
                 data-onboarding-target={`product-card-${product.id}`}
                 className={cn(
-                  "relative flex h-full min-h-[156px] w-full cursor-pointer flex-col overflow-hidden rounded-card transition-all duration-fast",
-                  "hover:-translate-y-[1px]",
+                  "relative flex h-full min-h-[156px] w-full cursor-pointer flex-col overflow-hidden rounded-card transition-colors duration-fast",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                   isSelected ? "accent-inset-ring bg-accent-bg" : "bg-card-bg",
                 )}
                 aria-label={`${product.name} ${formatPrice(product.price)}`}
               >
                 {isSelected && (
-                  <span className="absolute right-2 top-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent shadow-xs tabular-nums">
+                  <span className="absolute right-2 top-2 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full bg-accent px-2 text-label font-semibold text-on-accent tabular-nums">
                     {quantity}
                   </span>
                 )}
@@ -105,7 +104,7 @@ const ProductGrid = ({
                     event.stopPropagation();
                     onDecreaseQuantity(product.id);
                   }}
-                  className="absolute left-2 top-2 z-10 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full border border-card-border bg-bg px-2 text-label font-bold leading-none text-text-primary shadow-xs transition-all duration-fast hover:scale-[1.03] hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg active:scale-[0.97]"
+                  className="absolute left-2 top-2 z-10 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full border border-card-border bg-bg px-2 text-label font-bold leading-none text-text-primary transition-colors duration-fast hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   aria-label={t("pos.cart.decreaseQuantity")}
                   title={t("pos.cart.decreaseQuantity")}
                 >

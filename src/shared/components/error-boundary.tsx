@@ -93,7 +93,7 @@ function ErrorFallback({
   const { t } = useTranslation();
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg px-4">
-      <div className="w-full max-w-md rounded-card border border-card-border bg-card-bg p-6 text-center shadow-sm">
+      <div className="w-full max-w-md rounded-card border border-card-border bg-card-bg p-6 text-center">
         <h1 className="text-title font-semibold text-text-primary">
           {isChunkError
             ? t("app.recovery.updateTitle")

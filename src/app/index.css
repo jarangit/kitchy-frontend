@@ -30,8 +30,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Flat UI: shadows removed from components by default.
-   Use shadow-xs/sm/md/lg/xl tokens explicitly when needed. */
+/* Flat design: elevation tokens resolve to none. Hierarchy comes from
+   surfaces, borders, spacing, and color — not shadows or depth. */
 
 /* ──────────────────────────────────────────
    ANIMATIONS

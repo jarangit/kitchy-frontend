@@ -144,7 +144,7 @@ export default function DemoTrialEntryPage() {
                     "hover:border-border-hover hover:bg-card-bg-hover",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/20 focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
                     "disabled:cursor-not-allowed disabled:opacity-60",
-                    selected && "border-accent bg-accent-bg shadow-sm",
+                    selected && "border-accent bg-accent-bg",
                   )}
                   aria-pressed={selected}
                   aria-label={`${selected ? `${t("demo.trial.selectedBadge")} ` : ""}${t(option.labelKey)}`}

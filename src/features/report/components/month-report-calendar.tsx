@@ -127,8 +127,8 @@ const MonthReportCalendar = ({
               onClick={() => onSelectDay(dayData)}
               className={
                 cell.isSelected
-                  ? "flex min-h-[112px] flex-col rounded-card bg-card-bg p-2 text-left shadow-sm ring-1 ring-accent/40 transition-colors sm:p-3"
-                  : "flex min-h-[112px] flex-col rounded-card bg-card-bg p-2 text-left shadow-sm transition-colors hover:bg-surface-hover sm:p-3"
+                  ? "flex min-h-[112px] flex-col rounded-card bg-card-bg p-2 text-left ring-1 ring-accent/40 transition-colors sm:p-3"
+                  : "flex min-h-[112px] flex-col rounded-card bg-card-bg p-2 text-left transition-colors hover:bg-surface-hover sm:p-3"
               }
             >
               <div className="flex items-start justify-between gap-2">

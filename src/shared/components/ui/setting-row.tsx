@@ -156,7 +156,7 @@ export function SettingRow(props: Props) {
           </span>
           <LuChevronRight
             size={18}
-            className="text-text-tertiary transition-transform duration-fast group-hover:translate-x-0.5"
+            className="text-text-tertiary transition-colors duration-fast group-hover:text-text-primary"
           />
         </div>
       </button>
@@ -186,7 +186,7 @@ export function SettingRow(props: Props) {
           {props.value != null && <span>{props.value}</span>}
           <LuChevronRight
             size={18}
-            className="text-text-tertiary transition-transform duration-fast group-hover:translate-x-0.5"
+            className="text-text-tertiary transition-colors duration-fast group-hover:text-text-primary"
           />
         </div>
       </button>

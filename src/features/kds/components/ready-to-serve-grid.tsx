@@ -195,7 +195,7 @@ function ReadyOrderCard({
     readyItems.every((item) => servingIds.has(item.id));
 
   return (
-    <article className="flex max-h-full min-h-0 w-[360px] shrink-0 self-stretch flex-col overflow-hidden rounded-card border border-success bg-surface shadow-md transition-all duration-normal">
+    <article className="flex max-h-full min-h-0 w-[360px] shrink-0 self-stretch flex-col overflow-hidden rounded-card border border-success bg-surface transition-colors duration-normal">
       <div className="flex flex-col gap-1.5 border-b border-success bg-success-bg px-4 pb-4 pt-4 text-success">
         <div className="flex items-start justify-between gap-2">
           <p className="font-mono text-title font-bold leading-tight tracking-tight">
@@ -236,7 +236,7 @@ function ReadyOrderCard({
             size="sm"
             className={cn(
               "shrink-0",
-              isOverdue && "border-danger bg-danger text-on-status shadow-sm",
+              isOverdue && "border-danger bg-danger text-on-status",
             )}
           >
             {t("serve.item.waiting", {
@@ -310,7 +310,7 @@ function ReadyOrderCard({
                     disabled={isServing}
                     aria-label={`${t("serve.action.served")} · ${item.productName} x${item.quantity}`}
                     title={`${t("serve.action.served")} · ${item.productName} x${item.quantity}`}
-                    className="flex w-full flex-col rounded-segment bg-success-bg/60 px-2 py-1.5 text-left transition-all duration-fast hover:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex w-full flex-col rounded-segment bg-success-bg/60 px-2 py-1.5 text-left transition-colors duration-fast hover:bg-surface-hover disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {rowBody}
                   </button>
@@ -368,7 +368,7 @@ function CompletedOrderCard({
   const { t } = useTranslation();
 
   return (
-    <article className="flex max-h-full min-h-0 w-[360px] shrink-0 self-stretch flex-col items-center justify-center gap-2 overflow-hidden rounded-card border border-success bg-success-bg px-4 py-8 text-center text-success shadow-md">
+    <article className="flex max-h-full min-h-0 w-[360px] shrink-0 self-stretch flex-col items-center justify-center gap-2 overflow-hidden rounded-card border border-success bg-success-bg px-4 py-8 text-center text-success">
       <span className="flex h-12 w-12 items-center justify-center rounded-full bg-success text-on-status">
         <LuCheck size={24} aria-hidden="true" />
       </span>
