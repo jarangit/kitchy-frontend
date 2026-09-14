@@ -7,13 +7,16 @@ type Props = {
   onConfirm?: () => void;
 };
 
-const DeleteModal = ({ onConfirm }: Props) => {
+const DeleteModal = ({ content, onConfirm }: Props) => {
   const dispatch = useAppDispatch();
 
   const handleClose = () => dispatch(closeModal());
 
   return (
     <div>
+      {content ? (
+        <p className="text-body-sm leading-6 text-text-secondary">{content}</p>
+      ) : null}
       <div className="mt-4 flex justify-end gap-2">
         <Button type="button" variant="ghost" size="sm" onClick={handleClose}>
           Cancel

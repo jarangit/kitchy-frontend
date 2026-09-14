@@ -479,7 +479,7 @@ export const thMessages = {
   "settings.products.inactive": "ปิดขาย",
   "settings.products.deleteTitle": "ลบสินค้า",
   "settings.products.deleteDescription":
-    "คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? การลบไม่สามารถย้อนกลับได้",
+    "คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้ออกจากเมนู? สินค้าจะถูกซ่อนจากเมนูและกู้คืนได้ในภายหลัง",
   "settings.products.col.image": "รูป",
   "settings.products.col.name": "ชื่อสินค้า",
   "settings.products.col.category": "หมวดหมู่",
@@ -720,6 +720,8 @@ export const thMessages = {
   "pos.payment.confirm": "ยืนยันการชำระ",
   "pos.payment.confirmQr": "ยืนยันว่าได้รับเงินแล้ว",
   "pos.payment.failed": "ชำระเงินไม่สำเร็จ กรุณาลองใหม่",
+  "pos.payment.productNotOnSale":
+    "สินค้านี้ปิดขายชั่วคราว กรุณาลบออกจากตะกร้าแล้วเลือกสินค้าอื่น",
   "pos.payment.insufficientCash": "จำนวนเงินที่รับยังไม่ถึงยอดชำระ",
   "pos.payment.selectTableFirst": "กรุณาเลือกโต๊ะก่อนชำระเงิน",
   "pos.payment.selectPlatformFirst": "กรุณาเลือกแพลตฟอร์มเดลิเวอรีก่อนชำระเงิน",

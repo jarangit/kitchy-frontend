@@ -4,11 +4,14 @@ import { useProductService } from "@/features/product/hooks/useProductService";
 import { SettingsFrame } from "@/features/store/components/settings-frame";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { Spinner } from "@/shared/components/ui/spinner";
+import { useAppDispatch } from "@/shared/hooks/hooks";
+import { openModal } from "@/shared/store/slices/modal-slice";
 import { useTranslation } from "@/shared/i18n/use-translation";
 import type { ProductFormData } from "@/features/product/types/product.model";
 
 const ProductDetailPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { id, productId } = useParams<{ id: string; productId?: string }>();
   const { t } = useTranslation();
   const isNew = !productId;
@@ -17,6 +20,7 @@ const ProductDetailPage = () => {
     productDetailLoading,
     createProductMutation,
     updateProductMutation,
+    deleteProductMutation,
   } = useProductService(undefined, productId);
   const listPath = `/store/${id}/settings/products`;
 
@@ -46,6 +50,21 @@ const ProductDetailPage = () => {
     }
   };
 
+  const handleDelete = () => {
+    if (!productId) return;
+    dispatch(
+      openModal({
+        title: t("settings.products.deleteTitle"),
+        template: "DELETE",
+        content: t("settings.products.deleteDescription"),
+        onConfirm: () =>
+          deleteProductMutation.mutate(productId, {
+            onSuccess: () => navigate(listPath),
+          }),
+      }),
+    );
+  };
+
   return (
     <SettingsFrame>
       {productDetailLoading ? (
@@ -65,6 +84,8 @@ const ProductDetailPage = () => {
           defaultValues={defaults}
           onClose={() => navigate(listPath)}
           onSubmit={handleSubmit}
+          onDelete={isNew ? undefined : handleDelete}
+          isDeleting={deleteProductMutation.isPending}
         />
       )}
     </SettingsFrame>

@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuPackage } from "react-icons/lu";
 import { useProductService } from "@/features/product/hooks/useProductService";
+import { useAppDispatch } from "@/shared/hooks/hooks";
+import { openModal } from "@/shared/store/slices/modal-slice";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
 import { ProductTable } from "@/features/product/components/product-table";
 import {
@@ -23,6 +25,7 @@ const PRODUCT_PAGE_SIZE = 10;
 
 const ProductListTemplate = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { productsQuery, updateProductMutation, deleteProductMutation } =
     useProductService();
@@ -119,7 +122,14 @@ const ProductListTemplate = () => {
   };
 
   const handleDelete = (id: string) => {
-    deleteProductMutation.mutate(id);
+    dispatch(
+      openModal({
+        title: t("settings.products.deleteTitle"),
+        template: "DELETE",
+        content: t("settings.products.deleteDescription"),
+        onConfirm: () => deleteProductMutation.mutate(id),
+      }),
+    );
   };
 
   const statusOptions = [

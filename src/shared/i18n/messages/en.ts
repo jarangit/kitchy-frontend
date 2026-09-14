@@ -498,7 +498,7 @@ export const enMessages = {
   "settings.products.inactive": "Inactive",
   "settings.products.deleteTitle": "Delete Product",
   "settings.products.deleteDescription":
-    "Are you sure you want to delete this product? This action cannot be undone.",
+    "Are you sure you want to remove this product from the menu? It will be hidden and can be restored later.",
   "settings.products.col.image": "Image",
   "settings.products.col.name": "Name",
   "settings.products.col.category": "Category",
@@ -746,6 +746,8 @@ export const enMessages = {
   "pos.payment.confirm": "Confirm payment",
   "pos.payment.confirmQr": "Confirm money received",
   "pos.payment.failed": "Payment failed. Please try again.",
+  "pos.payment.productNotOnSale":
+    "This product is temporarily unavailable. Remove it from the cart and choose another item.",
   "pos.payment.insufficientCash":
     "Received amount is less than the amount due.",
   "pos.payment.selectTableFirst": "Select a table before paying.",

@@ -13,6 +13,7 @@ export interface IMenu {
   stationId?: string;
   stationName?: string;
   storeId?: string;
+  deletedAt?: string | null;
   createdAt: string;
   updatedAt: string;
   store?: unknown;

@@ -44,6 +44,14 @@ const extractServerMessage = (error: unknown, fallback: string): string => {
   return fallback;
 };
 
+const isProductNotOnSaleServerMessage = (message: string): boolean =>
+  message.toLowerCase().includes("is not currently on sale");
+
+const isProductAvailableForSale = (product: {
+  isActive?: boolean;
+  deletedAt?: string | null;
+}): boolean => product.isActive !== false && !product.deletedAt;
+
 const PosHomePage = () => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,8 +90,9 @@ const PosHomePage = () => {
   );
 
   const filteredProducts = useMemo(() => {
-    if (selectedCategory === "ALL") return productsQuery;
-    return productsByCategoryQuery;
+    const list =
+      selectedCategory === "ALL" ? productsQuery : productsByCategoryQuery;
+    return (list ?? []).filter(isProductAvailableForSale);
   }, [productsByCategoryQuery, productsQuery, selectedCategory]);
 
   const quantityByProductId = useMemo(
@@ -184,8 +193,14 @@ const PosHomePage = () => {
     name: string;
     price: number;
     imageUrl?: string | null;
+    isActive?: boolean;
+    deletedAt?: string | null;
     modifierGroups?: ModifierDialogProduct["modifierGroups"];
   }) => {
+    if (!isProductAvailableForSale(product)) {
+      setErrorMessage(t("pos.payment.productNotOnSale"));
+      return;
+    }
     const groups = product.modifierGroups ?? [];
     if (groups.length > 0) {
       setModifierProduct({
@@ -409,7 +424,15 @@ const PosHomePage = () => {
       setActiveView("SUCCESS");
     } catch (error) {
       console.error("Payment failed:", error);
-      setErrorMessage(extractServerMessage(error, t("pos.payment.failed")));
+      const serverMessage = extractServerMessage(
+        error,
+        t("pos.payment.failed"),
+      );
+      setErrorMessage(
+        isProductNotOnSaleServerMessage(serverMessage)
+          ? t("pos.payment.productNotOnSale")
+          : serverMessage,
+      );
     } finally {
       setIsProcessing(false);
     }
@@ -495,12 +518,16 @@ const PosHomePage = () => {
                           name: string;
                           price?: number;
                           imageUrl?: string | null;
+                          isActive?: boolean;
+                          deletedAt?: string | null;
                           modifierGroups?: ModifierDialogProduct["modifierGroups"];
                         }) => ({
                           id: String(p.id),
                           name: p.name,
                           price: p.price ?? 0,
                           imageUrl: p.imageUrl,
+                          isActive: p.isActive,
+                          deletedAt: p.deletedAt,
                           modifierGroups: p.modifierGroups ?? [],
                         }),
                       ) || []

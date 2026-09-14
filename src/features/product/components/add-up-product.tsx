@@ -10,7 +10,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
-import { Select } from "@/shared/components/ui/select";
+import { DropdownSelect } from "@/shared/components/ui/dropdown-select";
 import { Toggle } from "@/shared/components/ui/toggle";
 import { InsetPanel } from "@/shared/components/ui/inset-panel";
 import { useCategoryService } from "@/features/category/hooks/useCategoryService";
@@ -27,6 +27,8 @@ type Props = {
   mode?: ProductFormMode;
   defaultValues?: ProductFormData;
   onSubmit: (data: ProductFormData) => void;
+  onDelete?: () => void;
+  isDeleting?: boolean;
   page?: boolean;
 };
 
@@ -50,6 +52,8 @@ const AddUpProductForm = ({
   mode = "create",
   defaultValues,
   onSubmit: onSubmitProp,
+  onDelete,
+  isDeleting = false,
   page = false,
 }: Props) => {
   const { t } = useTranslation();
@@ -181,6 +185,11 @@ const AddUpProductForm = ({
     setImageError(null);
   };
 
+  const handleTriggerImagePicker = () => {
+    if (uploadingImage) return;
+    fileInputRef.current?.click();
+  };
+
   // Reset form whenever dialog opens with fresh defaults
   useEffect(() => {
     if (open) {
@@ -306,15 +315,14 @@ const AddUpProductForm = ({
                           {t("settings.products.imageHint")}
                         </span>
                         <div className="flex flex-wrap gap-2">
-                          <label htmlFor={PRODUCT_IMAGE_INPUT_ID}>
-                            <Button
-                              type="button"
-                              variant="secondary"
-                              disabled={uploadingImage}
-                            >
-                              {t("settings.products.imageReplace")}
-                            </Button>
-                          </label>
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            disabled={uploadingImage}
+                            onClick={handleTriggerImagePicker}
+                          >
+                            {t("settings.products.imageReplace")}
+                          </Button>
                           <Button
                             type="button"
                             variant="secondary"
@@ -328,13 +336,19 @@ const AddUpProductForm = ({
                       </div>
                     </InsetPanel>
                   ) : (
-                    <label htmlFor={PRODUCT_IMAGE_INPUT_ID} className="block">
+                    <button
+                      type="button"
+                      onClick={handleTriggerImagePicker}
+                      disabled={uploadingImage}
+                      aria-label={t("settings.products.imageUpload")}
+                      className="block w-full rounded-md text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:ring-offset-2 focus-visible:ring-offset-bg disabled:cursor-not-allowed disabled:opacity-50"
+                    >
                       <InsetPanel
                         variant="dashed"
                         padding="lg"
                         className="flex min-h-72 w-full cursor-pointer flex-col items-center justify-center gap-3 text-center"
                       >
-                        <LuImage className="h-10 w-10" />
+                        <LuImage className="h-10 w-10" aria-hidden="true" />
                         <span className="text-body font-medium">
                           {uploadingImage
                             ? t("settings.products.imageUploading")
@@ -344,7 +358,7 @@ const AddUpProductForm = ({
                           {t("settings.products.imageHint")}
                         </span>
                       </InsetPanel>
-                    </label>
+                    </button>
                   )}
 
                   {imageError && (
@@ -372,15 +386,16 @@ const AddUpProductForm = ({
               name="categoryId"
               control={control}
               render={({ field }) => (
-                <Select
+                <DropdownSelect
                   id="product-category"
                   label={t("settings.products.category")}
                   options={optionCategory}
                   placeholder={t("settings.products.categoryPlaceholder")}
-                  value={field.value || ""}
-                  onChange={(e) => field.onChange(e.target.value || undefined)}
-                  onBlur={field.onBlur}
-                  name={field.name}
+                  value={field.value ?? ""}
+                  onValueChange={(v) => {
+                    field.onChange(v || undefined);
+                    field.onBlur();
+                  }}
                 />
               )}
             />
@@ -477,6 +492,18 @@ const AddUpProductForm = ({
         </div>
 
         <DialogFooter className="mt-8 border-t border-border pt-5">
+          {mode === "edit" && onDelete ? (
+            <Button
+              type="button"
+              variant="danger"
+              onClick={onDelete}
+              disabled={isDeleting || isSubmitting || uploadingImage}
+              className="mr-auto"
+            >
+              <LuTrash2 className="h-4 w-4" />
+              {t("common.delete")}
+            </Button>
+          ) : null}
           <Button type="button" variant="secondary" onClick={handleClose}>
             {t("common.cancel")}
           </Button>
